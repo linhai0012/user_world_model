@@ -163,8 +163,25 @@ def main() -> None:
     train_ds = TeacherSFTDataset(args.train_jsonl, tok)
     print(f"[train] train samples: {len(train_ds)}")
 
+    # ---- Liger Kernel patch ----
+    # Fused RMSNorm + RoPE + SwiGLU + (crucially) FusedLinearCrossEntropy
+    # that never materializes the full [batch, seq, vocab] logits tensor.
+    # Must be applied BEFORE loading the model. Mathematically equivalent
+    # to standard ops (up to fp tolerance); typically 20-30% faster and
+    # saves 30-50 GB at long context.
+    try:
+        from liger_kernel.transformers import apply_liger_kernel_to_qwen3
+        apply_liger_kernel_to_qwen3(
+            rope=True, swiglu=True, cross_entropy=False,
+            fused_linear_cross_entropy=True, rms_norm=True,
+        )
+        print("[train] liger kernel applied to Qwen3")
+    except ImportError:
+        print("[train] liger_kernel not installed — falling back to stock kernels "
+              "(may OOM at long context)")
+
     # ---- Model ----
-    # Use flash-attn 2 for 131k context; bf16 master compute.
+    # Flash-attn 2 for efficient attention; bf16 master compute.
     model = AutoModelForCausalLM.from_pretrained(
         args.model_name,
         torch_dtype=torch.bfloat16,

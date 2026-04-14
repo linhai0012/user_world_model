@@ -14,9 +14,11 @@ QWEN_LAYER_CLS = "Qwen3DecoderLayer"  # for FSDP transformer auto-wrap policy
 
 # ---- Data ----
 DATA_VERSION = "128k"  # "32k" / "128k" / "1M"
-# Max tokens per sample. 128k version hits ~131k worst-case, so cap here;
-# target is always preserved, prefix sessions dropped from oldest end.
-MAX_SEQ_LEN = 131072
+# Max tokens per sample. 128k data hits ~131k worst-case; even with FSDP
+# + flash-attn + liger fused CE, full 131k OOMs the logits-grad path on
+# H100 96GB. 65536 fits comfortably; target is always preserved, prefix
+# sessions dropped from oldest end. Expect ~10% samples to lose some prefix.
+MAX_SEQ_LEN = 65536
 
 # ---- Optim (plan §3.4) ----
 LEARNING_RATE = 1e-5
