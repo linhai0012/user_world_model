@@ -74,12 +74,20 @@ def build_training_args(args: argparse.Namespace, output_dir: Path) -> TrainingA
     fsdp_str = "" if args.no_fsdp else "full_shard auto_wrap"
     fsdp_cfg: dict = {} if args.no_fsdp else {
         "transformer_layer_cls_to_wrap": [QWEN_LAYER_CLS],
+        # When FSDP is on, activation checkpointing must live in fsdp_config
+        # (not TrainingArguments.gradient_checkpointing) — the two are mutually
+        # exclusive per transformers>=4.40. See HF issue #30404.
         "activation_checkpointing": GRADIENT_CHECKPOINTING,
         "use_orig_params": True,
         "backward_prefetch": "backward_pre",
         "forward_prefetch": False,
         "sync_module_states": True,
     }
+
+    # Use TrainingArguments-level checkpointing only in the single-GPU
+    # fallback path (--no-fsdp).
+    ta_grad_ckpt = GRADIENT_CHECKPOINTING and args.no_fsdp
+    ta_grad_ckpt_kwargs = {"use_reentrant": False} if ta_grad_ckpt else None
 
     return TrainingArguments(
         output_dir=str(output_dir),
@@ -93,8 +101,8 @@ def build_training_args(args: argparse.Namespace, output_dir: Path) -> TrainingA
         max_grad_norm=MAX_GRAD_NORM,
         optim=OPTIMIZER,
         bf16=BF16,
-        gradient_checkpointing=GRADIENT_CHECKPOINTING,
-        gradient_checkpointing_kwargs={"use_reentrant": False},
+        gradient_checkpointing=ta_grad_ckpt,
+        gradient_checkpointing_kwargs=ta_grad_ckpt_kwargs,
         logging_steps=LOGGING_STEPS,
         save_strategy=SAVE_STRATEGY,
         save_total_limit=SAVE_TOTAL_LIMIT,
