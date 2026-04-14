@@ -31,8 +31,8 @@ from config import (
     ATTN_IMPL, BF16, DATA_VERSION, DEFAULT_TRAIN_JSONL, GRAD_ACCUM_STEPS,
     GRADIENT_CHECKPOINTING, LEARNING_RATE, LOGGING_STEPS, LR_SCHEDULER,
     MAX_GRAD_NORM, MAX_SEQ_LEN, MODEL_NAME, NUM_EPOCHS, OPTIMIZER,
-    PER_DEVICE_BATCH_SIZE, QWEN_LAYER_CLS, SAVE_STRATEGY, SAVE_TOTAL_LIMIT,
-    SEED, WARMUP_RATIO, WEIGHT_DECAY, DATALOADER_NUM_WORKERS,
+    PER_DEVICE_BATCH_SIZE, QWEN_LAYER_CLS, SAVE_STEPS, SAVE_STRATEGY,
+    SAVE_TOTAL_LIMIT, SEED, WARMUP_RATIO, WEIGHT_DECAY, DATALOADER_NUM_WORKERS,
 )
 from dataset import PadToBatchMaxCollator, TeacherSFTDataset
 
@@ -105,6 +105,7 @@ def build_training_args(args: argparse.Namespace, output_dir: Path) -> TrainingA
         gradient_checkpointing_kwargs=ta_grad_ckpt_kwargs,
         logging_steps=LOGGING_STEPS,
         save_strategy=SAVE_STRATEGY,
+        save_steps=SAVE_STEPS,
         save_total_limit=SAVE_TOTAL_LIMIT,
         dataloader_num_workers=DATALOADER_NUM_WORKERS,
         remove_unused_columns=False,

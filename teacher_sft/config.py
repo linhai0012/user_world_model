@@ -15,9 +15,10 @@ QWEN_LAYER_CLS = "Qwen3DecoderLayer"  # for FSDP transformer auto-wrap policy
 # ---- Data ----
 DATA_VERSION = "128k"  # "32k" / "128k" / "1M"
 # Max tokens per sample. With liger fused CE (no full-logits allocation) +
-# flash-attn 2 + FSDP full-shard + activation checkpointing, full 131k
-# context fits in H100 96GB with headroom. 65k was a conservative fallback.
-MAX_SEQ_LEN = 131072
+# flash-attn 2 + FSDP full-shard + activation checkpointing, 131k fits on
+# H100 96GB but leaves little headroom. 98304 covers ~p95 of 128k samples'
+# natural length; only the longest 5% lose some prefix. Safer sweet spot.
+MAX_SEQ_LEN = 98304
 
 # ---- Optim (plan §3.4) ----
 LEARNING_RATE = 1e-5
@@ -46,7 +47,10 @@ DEFAULT_TRAIN_JSONL = ROOT / "dynamic_usersim" / "outputs" / f"teacher_sft_{DATA
 
 # ---- Logging / checkpoint ----
 LOGGING_STEPS = 5
-SAVE_STRATEGY = "epoch"   # save at end of each epoch
+# Save every N optimizer steps. 74 steps/epoch at 1172 samples / 16 effective
+# batch; save_steps=25 gives ~3 checkpoints per epoch for crash recovery.
+SAVE_STRATEGY = "steps"
+SAVE_STEPS = 25
 SAVE_TOTAL_LIMIT = 2
 DATALOADER_NUM_WORKERS = 2
 SEED = 42
