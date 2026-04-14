@@ -50,7 +50,7 @@ torchrun --standalone --nnodes=1 --nproc_per_node="$NUM_GPUS" \
     dynamic_usersim/teacher_sft/train.py \
     --train-jsonl "$TRAIN_JSONL" \
     --output-dir "$OUTPUT_DIR" \
-    --epochs 1 \
+    --epochs 2 \
     --lr 1e-5 \
     --per-device-batch 1 \
     --grad-accum 4

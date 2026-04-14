@@ -23,7 +23,7 @@ MAX_SEQ_LEN = 98304
 # ---- Optim (plan §3.4) ----
 LEARNING_RATE = 1e-5
 WARMUP_RATIO = 0.10
-NUM_EPOCHS = 1  # plan says 1-2; start with 1
+NUM_EPOCHS = 2  # plan §3.4 says 1-2; interactive run chose 2
 WEIGHT_DECAY = 0.0
 MAX_GRAD_NORM = 1.0
 OPTIMIZER = "adamw_torch"  # FSDP-friendly
