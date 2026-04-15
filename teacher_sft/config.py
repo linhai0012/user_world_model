@@ -9,8 +9,17 @@ from __future__ import annotations
 from pathlib import Path
 
 # ---- Model ----
-MODEL_NAME = "Qwen/Qwen3-4B"
-QWEN_LAYER_CLS = "Qwen3DecoderLayer"  # for FSDP transformer auto-wrap policy
+# Qwen3-4B-Instruct-2507 vs "Qwen/Qwen3-4B":
+#   - No thinking mode (hybrid model's thinking tendency not suited for
+#     spontaneous user simulation — plan §1 wants natural user reactions,
+#     not analytical ones).
+#   - Native 262k max_position_embeddings (vs 40960) -> no RoPE extrapolation
+#     for any K we might pick. Eval 2's tiny context_benefit may have been
+#     confounded by extrapolation on Qwen3-4B; this fixes that variable.
+#   - Chat template has no <think></think> wrapper around assistant history,
+#     matching our _encode_message format exactly (no workarounds needed).
+MODEL_NAME = "Qwen/Qwen3-4B-Instruct-2507"
+QWEN_LAYER_CLS = "Qwen3DecoderLayer"  # same architecture as Qwen3-4B
 
 # ---- Data ----
 DATA_VERSION = "128k"  # "32k" / "128k" / "1M"
