@@ -18,15 +18,18 @@ DATA_VERSION = "128k"  # "32k" / "128k" / "1M"
 # K=20 (~full 128k). Eval 2 on the K=20 run showed prior sessions only give
 # +0.02 nats benefit on top of current session — most of SFT's gain comes
 # from user-style learning and long-ctx robustness, not history-mining.
-# K=5 trades marginal recent-context for ~2x speedup and cleaner signal.
-CONTEXT_WINDOW_K = 5
+# K=3 keeps 99% of samples within Qwen3-4B's native max_position_embeddings
+# (40960), eliminating RoPE extrapolation entirely and matching the
+# model's trained distribution cleanly.
+CONTEXT_WINDOW_K = 3
 _K_TAG = f"k{CONTEXT_WINDOW_K}"
 
-# Max tokens per sample. With liger fused CE (no full-logits allocation) +
-# flash-attn 2 + FSDP full-shard + activation checkpointing, 131k fits on
-# H100 96GB but leaves little headroom. 98304 covers ~p95 of 128k samples'
-# natural length with K=20; with K=5 most samples fall well under this cap.
-MAX_SEQ_LEN = 98304
+# Max tokens per sample. Qwen3-4B has max_position_embeddings=40960 and
+# no default rope_scaling (confirmed from HF config). Beyond this, RoPE
+# extrapolates onto untrained frequencies. Cap at exactly 40960 so every
+# sample runs on in-distribution positions. K=3 data: 99% of samples fit;
+# the remaining ~1% get prefix-truncated (oldest prior sessions dropped).
+MAX_SEQ_LEN = 40960
 
 # ---- Optim (plan §3.4) ----
 LEARNING_RATE = 1e-5

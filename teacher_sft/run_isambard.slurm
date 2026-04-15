@@ -21,7 +21,7 @@ cd "$REPO_DIR"
 mkdir -p logs
 
 # Progressive-context window (prior sessions); must match config.CONTEXT_WINDOW_K
-K=5
+K=3
 
 # Data path: built by dynamic_usersim/data_prep/build_teacher_sft_data.py
 TRAIN_JSONL="$REPO_DIR/dynamic_usersim/outputs/teacher_sft_128k_k${K}.jsonl"
