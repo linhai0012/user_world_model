@@ -58,6 +58,8 @@ def parse_args() -> argparse.Namespace:
                     help="Build dataset + one batch, skip model load.")
     ap.add_argument("--no-fsdp", action="store_true",
                     help="Skip FSDP (for single-GPU debugging).")
+    ap.add_argument("--resume", action="store_true",
+                    help="Resume from latest checkpoint in output_dir.")
     return ap.parse_args()
 
 
@@ -204,7 +206,10 @@ def main() -> None:
         tokenizer=tok.tok,
     )
 
-    trainer.train()
+    # resume_from_checkpoint=True auto-finds the latest checkpoint-N dir in
+    # output_dir. Scheduler, optimizer state, RNG, and trainer_state resume;
+    # FSDP full_state_dict checkpoint is sharded back across ranks.
+    trainer.train(resume_from_checkpoint=True if args.resume else None)
     trainer.save_model(str(output_dir / "final"))
     tok.tok.save_pretrained(str(output_dir / "final"))
 

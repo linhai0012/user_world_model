@@ -53,6 +53,7 @@ torchrun --standalone --nnodes=1 --nproc_per_node="$NUM_GPUS" \
     --epochs 2 \
     --lr 1e-5 \
     --per-device-batch 1 \
-    --grad-accum 4
+    --grad-accum 4 \
+    --resume
 
 echo "=== done ==="
