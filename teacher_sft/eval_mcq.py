@@ -121,8 +121,19 @@ def call_agent(client, model: str, question: str,
 # MCQ data prep
 # ---------------------------------------------------------------------------
 def parse_choices(all_options: str) -> list[tuple[str, str]]:
-    """Return [(label, choice_text_without_prefix), ...] for 4 choices."""
-    arr = json.loads(all_options)
+    """Return [(label, choice_text_without_prefix), ...] for 4 choices.
+
+    The CSV's all_options field is inconsistent: some rows use JSON style
+    (double-quoted strings), others use Python repr (single-quoted with
+    escaped apostrophes). ast.literal_eval handles both — unlike json.loads
+    which rejects single-quoted sequences.
+    """
+    import ast
+    try:
+        arr = ast.literal_eval(all_options)
+    except (ValueError, SyntaxError):
+        # Last-ditch: try json.loads for anything literal_eval can't handle
+        arr = json.loads(all_options)
     out: list[tuple[str, str]] = []
     for s in arr:
         m = re.match(r"^\s*\(([a-dA-D])\)\s*(.*)", s, flags=re.DOTALL)
