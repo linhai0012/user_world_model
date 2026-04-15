@@ -106,11 +106,22 @@ def load_model(path: str | Path) -> torch.nn.Module:
 
 
 def kl_on_sample(model: torch.nn.Module, tok: SFTTokenizer, sample: dict,
-                 lm_head_chunk: int) -> tuple[float, int, int, int]:
-    """Return (sum_kl, n_positions, full_seq_len, target_seq_len).
+                 lm_head_chunk: int) -> dict:
+    """Return dict with KL and NLL metrics from two forward passes.
 
-    Runs TWO forward passes (with and without prefix), then compares
-    lm_head output distributions at each label != -100 target position.
+    Runs forwards on (full prefix + target) and (target-only), then at each
+    valid target user-token position computes:
+      - KL(P_with || P_without) between the two predicted distributions
+      - NLL_with, NLL_without on the actual ground-truth token
+
+    Keys: sum_kl, sum_nll_with, sum_nll_without, n_positions, full_seq_len,
+    target_seq_len.
+
+    Why both: pure KL (a) is inflated for base by long-context positional
+    noise in RoPE and (b) is reduced for SFT if SFT learns to ignore
+    irrelevant prefix — in both cases KL is ambiguous about "context use".
+    NLL-on-ground-truth directly measures predictive benefit from context:
+    delta = NLL_without - NLL_with is "nats saved by seeing prefix".
     """
     # Tokenize with full prefix
     full_ids, full_labels, _ = tok.tokenize_sample(sample)
@@ -140,35 +151,54 @@ def kl_on_sample(model: torch.nn.Module, tok: SFTTokenizer, sample: dict,
         h_with = model.model(input_ids=full_t, use_cache=False).last_hidden_state[0]
         h_without = model.model(input_ids=nc_t, use_cache=False).last_hidden_state[0]
 
-    # Collect valid shift positions (label at position p predicted by hidden at p-1)
+    # Collect valid shift positions + their target labels
     with_idx: list[int] = []
     without_idx: list[int] = []
+    tgt_tokens: list[int] = []
     for p in range(1, tgt_len):
         if nc_labels[p] != -100:
             with_idx.append(target_start + p - 1)
             without_idx.append(p - 1)
+            tgt_tokens.append(nc_labels[p])
     n = len(with_idx)
     if n == 0:
-        return 0.0, 0, full_len, tgt_len
+        return {"sum_kl": 0.0, "sum_nll_with": 0.0, "sum_nll_without": 0.0,
+                "n_positions": 0, "full_seq_len": full_len,
+                "target_seq_len": tgt_len}
 
     idx_with = torch.tensor(with_idx, device=device)
     idx_without = torch.tensor(without_idx, device=device)
+    tgt_t = torch.tensor(tgt_tokens, device=device)
     hv_with = h_with.index_select(0, idx_with)        # [n, H]
     hv_without = h_without.index_select(0, idx_without)  # [n, H]
 
-    # Chunked KL over valid positions
+    # Chunked lm_head + KL + NLL over valid positions
     total_kl = 0.0
+    total_nll_with = 0.0
+    total_nll_without = 0.0
     with torch.no_grad():
         for i in range(0, n, lm_head_chunk):
             a = hv_with[i:i + lm_head_chunk]
             b = hv_without[i:i + lm_head_chunk]
-            log_p = F.log_softmax(model.lm_head(a).float(), dim=-1)   # [c, V]
-            log_q = F.log_softmax(model.lm_head(b).float(), dim=-1)   # [c, V]
+            t = tgt_t[i:i + lm_head_chunk]
+            logits_w = model.lm_head(a).float()                # [c, V]
+            logits_nw = model.lm_head(b).float()               # [c, V]
+            log_p = F.log_softmax(logits_w, dim=-1)
+            log_q = F.log_softmax(logits_nw, dim=-1)
+            # KL(P_with || P_without)
             p = log_p.exp()
-            kl = (p * (log_p - log_q)).sum(dim=-1).sum().item()
-            total_kl += kl
-            del log_p, log_q, p
-    return total_kl, n, full_len, tgt_len
+            total_kl += (p * (log_p - log_q)).sum(dim=-1).sum().item()
+            # NLL on ground-truth tokens
+            total_nll_with += -log_p.gather(1, t.unsqueeze(1)).sum().item()
+            total_nll_without += -log_q.gather(1, t.unsqueeze(1)).sum().item()
+            del log_p, log_q, p, logits_w, logits_nw
+
+    return {"sum_kl": total_kl,
+            "sum_nll_with": total_nll_with,
+            "sum_nll_without": total_nll_without,
+            "n_positions": n,
+            "full_seq_len": full_len,
+            "target_seq_len": tgt_len}
 
 
 def evaluate(label: str, model: torch.nn.Module, tok: SFTTokenizer,
@@ -176,34 +206,52 @@ def evaluate(label: str, model: torch.nn.Module, tok: SFTTokenizer,
              lm_head_chunk: int) -> dict:
     my_samples = samples[rank::world_size]
     per_sample: list[dict] = []
-    local_kl, local_n = 0.0, 0
+    local_kl = 0.0
+    local_nll_with = 0.0
+    local_nll_without = 0.0
+    local_n = 0
     t0 = time.time()
     for i, s in enumerate(my_samples):
         ts = time.time()
-        kl, n, flen, tlen = kl_on_sample(model, tok, s, lm_head_chunk)
-        mean_kl = kl / max(n, 1)
+        r = kl_on_sample(model, tok, s, lm_head_chunk)
+        n = r["n_positions"]
+        mean_kl = r["sum_kl"] / max(n, 1)
+        mean_nll_w = r["sum_nll_with"] / max(n, 1)
+        mean_nll_nw = r["sum_nll_without"] / max(n, 1)
         per_sample.append({
             "global_idx": samples.index(s),
             "persona_id": s["persona_id"],
             "context_id": s["context_id"][:8],
             "session_idx": s["session_idx"],
-            "full_len": flen,
-            "target_len": tlen,
+            "full_len": r["full_seq_len"],
+            "target_len": r["target_seq_len"],
             "n_positions": n,
             "mean_kl": mean_kl,
+            "mean_nll_with": mean_nll_w,
+            "mean_nll_without": mean_nll_nw,
+            "context_benefit_nll": mean_nll_nw - mean_nll_w,
             "wall_s": time.time() - ts,
         })
-        local_kl += kl
+        local_kl += r["sum_kl"]
+        local_nll_with += r["sum_nll_with"]
+        local_nll_without += r["sum_nll_without"]
         local_n += n
         print(f"  [rank{rank} {label}] {i+1}/{len(my_samples)} "
-              f"full={flen} tgt={tlen} n={n} mean_kl={mean_kl:.4f} "
+              f"full={r['full_seq_len']} tgt={r['target_seq_len']} n={n} "
+              f"kl={mean_kl:.4f} nll_w={mean_nll_w:.3f} nll_nw={mean_nll_nw:.3f} "
+              f"benefit={mean_nll_nw-mean_nll_w:+.3f} "
               f"({time.time()-ts:.1f}s)", flush=True)
 
     if is_dist:
-        t = torch.tensor([local_kl, float(local_n)], dtype=torch.float64,
+        t = torch.tensor([local_kl, local_nll_with, local_nll_without,
+                          float(local_n)],
+                         dtype=torch.float64,
                          device=torch.cuda.current_device())
         dist.all_reduce(t, op=dist.ReduceOp.SUM)
-        total_kl, total_n = t[0].item(), int(t[1].item())
+        total_kl = t[0].item()
+        total_nll_with = t[1].item()
+        total_nll_without = t[2].item()
+        total_n = int(t[3].item())
         gathered = [None] * world_size if rank == 0 else None
         dist.gather_object(per_sample, gathered, dst=0)
         if rank == 0:
@@ -212,16 +260,29 @@ def evaluate(label: str, model: torch.nn.Module, tok: SFTTokenizer,
         else:
             all_per = per_sample
     else:
-        total_kl, total_n = local_kl, local_n
+        total_kl = local_kl
+        total_nll_with = local_nll_with
+        total_nll_without = local_nll_without
+        total_n = local_n
         all_per = per_sample
 
     mean_kl = total_kl / max(total_n, 1)
+    mean_nll_w = total_nll_with / max(total_n, 1)
+    mean_nll_nw = total_nll_without / max(total_n, 1)
     wall = time.time() - t0
     if rank == 0:
-        print(f"[{label}] aggregate  total_positions={total_n}  "
-              f"mean_kl={mean_kl:.4f}  (wall {wall:.1f}s)")
+        print(f"[{label}] aggregate  n={total_n}  "
+              f"kl={mean_kl:.4f}  nll_with={mean_nll_w:.4f}  "
+              f"nll_without={mean_nll_nw:.4f}  "
+              f"benefit={mean_nll_nw-mean_nll_w:+.4f}  "
+              f"(wall {wall:.1f}s)")
     return {"label": label, "per_sample": all_per,
-            "total_positions": total_n, "mean_kl": mean_kl, "wall_s": wall}
+            "total_positions": total_n,
+            "mean_kl": mean_kl,
+            "mean_nll_with": mean_nll_w,
+            "mean_nll_without": mean_nll_nw,
+            "context_benefit_nll": mean_nll_nw - mean_nll_w,
+            "wall_s": wall}
 
 
 def main() -> None:
@@ -266,28 +327,43 @@ def main() -> None:
     print("\n" + "=" * 60)
     print("SUMMARY")
     print("=" * 60)
-    print(f"base  mean_kl = {base_res['mean_kl']:.4f}  "
-          f"(plan ref ~0.13)")
-    print(f"sft   mean_kl = {sft_res['mean_kl']:.4f}")
-    ratio = sft_res["mean_kl"] / max(base_res["mean_kl"], 1e-9)
-    print(f"sft/base ratio = {ratio:.2f}x  "
-          f"({'SFT uses context more' if ratio > 1 else 'NO context use'})")
 
-    print("\n--- per-sample mean_kl ---")
-    print(f"{'persona':>7}  {'ctx':>8}  {'ses':>3}  {'n':>5}  "
-          f"{'base_kl':>9}  {'sft_kl':>9}  {'ratio':>6}")
+    print("\n[primary] context benefit = NLL_without - NLL_with  "
+          "(larger = model uses context more)")
+    b_ben = base_res["context_benefit_nll"]
+    s_ben = sft_res["context_benefit_nll"]
+    print(f"  base  nll_with={base_res['mean_nll_with']:.4f}  "
+          f"nll_without={base_res['mean_nll_without']:.4f}  "
+          f"benefit={b_ben:+.4f}")
+    print(f"  sft   nll_with={sft_res['mean_nll_with']:.4f}  "
+          f"nll_without={sft_res['mean_nll_without']:.4f}  "
+          f"benefit={s_ben:+.4f}")
+    if b_ben > 0 and s_ben > 0:
+        print(f"  sft benefit / base benefit = {s_ben/b_ben:.2f}x")
+    print(f"  (SFT {'actually uses context' if s_ben > b_ben else 'DOES NOT use context more than base'})")
+
+    print("\n[secondary] KL(P_with || P_without) — distributional shift "
+          "(noisy; interpret with care)")
+    print(f"  base  mean_kl = {base_res['mean_kl']:.4f}")
+    print(f"  sft   mean_kl = {sft_res['mean_kl']:.4f}")
+
+    print("\n--- per-sample ---")
+    print(f"{'pid':>3} {'ctx':>8} {'ses':>3} {'n':>5}  "
+          f"{'base_w':>7} {'base_nw':>7} {'b_ben':>7}  "
+          f"{'sft_w':>7} {'sft_nw':>7} {'s_ben':>7}")
     for a, b in zip(base_res["per_sample"], sft_res["per_sample"]):
-        r = b["mean_kl"] / max(a["mean_kl"], 1e-9)
-        print(f"{a['persona_id']:>7}  {a['context_id']:>8}  "
-              f"{a['session_idx']:>3}  {a['n_positions']:>5}  "
-              f"{a['mean_kl']:>9.4f}  {b['mean_kl']:>9.4f}  {r:>6.2f}")
+        print(f"{a['persona_id']:>3} {a['context_id']:>8} "
+              f"{a['session_idx']:>3} {a['n_positions']:>5}  "
+              f"{a['mean_nll_with']:>7.3f} {a['mean_nll_without']:>7.3f} "
+              f"{a['context_benefit_nll']:>+7.3f}  "
+              f"{b['mean_nll_with']:>7.3f} {b['mean_nll_without']:>7.3f} "
+              f"{b['context_benefit_nll']:>+7.3f}")
 
     if args.out_json:
         args.out_json.parent.mkdir(parents=True, exist_ok=True)
         args.out_json.write_text(json.dumps({
             "args": {k: str(v) for k, v in vars(args).items()},
             "base": base_res, "sft": sft_res,
-            "sft_over_base_ratio": ratio,
         }, indent=2))
         print(f"\nwrote {args.out_json}")
 
