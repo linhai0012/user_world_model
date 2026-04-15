@@ -208,10 +208,20 @@ def main() -> None:
         tokenizer=tok.tok,
     )
 
-    # resume_from_checkpoint=True auto-finds the latest checkpoint-N dir in
-    # output_dir. Scheduler, optimizer state, RNG, and trainer_state resume;
-    # FSDP full_state_dict checkpoint is sharded back across ranks.
-    trainer.train(resume_from_checkpoint=True if args.resume else None)
+    # Auto-detect whether to resume: --resume means "continue if a checkpoint
+    # already exists, else start fresh". Safer than hard resume_from_checkpoint=True
+    # which errors on empty output dirs (fails first launch of a new run).
+    resume_arg = None
+    if args.resume:
+        has_ckpt = any(p.is_dir() and p.name.startswith("checkpoint-")
+                       for p in output_dir.iterdir()) if output_dir.exists() else False
+        if has_ckpt:
+            resume_arg = True
+            print(f"[train] resuming from latest checkpoint in {output_dir}")
+        else:
+            print(f"[train] --resume passed but no checkpoint-* in {output_dir}; "
+                  f"starting fresh")
+    trainer.train(resume_from_checkpoint=resume_arg)
     trainer.save_model(str(output_dir / "final"))
     tok.tok.save_pretrained(str(output_dir / "final"))
 
