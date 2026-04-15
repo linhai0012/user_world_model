@@ -35,6 +35,7 @@ from pathlib import Path
 
 import torch
 import torch.distributed as dist
+import torch.nn.functional as F
 from transformers import AutoModelForCausalLM
 
 _HERE = Path(__file__).resolve().parent
@@ -109,25 +110,50 @@ def load_model(path: str | Path) -> torch.nn.Module:
 
 
 def nll_on_sample(model: torch.nn.Module, tok: SFTTokenizer,
-                  sample: dict) -> tuple[float, int, int]:
+                  sample: dict, lm_head_chunk: int = 4096
+                  ) -> tuple[float, int, int]:
     """Return (total_nll, n_loss_tokens, total_seq_len) for one sample.
 
-    model.forward(input_ids, labels) returns mean NLL over non-(-100) positions.
-    We multiply back by token count to accumulate correctly across samples.
+    Why manual CE instead of model.forward(labels=...):
+      Standard HF forward materializes logits [1, seq, vocab] for CE, which
+      at 65k+ seq and 152k vocab is 20-40 GB bf16 plus CE intermediates —
+      OOMs on H100 96GB. Liger's FusedLinearCrossEntropy only activates on
+      the training path, not eval. We bypass by running the transformer to
+      get hidden states, then projecting only the label != -100 positions
+      through lm_head (a few thousand rows, not tens of thousands).
     """
     input_ids, labels, _ = tok.tokenize_sample(sample)
     device = torch.cuda.current_device()
     ids_t = torch.tensor([input_ids], dtype=torch.long, device=device)
     lab_t = torch.tensor([labels], dtype=torch.long, device=device)
 
-    # Use no_grad instead of inference_mode: liger's FusedLinearCrossEntropy
-    # registers an autograd.Function and inference_mode disables that machinery,
-    # causing fallback to full [1, seq, vocab] logits materialization (OOM).
     with torch.no_grad():
-        out = model(input_ids=ids_t, labels=lab_t)
-    loss_mean = out.loss.item()
-    n_loss = (lab_t != -100).sum().item()
-    return loss_mean * n_loss, n_loss, ids_t.size(1)
+        # Call the underlying transformer, skipping lm_head + CE.
+        outputs = model.model(input_ids=ids_t, use_cache=False)
+        hidden = outputs.last_hidden_state  # [1, seq, hidden]
+
+        # Causal shift: hidden at position i predicts token at position i+1
+        shift_hidden = hidden[0, :-1, :]    # [seq-1, hidden]
+        shift_labels = lab_t[0, 1:]          # [seq-1]
+        valid = shift_labels != -100
+        n_loss = int(valid.sum().item())
+        if n_loss == 0:
+            return 0.0, 0, ids_t.size(1)
+
+        hidden_valid = shift_hidden[valid]   # [n_loss, hidden]
+        labels_valid = shift_labels[valid]   # [n_loss]
+
+        # Chunked lm_head + CE on valid positions only.
+        total_nll = 0.0
+        for i in range(0, n_loss, lm_head_chunk):
+            h = hidden_valid[i:i + lm_head_chunk]      # [c, hidden]
+            t = labels_valid[i:i + lm_head_chunk]       # [c]
+            logits = model.lm_head(h)                   # [c, vocab]
+            # fp32 for CE numerical stability (matches training default)
+            loss = F.cross_entropy(logits.float(), t, reduction="sum")
+            total_nll += loss.item()
+
+    return total_nll, n_loss, ids_t.size(1)
 
 
 def evaluate_model(label: str, model: torch.nn.Module, tok: SFTTokenizer,
