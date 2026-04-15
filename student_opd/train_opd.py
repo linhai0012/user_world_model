@@ -158,7 +158,13 @@ def main() -> None:
                     help="truncate teacher prefix from the left if longer")
     ap.add_argument("--grad-clip", type=float, default=1.0)
     ap.add_argument("--seed", type=int, default=42)
-    ap.add_argument("--log-every", type=int, default=10)
+    ap.add_argument("--log-every", type=int, default=1,
+                    help="Print a per-step line every N steps (default 1).")
+    ap.add_argument("--smooth-window", type=int, default=10,
+                    help="Rolling window (steps) for avg loss in log line.")
+    ap.add_argument("--progress-every", type=int, default=50,
+                    help="Every N steps, print a banner + rollout snippet "
+                         "for eyeballing quality.")
     ap.add_argument("--max-samples", type=int, default=-1,
                     help="cap for quick sanity runs; -1 = all")
     ap.add_argument("--gpu", type=int, default=0)
@@ -267,6 +273,7 @@ def main() -> None:
         epoch_kl = 0.0
         epoch_tokens = 0
         t_epoch = time.time()
+        t_step_last = time.time()
 
         for step, i in enumerate(idx):
             sample = samples[i]
@@ -338,11 +345,39 @@ def main() -> None:
                 "min_len": min_len, "sample_idx": i,
             })
 
+            # Per-step line (default every step)
             if (step + 1) % args.log_every == 0:
-                recent = [x["loss"] for x in step_losses[-args.log_every:]]
+                window = step_losses[-args.smooth_window:]
+                losses_w = [x["loss"] for x in window]
+                lens_w = [x["min_len"] for x in window]
+                step_dt = time.time() - t_step_last
+                t_step_last = time.time()
                 print(f"  e{epoch} step {step+1}/{len(idx)}: "
-                      f"loss(recent)={sum(recent)/len(recent):.4f} "
-                      f"min_len={min_len}")
+                      f"loss={loss.item():.4f} "
+                      f"avg{len(window)}={sum(losses_w)/len(losses_w):.4f} "
+                      f"resp_len={min_len}(avg{len(window)}={sum(lens_w)//len(lens_w)}) "
+                      f"dt={step_dt:.1f}s",
+                      flush=True)
+
+            # Periodic progress banner with rollout snippet
+            if args.progress_every > 0 and (step + 1) % args.progress_every == 0:
+                snippet = tokenizer.decode(
+                    response_ids, skip_special_tokens=False
+                )[:160].replace("\n", " ")
+                window = step_losses[-args.progress_every:]
+                losses_w = [x["loss"] for x in window]
+                lens_w = [x["min_len"] for x in window]
+                elapsed = time.time() - t_epoch
+                eta = elapsed / (step + 1) * (len(idx) - step - 1)
+                print(f"  --- [progress pid={args.persona_id} "
+                      f"e{epoch} step {step+1}/{len(idx)}] "
+                      f"loss window min/mean/max = "
+                      f"{min(losses_w):.3f}/{sum(losses_w)/len(losses_w):.3f}/"
+                      f"{max(losses_w):.3f}  "
+                      f"resp_len mean={sum(lens_w)//len(lens_w)}  "
+                      f"elapsed={elapsed:.0f}s  eta={eta:.0f}s ---",
+                      flush=True)
+                print(f"      rollout: {snippet!r}", flush=True)
 
         if args.dry_run:
             break
