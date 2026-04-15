@@ -20,15 +20,18 @@ REPO_DIR="/home/u6aa/linhai.u6aa/P-OPSD"
 cd "$REPO_DIR"
 mkdir -p logs
 
+# Progressive-context window (prior sessions); must match config.CONTEXT_WINDOW_K
+K=5
+
 # Data path: built by dynamic_usersim/data_prep/build_teacher_sft_data.py
-TRAIN_JSONL="$REPO_DIR/dynamic_usersim/outputs/teacher_sft_128k.jsonl"
+TRAIN_JSONL="$REPO_DIR/dynamic_usersim/outputs/teacher_sft_128k_k${K}.jsonl"
 if [ ! -f "$TRAIN_JSONL" ]; then
     echo "train jsonl missing at $TRAIN_JSONL — run build_teacher_sft_data.py first"
     exit 1
 fi
 
 # Checkpoint / output to SCRATCHDIR (HOME is only 100GB)
-OUTPUT_DIR="$SCRATCHDIR/P-OPSD/teacher_sft_128k"
+OUTPUT_DIR="$SCRATCHDIR/P-OPSD/teacher_sft_128k_k${K}"
 mkdir -p "$OUTPUT_DIR"
 
 NUM_GPUS=$(python -c "import torch; print(torch.cuda.device_count())")

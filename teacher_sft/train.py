@@ -28,11 +28,12 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 from config import (
-    ATTN_IMPL, BF16, DATA_VERSION, DEFAULT_TRAIN_JSONL, GRAD_ACCUM_STEPS,
-    GRADIENT_CHECKPOINTING, LEARNING_RATE, LOGGING_STEPS, LR_SCHEDULER,
-    MAX_GRAD_NORM, MAX_SEQ_LEN, MODEL_NAME, NUM_EPOCHS, OPTIMIZER,
-    PER_DEVICE_BATCH_SIZE, QWEN_LAYER_CLS, SAVE_STEPS, SAVE_STRATEGY,
-    SAVE_TOTAL_LIMIT, SEED, WARMUP_RATIO, WEIGHT_DECAY, DATALOADER_NUM_WORKERS,
+    ATTN_IMPL, BF16, CONTEXT_WINDOW_K, DATA_VERSION, DEFAULT_TRAIN_JSONL,
+    GRAD_ACCUM_STEPS, GRADIENT_CHECKPOINTING, LEARNING_RATE, LOGGING_STEPS,
+    LR_SCHEDULER, MAX_GRAD_NORM, MAX_SEQ_LEN, MODEL_NAME, NUM_EPOCHS,
+    OPTIMIZER, PER_DEVICE_BATCH_SIZE, QWEN_LAYER_CLS, SAVE_STEPS,
+    SAVE_STRATEGY, SAVE_TOTAL_LIMIT, SEED, WARMUP_RATIO, WEIGHT_DECAY,
+    DATALOADER_NUM_WORKERS,
 )
 from dataset import PadToBatchMaxCollator, TeacherSFTDataset
 
@@ -66,10 +67,11 @@ def parse_args() -> argparse.Namespace:
 def resolve_output_dir(cli_dir: Path | None) -> Path:
     if cli_dir is not None:
         return cli_dir
+    name = f"teacher_sft_{DATA_VERSION}_k{CONTEXT_WINDOW_K}"
     scratch = os.environ.get("SCRATCHDIR")
     if scratch:
-        return Path(scratch) / "P-OPSD" / f"teacher_sft_{DATA_VERSION}"
-    return _HERE.parent / "outputs" / f"teacher_sft_{DATA_VERSION}"
+        return Path(scratch) / "P-OPSD" / name
+    return _HERE.parent / "outputs" / name
 
 
 def build_training_args(args: argparse.Namespace, output_dir: Path) -> TrainingArguments:

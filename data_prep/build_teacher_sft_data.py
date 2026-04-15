@@ -20,8 +20,10 @@ Tokenization and label masking happen at train time (see tokenize_teacher_sft.py
 Usage:
     python dynamic_usersim/data_prep/build_teacher_sft_data.py \
         --version 128k \
-        --out dynamic_usersim/outputs/teacher_sft_128k.jsonl \
-        --context-window 20
+        --context-window 5
+    # -> auto-names output dynamic_usersim/outputs/teacher_sft_128k_k5.jsonl
+
+Pass --out to override the auto-named path.
 """
 
 from __future__ import annotations
@@ -72,12 +74,18 @@ def build_samples(version: str, context_window: int) -> list[dict]:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--version", choices=["32k", "128k", "1M"], default="128k")
-    ap.add_argument("--out", type=Path, required=True,
-                    help="output JSONL path")
-    ap.add_argument("--context-window", type=int, default=20,
+    ap.add_argument("--out", type=Path, default=None,
+                    help="output JSONL path; auto-named teacher_sft_<ver>_k<K>.jsonl "
+                         "under dynamic_usersim/outputs/ if omitted")
+    ap.add_argument("--context-window", type=int, default=5,
                     help="max prefix sessions (session-level cap; token-level "
                          "truncation applied later at tokenize time)")
     args = ap.parse_args()
+
+    if args.out is None:
+        repo_root = Path(__file__).resolve().parents[2]
+        args.out = (repo_root / "dynamic_usersim" / "outputs"
+                    / f"teacher_sft_{args.version}_k{args.context_window}.jsonl")
 
     samples = build_samples(args.version, args.context_window)
 

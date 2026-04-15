@@ -14,10 +14,18 @@ QWEN_LAYER_CLS = "Qwen3DecoderLayer"  # for FSDP transformer auto-wrap policy
 
 # ---- Data ----
 DATA_VERSION = "128k"  # "32k" / "128k" / "1M"
+# Progressive-context window cap (session level). Plan §3.3 originally had
+# K=20 (~full 128k). Eval 2 on the K=20 run showed prior sessions only give
+# +0.02 nats benefit on top of current session — most of SFT's gain comes
+# from user-style learning and long-ctx robustness, not history-mining.
+# K=5 trades marginal recent-context for ~2x speedup and cleaner signal.
+CONTEXT_WINDOW_K = 5
+_K_TAG = f"k{CONTEXT_WINDOW_K}"
+
 # Max tokens per sample. With liger fused CE (no full-logits allocation) +
 # flash-attn 2 + FSDP full-shard + activation checkpointing, 131k fits on
 # H100 96GB but leaves little headroom. 98304 covers ~p95 of 128k samples'
-# natural length; only the longest 5% lose some prefix. Safer sweet spot.
+# natural length with K=20; with K=5 most samples fall well under this cap.
 MAX_SEQ_LEN = 98304
 
 # ---- Optim (plan §3.4) ----
@@ -43,7 +51,8 @@ GRADIENT_CHECKPOINTING = True
 # ---- Paths ----
 # Repo-relative paths; runtime will resolve from env / CLI
 ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_TRAIN_JSONL = ROOT / "dynamic_usersim" / "outputs" / f"teacher_sft_{DATA_VERSION}.jsonl"
+DEFAULT_TRAIN_JSONL = (ROOT / "dynamic_usersim" / "outputs"
+                       / f"teacher_sft_{DATA_VERSION}_{_K_TAG}.jsonl")
 
 # ---- Logging / checkpoint ----
 LOGGING_STEPS = 5
