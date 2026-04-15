@@ -120,7 +120,10 @@ def nll_on_sample(model: torch.nn.Module, tok: SFTTokenizer,
     ids_t = torch.tensor([input_ids], dtype=torch.long, device=device)
     lab_t = torch.tensor([labels], dtype=torch.long, device=device)
 
-    with torch.inference_mode():
+    # Use no_grad instead of inference_mode: liger's FusedLinearCrossEntropy
+    # registers an autograd.Function and inference_mode disables that machinery,
+    # causing fallback to full [1, seq, vocab] logits materialization (OOM).
+    with torch.no_grad():
         out = model(input_ids=ids_t, labels=lab_t)
     loss_mean = out.loss.item()
     n_loss = (lab_t != -100).sum().item()
