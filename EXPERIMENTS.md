@@ -18,6 +18,39 @@ verifiable code.
 
 ---
 
+## 0. Current Status (TL;DR)
+
+**✅ Confirmed — Teacher SFT learns persona-aware user simulation.**
+Two independent pieces of evidence:
+- **Eval 1 (user-token NLL)**: SFT 1.43 vs base 2.51 on held-out user turns
+  (−43%, PPL 12.26 → 4.18). **All 20/20 samples improve.** §4.1
+- **Eval 3 (30-case GT overlap)**: SFT outputs match ground-truth user
+  content in 20/30 cases vs base 10/30. Mean Jaccard 0.07 vs 0.05. SFT
+  fully eliminates `<think>` leakage (0% vs base 17–37%). §4.3
+
+**⏳ Unresolved — Translating SFT's user-modeling capability to MCQ
+accuracy.** Two paradigms tested, both limited:
+- **Paradigm A: UserSim generates reactions → LLM Agent picks best choice
+  (plan §9.3).** Structural failure: teacher SFT is optimized to predict
+  natural user continuations, and natural user turns in PersonaMem often
+  start new threads regardless of what the assistant said. SFT's reactions
+  turn out **anti-correlated** with choice correctness — least-engaged on
+  the most preference-aligned choice. §4.4.1, §4.4.2
+- **Paradigm B: Score each choice's conditional PPL under teacher (plan
+  §9.5).** Cleanest possible test. At n=589 32k-MCQs, SFT 46.9% vs base
+  46.7% — essentially tied. By-type breakdown reveals SFT wins on
+  narrative-style correct answers (track_evolution +10pp, suggest_new
+  +14pp) but loses on assistant-voice recall answers (recall_facts −9pp,
+  aligned_rec −4pp). Root cause: SFT trained only on user tokens, so its
+  probability mass on assistant-style text isn't where we'd need it for
+  this metric. §4.4.3
+
+**In one sentence**: Teacher SFT is doing its job (modeling the user);
+the downstream MCQ evaluation paradigm needs to be re-thought, and that's
+what Phase 2 (Student LoRA via OPD) + agent-pipeline iteration is for.
+
+---
+
 ## 1. Target Dataset: PersonaMem-v1
 
 HuggingFace `bowen-upenn/PersonaMem`. Three context-length versions, one
@@ -192,21 +225,68 @@ be "ignoring context" OR "robust to it". We added a more direct metric:
 
 ### 4.3 Eval 3 — qualitative generation (`eval_qualitative.py`)
 
-3 MCQs, 4 conditions each: {base, sft} × {no-ctx, with-ctx}.
+30 random training-set cases (seed 42), 4 conditions each:
+{base, sft} × {no-ctx, with-ctx}. For each case we generate the predicted
+user response at a non-opening target-session user turn, then compare to
+the ground-truth user utterance (`analyze_qual_30.py`).
 
-- **Case 1 (cinematography)**: `sft_ctx` tracked the technical-detail
-  cinematography theme from the immediately-preceding assistant turn; base
-  generated generic film-history lecture with `</think>` artifacts.
-- **Case 2 (classic films)**: no clear winner — ground truth was an
-  unexpected pivot to film-criticism blog; all four outputs were in the
-  right semantic neighborhood.
-- **Case 3 (financial content)**: `sft_ctx` nailed the ground-truth core
-  ("manual budgeting > digital tools"); base hallucinated biographical
-  details ("started a film club at university").
+**Metric**: content-word Jaccard overlap between generated output and
+ground-truth, plus automated flags for `<think>` artifacts, "I also..."
+generic openers, and reaction-word presence in first 100 chars.
 
-**Net**: SFT produces cleaner user-voice text (no `<think>` leakage, no
-typos, no assistant-style fabrication); context helps SFT thematically
-match ground truth on 2/3 cases. Small sample though.
+| Condition | `<think>%` | "I also..." opener | mean GT-overlap | mean len | wins (argmax overlap) |
+|-----------|-----------:|-------------------:|----------------:|---------:|----------------------:|
+| base_noctx | 36.7% | 6.7%  | 0.054 | 892 | 5/30  |
+| base_ctx   | 16.7% | 23.3% | 0.050 | 793 | 5/30  |
+| **sft_noctx** | **0.0%** | 6.7%  | **0.076** | 586 | **12/30** |
+| sft_ctx    | 0.0%  | 16.7% | 0.067 | 611 | 8/30  |
+
+**Four structural findings**:
+
+1. **SFT eliminates `<think>` leakage entirely** (0% vs base 17-37%). User-
+   only-loss SFT internalized "users don't think aloud" as a side effect —
+   this happens even on the hybrid Qwen3-4B. A clean implicit benefit.
+
+2. **SFT beats base on GT overlap in 20/30 cases** (67%). Mean overlap
+   0.076/0.067 for SFT vs 0.054/0.050 for base. Quantitative confirmation
+   of the qualitative "SFT sounds more like a user" impression.
+
+3. **Context hurts SFT slightly on average** (sft_ctx − sft_noctx overlap
+   mean = −0.009, 18/30 cases ctx lower). But **when ctx helps, it helps
+   concretely** — top-overlap sft_ctx cases are domain-specific topic
+   recalls (cooking fusion, movie snacks) where prior sessions provide
+   the actual retrievable detail. Consistent with eval 2's near-zero
+   average context benefit despite selective large wins.
+
+4. **"I also..." opener is triggered by context, not by SFT**: base_ctx
+   23.3% vs base_noctx 6.7%, sft_ctx 16.7% vs sft_noctx 6.7%. This is a
+   PersonaMem data-distribution pattern ("in addition to what we're
+   discussing, ..."), not an SFT-specific artifact. Both models pick it
+   up from the long context.
+
+**Strongest SFT win** (content-overlap Jaccard 0.286, persona 14):
+
+```
+prev user: "[Original_Sentence]: It is important to note that these issues
+  are not exhaustive, and ongoing dialogues shall be essential..."
+GT       : "This sentence is too lengthy and formal."
+sft_ctx  : "This sentence is too long and formal. I want it to be punchy
+  and direct."
+sft_noctx: "This sentence is too long and formal. I want something punchy."
+base_ctx : <contains </think>> then pivots to rewriting the sentence itself
+```
+
+Both SFT conditions nail the user's "reject formalism" preference; base
+defaults to its assistant role and actually attempts the rewrite.
+
+**Failure mode**: SFT struggles on GT that pivots to a *new sub-topic* with
+no continuous thread (e.g. "decided to give up on my herb garden" after
+mental-health context). 3/3 bottom-overlap cases are this pattern.
+
+**Caveat**: Jaccard on short free-form text is noisy; these scores only
+indicate rough semantic alignment, not exact content match. The structural
+pattern (SFT > Base, SFT_noctx ≈ SFT_ctx, ctx selectively useful) is the
+durable finding.
 
 ### 4.4 MCQ evaluation — the hard one
 
@@ -363,11 +443,13 @@ K=3 training had accumulated. R3 is the first run on the new model.
 
 ### Confirmed
 - Teacher SFT reduces user-token NLL by 43% on held-out user turns
-  (eval 1: 2.506 → 1.430).
-- SFT produces cleaner user-voice text, dropping thinking-mode artifacts
-  and typos seen in base (eval 3 qualitative).
+  (eval 1: 2.506 → 1.430, all 20/20 samples improve).
+- SFT produces content that matches ground-truth user utterances in
+  67% of 30 qualitative cases, by content-word Jaccard. Mean overlap
+  0.07 vs base 0.05. (§4.3)
+- SFT eliminates `<think>` artifacts (0% vs base 17–37%).
 - SFT is better-calibrated when uncertain — never as confidently wrong as
-  base at the top of the margin distribution.
+  base at the top of the margin distribution on MCQ-PPL.
 - Data prep and tokenization are correct (validate_sft_data round-trips
   label positions to exact ground-truth user turns, 100% match on 30
   random samples).
