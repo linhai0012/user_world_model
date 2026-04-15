@@ -208,7 +208,8 @@ def main() -> None:
     ctxs = load_contexts(args.mcq_version)
     rng = random.Random(args.seed)
     mcqs = [q for q in mcqs if q["shared_context_id"] in ctxs]
-    sample = rng.sample(mcqs, min(args.num_mcqs, len(mcqs)))
+    n_take = len(mcqs) if args.num_mcqs <= 0 else min(args.num_mcqs, len(mcqs))
+    sample = rng.sample(mcqs, n_take)
     if rank == 0:
         print(f"[eval] sampled {len(sample)} of {len(mcqs)} eligible MCQs "
               f"(seed={args.seed}, world_size={world_size})")
