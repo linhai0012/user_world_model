@@ -52,6 +52,7 @@ for p in (_HERE, _DP):
 
 from config import MAX_SEQ_LEN, MODEL_NAME  # noqa: E402
 from load_personamem import load_contexts, load_questions, strip_role_prefix  # noqa: E402
+from tokenize_teacher_sft import SFTTokenizer  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -168,7 +169,27 @@ def build_context_messages(raw_ctx: list[dict], end_index: int,
     return cleaned[cut:]
 
 
-def build_usersim_input_ids(tok, context_msgs: list[dict],
+def _encode_msgs_plain(sft_tok: SFTTokenizer, msgs: list[dict]) -> list[int]:
+    """Encode a message list using the SAME format as training.
+
+    Avoids tok.apply_chat_template because Qwen3's default chat template
+    hard-codes `<think>\\n\\n</think>\\n\\n` before every assistant
+    message's content — this contaminates the prompt with thinking-mode
+    cues that then leak into generated user turns (observed in v1 run:
+    26% of base reactions contained stray <think> tags).
+
+    Our training format (from SFTTokenizer._encode_message):
+        <|im_start|>{role}\\n{content}<|im_end|>\\n
+    No thinking markers anywhere.
+    """
+    ids: list[int] = []
+    for m in msgs:
+        chunk = sft_tok._encode_message(m["role"], m["content"], False)
+        ids.extend(chunk.input_ids)
+    return ids
+
+
+def build_usersim_input_ids(sft_tok: SFTTokenizer, context_msgs: list[dict],
                             question: str, choice_text: str,
                             max_len: int, reserve: int = 300) -> list[int]:
     """Build prompt ending in '<|im_start|>user\\n' ready for generation.
@@ -189,11 +210,10 @@ def build_usersim_input_ids(tok, context_msgs: list[dict],
     else:
         msgs.append({"role": "user", "content": question})
     msgs.append({"role": "assistant", "content": choice_text})
+
+    user_prime = sft_tok.tok.encode("<|im_start|>user\n", add_special_tokens=False)
     while True:
-        text = tok.apply_chat_template(
-            msgs, tokenize=False, add_generation_prompt=False
-        ) + "<|im_start|>user\n"
-        ids = tok.encode(text, add_special_tokens=False)
+        ids = _encode_msgs_plain(sft_tok, msgs) + user_prime
         if len(ids) + reserve <= max_len:
             return ids
         if len(msgs) <= 2:
@@ -309,7 +329,10 @@ def main() -> None:
               f"(seed={args.seed}, world_size={world_size})")
 
     # ---- Tokenizer + liger + model ----
-    tok = AutoTokenizer.from_pretrained(MODEL_NAME, trust_remote_code=True)
+    # Use our SFTTokenizer — it owns the _encode_message format that matches
+    # training exactly. tok is the underlying HF tokenizer for decode/pad id.
+    sft_tok = SFTTokenizer(model_name=MODEL_NAME, max_len=args.max_seq_len)
+    tok = sft_tok.tok
     if tok.pad_token_id is None:
         tok.pad_token = tok.eos_token
     apply_liger()
@@ -339,7 +362,7 @@ def main() -> None:
         reactions: list[tuple[str, str, str]] = []
         for label, choice_text in choices:
             ids = build_usersim_input_ids(
-                tok, ctx_msgs, question, choice_text,
+                sft_tok, ctx_msgs, question, choice_text,
                 max_len=args.max_seq_len,
                 reserve=args.max_new_tokens + 50,
             )
