@@ -162,12 +162,22 @@ def build_usersim_input_ids(tok, context_msgs: list[dict],
                             max_len: int, reserve: int = 300) -> list[int]:
     """Build prompt ending in '<|im_start|>user\\n' ready for generation.
 
+    Conversation structure, preserving flow coherence:
+      ... assistant -> user(question) -> assistant(choice) -> user(react)
+    If the last context message is ALREADY user (true for ~68% of MCQs in
+    128k, where PersonaMem's end_index sits inside a user monologue), we
+    merge the MCQ question into that existing user turn instead of adding
+    a separate one — avoids the awkward user->user->assistant flow while
+    preserving all prior content.
+
     Trims oldest context messages greedily until total + reserve fits max_len.
     """
-    msgs = list(context_msgs) + [
-        {"role": "user", "content": question},
-        {"role": "assistant", "content": choice_text},
-    ]
+    msgs = [dict(m) for m in context_msgs]   # shallow copy
+    if msgs and msgs[-1]["role"] == "user":
+        msgs[-1]["content"] = msgs[-1]["content"].rstrip() + "\n\n" + question
+    else:
+        msgs.append({"role": "user", "content": question})
+    msgs.append({"role": "assistant", "content": choice_text})
     while True:
         text = tok.apply_chat_template(
             msgs, tokenize=False, add_generation_prompt=False
@@ -252,7 +262,9 @@ def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser()
     ap.add_argument("--usersim-model", type=str, required=True,
                     help="HF name (e.g. Qwen/Qwen3-4B) or local checkpoint dir")
-    ap.add_argument("--mcq-version", choices=["32k", "128k", "1M"], default="128k")
+    ap.add_argument("--mcq-version", choices=["32k", "128k", "1M"], default="32k",
+                    help="32k fits in Qwen3-4B's native RoPE range (fastest, "
+                         "cleanest signal). 128k requires RoPE extrapolation.")
     ap.add_argument("--num-mcqs", type=int, default=20)
     ap.add_argument("--agent-model", default=DEFAULT_AGENT_MODEL,
                     help="OpenAI model id for the agent")
