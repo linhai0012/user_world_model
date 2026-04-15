@@ -189,18 +189,30 @@ def _encode_msgs_plain(sft_tok: SFTTokenizer, msgs: list[dict]) -> list[int]:
     return ids
 
 
+DEFAULT_REACT_SUFFIX = "\n\nWhat do you think — does that match what you're looking for?"
+
+
 def build_usersim_input_ids(sft_tok: SFTTokenizer, context_msgs: list[dict],
                             question: str, choice_text: str,
-                            max_len: int, reserve: int = 300) -> list[int]:
+                            max_len: int, reserve: int = 300,
+                            react_suffix: str = DEFAULT_REACT_SUFFIX,
+                            ) -> list[int]:
     """Build prompt ending in '<|im_start|>user\\n' ready for generation.
 
     Conversation structure, preserving flow coherence:
-      ... assistant -> user(question) -> assistant(choice) -> user(react)
+      ... assistant -> user(question) -> assistant(choice + suffix) -> user(react)
     If the last context message is ALREADY user (true for ~68% of MCQs in
     128k, where PersonaMem's end_index sits inside a user monologue), we
     merge the MCQ question into that existing user turn instead of adding
     a separate one — avoids the awkward user->user->assistant flow while
     preserving all prior content.
+
+    react_suffix: a short universal follow-up question appended to the
+    assistant's choice. Directly solicits a REACTION from the user (vs
+    default "I also..." monologue mode observed in v1 eval). Natural and
+    in-distribution — PersonaMem's assistant turns commonly end with
+    such questions. Identical suffix on all 4 choices → no cross-choice
+    bias. Set to "" to disable.
 
     Trims oldest context messages greedily until total + reserve fits max_len.
     """
@@ -209,7 +221,8 @@ def build_usersim_input_ids(sft_tok: SFTTokenizer, context_msgs: list[dict],
         msgs[-1]["content"] = msgs[-1]["content"].rstrip() + "\n\n" + question
     else:
         msgs.append({"role": "user", "content": question})
-    msgs.append({"role": "assistant", "content": choice_text})
+    asst_content = choice_text.rstrip() + react_suffix
+    msgs.append({"role": "assistant", "content": asst_content})
 
     user_prime = sft_tok.tok.encode("<|im_start|>user\n", add_special_tokens=False)
     while True:
@@ -305,6 +318,9 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--top-p", type=float, default=0.9)
     ap.add_argument("--last-n-sessions", type=int, default=None,
                     help="Cap context to most recent N sessions (match SFT K).")
+    ap.add_argument("--react-suffix", type=str, default=DEFAULT_REACT_SUFFIX,
+                    help="Suffix appended to assistant's choice to solicit "
+                         "reaction. Pass '' to disable.")
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--out-json", type=Path, required=True)
     return ap.parse_args()
@@ -365,6 +381,7 @@ def main() -> None:
                 sft_tok, ctx_msgs, question, choice_text,
                 max_len=args.max_seq_len,
                 reserve=args.max_new_tokens + 50,
+                react_suffix=args.react_suffix,
             )
             reaction = generate_reaction(
                 model, tok, ids, args.max_new_tokens,
