@@ -133,6 +133,25 @@ def compute_response_logprobs(
     return F.log_softmax(logits[start:end].float(), dim=-1)
 
 
+# ---------- Checkpoint pruning ----------
+
+def prune_checkpoints(output_dir: Path, keep: int) -> None:
+    """Keep only the `keep` most recent ckpt-step-* dirs; delete older ones.
+
+    Sort key is the integer step count; pruning is by mtime-independent
+    order so it's robust to disk clock skew.
+    """
+    import shutil
+    ckpts = sorted(
+        output_dir.glob("ckpt-step-*"),
+        key=lambda p: int(p.name.rsplit("-", 1)[-1]),
+    )
+    while len(ckpts) > keep:
+        old = ckpts.pop(0)
+        shutil.rmtree(old)
+        print(f"  pruned old checkpoint: {old.name}", flush=True)
+
+
 # ---------- Main ----------
 
 def main() -> None:
@@ -152,7 +171,9 @@ def main() -> None:
                              "gate_proj", "up_proj"])
     ap.add_argument("--lr", type=float, default=2e-4)
     ap.add_argument("--epochs", type=int, default=1)
-    ap.add_argument("--rollout-max-tokens", type=int, default=160)
+    ap.add_argument("--rollout-max-tokens", type=int, default=256,
+                    help="User response p50 is ~190 tokens in PersonaMem; "
+                         "160 truncated below median. 256 covers ~p75.")
     ap.add_argument("--rollout-temperature", type=float, default=1.0)
     ap.add_argument("--max-teacher-tokens", type=int, default=32768,
                     help="truncate teacher prefix from the left if longer")
@@ -167,6 +188,12 @@ def main() -> None:
                          "for eyeballing quality.")
     ap.add_argument("--max-samples", type=int, default=-1,
                     help="cap for quick sanity runs; -1 = all")
+    ap.add_argument("--save-every", type=int, default=200,
+                    help="Save a LoRA checkpoint every N steps. 0 disables "
+                         "intermediate saves (only final is written).")
+    ap.add_argument("--save-total-limit", type=int, default=2,
+                    help="Keep only the N most recent intermediate "
+                         "checkpoints (final is always kept separately).")
     ap.add_argument("--gpu", type=int, default=0)
     ap.add_argument("--dry-run", action="store_true",
                     help="CPU forward-only shape check on 1 sample; no training")
@@ -358,6 +385,13 @@ def main() -> None:
                       f"resp_len={min_len}(avg{len(window)}={sum(lens_w)//len(lens_w)}) "
                       f"dt={step_dt:.1f}s",
                       flush=True)
+
+            # Periodic intermediate LoRA save + prune
+            if args.save_every > 0 and (step + 1) % args.save_every == 0:
+                ckpt_dir = args.output_dir / f"ckpt-step-{step+1}"
+                student.save_pretrained(ckpt_dir)
+                print(f"  [saved] {ckpt_dir}", flush=True)
+                prune_checkpoints(args.output_dir, args.save_total_limit)
 
             # Periodic progress banner with rollout snippet
             if args.progress_every > 0 and (step + 1) % args.progress_every == 0:
