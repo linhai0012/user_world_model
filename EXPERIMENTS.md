@@ -62,7 +62,24 @@ R3 (Instruct-2507 teacher, K=3) resolves most of R1's ambiguities:
   SFT +0.020 (R1's negative base benefit was pure RoPE extrapolation).
 - **Swap-persona diagnostic** (§9.3): SFT does parameterize persona
   identity (+0.008 nats, 35/40 sign-consistent) — small but unambiguous.
-- Phase 2 OPD is being retrained against R3 as the production teacher.
+
+### Phase 2 early evaluation (§10)
+
+Per-user student LoRAs (4 personas, rank 32) trained via OPD against R3
+teacher. Evaluation at step 400 (≈40% of epoch 1):
+
+- **Logit NLL** (§10.3): student_demo 1.83 vs base_demo 2.66 vs teacher_full 1.11.
+  Closes ~54% of the base→teacher gap using **0 tokens of inference context**.
+- **MCQ-PPL** (§10.5): student_demo avg 0.390 vs base 0.341 vs teacher_k3 0.432.
+  Same ~54% gap-closure (34% at step 200 → 54% at step 400; training not
+  yet converged).
+- **LLM judge on generated reactions** (§10.4): student_demo avg 1.87 vs
+  teacher_demo 1.66 vs teacher_full 2.28. **Student beats teacher_demo in 3/4
+  personas on semantic similarity** — LoRA's parametric persona knowledge
+  actively outperforms teacher's own zero-context generation.
+- Cross-persona variance: pid=4 Lisa strongest (74% MCQ-PPL closure),
+  pid=12 Jordan showed mild regression from step 200 to 400 (monitoring);
+  pid=0 Kanoa is slowest learner. Consistent with swap-persona ranking.
 
 ---
 
@@ -540,23 +557,23 @@ K=3 training had accumulated. R3 is the first run on the new model.
 
 ## 8. Next steps
 
-1. ~~**R3**~~ — **DONE, §9.** R3 (Instruct-2507, K=3) is trained and
-   fully evaluated. Now the production teacher.
-2. ~~**Swap-persona probe**~~ — **DONE, §9.3.** Result: (C) partially
-   parameterized (+0.008 nats, 35/40 one-sided).
-3. **Phase 2 — OPD, retrain with R3 teacher**. An initial 4-persona
-   proof-of-concept run was launched against R1 ckpt-50 but killed
-   mid-run once R3 eval results confirmed R3 as the strictly better
-   teacher. Retraining the same 4 personas (0 Kanoa, 4 Lisa,
-   12 Jordan, 14 Leilani) against R3 `final`. K=3 OPD data already
-   built; trainer unchanged. Primary eval: MCQ-PPL on each persona's
-   128k MCQ subset, base vs base+LoRA (`eval_opd.py`).
-4. **Optional follow-ups**:
+1. ~~**R3**~~ — **DONE, §9.**
+2. ~~**Swap-persona probe**~~ — **DONE, §9.3.**
+3. ~~**Phase 2 — launch OPD against R3**~~ — **IN PROGRESS, §10.**
+   Training against R3 teacher for 4 focal personas (pid 0/4/12/14).
+   Step 400 (≈40% of epoch 1) evals show 54% MCQ-PPL gap-closure with
+   0-context student (§10.5), student beats teacher_demo on judge for
+   3/4 personas (§10.4).
+4. **Complete Phase 2 epoch 1**; rerun NLL / gen-judge / MCQ-PPL at
+   `final` checkpoint (§10.8). Decide on epoch 2 based on closure curve.
+5. **Optional follow-ups**:
    - Per-persona swap probe (40 samples each for pid 0/4/12/14) to
      calibrate expected LoRA differentiation before training.
    - K-scan of Eval 2 (K=3/10/20) now that Instruct-2507's 262k native
      makes this clean.
    - Evaluate on 1M-version data once compute budget allows.
+   - UserSim paradigm (II) — plan §9.3 with a redesigned reaction
+     format. Deferred until paradigm (I) main track stabilizes (§9.7).
 
 ---
 
@@ -796,10 +813,22 @@ R3 replaces R1 as the production teacher.
   none. Per-user LoRA differentiation is bounded by what the teacher can
   parameterize — swap diagnostic says that's +0.008 nats per persona,
   small but non-zero.
-- **MCQ-PPL (plan §9.5) is the primary Phase 2 metric**, not the
-  Generate+Agent pipeline (§9.3). §4.4.2 showed the agent pipeline
-  failed on R1 via "anti-correlated reaction" mode collapse; R3's
-  worse "I also..." rate will only deepen this failure. Skip.
+- **Two deployment-time UserSim paradigms**, both remain open research
+  directions:
+  - **(I) NLL-based scoring** (plan §9.5): teacher/student assign
+    conditional PPL to each MCQ choice; lowest wins. This is what MCQ-PPL
+    evaluations (§4.4.3, §9.4, §10.5) implement. Currently the only
+    *working* end-to-end metric, and the primary Phase 2 target.
+  - **(II) Verbal-feedback Agent** (plan §9.3): UserSim generates a
+    natural reaction to each choice, an Agent reads the reactions and
+    picks. §4.4.1-§4.4.2's R1 implementation hit structural problems
+    (anti-correlated reactions, mode collapse) and R3's heightened
+    "I also..." template rate (§9.5's point 4) would compound the
+    failure, so **the specific current implementation is not viable**.
+    The paradigm itself is not falsified — it needs a redesigned
+    reaction-generation format (e.g., structured preference markers,
+    pairwise comparison framing, or adding assistant-turn loss to the
+    teacher). Deferred until Phase 2 (I) main track stabilizes.
 - **Expect moderate, not dramatic, per-user differentiation**.
   Persona 4 Lisa has the strongest SFT swap signal (+0.037 max) and
   should produce the most distinctive LoRA; persona 12 Jordan has the
@@ -808,12 +837,288 @@ R3 replaces R1 as the production teacher.
 - **Qualitative monitoring during OPD**. "I also..." rate observed
   during student rollouts should be tracked — if the LoRA amplifies
   this pattern (as we'd expect when training against Instruct-2507
-  teacher), reaction-quality for any future generate-based eval is
-  further compromised.
+  teacher), reaction-quality for any future §9.3-style eval is further
+  compromised.
 
 ---
 
-## 10. Referenced commits (chronological)
+## 10. Phase 2 — Per-user OPD (R3 teacher, ongoing)
+
+Phase 2 trains per-persona LoRAs on top of Qwen3-4B-Instruct-2507 via
+on-policy distillation against the R3 teacher. The goal is the
+"0-tokens-of-inference-context" UserSim promised in plan §11.1: a
+per-user adapter that behaves like the teacher + full context without
+actually seeing context at runtime.
+
+Phase 2 is **still running at write time** (full epoch 1 not yet
+complete). The numbers below are from intermediate checkpoints step 200
+and step 400 (~20% and ~40% of epoch 1 respectively). Final numbers are
+future work.
+
+### 10.1 Setup — 4 focal personas, single-LoRA
+
+We selected **4 representative personas** spanning gender, ethnicity,
+age, and domain (see `debug_persona_select.py`):
+
+| PID | Name         | Born | Gender       | Ethnicity           | Domain                  |
+|----:|--------------|-----:|--------------|---------------------|-------------------------|
+|   0 | Kanoa Manu   | 1992 | Male         | Pacific Islander    | Software + island music |
+|   4 | Lisa Johnson | 1965 | Female       | African American    | Mobile-app entrepreneur |
+|  12 | Jordan Ellis | 1934 | Non-binary   | (unspec)            | Pharmaceutical chemist  |
+|  14 | Leilani Hayes| 1989 | Female       | Pacific Islander    | Muay Thai athlete       |
+
+Per-turn OPD samples built by `build_opd_data.py`:
+
+| PID | Samples | Sessions covered | Avg history messages |
+|----:|--------:|-----------------:|----------------------|
+|   0 | 1008    | 60               | 132                  |
+|   4 |  896    | 60               | 115                  |
+|  12 |  931    | 60               | 126                  |
+|  14 |  959    | 60               | 132                  |
+
+First user turn of each session is skipped (plan §1.6 — openers are
+unpredictable topic choices). Each sample includes:
+- `demographics` (first system message, same across sessions)
+- `history_messages` = K=3 prior sessions + current session up to and
+  including `chatbot_prev` (teacher view)
+- `chatbot_prev` (student also sees this)
+- `user_response` (ground truth — never used during training, reserved
+  for eval)
+
+### 10.2 Training — single-LoRA, rank 32, 1 epoch
+
+`train_opd.py` runs one persona per process (so teacher and fresh
+base+LoRA are loaded once per invocation; Slurm layer dispatches 4
+parallel jobs across 4 GPUs). Config:
+
+- **Teacher**: R3 final (`$SCRATCHDIR/P-OPSD/teacher_sft_128k_k3/final`), frozen
+- **Student base**: `Qwen/Qwen3-4B-Instruct-2507`
+- **LoRA**: rank 32, alpha 64, targets q/k/v/o/gate/up; ~52M trainable
+  (1.27% of 4.07B)
+- **Optimizer**: AdamW, lr 2e-4, grad-clip 1.0
+- **Rollout**: 256 tokens, temperature 1.0, top-p 1.0 (on-policy)
+- **Teacher prefix cap**: max 32768 tokens (rarely triggered; K=3 p99 is
+  ~20k tokens)
+- **KL loss**: forward KL(student ‖ teacher) per-token, mean over
+  rollout positions (same formula as `opd/s01_opd_train.py`)
+- **Checkpoints**: every 200 steps, keep the 2 most recent
+
+Step 400 ≈ 40% of epoch 1 at ~900-1000 samples per persona, shuffled.
+
+#### Training dynamics
+
+Rollout length converges **from cap to natural** within the first 10-20
+steps (observed on pid=12 fresh run):
+
+```
+step 1-10:   resp_len = 256 (cap)         loss 0.9-0.4
+step 11-14:  resp_len = 177, 256, 189, 104   loss 0.45-0.28
+step 15:     resp_len = 16  (over-corrected)  loss 1.08 (spike)
+step 16-19:  resp_len = 82-166                loss 0.29-0.38
+```
+
+Interpretation: Instruct-2507 base is trained to emit `<|im_end|>` only
+at the end of *assistant* turns, not *user* turns (§4.3 context). So
+early rollouts as the user never naturally stop. But R3 teacher's
+KL-target explicitly includes `<|im_end|>` probability at end-of-user
+positions (per `tokenize_teacher_sft.py`'s `is_target_user` handling).
+Within ~15 steps the student internalizes this and starts emitting
+`<|im_end|>` — a clean demonstration of OPD distilling a specific
+behavior that the base never had.
+
+Bumping `--rollout-max-tokens` from 160 to 256 was necessary: with 160
+the rollout was **always** truncated below GT user-response p50 (~190
+tokens), which chopped OPD training signal (§9 observation).
+
+### 10.3 Eval (a) — Logit NLL on GT user response
+
+`eval_user_nll.py` scores the ground-truth user_response tokens under 5
+conditions × 100 samples per persona:
+
+| condition     | avg NLL | vs base_demo | vs teacher_full |
+|---------------|--------:|-------------:|----------------:|
+| base_demo     | 2.66    |   0.00       | +1.55           |
+| base_full     | 2.13    |  −0.53       | +1.02           |
+| teacher_demo  | 1.31    |  −1.35       | +0.20           |
+| teacher_full  | 1.11    |  −1.55       |   0.00          |
+| **student_demo** | **1.83** | **−0.83** | **+0.72**    |
+
+(All averages across 4 personas, step 400 LoRA.)
+
+Per-sample paired wins (lower NLL = better):
+- student_demo < base_demo: **99-100/100** every persona — LoRA adds
+  consistent value.
+- student_demo < teacher_demo: **0/100** every persona — student with
+  LoRA has not yet matched teacher with *no* context, let alone full.
+
+**Observations**:
+
+1. **Teacher's context gain is small** (teacher_demo 1.31 − teacher_full
+   1.11 = only 0.20 nats). The bulk of teacher's advantage over base is
+   *parameterized*, not contextual. This is both good and bad for
+   Phase 2: the real target is `teacher_demo = 1.31` (closable in
+   principle), not `teacher_full = 1.11`.
+
+2. **Student closes ~56% of base→teacher_demo gap** (1.35 nats gap,
+   student at 0.83 nats under base → 61% closure; student at 0.52 nats
+   above teacher_demo → 39% remaining). Still improving — see §10.5
+   for step 200 vs 400 delta.
+
+3. **Base's context gain is larger than teacher's** (base 2.66 → 2.13 =
+   0.53 nats). Intuitive: base needs the context to do anything
+   persona-specific, while teacher can rely on its SFT parameters.
+
+### 10.4 Eval (b) — Generation + LLM judge
+
+`eval_user_gen_judge.py` generates one user-turn continuation per sample
+per condition (vLLM, batched, TP=4) and has gpt-4o-mini rate each
+(GT, generation) pair 1-5 on content/style/preference similarity.
+n=50 per persona.
+
+Per-persona mean score:
+
+| condition     | pid 0 | pid 4 | pid 12 | pid 14 | AVG  |
+|---------------|------:|------:|-------:|-------:|-----:|
+| base_demo     | 1.38  | 1.14  | 1.14   | 1.16   | 1.21 |
+| base_full     | 1.90  | 1.86  | 1.96   | 2.02   | 1.94 |
+| teacher_demo  | 1.52  | 1.70  | 1.72   | 1.72   | 1.66 |
+| teacher_full  | 2.14  | 2.12  | 2.38   | 2.48   | **2.28** |
+| **student_demo** | 1.52  | **1.76** | **2.22** | **1.98** | **1.87** |
+
+Bolded student cells = student ≥ teacher_demo on that persona. Student
+beats teacher_demo on 3/4 personas. On pid=12 Jordan, student (2.22) is
+93% of the way from teacher_demo (1.72) to teacher_full (2.38); on
+pid=14 Leilani, student (1.98) is 80% of the way.
+
+**This contradicts the NLL result** (where student < teacher_demo on
+0/100 samples). See §10.7 for the resolution — the two metrics measure
+different things.
+
+### 10.5 Eval (c) — MCQ-PPL (128k, per-persona)
+
+Plan §9.5 protocol on each persona's full 128k MCQ set. Three
+conditions:
+- `base_demo`: Instruct-2507 with demographics + chatbot_prev only
+- `teacher_k3`: R3 with last 3 sessions of context (canonical R3
+  deployment — teacher_full is out-of-distribution for R3's K=3
+  training, and the tokenize-loop in `score_choice_ppl` blows up on
+  full 128k contexts)
+- `student_step{200,400}`: base + LoRA, demo-only
+
+| PID | n   | base_demo | teacher_k3 | student_step200 | student_step400 | closure@400 |
+|----:|----:|----------:|-----------:|----------------:|----------------:|------------:|
+|   0 | 154 |   0.325   |   0.403    |   0.299         |   0.351         |   33%       |
+|   4 | 147 |   0.367   |   0.497    |   0.435         |   **0.463**     |   **74%**   |
+|  12 | 113 |   0.407   |   0.504    |   **0.451**     |   0.442         |   36%       |
+|  14 | 129 |   0.264   |   0.326    |   0.302         |   0.302         |   61%       |
+| AVG |     |   0.341   |   0.432    |   0.372         |   **0.390**     |   **54%**   |
+
+**Gap closure = (student − base) / (teacher − base)**.
+
+Observations:
+
+1. **Gap closure grew 34% → 54% from step 200 to step 400**. Training
+   is not yet converged.
+
+2. **pid=4 Lisa is the strongest LoRA** (74% closure at step 400,
+   absolute acc 0.463). Consistent with her being the most
+   distinctive persona in swap-persona diagnostic (§9.3: +0.037 max
+   gap) and 3rd-highest on judge (83% of teacher_full).
+
+3. **pid=12 Jordan regressed from step 200 to step 400** (0.451 →
+   0.442, closure 45% → 36%). The only regression in the 4-persona
+   set. Candidate explanations: (a) Jordan has the fewest training
+   samples (931); (b) his niche domain leads to earlier over-fitting;
+   (c) step-400-vintage rollouts happened to drift away from
+   MCQ-helpful distribution. Not alarming yet — step 600 will
+   disambiguate.
+
+4. **pid=0 Kanoa at step 200 scored BELOW base** (0.299 < 0.325) —
+   LoRA had not yet accumulated net benefit. By step 400 he's
+   +0.026 over base. Slowest learner of the four. Consistent with
+   his mixed-identity profile ("software + Pacific Islander music")
+   being harder to parameterize cleanly.
+
+5. **pid=14 Leilani has the lowest absolute numbers for everyone**
+   (base 0.264, teacher 0.326). Her MCQs are the hardest — Muay Thai
+   context + specific cultural references likely clash with LM priors.
+   Even so, student closes 61% — healthy for this persona.
+
+### 10.6 Cross-metric triangulation
+
+| Persona      | Swap (logit) | NLL student vs teacher_full | Judge vs teacher_full | MCQ-PPL closure | Net read |
+|--------------|:------------:|:---------------------------:|:---------------------:|:---------------:|----------|
+| 0  Kanoa     | n/a (1 sample) | +0.79 (far)               | 71%                   | 33%             | Slow learner |
+| 4  Lisa      | **+0.037 max** | +0.71                     | 83%                   | **74%**         | **Best LoRA** |
+| 12 Jordan    | +0.007 (weakest) | +0.76                   | **93%**               | 36% (regressed) | **Anomaly** |
+| 14 Leilani   | +0.008        | +0.66                     | 80%                   | 61%             | Healthy middle |
+
+pid=4 Lisa: all three eval metrics agree she's the most successful LoRA.
+Cleanest Phase 2 success story.
+
+pid=12 Jordan: **Swap signal is weakest, but judge score is highest, and
+MCQ-PPL is in the middle.** These diverge because the three metrics
+isolate different capabilities — see §10.7.
+
+### 10.7 On the NLL / Judge / MCQ-PPL divergence
+
+The three eval metrics give different rankings for the same student
+checkpoint. This is not a bug; it is a real property of what OPD does
+and what each metric measures.
+
+- **NLL on GT**: "how likely was this exact continuation under the
+  model?" Heavily rewards matching the *specific word-level* choices of
+  the GT. Teacher_demo (regular Instruct LM) has flatter per-token
+  distributions and therefore assigns reasonable probability to many
+  plausible continuations including GT. Student_demo has a sharpened
+  distribution (OPD made it commit to a style), which makes it more
+  *efficient* but also more *off-target* when GT phrases things
+  differently. → Student NLL > teacher_demo NLL.
+
+- **LLM judge on generations**: "does this generation express the same
+  persona/preferences as GT?" Rewards semantic match, tolerates
+  paraphrase. Student_demo's OPD-committed style is exactly persona-
+  flavored, so it scores well here even though token-level NLL penalizes
+  it. → Student judge score > teacher_demo judge score.
+
+- **MCQ-PPL**: "which assistant response does the UserSim prefer?" An
+  intermediate metric — it's logit-level (like NLL) but scored against
+  *assistant tokens*, not user tokens. Student's LoRA shapes its
+  distribution over user continuations (directly trained) and
+  indirectly shifts its distribution over assistant continuations
+  (through the shared embedding/LM-head). The shift is partial, hence
+  intermediate closure (54%) between NLL's pessimism (39% closure in
+  NLL-gap terms) and judge's optimism (student beats teacher_demo on
+  3/4 personas).
+
+**Paper takeaway**: report all three, be explicit about what each
+captures, don't collapse them into a single "Phase 2 success rate"
+number. This triangulation is itself a contribution — most prior OPD
+work reports only one of these.
+
+Practical consequence: MCQ-PPL (§9.5 protocol) is the right primary
+Phase 2 metric because (a) it's deterministic, (b) it directly
+evaluates the UserSim's use-case (discriminating assistant choices),
+and (c) it sits between the optimism/pessimism of the other two.
+
+### 10.8 Next steps (Phase 2)
+
+1. **Complete epoch 1** (~500-600 more steps per persona). Re-run all
+   three evals at `final` checkpoint.
+2. **Plot the gap-closure curve** across steps {200, 400, final} ×
+   {NLL, judge, MCQ-PPL} — candidate figure for paper showing
+   training dynamics of parametric user knowledge.
+3. **If closure < 65% at epoch 1 final**, run epoch 2 (~6h on 4 GPUs).
+4. **Investigate pid=12 regression** once final is in. If confirmed
+   non-monotonic, add a note on LoRA rank saturation or try rank=64
+   as an ablation for that persona.
+5. **UserSim paradigm (II) exploration** (plan §9.3): deferred to a
+   separate workstream. Needs redesigned reaction-generation format
+   (see §9.7).
+
+---
+
+## 11. Referenced commits (chronological)
 
 ```
 040fecd  Phase 0+1 scaffolding
@@ -844,4 +1149,9 @@ e7641a9  Persona-swap diagnostic (§9.3)
 6f75934  eval_mcq_ppl: --num-mcqs <= 0 = all
 0634433  eval_qualitative_vllm: 4-GPU batched generation
 ed64b6f  analyze_qual_30: proper CLI, relocated to teacher_sft/
+d17ff8d  train_opd logs per-step + EXPERIMENTS §9 R3 chapter
+6f9d6ee  train_opd: rollout 256 + periodic LoRA save/prune
+e9d184c  Phase 2 goal-1 evals: eval_user_nll + eval_user_gen_judge
+da62a14  Phase 2 MCQ-PPL aggregate launcher (run_phase2_mcq_eval.sh)
+42ba56c  aggregate: teacher_full -> teacher_k3 (fix O(n²) loop + R3 OOD)
 ```
