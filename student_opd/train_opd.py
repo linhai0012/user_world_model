@@ -135,6 +135,17 @@ def compute_response_logprobs(
 
 # ---------- Checkpoint pruning ----------
 
+def find_latest_ckpt(output_dir: Path) -> Path | None:
+    """Return the highest-step ckpt-step-N/ dir in output_dir, or None."""
+    if not output_dir.exists():
+        return None
+    ckpts = sorted(
+        output_dir.glob("ckpt-step-*"),
+        key=lambda p: int(p.name.rsplit("-", 1)[-1]),
+    )
+    return ckpts[-1] if ckpts else None
+
+
 def prune_checkpoints(output_dir: Path, keep: int) -> None:
     """Keep only the `keep` most recent ckpt-step-* dirs; delete older ones.
 
@@ -194,6 +205,13 @@ def main() -> None:
     ap.add_argument("--save-total-limit", type=int, default=2,
                     help="Keep only the N most recent intermediate "
                          "checkpoints (final is always kept separately).")
+    ap.add_argument("--resume", action="store_true",
+                    help="If set, auto-resume from the latest ckpt-step-N/ "
+                         "in output_dir. Loads LoRA weights and optimizer "
+                         "state if available, skips already-trained samples.")
+    ap.add_argument("--resume-from-ckpt", type=Path, default=None,
+                    help="Resume from a specific checkpoint directory "
+                         "(overrides --resume auto-detection).")
     ap.add_argument("--gpu", type=int, default=0)
     ap.add_argument("--dry-run", action="store_true",
                     help="CPU forward-only shape check on 1 sample; no training")
@@ -264,15 +282,39 @@ def main() -> None:
     ).to(device)
     print(f"  student base loaded in {time.time()-t0:.1f}s")
 
-    lora_cfg = LoraConfig(
-        r=args.lora_rank,
-        lora_alpha=args.lora_alpha,
-        target_modules=args.lora_targets,
-        lora_dropout=args.lora_dropout,
-        bias="none",
-        task_type="CAUSAL_LM",
-    )
-    student = get_peft_model(student_base, lora_cfg)
+    # --- Decide resume ---
+    resume_ckpt: Path | None = None
+    if args.resume_from_ckpt is not None:
+        resume_ckpt = args.resume_from_ckpt
+        if not (resume_ckpt / "adapter_config.json").exists():
+            raise FileNotFoundError(
+                f"--resume-from-ckpt pointed at {resume_ckpt} but no "
+                f"adapter_config.json there"
+            )
+    elif args.resume:
+        resume_ckpt = find_latest_ckpt(args.output_dir)
+        if resume_ckpt is None:
+            print(f"  --resume set but no ckpt-step-*/ in {args.output_dir}; "
+                  f"starting fresh.")
+
+    # --- Student: fresh LoRA OR resume ---
+    if resume_ckpt is not None:
+        from peft import PeftModel
+        print(f"resuming LoRA from: {resume_ckpt}")
+        student = PeftModel.from_pretrained(
+            student_base, str(resume_ckpt), is_trainable=True
+        )
+    else:
+        lora_cfg = LoraConfig(
+            r=args.lora_rank,
+            lora_alpha=args.lora_alpha,
+            target_modules=args.lora_targets,
+            lora_dropout=args.lora_dropout,
+            bias="none",
+            task_type="CAUSAL_LM",
+        )
+        student = get_peft_model(student_base, lora_cfg)
+
     trainable = sum(p.numel() for p in student.parameters() if p.requires_grad)
     total = sum(p.numel() for p in student.parameters())
     print(f"  LoRA trainable: {trainable:,} / {total:,} "
@@ -287,6 +329,19 @@ def main() -> None:
         lr=args.lr,
     )
 
+    # --- Optimizer resume (optional — ckpts may predate this feature) ---
+    start_step = 0
+    if resume_ckpt is not None:
+        start_step = int(resume_ckpt.name.rsplit("-", 1)[-1])
+        opt_path = resume_ckpt / "optimizer.pt"
+        if opt_path.exists():
+            optimizer.load_state_dict(torch.load(opt_path, map_location=device))
+            print(f"  optimizer state restored from {opt_path}")
+        else:
+            print(f"  no optimizer.pt in {resume_ckpt}; AdamW starts fresh "
+                  f"(training will continue but momentum/variance reset)")
+        print(f"  resuming at step {start_step}")
+
     # --- Training loop ---
     training_log = []
     step_losses = []
@@ -294,15 +349,35 @@ def main() -> None:
     skipped_empty = 0
 
     for epoch in range(args.epochs):
+        # Deterministic shuffle: independent RNG so resume lands on the same
+        # idx order as a fresh run would have gotten.
         idx = list(range(len(samples)))
-        random.shuffle(idx)
+        shuffle_rng = random.Random(args.seed + epoch)
+        shuffle_rng.shuffle(idx)
+
+        # If resuming inside this epoch, skip the first start_step samples.
+        # (Multi-epoch resume is not handled — we assume start_step < len(idx);
+        # the common case is single-epoch training.)
+        total_steps = len(idx)
+        if start_step > 0 and epoch == 0:
+            if start_step >= total_steps:
+                print(f"  start_step {start_step} >= samples in epoch "
+                      f"({total_steps}); skipping to next epoch")
+                continue
+            skipped_for_resume = start_step
+            idx = idx[start_step:]
+            print(f"  [resume] skipping first {skipped_for_resume} samples "
+                  f"of epoch {epoch}; {len(idx)} remain")
+        else:
+            skipped_for_resume = 0
 
         epoch_kl = 0.0
         epoch_tokens = 0
         t_epoch = time.time()
         t_step_last = time.time()
 
-        for step, i in enumerate(idx):
+        for local_step, i in enumerate(idx):
+            step = skipped_for_resume + local_step  # global step within epoch
             sample = samples[i]
 
             # Build prefixes
@@ -379,18 +454,19 @@ def main() -> None:
                 lens_w = [x["min_len"] for x in window]
                 step_dt = time.time() - t_step_last
                 t_step_last = time.time()
-                print(f"  e{epoch} step {step+1}/{len(idx)}: "
+                print(f"  e{epoch} step {step+1}/{total_steps}: "
                       f"loss={loss.item():.4f} "
                       f"avg{len(window)}={sum(losses_w)/len(losses_w):.4f} "
                       f"resp_len={min_len}(avg{len(window)}={sum(lens_w)//len(lens_w)}) "
                       f"dt={step_dt:.1f}s",
                       flush=True)
 
-            # Periodic intermediate LoRA save + prune
+            # Periodic intermediate LoRA + optimizer save + prune
             if args.save_every > 0 and (step + 1) % args.save_every == 0:
                 ckpt_dir = args.output_dir / f"ckpt-step-{step+1}"
                 student.save_pretrained(ckpt_dir)
-                print(f"  [saved] {ckpt_dir}", flush=True)
+                torch.save(optimizer.state_dict(), ckpt_dir / "optimizer.pt")
+                print(f"  [saved] {ckpt_dir} (+ optimizer.pt)", flush=True)
                 prune_checkpoints(args.output_dir, args.save_total_limit)
 
             # Periodic progress banner with rollout snippet
@@ -402,9 +478,12 @@ def main() -> None:
                 losses_w = [x["loss"] for x in window]
                 lens_w = [x["min_len"] for x in window]
                 elapsed = time.time() - t_epoch
-                eta = elapsed / (step + 1) * (len(idx) - step - 1)
+                # ETA based on local_step progress (elapsed covers only post-resume work)
+                steps_done_this_run = local_step + 1
+                steps_remain_this_run = len(idx) - steps_done_this_run
+                eta = (elapsed / steps_done_this_run) * steps_remain_this_run
                 print(f"  --- [progress pid={args.persona_id} "
-                      f"e{epoch} step {step+1}/{len(idx)}] "
+                      f"e{epoch} step {step+1}/{total_steps}] "
                       f"loss window min/mean/max = "
                       f"{min(losses_w):.3f}/{sum(losses_w)/len(losses_w):.3f}/"
                       f"{max(losses_w):.3f}  "
