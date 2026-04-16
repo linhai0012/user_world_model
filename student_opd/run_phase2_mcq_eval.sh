@@ -100,13 +100,23 @@ for pid in "${PERSONAS[@]}"; do
         "$R3" "" last-n "$pid" \
         "$OUT_DIR/mcqppl_128k_pid${pid}_teacher_k3.json"
 
-    LORA_PATH="$OUT_DIR/lora_pid${pid}_r32_ep1_r3teacher/ckpt-step-${STUDENT_STEP}"
-    if [[ ! -d "$LORA_PATH" ]]; then
-        echo "  [SKIP]    student_demo_step${STUDENT_STEP}: $LORA_PATH does not exist"
+    # --student-step final resolves to the root output dir (end-of-training
+    # save), not a ckpt-step-N/ subdir. Any other value maps to ckpt-step-N/.
+    if [[ "$STUDENT_STEP" == "final" ]]; then
+        LORA_PATH="$OUT_DIR/lora_pid${pid}_r32_ep1_r3teacher"
+        STUDENT_LABEL="student_demo_final"
+        STUDENT_JSON="$OUT_DIR/mcqppl_128k_pid${pid}_student_demo_final.json"
     else
-        run_cond "student_demo_step${STUDENT_STEP}" \
+        LORA_PATH="$OUT_DIR/lora_pid${pid}_r32_ep1_r3teacher/ckpt-step-${STUDENT_STEP}"
+        STUDENT_LABEL="student_demo_step${STUDENT_STEP}"
+        STUDENT_JSON="$OUT_DIR/mcqppl_128k_pid${pid}_student_demo_step${STUDENT_STEP}.json"
+    fi
+    if [[ ! -d "$LORA_PATH" ]] || [[ ! -f "$LORA_PATH/adapter_config.json" ]]; then
+        echo "  [SKIP]    ${STUDENT_LABEL}: $LORA_PATH missing adapter_config.json"
+    else
+        run_cond "$STUDENT_LABEL" \
             "$BASE_MODEL" "$LORA_PATH" demo-only "$pid" \
-            "$OUT_DIR/mcqppl_128k_pid${pid}_student_demo_step${STUDENT_STEP}.json"
+            "$STUDENT_JSON"
     fi
 
     if [[ "$MODE" == "5conds" ]]; then
@@ -133,14 +143,21 @@ import json
 from pathlib import Path
 
 out = Path("$OUT_DIR")
-step = $STUDENT_STEP
+step = "$STUDENT_STEP"
 mode = "$MODE"
 personas = [0, 4, 12, 14]
+
+if step == "final":
+    student_label = "student_final"
+    student_pattern = "mcqppl_128k_pid{pid}_student_demo_final.json"
+else:
+    student_label = f"student_step{step}"
+    student_pattern = f"mcqppl_128k_pid{{pid}}_student_demo_step{step}.json"
 
 conds_base = [
     ("base_demo",     "mcqppl_128k_pid{pid}_base_demo.json"),
     ("teacher_k3",    "mcqppl_128k_pid{pid}_teacher_k3.json"),
-    (f"student_step{step}", f"mcqppl_128k_pid{{pid}}_student_demo_step{step}.json"),
+    (student_label, student_pattern),
 ]
 conds_extra = [
     ("base_full",     "mcqppl_128k_pid{pid}_base_full.json"),
@@ -189,7 +206,7 @@ print()
 print("--- Phase-2 diagnostics ---")
 key_base = "base_demo"
 key_teacher = "teacher_k3"
-key_student = f"student_step{step}"
+key_student = student_label
 if all(aggregates[k] for k in (key_base, key_teacher, key_student)):
     base_avg = sum(aggregates[key_base]) / len(aggregates[key_base])
     teacher_avg = sum(aggregates[key_teacher]) / len(aggregates[key_teacher])
@@ -198,7 +215,7 @@ if all(aggregates[k] for k in (key_base, key_teacher, key_student)):
     gap_closed = student_avg - base_avg
     closure = gap_closed / gap_total if gap_total != 0 else float("nan")
     print(f"  base_demo avg       : {base_avg:.3f}")
-    print(f"  student_step{step} avg : {student_avg:.3f}")
+    print(f"  {student_label} avg : {student_avg:.3f}")
     print(f"  teacher_k3 avg      : {teacher_avg:.3f}")
     print(f"  student - base      : {gap_closed:+.3f}  ({100*closure:.1f}% of teacher_k3 - base_demo gap)")
     print(f"  student - teacher   : {student_avg - teacher_avg:+.3f}")
