@@ -91,9 +91,14 @@ for pid in "${PERSONAS[@]}"; do
         "$BASE_MODEL" "" demo-only "$pid" \
         "$OUT_DIR/mcqppl_128k_pid${pid}_base_demo.json"
 
-    run_cond teacher_full \
-        "$R3" "" full "$pid" \
-        "$OUT_DIR/mcqppl_128k_pid${pid}_teacher_full.json"
+    # Teacher: use last-n (K=3) instead of full. R3 was trained at K=3;
+    # --context-mode full on 128k MCQs forces left-truncation to max_seq_len
+    # via an O(n^2) re-tokenize loop in score_choice_ppl AND feeds R1-domain
+    # RoPE positions R3 never saw. K=3 matches R3 training distribution and
+    # avoids the tokenize-loop bottleneck.
+    run_cond teacher_k3 \
+        "$R3" "" last-n "$pid" \
+        "$OUT_DIR/mcqppl_128k_pid${pid}_teacher_k3.json"
 
     LORA_PATH="$OUT_DIR/lora_pid${pid}_r32_ep1_r3teacher/ckpt-step-${STUDENT_STEP}"
     if [[ ! -d "$LORA_PATH" ]]; then
@@ -105,6 +110,8 @@ for pid in "${PERSONAS[@]}"; do
     fi
 
     if [[ "$MODE" == "5conds" ]]; then
+        # base_full: Instruct-2507 is native 262k so "full" here is truly full —
+        # no RoPE OOD for base, but still slow due to tokenize-loop
         run_cond base_full \
             "$BASE_MODEL" "" full "$pid" \
             "$OUT_DIR/mcqppl_128k_pid${pid}_base_full.json"
@@ -132,7 +139,7 @@ personas = [0, 4, 12, 14]
 
 conds_base = [
     ("base_demo",     "mcqppl_128k_pid{pid}_base_demo.json"),
-    ("teacher_full",  "mcqppl_128k_pid{pid}_teacher_full.json"),
+    ("teacher_k3",    "mcqppl_128k_pid{pid}_teacher_k3.json"),
     (f"student_step{step}", f"mcqppl_128k_pid{{pid}}_student_demo_step{step}.json"),
 ]
 conds_extra = [
@@ -181,7 +188,7 @@ print(" ".join(row))
 print()
 print("--- Phase-2 diagnostics ---")
 key_base = "base_demo"
-key_teacher = "teacher_full"
+key_teacher = "teacher_k3"
 key_student = f"student_step{step}"
 if all(aggregates[k] for k in (key_base, key_teacher, key_student)):
     base_avg = sum(aggregates[key_base]) / len(aggregates[key_base])
@@ -192,8 +199,8 @@ if all(aggregates[k] for k in (key_base, key_teacher, key_student)):
     closure = gap_closed / gap_total if gap_total != 0 else float("nan")
     print(f"  base_demo avg       : {base_avg:.3f}")
     print(f"  student_step{step} avg : {student_avg:.3f}")
-    print(f"  teacher_full avg    : {teacher_avg:.3f}")
-    print(f"  student - base      : {gap_closed:+.3f}  ({100*closure:.1f}% of teacher_full - base_demo gap)")
+    print(f"  teacher_k3 avg      : {teacher_avg:.3f}")
+    print(f"  student - base      : {gap_closed:+.3f}  ({100*closure:.1f}% of teacher_k3 - base_demo gap)")
     print(f"  student - teacher   : {student_avg - teacher_avg:+.3f}")
 PYEOF
 
