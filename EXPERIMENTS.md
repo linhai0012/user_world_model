@@ -63,23 +63,31 @@ R3 (Instruct-2507 teacher, K=3) resolves most of R1's ambiguities:
 - **Swap-persona diagnostic** (§9.3): SFT does parameterize persona
   identity (+0.008 nats, 35/40 sign-consistent) — small but unambiguous.
 
-### Phase 2 early evaluation (§10)
+### Phase 2 evaluation (§10, epoch 1 complete)
 
 Per-user student LoRAs (4 personas, rank 32) trained via OPD against R3
-teacher. Evaluation at step 400 (≈40% of epoch 1):
+teacher. Full 5-checkpoint learning curve (step 200/400/600/800/final):
 
-- **Logit NLL** (§10.3): student_demo 1.83 vs base_demo 2.66 vs teacher_full 1.11.
-  Closes ~54% of the base→teacher gap using **0 tokens of inference context**.
-- **MCQ-PPL** (§10.5): student_demo avg 0.390 vs base 0.341 vs teacher_k3 0.432.
-  Same ~54% gap-closure (34% at step 200 → 54% at step 400; training not
-  yet converged).
-- **LLM judge on generated reactions** (§10.4): student_demo avg 1.87 vs
-  teacher_demo 1.66 vs teacher_full 2.28. **Student beats teacher_demo in 3/4
-  personas on semantic similarity** — LoRA's parametric persona knowledge
-  actively outperforms teacher's own zero-context generation.
-- Cross-persona variance: pid=4 Lisa strongest (74% MCQ-PPL closure),
-  pid=12 Jordan showed mild regression from step 200 to 400 (monitoring);
-  pid=0 Kanoa is slowest learner. Consistent with swap-persona ranking.
+- **MCQ-PPL** (§10.5): macro-avg gap closure rises 34% → 54% by step 400,
+  then plateaus at ~51% by `final`. **But per-persona best-step selection
+  yields 76% closure** — 25 pp higher than the naive "take final" number.
+  Per-persona dynamics diverge sharply: Lisa monotonic to 84% closure,
+  Jordan unstable peak at 92% (step 800) then regresses, Kanoa slow
+  monotonic to 50%, Leilani **monotonic decay below base by final**.
+  Phase 2 needs **per-persona early stopping**.
+- **Logit NLL** (§10.3, step 400): student_demo 1.83 vs base_demo 2.66
+  vs teacher_full 1.11. Closes ~54% of the base→teacher gap using **0
+  tokens of inference context**.
+- **LLM judge on generated reactions** (§10.4, step 400): student beats
+  teacher_demo in 3/4 personas on semantic similarity — LoRA's
+  parametric persona knowledge actively outperforms teacher's own
+  zero-context generation.
+- **NLL / Judge / MCQ-PPL divergence** (§10.7): the three metrics
+  genuinely measure different things. Leilani is the sharpest case —
+  best-in-class judge score (80% of teacher_full) **anti-correlated**
+  with MCQ-PPL dropping below base. This is a real property of OPD
+  (minimize KL on rollouts ≠ maximize discrimination), not noise.
+  Reporting all three is a Phase 2 contribution.
 
 ---
 
@@ -1000,65 +1008,140 @@ Plan §9.5 protocol on each persona's full 128k MCQ set. Three
 conditions:
 - `base_demo`: Instruct-2507 with demographics + chatbot_prev only
 - `teacher_k3`: R3 with last 3 sessions of context (canonical R3
-  deployment — teacher_full is out-of-distribution for R3's K=3
+  deployment — teacher_full would be out-of-distribution for R3's K=3
   training, and the tokenize-loop in `score_choice_ppl` blows up on
   full 128k contexts)
-- `student_step{200,400}`: base + LoRA, demo-only
+- `student_step{200,400,600,800,final}`: base + LoRA, demo-only
 
-| PID | n   | base_demo | teacher_k3 | student_step200 | student_step400 | closure@400 |
-|----:|----:|----------:|-----------:|----------------:|----------------:|------------:|
-|   0 | 154 |   0.325   |   0.403    |   0.299         |   0.351         |   33%       |
-|   4 | 147 |   0.367   |   0.497    |   0.435         |   **0.463**     |   **74%**   |
-|  12 | 113 |   0.407   |   0.504    |   **0.451**     |   0.442         |   36%       |
-|  14 | 129 |   0.264   |   0.326    |   0.302         |   0.302         |   61%       |
-| AVG |     |   0.341   |   0.432    |   0.372         |   **0.390**     |   **54%**   |
+#### Full learning curve — 4 personas × 5 checkpoints
 
-**Gap closure = (student − base) / (teacher − base)**.
+| PID | n   | base_demo | teacher_k3 | step 200 | step 400 | step 600 | step 800 | **final** | **best step** | **best acc** |
+|----:|----:|----------:|-----------:|---------:|---------:|---------:|---------:|----------:|:-------------:|-------------:|
+|   0 | 154 |   0.325   |   0.403    |   0.299  |   0.351  |   *—*    |   0.364  |   0.364   | 800 / final   |    0.364     |
+|   4 | 147 |   0.367   |   0.497    |   0.435  |   0.463  |   0.463  |   0.469  | **0.476** | **final**     |  **0.476**   |
+|  12 | 113 |   0.407   |   0.504    |   0.451  |   0.442  |   0.425  | **0.496**|   0.451   | **step 800**  |  **0.496**   |
+|  14 | 129 |   0.264   |   0.326    |   0.302  |   0.302  |   0.256  |   0.233  |   0.256   | **step 200/400** | **0.302** |
+| AVG |     |   0.341   |   0.432    |   0.372  |   0.390  |   0.381  |   0.390  |   0.387   |      —        |    0.410\*   |
 
-Observations:
+\* = macro-average of per-persona best. `—` for pid=0 step 600 reflects
+the `save_total_limit=2` pruning policy (pid=0 reached step 1000, which
+retained ckpts at {800, 1000}; step 600 was deleted).
 
-1. **Gap closure grew 34% → 54% from step 200 to step 400**. Training
-   is not yet converged.
+**Gap closure = (student − base) / (teacher − base)**:
 
-2. **pid=4 Lisa is the strongest LoRA** (74% closure at step 400,
-   absolute acc 0.463). Consistent with her being the most
-   distinctive persona in swap-persona diagnostic (§9.3: +0.037 max
-   gap) and 3rd-highest on judge (83% of teacher_full).
+| PID     | closure @ step 400 | closure @ final | closure @ best step |
+|---------|-------------------:|----------------:|--------------------:|
+|  0      |                33% |             50% |                 50% |
+|  4      |                74% |         **84%** |             **84%** |
+| 12      |                36% |             45% |             **92%** (step 800) |
+| 14      |                61% |             −13% (!)  |      **61%** (step 200) |
+| **AVG** |            **54%** |         **51%** |             **76%** |
 
-3. **pid=12 Jordan regressed from step 200 to step 400** (0.451 →
-   0.442, closure 45% → 36%). The only regression in the 4-persona
-   set. Candidate explanations: (a) Jordan has the fewest training
-   samples (931); (b) his niche domain leads to earlier over-fitting;
-   (c) step-400-vintage rollouts happened to drift away from
-   MCQ-helpful distribution. Not alarming yet — step 600 will
-   disambiguate.
+Per-persona best-step selection recovers a macro-average **76% closure**
+with **0 tokens of inference context** — 25 pp above the naive "take
+final" 51% average.
 
-4. **pid=0 Kanoa at step 200 scored BELOW base** (0.299 < 0.325) —
-   LoRA had not yet accumulated net benefit. By step 400 he's
-   +0.026 over base. Slowest learner of the four. Consistent with
-   his mixed-identity profile ("software + Pacific Islander music")
-   being harder to parameterize cleanly.
+#### Four distinct learning patterns
 
-5. **pid=14 Leilani has the lowest absolute numbers for everyone**
-   (base 0.264, teacher 0.326). Her MCQs are the hardest — Muay Thai
-   context + specific cultural references likely clash with LM priors.
-   Even so, student closes 61% — healthy for this persona.
+1. **pid=4 Lisa — clean monotonic**: 0.435 → 0.463 → 0.463 → 0.469 → 0.476.
+   Plateau approaching teacher. Final is optimal. Consistent with her
+   being the most distinctive persona in swap-persona diagnostic (§9.3:
+   +0.037 max gap) and gen-judge score (83% of teacher_full). **All
+   three eval metrics agree Lisa is the cleanest Phase 2 success**.
 
-### 10.6 Cross-metric triangulation
+2. **pid=0 Kanoa — slow monotonic**: 0.299 → 0.351 → — → 0.364 → 0.364.
+   At step 200 he was **below base** (LoRA had not accumulated net
+   benefit). Converged to 50% closure. His mixed-identity profile
+   (software + Pacific Islander music, §10.1) seems hardest to
+   parameterize cleanly — expected.
 
-| Persona      | Swap (logit) | NLL student vs teacher_full | Judge vs teacher_full | MCQ-PPL closure | Net read |
-|--------------|:------------:|:---------------------------:|:---------------------:|:---------------:|----------|
-| 0  Kanoa     | n/a (1 sample) | +0.79 (far)               | 71%                   | 33%             | Slow learner |
-| 4  Lisa      | **+0.037 max** | +0.71                     | 83%                   | **74%**         | **Best LoRA** |
-| 12 Jordan    | +0.007 (weakest) | +0.76                   | **93%**               | 36% (regressed) | **Anomaly** |
-| 14 Leilani   | +0.008        | +0.66                     | 80%                   | 61%             | Healthy middle |
+3. **pid=12 Jordan — unstable oscillation**: 0.451 → 0.442 → 0.425 →
+   **0.496** → 0.451. Huge jump at step 800 (essentially parity with
+   teacher_k3 0.504 = 92% closure), then regressed at final. The
+   step-400 dip we flagged earlier was transient; the step-800 peak
+   was also transient. **LoRA cannot reliably park at a good solution
+   for Jordan.** His judge score (93% of teacher_full) was highest in
+   §10.4, so his "gen quality" trajectory may diverge from MCQ-PPL
+   under prolonged training.
+
+4. **pid=14 Leilani — monotonic DECAY**: 0.302 → 0.302 → 0.256 → 0.233 →
+   0.256. Ends **below base** (−0.008 nll-gap from base_demo 0.264).
+   Best step was **200 or 400**, i.e. essentially no training. Yet her
+   judge score at step 400 was 80% of teacher_full — highest-but-one.
+   **This is §10.7's NLL/Judge/MCQ-PPL divergence in its sharpest form**:
+   training-amplified persona-voice learning actively hurts MCQ
+   discrimination. For Leilani, Phase 2 as currently designed is a
+   structural failure at the MCQ-PPL level.
+
+#### Two findings worth paper headlines
+
+**(a) Per-persona optimal step varies dramatically**. Taking `final`
+for all personas gives 51% closure; per-persona best-step gives 76%.
+Different personas need different amounts of OPD. A fixed-epoch
+training schedule leaves 25 pp of available closure on the table. This
+is a concrete argument for the dual-rate LoRA + early-stopping
+apparatus of plan §5–§7.
+
+**(b) "Learn persona voice" ≠ "pick right MCQ"**. Leilani and Jordan
+both show judge_score strength (§10.4) diverging from MCQ-PPL — in
+Leilani's case, monotonically **anti-correlated** with training steps.
+This is not noise; OPD minimises KL on student's rollout distribution,
+not on gold-choice discrimination, and the two objectives conflict
+for some personas.
+
+#### Evaluation scope — the K=3 structural ceiling
+
+The `teacher_k3` condition is the fairest teacher ceiling given R3 was
+trained at K=3. It also means:
+
+- For MCQs whose referenced information lives **>3 sessions back** from
+  the MCQ position, teacher_k3 **cannot directly see** that information.
+  PersonaMem's `distance_to_ref_in_blocks` field quantifies this
+  distance per MCQ; a breakdown by this variable (future work) would
+  separate "within-K=3" accuracy from "beyond-K=3" accuracy.
+- Partial rescue: every session re-states the persona card (§1.1,
+  §4.2), so static or most-recent preferences get compressed forward
+  into the current session's system message even when the original
+  discussion happened long ago. Dynamic evolution sequences (A→B→C
+  spanning >3 sessions) are harder to rescue.
+- A teacher trained at K=20 would have a higher ceiling for
+  distance-heavy MCQs but reintroduces the RoPE-extrapolation confound
+  documented in §3.4 / §4.2.
+- **Phase 2's potential unique value** is the opposite direction: each
+  OPD training sample distils teacher's behavior at *that turn*'s K=3
+  window into LoRA parameters. Over ~950 samples, the student's
+  parameters **aggregate across many non-overlapping K=3 windows** —
+  in principle covering context distances far beyond any single K=3
+  slice. The current rank=32 single-LoRA setup has not visibly
+  exploited this (student MCQ-PPL doesn't exceed teacher_k3 on any
+  persona); larger rank, longer training, or plan §5's dual-rate
+  consolidation are candidates to surface this advantage in future
+  work.
+
+### 10.6 Cross-metric triangulation (updated with step-800 / final data)
+
+Best MCQ-PPL closure taken from the full learning curve per persona
+(§10.5 rightmost column).
+
+| Persona      | Swap (logit) | NLL (student_demo vs teacher_full) | Judge (vs teacher_full) | MCQ-PPL best closure | Net read |
+|--------------|:------------:|:---------------------------------:|:-----------------------:|:--------------------:|----------|
+| 0  Kanoa     | n/a (1 sample) | +0.79 (far)                     | 71%                     | 50%                  | Slow but monotonic learner |
+| 4  Lisa      | **+0.037 max** | +0.71                           | 83%                     | **84%**              | **Best LoRA** — all metrics agree |
+| 12 Jordan    | +0.007 (weakest) | +0.76                         | **93%**                 | **92%** (step 800)   | Unstable — top peak but doesn't hold |
+| 14 Leilani   | +0.008        | +0.66                            | 80%                     | **61% (step 200)**, −13% @ final | **Anti-correlated** — gen good, MCQ decays |
 
 pid=4 Lisa: all three eval metrics agree she's the most successful LoRA.
 Cleanest Phase 2 success story.
 
-pid=12 Jordan: **Swap signal is weakest, but judge score is highest, and
-MCQ-PPL is in the middle.** These diverge because the three metrics
-isolate different capabilities — see §10.7.
+pid=12 Jordan: **Swap signal is weakest, but both judge and MCQ-PPL hit
+≥92% at some checkpoint** — Jordan's LoRA CAN learn strong
+discrimination, but it doesn't stabilize. Needs either early-stopping
+at step 800 or a training regime that reduces late-phase drift.
+
+pid=14 Leilani: **most divergent persona across metrics**. Judge score
+80% of teacher_full at step 400 vs MCQ-PPL dropping below base by
+final. This is §10.7's divergence in its purest form — Phase 2 fails
+on this persona under the current training objective.
 
 ### 10.7 On the NLL / Judge / MCQ-PPL divergence
 
@@ -1103,15 +1186,38 @@ and (c) it sits between the optimism/pessimism of the other two.
 
 ### 10.8 Next steps (Phase 2)
 
-1. **Complete epoch 1** (~500-600 more steps per persona). Re-run all
-   three evals at `final` checkpoint.
-2. **Plot the gap-closure curve** across steps {200, 400, final} ×
-   {NLL, judge, MCQ-PPL} — candidate figure for paper showing
-   training dynamics of parametric user knowledge.
-3. **If closure < 65% at epoch 1 final**, run epoch 2 (~6h on 4 GPUs).
-4. **Investigate pid=12 regression** once final is in. If confirmed
-   non-monotonic, add a note on LoRA rank saturation or try rank=64
-   as an ablation for that persona.
+Epoch 1 for all 4 personas is complete; the full 5-point learning curve
+(§10.5) shows 76% macro-average closure when per-persona best-step is
+selected, vs 51% at naive `final`. This reframes the Phase-2 roadmap:
+
+1. **Per-persona early stopping** is a headline finding worth its own
+   paper section — training dynamics differ qualitatively per persona
+   (monotonic / plateau / unstable / monotonic-decay all observed in a
+   single 4-persona set). Future runs should track a held-out
+   validation signal per persona and stop individually. This naturally
+   connects to plan §5–§7 (dual-rate LoRA + surprise detection +
+   consolidation), which are exactly the machinery for per-persona
+   adaptive stopping without an explicit validation set.
+
+2. **Investigate pid=14 Leilani regression** as a candidate
+   counterexample to "OPD monotonically improves UserSim". Does she
+   recover under rank=64 LoRA? Under a lower LR? Under an explicit
+   MCQ-PPL-on-val early-stopping criterion? Answering these is useful
+   for defining the boundary of Phase 2's current design.
+
+3. **MCQ-type breakdown by `distance_to_ref_in_blocks`**. Split
+   per-persona MCQ accuracy into "within-K=3" vs "beyond-K=3"
+   subsets. Expected: teacher_k3 drops sharply on beyond-K=3
+   (§10.5 evaluation scope). Student should drop less if LoRA
+   parameters actually aggregate across training-time K=3 windows —
+   this would demonstrate the parametric-compression advantage.
+
+4. **Teacher retrained at K=10 or K=20** (would need 262k-native
+   Instruct-2507, already our base — no RoPE issue). Raises the
+   ceiling on distance-heavy MCQs, but at inference cost. The
+   student-vs-teacher_k=N sweep would show at what context budget
+   "teacher + context" becomes as good as "student + no context".
+
 5. **UserSim paradigm (II) exploration** (plan §9.3): deferred to a
    separate workstream. Needs redesigned reaction-generation format
    (see §9.7).
@@ -1154,4 +1260,6 @@ d17ff8d  train_opd logs per-step + EXPERIMENTS §9 R3 chapter
 e9d184c  Phase 2 goal-1 evals: eval_user_nll + eval_user_gen_judge
 da62a14  Phase 2 MCQ-PPL aggregate launcher (run_phase2_mcq_eval.sh)
 42ba56c  aggregate: teacher_full -> teacher_k3 (fix O(n²) loop + R3 OOD)
+740e786  train_opd: resume from latest ckpt + save optimizer state
+8d6d42c  run_phase2_mcq_eval: support --student-step final
 ```
