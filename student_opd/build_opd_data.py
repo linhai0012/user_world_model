@@ -1,4 +1,4 @@
-"""Build Phase-2 OPD samples: per-user-turn.
+"""Build Phase-2 / Phase-2b OPD samples: per-user-turn.
 
 Phase 1 (Teacher SFT) uses whole-session samples. Phase 2 (OPD) operates at
 the user-turn granularity — each sample is one (chatbot_prev, user_response)
@@ -7,34 +7,41 @@ pair, with distinct views for teacher vs student:
   - Teacher view: demographics + K=3 prior sessions + current session up to
     and including chatbot_prev. Used to compute teacher logprobs on the
     student's rollout.
-  - Student view: demographics + chatbot_prev only (no history). The LoRA
-    must encode whatever the history contained.
+  - Student view (Phase 2):  demographics + chatbot_prev only (no history).
+  - Student view (Phase 2b): demographics + last N exchanges of the current
+    session ending at chatbot_prev (intra-session topic anchor; LoRA still
+    has to carry cross-session preference knowledge).
 
-Plan §1.4 + §1.6:
+Plan §1.4 + §1.6 (+ Phase 2b plan §4):
   - Iterate sessions per (persona, shared_context) timeline.
   - Skip session's first user turn (topic opener, unpredictable).
-  - For each remaining user turn: record history_for_teacher and
-    chatbot_prev for student input.
+  - For each remaining user turn: record history_for_teacher (K=3 sessions)
+    AND student_recent_messages (last N exchanges within this session).
 
 Output: one JSONL per persona under dynamic_usersim/outputs/
-    opd_128k_pid{N}_k{K}.jsonl
+    opd_{ver}_pid{N}_k{K}.jsonl
 
-Each line:
+Each line (Phase 2b adds `student_recent_messages` and `n_context_turns`):
     {
-      "persona_id":       str,
-      "context_id":       str,
-      "session_idx":      int,      # 0-based session within this context
-      "user_turn_idx":    int,      # index within session body (excludes system)
-      "n_prior_sessions": int,      # how many sessions fit in the K-window
-      "demographics":     str,      # persona card text (system msg content)
-      "history_messages": [{role, content}, ...],   # ends with chatbot_prev
-      "chatbot_prev":     str,      # duplicate of last history msg content
-      "user_response":    str,      # ground truth
+      "persona_id":             str,
+      "context_id":             str,
+      "session_idx":            int,
+      "user_turn_idx":          int,
+      "n_prior_sessions":       int,
+      "n_context_turns":        int,    # N (Phase 2b); 0 = Phase 2 mode
+      "demographics":           str,
+      "history_messages":       [{role, content}, ...],   # teacher view; ends w/ chatbot_prev
+      "student_recent_messages":[{role, content}, ...],   # last 2N msgs of current session, ends w/ chatbot_prev
+      "chatbot_prev":           str,
+      "user_response":          str,
     }
+
+Backward compat: Phase 2 readers can ignore `student_recent_messages`. With
+`--n-context-turns 0` the field is an empty list (legacy data shape).
 
 Usage:
     python dynamic_usersim/student_opd/build_opd_data.py \
-        --personas 0 12 14 --context-window 3 --version 128k
+        --personas 0 4 12 14 --context-window 3 --n-context-turns 2 --version 128k
 """
 
 from __future__ import annotations
@@ -58,10 +65,14 @@ def build_samples_for_persona(
     pid: str,
     timelines: dict,
     context_window: int,
+    n_context_turns: int = 0,
 ) -> list[dict]:
     """Produce per-user-turn OPD samples for one persona.
 
     timelines: {(persona_id, context_id): [Session, ...]}
+    n_context_turns: 0 = legacy Phase 2 (empty student_recent_messages).
+                     N>0 = Phase 2b (last 2N msgs of current session, ending
+                     at chatbot_prev).
     """
     # Filter to this persona's timelines, sort by context_id for stability.
     my_ctxs = sorted(
@@ -129,14 +140,29 @@ def build_samples_for_persona(
                         "content": strip_role_prefix(m["content"], m["role"]),
                     })
 
+                # Student view (Phase 2b): last 2*N messages of the current
+                # session ending at chatbot_prev. Last message is always the
+                # assistant chatbot_prev turn.
+                if n_context_turns > 0:
+                    recent_start = max(0, body_idx - n_context_turns * 2)
+                    student_recent_messages = [
+                        {"role": m["role"],
+                         "content": strip_role_prefix(m["content"], m["role"])}
+                        for m in body[recent_start:body_idx]
+                    ]
+                else:
+                    student_recent_messages = []
+
                 out.append({
                     "persona_id": pid,
                     "context_id": ctx_id,
                     "session_idx": t,
                     "user_turn_idx": body_idx,
                     "n_prior_sessions": len(prior_sessions),
+                    "n_context_turns": n_context_turns,
                     "demographics": demographics,
                     "history_messages": history_messages,
+                    "student_recent_messages": student_recent_messages,
                     "chatbot_prev": chatbot_prev,
                     "user_response": user_response,
                 })
@@ -153,6 +179,12 @@ def main() -> None:
     ap.add_argument(
         "--context-window", type=int, default=3,
         help="K — prior sessions in teacher history (default 3, matches R3)",
+    )
+    ap.add_argument(
+        "--n-context-turns", type=int, default=2,
+        help="N — last N user/assistant exchanges (2*N messages) of the "
+             "current session given to the student. 0 = legacy Phase 2 "
+             "(no recent-turns context). Default 2 = Phase 2b §4.",
     )
     ap.add_argument(
         "--version", choices=["32k", "128k", "1M"], default="128k",
@@ -172,7 +204,9 @@ def main() -> None:
 
     grand_stats: dict[str, dict] = {}
     for pid in args.personas:
-        samples = build_samples_for_persona(pid, timelines, args.context_window)
+        samples = build_samples_for_persona(
+            pid, timelines, args.context_window, args.n_context_turns,
+        )
         out_path = args.out_dir / (
             f"opd_{args.version}_pid{pid}_k{args.context_window}.jsonl"
         )
@@ -182,16 +216,22 @@ def main() -> None:
 
         # Stats
         hist_msg_counts = [len(s["history_messages"]) for s in samples]
+        recent_msg_counts = [len(s["student_recent_messages"]) for s in samples]
         resp_lens = [len(s["user_response"]) for s in samples]
         n_prior = [s["n_prior_sessions"] for s in samples]
         sess_ids = sorted({(s["context_id"], s["session_idx"]) for s in samples})
         grand_stats[pid] = {
             "n_samples": len(samples),
             "n_sessions_with_samples": len(sess_ids),
+            "n_context_turns": args.n_context_turns,
             "hist_msgs_min": min(hist_msg_counts) if hist_msg_counts else 0,
             "hist_msgs_max": max(hist_msg_counts) if hist_msg_counts else 0,
             "hist_msgs_mean": (sum(hist_msg_counts) / len(hist_msg_counts)
                                if hist_msg_counts else 0),
+            "recent_msgs_min": min(recent_msg_counts) if recent_msg_counts else 0,
+            "recent_msgs_max": max(recent_msg_counts) if recent_msg_counts else 0,
+            "recent_msgs_mean": (sum(recent_msg_counts) / len(recent_msg_counts)
+                                 if recent_msg_counts else 0),
             "n_prior_sess_mean": (sum(n_prior) / len(n_prior)
                                   if n_prior else 0),
             "user_resp_chars_p50": (
@@ -205,6 +245,11 @@ def main() -> None:
               f"min={grand_stats[pid]['hist_msgs_min']} "
               f"max={grand_stats[pid]['hist_msgs_max']} "
               f"mean={grand_stats[pid]['hist_msgs_mean']:.1f}")
+        print(f"    student_recent_messages per sample (n_context_turns="
+              f"{args.n_context_turns}): "
+              f"min={grand_stats[pid]['recent_msgs_min']} "
+              f"max={grand_stats[pid]['recent_msgs_max']} "
+              f"mean={grand_stats[pid]['recent_msgs_mean']:.1f}")
         print(f"    n_prior_sessions mean: {grand_stats[pid]['n_prior_sess_mean']:.2f}")
         print(f"    user_response chars p50: {grand_stats[pid]['user_resp_chars_p50']}")
 

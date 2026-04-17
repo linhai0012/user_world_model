@@ -63,18 +63,30 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--base-model", type=str, default=MODEL_NAME,
                     help="HF base model (default config.MODEL_NAME)")
     ap.add_argument("--lora-path", type=Path, default=None,
-                    help="PEFT LoRA adapter dir; omit for base-only eval")
+                    help="PEFT LoRA adapter dir; omit for base-only eval. "
+                         "For Phase 2b dual LoRA pass the parent dir "
+                         "containing slow/ and fast/ subdirs and set "
+                         "--lora-mode dual.")
+    ap.add_argument("--lora-mode", choices=["single", "dual"], default="single",
+                    help="single = legacy Phase 2 (one adapter at lora-path). "
+                         "dual = Phase 2b Round 1 (slow/ + fast/ subdirs).")
     ap.add_argument("--persona-id", type=str, required=True)
     ap.add_argument("--mcq-version", choices=["32k", "128k", "1M"],
                     default="128k")
-    ap.add_argument("--context-mode", choices=["demo-only", "last-n", "full"],
+    ap.add_argument("--context-mode",
+                    choices=["demo-only", "last-n", "full", "recent-turns"],
                     default="demo-only",
                     help="demo-only: just the persona card + MCQ question "
                          "(Phase 2 canonical 0-token-inference). "
                          "last-n: keep the last N sessions. "
+                         "recent-turns: persona card + last N user/assistant "
+                         "exchanges within the current session (Phase 2b). "
                          "full: entire history up to end_index.")
     ap.add_argument("--last-n-sessions", type=int, default=3,
                     help="only used when --context-mode=last-n")
+    ap.add_argument("--recent-turns", type=int, default=2,
+                    help="only used when --context-mode=recent-turns; "
+                         "number of user/assistant exchanges (=2*N msgs)")
     ap.add_argument("--num-mcqs", type=int, default=-1,
                     help="-1 = all MCQs for this persona")
     ap.add_argument("--max-seq-len", type=int, default=MAX_SEQ_LEN)
@@ -85,10 +97,17 @@ def parse_args() -> argparse.Namespace:
 
 
 def load_model_with_lora(base_path: str | Path,
-                         lora_path: Path | None) -> torch.nn.Module:
-    """Load base; if lora_path, wrap with PEFT and merge_and_unload so that
-    the downstream `model.model(...) / model.lm_head(...)` pattern from
-    eval_mcq_ppl.score_choice_ppl works unchanged."""
+                         lora_path: Path | None,
+                         lora_mode: str = "single") -> torch.nn.Module:
+    """Load base; optionally wrap with PEFT and merge_and_unload.
+
+    lora_mode='single': lora_path is a single adapter dir (Phase 2 layout).
+    lora_mode='dual':   lora_path is a parent dir holding slow/ + fast/
+                        subdirs (Phase 2b Round 1 layout). Both adapters
+                        are loaded, activated together, then merged into
+                        base weights so the downstream PPL scorer sees a
+                        plain HF model.
+    """
     model = AutoModelForCausalLM.from_pretrained(
         str(base_path),
         torch_dtype=torch.bfloat16,
@@ -97,10 +116,30 @@ def load_model_with_lora(base_path: str | Path,
     )
     if lora_path is not None:
         from peft import PeftModel
-        if int(os.environ.get("RANK", 0)) == 0:
-            print(f"[eval] wrapping with LoRA: {lora_path}")
-        model = PeftModel.from_pretrained(model, str(lora_path))
-        model = model.merge_and_unload()
+        is_rank0 = int(os.environ.get("RANK", 0)) == 0
+        if lora_mode == "single":
+            if is_rank0:
+                print(f"[eval] wrapping with single LoRA: {lora_path}")
+            model = PeftModel.from_pretrained(model, str(lora_path))
+            model = model.merge_and_unload()
+        elif lora_mode == "dual":
+            slow_dir = Path(lora_path) / "slow"
+            fast_dir = Path(lora_path) / "fast"
+            if not (slow_dir / "adapter_config.json").exists():
+                raise FileNotFoundError(f"missing slow adapter at {slow_dir}")
+            if not (fast_dir / "adapter_config.json").exists():
+                raise FileNotFoundError(f"missing fast adapter at {fast_dir}")
+            if is_rank0:
+                print(f"[eval] wrapping with dual LoRA: "
+                      f"slow={slow_dir} fast={fast_dir}")
+            model = PeftModel.from_pretrained(
+                model, str(slow_dir), adapter_name="slow",
+            )
+            model.load_adapter(str(fast_dir), adapter_name="fast")
+            model.set_adapter(["slow", "fast"])
+            model = model.merge_and_unload()
+        else:
+            raise ValueError(f"unknown lora_mode: {lora_mode}")
     model.config.use_cache = False
     model.eval()
     model.to(torch.cuda.current_device())
@@ -116,14 +155,32 @@ def get_demographics(raw_ctx: list[dict]) -> str:
 
 
 def build_eval_context(raw_ctx: list[dict], end_index: int,
-                       mode: str, last_n: int) -> list[dict]:
-    """Build context messages per chosen mode."""
+                       mode: str, last_n: int,
+                       recent_turns: int = 2) -> list[dict]:
+    """Build context messages per chosen mode.
+
+    recent-turns: persona card + the last 2*recent_turns user/assistant
+    messages from raw_ctx[:end_index] (intra-session anchor for Phase 2b
+    student input). System messages from prior session restatements are
+    dropped — the persona card is already included once at the top.
+    """
     if mode == "demo-only":
         return [{"role": "system", "content": get_demographics(raw_ctx)}]
     if mode == "last-n":
         return build_context_messages(raw_ctx, end_index, last_n)
     if mode == "full":
         return build_context_messages(raw_ctx, end_index, None)
+    if mode == "recent-turns":
+        demo_msg = {"role": "system", "content": get_demographics(raw_ctx)}
+        sliced = raw_ctx[:end_index]
+        cleaned = [
+            {"role": m["role"],
+             "content": strip_role_prefix(m["content"], m["role"])}
+            for m in sliced if m["role"] != "system"
+        ]
+        n_msgs = recent_turns * 2
+        recent = cleaned[-n_msgs:] if len(cleaned) > n_msgs else cleaned
+        return [demo_msg] + recent
     raise ValueError(f"unknown context mode: {mode}")
 
 
@@ -155,7 +212,9 @@ def main() -> None:
     if rank == 0:
         print(f"[eval] loading base: {args.base_model}"
               f"{' + LoRA' if args.lora_path else ' (no LoRA)'}")
-    model = load_model_with_lora(args.base_model, args.lora_path)
+    model = load_model_with_lora(
+        args.base_model, args.lora_path, args.lora_mode,
+    )
 
     # --- Score MCQs (DP split) ---
     my_mcqs = mcqs[rank::world_size]
@@ -166,7 +225,7 @@ def main() -> None:
         ctx_msgs = build_eval_context(
             ctxs[q["shared_context_id"]],
             int(q["end_index_in_shared_context"]),
-            args.context_mode, args.last_n_sessions,
+            args.context_mode, args.last_n_sessions, args.recent_turns,
         )
         question = q["user_question_or_message"]
         choices = parse_choices(q["all_options"])

@@ -56,12 +56,25 @@ from config import MAX_SEQ_LEN, MODEL_NAME  # noqa: E402
 
 
 # Condition descriptors: (name, model_key, context_mode)
-CONDITIONS = [
+# context_mode values understood by build_prompt_ids: demo-only, full, recent.
+# Phase 2 baseline conditions still pass demo-only / full.
+# Phase 2b adds `recent` (demographics + N intra-session exchanges) for the
+# student view.
+CONDITIONS_PHASE2 = [
     ("base_demo",    "base",    "demo-only"),
     ("base_full",    "base",    "full"),
     ("teacher_demo", "teacher", "demo-only"),
     ("teacher_full", "teacher", "full"),
     ("student_demo", "student", "demo-only"),
+]
+
+CONDITIONS_PHASE2B = [
+    ("base_demo",      "base",    "demo-only"),
+    ("base_recent",    "base",    "recent"),
+    ("base_full",      "base",    "full"),
+    ("teacher_demo",   "teacher", "demo-only"),
+    ("teacher_full",   "teacher", "full"),
+    ("student_recent", "student", "recent"),
 ]
 
 
@@ -70,7 +83,14 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--persona-id", type=str, required=True)
     ap.add_argument("--base-model", type=str, default=MODEL_NAME)
     ap.add_argument("--teacher-path", type=Path, required=True)
-    ap.add_argument("--lora-path", type=Path, required=True)
+    ap.add_argument("--lora-path", type=Path, required=True,
+                    help="Single adapter dir (lora-mode=single) or parent dir "
+                         "containing slow/+fast/ (lora-mode=dual).")
+    ap.add_argument("--lora-mode", choices=["single", "dual"], default="single",
+                    help="single = Phase 2; dual = Phase 2b Round 1.")
+    ap.add_argument("--phase", choices=["phase2", "phase2b"], default="phase2",
+                    help="phase2 = legacy 5 conditions; phase2b = adds "
+                         "base_recent + student_recent (Phase 2b plan §7.4).")
     ap.add_argument("--data-path", type=Path, default=None,
                     help="Defaults to opd_128k_pid{N}_k3.jsonl")
     ap.add_argument("--num-samples", type=int, default=100)
@@ -85,14 +105,30 @@ def parse_args() -> argparse.Namespace:
 # ---------- Prompt construction ----------
 
 def build_prompt_ids(sample: dict, tokenizer, context_mode: str) -> list[int]:
-    """Build ChatML prompt ending at '<|im_start|>user\\n'."""
+    """Build ChatML prompt ending at '<|im_start|>user\\n'.
+
+    context_mode:
+      demo-only : [system: demographics, assistant: chatbot_prev]  (Phase 2)
+      recent    : [system: demographics] + student_recent_messages (Phase 2b)
+      full      : sample['history_messages']                        (teacher view)
+    """
     if context_mode == "demo-only":
         msgs = [
             {"role": "system", "content": sample["demographics"]},
             {"role": "assistant", "content": sample["chatbot_prev"]},
         ]
+    elif context_mode == "recent":
+        recent = sample.get("student_recent_messages") or []
+        if not recent:
+            # Fall back to demo-only if data was built without N>0
+            msgs = [
+                {"role": "system", "content": sample["demographics"]},
+                {"role": "assistant", "content": sample["chatbot_prev"]},
+            ]
+        else:
+            msgs = [{"role": "system", "content": sample["demographics"]}]
+            msgs.extend(recent)
     elif context_mode == "full":
-        # history_messages already ends with the chatbot_prev assistant turn
         msgs = sample["history_messages"]
     else:
         raise ValueError(f"unknown context_mode: {context_mode}")
@@ -174,11 +210,31 @@ def load_hf_model(path: str | Path) -> torch.nn.Module:
     return m
 
 
-def load_student_merged(base_path: str, lora_path: Path) -> torch.nn.Module:
-    """Load base + LoRA and merge so model has the same structure as base."""
+def load_student_merged(base_path: str, lora_path: Path,
+                        lora_mode: str = "single") -> torch.nn.Module:
+    """Load base + LoRA(s) and merge into base. Returns a plain HF model.
+
+    lora_mode='single': lora_path is a single adapter dir.
+    lora_mode='dual':   lora_path is a parent dir with slow/+fast/ subdirs.
+    """
     base = load_hf_model(base_path)
     from peft import PeftModel
-    m = PeftModel.from_pretrained(base, str(lora_path))
+    if lora_mode == "single":
+        m = PeftModel.from_pretrained(base, str(lora_path))
+    elif lora_mode == "dual":
+        slow_dir = Path(lora_path) / "slow"
+        fast_dir = Path(lora_path) / "fast"
+        if not (slow_dir / "adapter_config.json").exists():
+            raise FileNotFoundError(f"missing slow adapter at {slow_dir}")
+        if not (fast_dir / "adapter_config.json").exists():
+            raise FileNotFoundError(f"missing fast adapter at {fast_dir}")
+        m = PeftModel.from_pretrained(
+            base, str(slow_dir), adapter_name="slow",
+        )
+        m.load_adapter(str(fast_dir), adapter_name="fast")
+        m.set_adapter(["slow", "fast"])
+    else:
+        raise ValueError(f"unknown lora_mode: {lora_mode}")
     m = m.merge_and_unload()
     m.config.use_cache = False
     m.eval()
@@ -219,9 +275,13 @@ def main() -> None:
     )
     apply_liger()
 
+    conditions = (CONDITIONS_PHASE2B if args.phase == "phase2b"
+                  else CONDITIONS_PHASE2)
+    needed_modes = sorted({c[2] for c in conditions})
+
     # Pre-tokenize prompts per context mode (avoid redoing work per condition)
     prompts_by_mode: dict[str, list[list[int]]] = {}
-    for mode in ("demo-only", "full"):
+    for mode in needed_modes:
         prompts_by_mode[mode] = [
             build_prompt_ids(s, tokenizer, mode) for s in samples
         ]
@@ -234,7 +294,7 @@ def main() -> None:
 
     # Group conditions by model to minimize loads
     by_model: dict[str, list[tuple]] = defaultdict(list)
-    for cond in CONDITIONS:
+    for cond in conditions:
         by_model[cond[1]].append(cond)
 
     results: dict[str, list[dict]] = defaultdict(list)
@@ -246,7 +306,9 @@ def main() -> None:
         elif model_key == "teacher":
             model = load_hf_model(args.teacher_path)
         elif model_key == "student":
-            model = load_student_merged(args.base_model, args.lora_path)
+            model = load_student_merged(
+                args.base_model, args.lora_path, args.lora_mode,
+            )
         else:
             raise ValueError(model_key)
         print(f"  loaded in {time.time()-t0:.1f}s  "
@@ -287,35 +349,46 @@ def main() -> None:
 
     # ---- Summary ----
     print("\n" + "=" * 72)
-    print(f"SUMMARY — eval_user_nll  pid={args.persona_id}  n={len(samples)}")
+    print(f"SUMMARY — eval_user_nll  pid={args.persona_id}  "
+          f"phase={args.phase}  n={len(samples)}")
     print("=" * 72)
-    print(f"{'condition':<15} {'mean_nll':>9}  {'vs base_demo':>13}  "
+    print(f"{'condition':<16} {'mean_nll':>9}  {'vs base_demo':>13}  "
           f"{'vs teacher_full':>17}")
     summary = {
         cond: sum(r["mean_nll"] for r in results[cond]) / len(samples)
-        for cond, _, _ in CONDITIONS
+        for cond, _, _ in conditions
     }
     anchor_base = summary["base_demo"]
     anchor_tf = summary["teacher_full"]
-    for cond_name, _, _ in CONDITIONS:
+    for cond_name, _, _ in conditions:
         m = summary[cond_name]
-        print(f"{cond_name:<15} {m:>9.4f}  {m - anchor_base:>+13.4f}  "
+        print(f"{cond_name:<16} {m:>9.4f}  {m - anchor_base:>+13.4f}  "
               f"{m - anchor_tf:>+17.4f}")
 
-    # Core Phase-2 diagnostics
-    print("\n--- Phase-2 diagnostics ---")
-    student_demo = summary["student_demo"]
-    gap_vs_teacher_full = student_demo - summary["teacher_full"]
-    gap_vs_teacher_demo = student_demo - summary["teacher_demo"]
-    gap_vs_base_demo = student_demo - summary["base_demo"]
+    # Phase-aware diagnostics — pick the student condition that exists.
+    student_key = ("student_recent" if args.phase == "phase2b"
+                   else "student_demo")
+    print(f"\n--- diagnostics (student = {student_key}) ---")
+    student_nll = summary[student_key]
+    gap_vs_teacher_full = student_nll - summary["teacher_full"]
+    gap_vs_teacher_demo = student_nll - summary["teacher_demo"]
+    gap_vs_base_demo = student_nll - summary["base_demo"]
     base_ctx_gain = summary["base_demo"] - summary["base_full"]
     teacher_ctx_gain = summary["teacher_demo"] - summary["teacher_full"]
-    print(f"student_demo − teacher_full = {gap_vs_teacher_full:+.4f}  "
-          f"(thesis: LoRA at 0-ctx matches teacher at full ctx)")
-    print(f"student_demo − teacher_demo = {gap_vs_teacher_demo:+.4f}  "
+    print(f"{student_key} − teacher_full = {gap_vs_teacher_full:+.4f}  "
+          f"(thesis: LoRA at low-ctx matches teacher at full ctx)")
+    print(f"{student_key} − teacher_demo = {gap_vs_teacher_demo:+.4f}  "
           f"(thesis: LoRA beats teacher when teacher has no ctx)")
-    print(f"student_demo − base_demo    = {gap_vs_base_demo:+.4f}  "
+    print(f"{student_key} − base_demo    = {gap_vs_base_demo:+.4f}  "
           f"(want strongly negative: LoRA adds beyond demographics)")
+    if args.phase == "phase2b":
+        # Isolate the contribution of the 2-turn context vs LoRA.
+        print(f"base_recent    − base_demo    = "
+              f"{summary['base_recent'] - anchor_base:+.4f}  "
+              f"(2-turn context alone, no LoRA)")
+        print(f"{student_key} − base_recent  = "
+              f"{student_nll - summary['base_recent']:+.4f}  "
+              f"(dual-LoRA gain on top of 2-turn context — Phase 2b §4 ablation)")
     print(f"base  context gain (demo−full)    = {base_ctx_gain:+.4f}")
     print(f"teacher context gain (demo−full)  = {teacher_ctx_gain:+.4f}")
 
@@ -327,11 +400,18 @@ def main() -> None:
             if results[a][i]["mean_nll"] < results[b][i]["mean_nll"]
         )
     print(f"\n--- paired per-sample wins (lower NLL) ---")
-    print(f"student_demo < base_demo     : {wins('student_demo','base_demo')}/{n}")
-    print(f"student_demo < teacher_demo  : {wins('student_demo','teacher_demo')}/{n}")
-    print(f"student_demo < teacher_full  : {wins('student_demo','teacher_full')}/{n}")
-    print(f"base_full    < base_demo     : {wins('base_full','base_demo')}/{n}")
-    print(f"teacher_full < teacher_demo  : {wins('teacher_full','teacher_demo')}/{n}")
+    print(f"{student_key:<16} < base_demo     : "
+          f"{wins(student_key,'base_demo')}/{n}")
+    print(f"{student_key:<16} < teacher_demo  : "
+          f"{wins(student_key,'teacher_demo')}/{n}")
+    print(f"{student_key:<16} < teacher_full  : "
+          f"{wins(student_key,'teacher_full')}/{n}")
+    print(f"base_full        < base_demo     : {wins('base_full','base_demo')}/{n}")
+    print(f"teacher_full     < teacher_demo  : "
+          f"{wins('teacher_full','teacher_demo')}/{n}")
+    if args.phase == "phase2b":
+        print(f"{student_key:<16} < base_recent   : "
+              f"{wins(student_key,'base_recent')}/{n}")
 
     args.out_json.parent.mkdir(parents=True, exist_ok=True)
     args.out_json.write_text(json.dumps({
