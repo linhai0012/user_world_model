@@ -136,7 +136,8 @@ def load_model_with_lora(base_path: str | Path,
                 model, str(slow_dir), adapter_name="slow",
             )
             model.load_adapter(str(fast_dir), adapter_name="fast")
-            model.set_adapter(["slow", "fast"])
+            # PeftModel.set_adapter rejects lists; go through tuner layer.
+            model.base_model.set_adapter(["slow", "fast"])
             model = model.merge_and_unload()
         else:
             raise ValueError(f"unknown lora_mode: {lora_mode}")

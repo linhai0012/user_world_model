@@ -232,7 +232,8 @@ def load_student_merged(base_path: str, lora_path: Path,
             base, str(slow_dir), adapter_name="slow",
         )
         m.load_adapter(str(fast_dir), adapter_name="fast")
-        m.set_adapter(["slow", "fast"])
+        # PeftModel.set_adapter rejects lists; go through tuner layer.
+        m.base_model.set_adapter(["slow", "fast"])
     else:
         raise ValueError(f"unknown lora_mode: {lora_mode}")
     m = m.merge_and_unload()

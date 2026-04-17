@@ -132,6 +132,20 @@ def compute_response_logprobs(model, prefix_ids, response_ids, device):
 
 # ---------- Dual-LoRA setup / save / load ----------
 
+def activate_adapters(peft_model, names: list[str]) -> None:
+    """Activate multiple LoRA adapters simultaneously.
+
+    PEFT gotcha: `PeftModel.set_adapter(name)` only accepts a string and
+    rejects lists with 'unhashable type: list' (it does `name not in
+    self.peft_config` where peft_config is a dict). To activate several
+    adapters at once we call the tuner layer below it (`LoraModel`), whose
+    `set_adapter` accepts `list[str]`, propagates to every LoraLayer's
+    `active_adapters`, and correctly toggles `requires_grad` so every
+    listed adapter becomes trainable.
+    """
+    peft_model.base_model.set_adapter(names)
+
+
 def setup_dual_lora(
     student_base,
     slow_rank: int, slow_alpha: int, slow_dropout: float,
@@ -150,7 +164,7 @@ def setup_dual_lora(
     student = get_peft_model(student_base, cfg_slow, adapter_name="slow")
     student.add_adapter("fast", cfg_fast)
     # Activate both — their LoRA increments add at every targeted module.
-    student.set_adapter(["slow", "fast"])
+    activate_adapters(student, ["slow", "fast"])
     return student
 
 
@@ -193,7 +207,7 @@ def load_dual_lora_for_training(student_base, ckpt_dir: Path):
         student_base, str(slow_dir), adapter_name="slow", is_trainable=True,
     )
     student.load_adapter(str(fast_dir), adapter_name="fast", is_trainable=True)
-    student.set_adapter(["slow", "fast"])
+    activate_adapters(student, ["slow", "fast"])
     return student
 
 
