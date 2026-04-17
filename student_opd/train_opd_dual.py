@@ -522,11 +522,39 @@ def main() -> None:
             )
 
             if args.dry_run:
-                print(f"DRY: loss={loss.item():.4f} min_len={min_len} "
-                      f"slow_gnorm={float(slow_gnorm):.4f} "
-                      f"fast_gnorm={float(fast_gnorm):.4f}")
-                if float(slow_gnorm) == 0.0 or float(fast_gnorm) == 0.0:
-                    print("  WARNING: one adapter has zero grad norm — check setup")
+                # Wiring check: did autograd actually reach both adapter
+                # parameter sets? `p.grad is not None` proves the param was
+                # part of the autograd graph. Magnitude is a separate test:
+                # when student_base == teacher_path AND LoRA is fresh
+                # (B=0), forward pass through LoRA contributes nothing, so
+                # student==teacher pointwise → KL is exactly at its minimum
+                # → gradient is mathematically zero. That's expected for
+                # a same-model dry-run; with the real R3 teacher loss>0.
+                slow_with_grad = sum(1 for p in slow_params if p.grad is not None)
+                fast_with_grad = sum(1 for p in fast_params if p.grad is not None)
+                slow_gn = float(slow_gnorm)
+                fast_gn = float(fast_gnorm)
+                print(f"DRY: loss={loss.item():.6f} min_len={min_len}")
+                print(f"     slow params reached by autograd: "
+                      f"{slow_with_grad}/{len(slow_params)}  gnorm={slow_gn:.6e}")
+                print(f"     fast params reached by autograd: "
+                      f"{fast_with_grad}/{len(fast_params)}  gnorm={fast_gn:.6e}")
+
+                wired = (slow_with_grad == len(slow_params)
+                         and fast_with_grad == len(fast_params))
+                if not wired:
+                    print("  ERROR: some adapter params not in autograd graph "
+                          "— check setup")
+                elif slow_gn < 1e-6 and fast_gn < 1e-6 and loss.item() < 1e-6:
+                    teacher_is_base = (str(args.teacher_path).rstrip("/") ==
+                                       args.student_base)
+                    note = (" (teacher_path == student_base — student equals "
+                            "teacher pointwise so KL is exactly 0; with the "
+                            "real R3 SFT teacher loss>0 will produce nonzero "
+                            "gradients on both adapters)" if teacher_is_base
+                            else " (loss is at its minimum on this sample)")
+                    print(f"  OK wiring: autograd reached every adapter "
+                          f"param. Gradients are zero because loss=0{note}.")
                 else:
                     print("  OK: both adapters received non-zero gradients")
                 break
