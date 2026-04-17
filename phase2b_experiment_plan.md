@@ -37,15 +37,22 @@ closure (Jordan exceeded teacher_k3 at +109% on n=113).
 
 ### Round 2 (split into 2a then 2b for clean ablation)
 
-**Round 2a**: dual LoRA + **gated reverse KL** + Teacher K=3 (unchanged).
+**Round 2a**: dual LoRA + **entropy-gated reverse KL** + Teacher K=3.
 Inherits R1b best settings (slow_lr 5e-5, student_ctx demo).
-Goal: validate that gated KL fixes the §10.7 / qtype-analysis failure
-mode where teacher pulls student WORSE than base on tokens where
-teacher itself is wrong (e.g. Leilani `acknowledge_latest`).
+Outcome: **failed its core hypothesis**. Gate dropped to ~7% by step 30
+(Instruct-2507 overconfidence dominates entropy comparison); Leilani
+`acknowledge_latest` accelerated decay (0.20 → 0.05 by step 200, worse
+than R1b's 0.075 at final). track_evolution and recall_facts also
+regressed across all 4 personas. See chat log + qtype analysis.
 
-**Round 2b** (after 2a validates): + Teacher K=10. Goal: raise the
-distance>3 ceiling. Decoupled from 2a so we can attribute any further
-gain cleanly to the K bump rather than to gated KL.
+**Round 2c** (after 2a failure): replace entropy gate with **joint gate**:
+gate = (H_teacher < tau) AND (argmax_teacher != argmax_student). Tests
+whether requiring "teacher confident AND actual disagreement" recovers
+R2a's lost gains. Same training infrastructure as R2a (dual LoRA,
+slow_lr 5e-5, student_ctx demo, K=3).
+
+**Round 2b** (after 2c): + Teacher K=10. Goal: raise distance>3 ceiling.
+Decoupled from gating choice so K bump is cleanly attributed.
 
 Gated KL provides automatic selective update at all granularities
 (token, sample, session) — see §5.4 — so no Round 3 surprise-detection
@@ -235,30 +242,60 @@ https://thinkingmachines.ai/blog/on-policy-distillation/ for rationale
 direction (`KL(teacher || student)`), incompatible with Phase 2 / R1.
 
 ```python
-def gated_reverse_kl(s_lp, t_lp, margin=0.0):
+def gated_reverse_kl(s_lp, t_lp, mode="entropy", margin=0.0, tau=1.0):
     """
     s_lp, t_lp: log-softmax student/teacher logits, shape [T, V].
     Per-token reverse KL = sum_v P_s(v) * (log P_s(v) - log P_t(v)),
-    masked by entropy gate. Returns (loss, gate_ratio).
+    masked by gate. Returns (loss, gate_ratio).
+
+    Two gate modes:
+      "entropy" (R2a): gate = (H_t + margin < H_s). Independent comparison
+        of two scalars; assumes "more confident = more knowledge to teach".
+      "joint" (R2c): gate = (H_t < tau) AND (argmax_t != argmax_s).
+        Joint measure of (a) teacher confidence absolute level AND
+        (b) actual disagreement at top-1. Addresses two R2a failure modes:
+        Instruct-base overconfidence drowning out the entropy signal, and
+        gating opening on tokens where student & teacher already agree.
     """
-    # Reverse KL per token (same formula as R1 / R1b train_opd_dual.py)
     kl_per_token = (s_lp.exp() * (s_lp - t_lp)).sum(dim=-1)   # [T]
-
-    # Per-token entropies
     H_t = -(t_lp.exp() * t_lp).sum(dim=-1)                    # [T]
-    H_s = -(s_lp.exp() * s_lp).sum(dim=-1)                    # [T]
 
-    # Gate: 1 where teacher more confident (lower H) than student
-    gate = (H_t + margin < H_s).float()                       # [T]
+    if mode == "entropy":
+        H_s = -(s_lp.exp() * s_lp).sum(dim=-1)
+        gate = (H_t + margin < H_s).float()
+    elif mode == "joint":
+        top_t = t_lp.argmax(dim=-1)
+        top_s = s_lp.argmax(dim=-1)
+        gate = ((H_t < tau) & (top_t != top_s)).float()
+    else:
+        raise ValueError(f"unknown gate mode: {mode}")
+
     gate_sum = gate.sum()
-
     if gate_sum.item() == 0.0:
-        return None, 0.0   # caller skips backward (no tokens worth distilling)
+        return None, 0.0
 
     loss = (gate * kl_per_token).sum() / gate_sum
     gate_ratio = (gate_sum / gate.numel()).item()
     return loss, gate_ratio
 ```
+
+**R2a (entropy) outcome**: gate ratio dropped to ~0.07 by step 30
+(Instruct-2507 base is naturally peaked, so H_s < H_t for ~85% of tokens
+even at init — the gate gets drowned out). `acknowledge_latest` for
+Leilani went from 0.20 (R1b @200) to 0.05 (R2a @200) — gate accelerated
+the very failure it was supposed to prevent, because gradient concentration
+on the few open tokens amplified teacher's wrong direction.
+
+**R2c (joint) hypothesis**: requiring both teacher confidence (H_t < 1.0)
+AND top-1 disagreement should:
+- recover the track_evolution / recall_facts gains R2a lost (where teacher
+  is genuinely confident-and-correct AND student disagrees)
+- avoid wasting gradient on tokens where student already matches teacher
+- not exacerbate Instruct-base overconfidence (no H_s comparison)
+
+Joint gate still cannot distinguish "teacher confidently correct" from
+"teacher confidently wrong" — that's a fundamental no-ground-truth limit.
+Leilani's `acknowledge_latest` may still degrade under R2c.
 
 ### 5.3 Monitoring
 

@@ -38,6 +38,7 @@ ROUNDS = [
     ("R1",  "student_dual_s32f16_recent2",        [600, 800, "final"]),
     ("R1b", "student_dual_v2_demo",               [200, 400, 600, 800, 1000, "final"]),
     ("R2a", "student_dual_v3_gated_k3_demo",      [200, 400, 600, 800, 1000, "final"]),
+    ("R2c", "student_dual_v3_joint_k3_demo",      [200, 400, 600, 800, 1000, "final"]),
 ]
 
 

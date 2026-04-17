@@ -306,19 +306,30 @@ def main() -> None:
     ap.add_argument("--max-teacher-tokens", type=int, default=32768)
     ap.add_argument("--grad-clip", type=float, default=1.0)
 
-    # Gated KL (Phase 2b Round 2). Default off = R1 / R1b behaviour.
+    # Gated KL (Phase 2b Round 2 family). Default off = R1 / R1b behaviour.
     ap.add_argument("--gated-kl", action="store_true",
-                    help="Enable per-token entropy gating (Phase 2b §5). "
-                         "KL is masked to tokens where teacher is more "
-                         "confident than student (H_teacher + margin < "
-                         "H_student). Protects student from being pulled "
-                         "toward teacher on tokens where teacher is "
-                         "uncertain/wrong.")
+                    help="Enable per-token gating (Phase 2b §5). The gate "
+                         "decides which rollout tokens contribute to the "
+                         "reverse-KL loss. Mode set by --gate-mode.")
+    ap.add_argument("--gate-mode", choices=["entropy", "joint"],
+                    default="entropy",
+                    help="entropy (R2a default): gate=H_teacher+margin<H_student. "
+                         "joint (R2c): gate=(H_teacher<tau) AND "
+                         "(argmax_teacher!=argmax_student). Joint gate "
+                         "addresses two R2a failure modes — Instruct base "
+                         "overconfidence drowning out the entropy signal, "
+                         "and gating closing on tokens where student already "
+                         "agrees with teacher anyway.")
     ap.add_argument("--kl-gate-margin", type=float, default=0.0,
-                    help="Optional entropy margin for the gate: only "
-                         "distill where H_teacher + margin < H_student. "
+                    help="ENTROPY mode only: margin for H_t + margin < H_s. "
                          "0.0 = strict comparison; >0 = require teacher "
-                         "to be markedly more confident before updating.")
+                         "markedly more confident; <0 = relax the gate.")
+    ap.add_argument("--gate-tau", type=float, default=1.0,
+                    help="JOINT mode only: teacher confidence threshold. "
+                         "Default 1.0 nat (~top-3 dominance). Lower = "
+                         "stricter (only train on highly-confident teacher "
+                         "predictions). Higher = include less confident "
+                         "teacher predictions.")
 
     # Loop
     ap.add_argument("--epochs", type=int, default=1)
@@ -564,12 +575,27 @@ def main() -> None:
             kl_per_token = (s_lp.exp() * (s_lp - t_lp)).sum(dim=-1)  # [T]
 
             if args.gated_kl:
-                # Per-token entropy gate: only distill where teacher is more
-                # confident (lower H). Plan §5.4 — protects student on
-                # tokens where teacher would be wrong/uncertain.
+                # Per-token gate. Two modes:
+                #   entropy: H_t + margin < H_s — protect student on tokens
+                #            where teacher would be uncertain. R2a default.
+                #   joint:   (H_t < tau) AND (argmax_t != argmax_s) — train
+                #            only when teacher is genuinely confident AND
+                #            student doesn't already agree. R2c default.
+                #            Addresses R2a failure: entropy alone gets
+                #            drowned out by Instruct-base overconfidence
+                #            and wastes effort on tokens where s & t agree.
                 H_t = -(t_lp.exp() * t_lp).sum(dim=-1)               # [T]
-                H_s = -(s_lp.exp() * s_lp).sum(dim=-1)               # [T]
-                gate = (H_t + args.kl_gate_margin < H_s).float()     # [T]
+                if args.gate_mode == "entropy":
+                    H_s = -(s_lp.exp() * s_lp).sum(dim=-1)           # [T]
+                    gate = (H_t + args.kl_gate_margin < H_s).float() # [T]
+                elif args.gate_mode == "joint":
+                    top_t = t_lp.argmax(dim=-1)                      # [T]
+                    top_s = s_lp.argmax(dim=-1)                      # [T]
+                    disagree = (top_t != top_s)
+                    confident = (H_t < args.gate_tau)
+                    gate = (disagree & confident).float()            # [T]
+                else:
+                    raise ValueError(f"unknown gate_mode: {args.gate_mode}")
                 gate_sum_val = gate.sum().item()
 
                 if gate_sum_val == 0.0:
@@ -620,9 +646,10 @@ def main() -> None:
                 fast_with_grad = sum(1 for p in fast_params if p.grad is not None)
                 slow_gn = float(slow_gnorm)
                 fast_gn = float(fast_gnorm)
+                gate_desc = (f" (gated, mode={args.gate_mode})"
+                             if args.gated_kl else " (ungated)")
                 print(f"DRY: loss={loss.item():.6f} min_len={min_len} "
-                      f"gate_ratio={gate_ratio:.3f}"
-                      f"{' (gated)' if args.gated_kl else ' (ungated)'}")
+                      f"gate_ratio={gate_ratio:.3f}{gate_desc}")
                 print(f"     slow params reached by autograd: "
                       f"{slow_with_grad}/{len(slow_params)}  gnorm={slow_gn:.6e}")
                 print(f"     fast params reached by autograd: "
@@ -756,7 +783,9 @@ def main() -> None:
             "rollout_temperature": args.rollout_temperature,
             "max_teacher_tokens": args.max_teacher_tokens,
             "gated_kl": args.gated_kl,
+            "gate_mode": args.gate_mode,
             "kl_gate_margin": args.kl_gate_margin,
+            "gate_tau": args.gate_tau,
             "n_fully_gated_skipped": n_fully_gated_skipped,
             "truncation_count": truncation_count,
             "skipped_empty_rollouts": skipped_empty,
