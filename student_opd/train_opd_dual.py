@@ -14,8 +14,14 @@ Differences vs train_opd.py (Phase 2 single-LoRA):
     (Phase 2b plan §4); falls back to legacy demo-only if a sample's
     `student_recent_messages` is empty.
 
-  - KL loss: standard forward KL (unchanged from Phase 2; gated KL is Round 2).
-  - Teacher OPD context: K=3 (unchanged; K=10 is Round 2).
+  - KL loss: reverse KL = KL(student || teacher) — same formula as Phase 2
+    and the Thinking Machines on-policy distillation recipe (mode-seeking,
+    "low KL ↔ high prob of desirable behaviour from teacher's POV"; see
+    https://thinkingmachines.ai/blog/on-policy-distillation/ ). Note: the
+    classical Hinton-2015 KD literature confusingly uses "forward KL" for
+    the same direction; we use the modern RLHF/TM convention. To enable
+    gated KL (Round 2), pass --gated-kl.
+  - Teacher OPD context: K=3 (unchanged; K=10 is Round 2b).
 
 Layout on disk (per persona output dir):
     lora_pid{pid}_dual_s{Rs}f{Rf}_ep1_r3teacher/
@@ -300,6 +306,20 @@ def main() -> None:
     ap.add_argument("--max-teacher-tokens", type=int, default=32768)
     ap.add_argument("--grad-clip", type=float, default=1.0)
 
+    # Gated KL (Phase 2b Round 2). Default off = R1 / R1b behaviour.
+    ap.add_argument("--gated-kl", action="store_true",
+                    help="Enable per-token entropy gating (Phase 2b §5). "
+                         "KL is masked to tokens where teacher is more "
+                         "confident than student (H_teacher + margin < "
+                         "H_student). Protects student from being pulled "
+                         "toward teacher on tokens where teacher is "
+                         "uncertain/wrong.")
+    ap.add_argument("--kl-gate-margin", type=float, default=0.0,
+                    help="Optional entropy margin for the gate: only "
+                         "distill where H_teacher + margin < H_student. "
+                         "0.0 = strict comparison; >0 = require teacher "
+                         "to be markedly more confident before updating.")
+
     # Loop
     ap.add_argument("--epochs", type=int, default=1)
     ap.add_argument("--seed", type=int, default=42)
@@ -465,6 +485,7 @@ def main() -> None:
     step_losses: list[dict] = []
     truncation_count = 0
     skipped_empty = 0
+    n_fully_gated_skipped = 0  # gated KL only: rollouts where every token gated out
 
     for epoch in range(args.epochs):
         idx = list(range(len(samples)))
@@ -535,12 +556,45 @@ def main() -> None:
                 student, s_prefix, response_ids, device,
             )
 
-            # 4. KL(student || teacher) per-token, mean
+            # 4. Reverse KL(student || teacher) per-token. TM convention.
+            #    Optionally gated by per-token entropy comparison (Round 2).
             min_len = min(s_lp.shape[0], t_lp.shape[0])
             s_lp = s_lp[:min_len]
             t_lp = t_lp[:min_len]
-            kl_per_token = (s_lp.exp() * (s_lp - t_lp)).sum(dim=-1)
-            loss = kl_per_token.mean()
+            kl_per_token = (s_lp.exp() * (s_lp - t_lp)).sum(dim=-1)  # [T]
+
+            if args.gated_kl:
+                # Per-token entropy gate: only distill where teacher is more
+                # confident (lower H). Plan §5.4 — protects student on
+                # tokens where teacher would be wrong/uncertain.
+                H_t = -(t_lp.exp() * t_lp).sum(dim=-1)               # [T]
+                H_s = -(s_lp.exp() * s_lp).sum(dim=-1)               # [T]
+                gate = (H_t + args.kl_gate_margin < H_s).float()     # [T]
+                gate_sum_val = gate.sum().item()
+
+                if gate_sum_val == 0.0:
+                    # Whole rollout gated out — student knows everything
+                    # teacher could teach on this sample. Log + skip.
+                    n_fully_gated_skipped += 1
+                    step_losses.append({
+                        "epoch": epoch, "step": step, "loss": 0.0,
+                        "min_len": min_len, "sample_idx": i,
+                        "slow_gnorm": 0.0, "fast_gnorm": 0.0,
+                        "gate_ratio": 0.0, "fully_gated": True,
+                        "context_id": sample["context_id"],
+                        "session_idx": sample["session_idx"],
+                    })
+                    if args.dry_run:
+                        print(f"DRY: gate_ratio=0.0 (all tokens gated) — "
+                              f"would skip backward in real training")
+                        break
+                    continue  # next sample, no backward
+
+                loss = (gate * kl_per_token).sum() / gate_sum_val
+                gate_ratio = gate_sum_val / gate.numel()
+            else:
+                loss = kl_per_token.mean()
+                gate_ratio = 1.0  # convention: ungated = "all tokens used"
 
             # 5. Backward — single backward populates grads on BOTH adapters
             loss.backward()
@@ -566,7 +620,9 @@ def main() -> None:
                 fast_with_grad = sum(1 for p in fast_params if p.grad is not None)
                 slow_gn = float(slow_gnorm)
                 fast_gn = float(fast_gnorm)
-                print(f"DRY: loss={loss.item():.6f} min_len={min_len}")
+                print(f"DRY: loss={loss.item():.6f} min_len={min_len} "
+                      f"gate_ratio={gate_ratio:.3f}"
+                      f"{' (gated)' if args.gated_kl else ' (ungated)'}")
                 print(f"     slow params reached by autograd: "
                       f"{slow_with_grad}/{len(slow_params)}  gnorm={slow_gn:.6e}")
                 print(f"     fast params reached by autograd: "
@@ -603,6 +659,10 @@ def main() -> None:
                 "min_len": min_len, "sample_idx": i,
                 "slow_gnorm": float(slow_gnorm),
                 "fast_gnorm": float(fast_gnorm),
+                "gate_ratio": gate_ratio,
+                "fully_gated": False,
+                "context_id": sample["context_id"],
+                "session_idx": sample["session_idx"],
             })
 
             if (step + 1) % args.log_every == 0:
@@ -611,11 +671,17 @@ def main() -> None:
                 lens_w = [x["min_len"] for x in window]
                 step_dt = time.time() - t_step_last
                 t_step_last = time.time()
+                gate_str = ""
+                if args.gated_kl:
+                    gates_w = [x.get("gate_ratio", 1.0) for x in window]
+                    gate_str = (f"gate={gate_ratio:.2f}"
+                                f"(avg{len(window)}={sum(gates_w)/len(gates_w):.2f}) ")
                 print(f"  e{epoch} step {step+1}/{total_steps}: "
                       f"loss={loss.item():.4f} "
                       f"avg{len(window)}={sum(losses_w)/len(losses_w):.4f} "
                       f"slow_gn={float(slow_gnorm):.4f} "
                       f"fast_gn={float(fast_gnorm):.4f} "
+                      f"{gate_str}"
                       f"resp_len={min_len}"
                       f"(avg{len(window)}={sum(lens_w)//len(lens_w)}) "
                       f"dt={step_dt:.1f}s",
@@ -689,6 +755,9 @@ def main() -> None:
             "rollout_max_tokens": args.rollout_max_tokens,
             "rollout_temperature": args.rollout_temperature,
             "max_teacher_tokens": args.max_teacher_tokens,
+            "gated_kl": args.gated_kl,
+            "kl_gate_margin": args.kl_gate_margin,
+            "n_fully_gated_skipped": n_fully_gated_skipped,
             "truncation_count": truncation_count,
             "skipped_empty_rollouts": skipped_empty,
             "training_log": training_log,

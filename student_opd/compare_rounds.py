@@ -34,9 +34,10 @@ DEFAULT_PERSONAS = [0, 4, 12, 14]
 
 # (round_label, json_name_prefix, steps_to_show)
 ROUNDS = [
-    ("P2",  "student_demo",                [200, 400, 600, 800, "final"]),
-    ("R1",  "student_dual_s32f16_recent2", [600, 800, "final"]),
-    ("R1b", "student_dual_v2_demo",        [200, 400, 600, 800, 1000, "final"]),
+    ("P2",  "student_demo",                       [200, 400, 600, 800, "final"]),
+    ("R1",  "student_dual_s32f16_recent2",        [600, 800, "final"]),
+    ("R1b", "student_dual_v2_demo",               [200, 400, 600, 800, 1000, "final"]),
+    ("R2a", "student_dual_v3_gated_k3_demo",      [200, 400, 600, 800, 1000, "final"]),
 ]
 
 

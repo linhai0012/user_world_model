@@ -11,7 +11,7 @@ All design decisions from the discussion session on 2026-04-16.
 |---|---|---|
 | LoRA structure | Single LoRA, rank 32, all modules | Dual LoRA: MLP slow + Attention fast |
 | Student input | demographics + chatbot_prev only | demographics + last 2-3 turns + chatbot_prev |
-| KL loss | Standard forward KL on all tokens | Gated KL (skip where student more confident) |
+| KL loss | Standard reverse KL on all tokens | Gated reverse KL (skip where student more confident) |
 | Teacher OPD context | K=3 (same as teacher SFT) | K=10 (larger window, no retraining needed) |
 
 Gated KL subsumes surprise detection — no separate session-level
@@ -25,18 +25,31 @@ in two rounds to enable clean ablation.
 ### Round 1: Dual LoRA only
 
 Changes: dual LoRA structure + student 2-turn context.
-KL loss: standard (ungated). Teacher context: K=3 (unchanged).
+KL loss: ungated reverse KL. Teacher context: K=3 (unchanged).
 Goal: isolate the effect of dual LoRA on stability.
 
-### Round 2: Dual LoRA + Gated KL + Teacher K=10
+**Outcome (R1)**: dual LoRA avg best-step closure crashed to 26%
+(vs P2 single-LoRA 76%). Two confounded culprits — (1) 2-turn context
+poisonous for some personas (Lisa base_recent2 −2.7pp), (2) slow_lr
+1e-5 too low (MLP barely trains). **Round 1b** ablated both at once
+(--student-ctx demo + --slow-lr 5e-5) and recovered to 78% best-step
+closure (Jordan exceeded teacher_k3 at +109% on n=113).
 
-Changes: add gated KL loss + increase teacher OPD context to K=10.
-Goal: enable student to accumulate beyond teacher ceiling, test
-cross-session advantage. Gated KL also provides automatic selective
-update at all granularities (token, sample, session) — see §5.4.
+### Round 2 (split into 2a then 2b for clean ablation)
 
-Two rounds are sufficient. No Round 3 needed because gated KL
-subsumes surprise detection (§5.4).
+**Round 2a**: dual LoRA + **gated reverse KL** + Teacher K=3 (unchanged).
+Inherits R1b best settings (slow_lr 5e-5, student_ctx demo).
+Goal: validate that gated KL fixes the §10.7 / qtype-analysis failure
+mode where teacher pulls student WORSE than base on tokens where
+teacher itself is wrong (e.g. Leilani `acknowledge_latest`).
+
+**Round 2b** (after 2a validates): + Teacher K=10. Goal: raise the
+distance>3 ceiling. Decoupled from 2a so we can attribute any further
+gain cleanly to the K bump rather than to gated KL.
+
+Gated KL provides automatic selective update at all granularities
+(token, sample, session) — see §5.4 — so no Round 3 surprise-detection
+mechanism is needed.
 
 ---
 
@@ -212,32 +225,39 @@ teacher on a token, skip the KL — protect accumulated knowledge.
 
 ### 5.2 Implementation
 
+**KL direction note**: Phase 2 / R1 / R1b / R2 all use **reverse KL**
+= `KL(student || teacher)` (the modern RLHF / Thinking Machines on-policy
+distillation convention; classical Hinton-2015 KD literature confusingly
+labels the same direction "forward KL"). See
+https://thinkingmachines.ai/blog/on-policy-distillation/ for rationale
+(mode-seeking, unhackable reward, exposure-bias reduction). DO NOT
+`F.kl_div(student_logprobs, teacher_probs)` — that computes the OPPOSITE
+direction (`KL(teacher || student)`), incompatible with Phase 2 / R1.
+
 ```python
-def gated_kl_loss(student_logits, teacher_logits):
+def gated_reverse_kl(s_lp, t_lp, margin=0.0):
     """
-    Per-token gated KL. Only distill where teacher entropy < student entropy.
-    Returns loss and gate_ratio for monitoring.
+    s_lp, t_lp: log-softmax student/teacher logits, shape [T, V].
+    Per-token reverse KL = sum_v P_s(v) * (log P_s(v) - log P_t(v)),
+    masked by entropy gate. Returns (loss, gate_ratio).
     """
-    student_logprobs = F.log_softmax(student_logits, dim=-1)
-    teacher_logprobs = F.log_softmax(teacher_logits, dim=-1)
-    teacher_probs = teacher_logprobs.exp()
+    # Reverse KL per token (same formula as R1 / R1b train_opd_dual.py)
+    kl_per_token = (s_lp.exp() * (s_lp - t_lp)).sum(dim=-1)   # [T]
 
-    # Per-token entropy
-    H_teacher = -(teacher_probs * teacher_logprobs).sum(dim=-1)
-    H_student = -(student_logprobs.exp() * student_logprobs).sum(dim=-1)
+    # Per-token entropies
+    H_t = -(t_lp.exp() * t_lp).sum(dim=-1)                    # [T]
+    H_s = -(s_lp.exp() * s_lp).sum(dim=-1)                    # [T]
 
-    # Gate: 1 where teacher more confident, 0 otherwise
-    gate = (H_teacher < H_student).float()
+    # Gate: 1 where teacher more confident (lower H) than student
+    gate = (H_t + margin < H_s).float()                       # [T]
+    gate_sum = gate.sum()
 
-    # Forward KL, masked by gate
-    kl_per_token = F.kl_div(
-        student_logprobs, teacher_probs,
-        reduction='none'
-    ).sum(dim=-1)
+    if gate_sum.item() == 0.0:
+        return None, 0.0   # caller skips backward (no tokens worth distilling)
 
-    gated_loss = (gate * kl_per_token).sum() / (gate.sum() + 1e-8)
-
-    return gated_loss, gate.mean().item()
+    loss = (gate * kl_per_token).sum() / gate_sum
+    gate_ratio = (gate_sum / gate.numel()).item()
+    return loss, gate_ratio
 ```
 
 ### 5.3 Monitoring
