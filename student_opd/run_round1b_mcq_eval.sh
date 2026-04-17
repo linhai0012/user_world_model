@@ -139,32 +139,21 @@ for s in steps_sorted:
     cols.append((f"step{s}", f"student_{tag}_demo_step{s}"))
 cols.append(("final", f"student_{tag}_demo_final"))
 
-col_w = max(10, len(f"student_{tag}_demo_step{max(steps, default=0)}"))
+col_w = 11
 print(f"{'pid':<5}" + " ".join(f"{c[0]:>{col_w}}" for c in cols))
 print("-" * (5 + (col_w + 1) * len(cols)))
 
-agg = {k: [] for k, _ in cols}
+agg = {c[0]: [] for c in cols}
 for pid in personas:
     row = [f"{pid:<5}"]
-    for _, name in cols:
+    for label, name in cols:
         a = load(name, pid)
         if a is None:
             row.append(f"{'-':>{col_w}}")
         else:
-            agg[name if (name.startswith('student') or name in ('base_demo','teacher_k3')) else name].append(a)
-            # Use col label as agg key consistently
-            k = [c[0] for c in cols if c[1] == name][0]
-            agg.setdefault(k, []).append(a) if k not in agg else None
+            agg[label].append(a)
             row.append(f"{a:>{col_w}.3f}")
     print(" ".join(row))
-
-# Re-aggregate cleanly
-agg = {c[0]: [] for c in cols}
-for pid in personas:
-    for label, name in cols:
-        a = load(name, pid)
-        if a is not None:
-            agg[label].append(a)
 
 print("-" * (5 + (col_w + 1) * len(cols)))
 row = [f"{'AVG':<5}"]
