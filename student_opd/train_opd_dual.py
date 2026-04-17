@@ -74,17 +74,31 @@ def build_chatml_prefix(
     return ids
 
 
-def build_student_prefix(sample: dict, tokenizer) -> list[int]:
-    """Student view for Phase 2b: demographics + last N exchanges (ending at
-    chatbot_prev). Falls back to demographics + chatbot_prev only if the
-    sample doesn't have `student_recent_messages` (legacy data shape).
+def build_student_prefix(sample: dict, tokenizer,
+                          ctx_mode: str = "recent") -> list[int]:
+    """Student view.
+
+    ctx_mode = 'recent' (Phase 2b Round 1 default):
+        demographics + last N exchanges of current session (ending at
+        chatbot_prev). Falls back to demo-only if the sample has no
+        `student_recent_messages`.
+
+    ctx_mode = 'demo' (Phase 2 / Round 1b ablation):
+        demographics + chatbot_prev only. Ignores student_recent_messages
+        even if the data file has it. Use this to isolate the dual-LoRA
+        structure effect from the 2-turn-context effect.
     """
     msgs: list[dict] = [{"role": "system", "content": sample["demographics"]}]
-    recent = sample.get("student_recent_messages") or []
-    if recent:
-        msgs.extend(recent)
-    else:
+    if ctx_mode == "demo":
         msgs.append({"role": "assistant", "content": sample["chatbot_prev"]})
+    elif ctx_mode == "recent":
+        recent = sample.get("student_recent_messages") or []
+        if recent:
+            msgs.extend(recent)
+        else:
+            msgs.append({"role": "assistant", "content": sample["chatbot_prev"]})
+    else:
+        raise ValueError(f"unknown ctx_mode: {ctx_mode}")
     return build_chatml_prefix(msgs, tokenizer, trailing_role="user")
 
 
@@ -224,6 +238,14 @@ def find_latest_ckpt(output_dir: Path) -> Path | None:
 
 
 def prune_checkpoints(output_dir: Path, keep: int) -> None:
+    """Keep only the `keep` most recent ckpt-step-*/ dirs.
+
+    keep <= 0 disables pruning — every intermediate ckpt is preserved.
+    Use this when you want the full learning curve (e.g. for best-ckpt
+    oracle selection across 200/400/600/800/... evaluations).
+    """
+    if keep <= 0:
+        return
     import shutil
     ckpts = sorted(
         output_dir.glob("ckpt-step-*"),
@@ -263,6 +285,14 @@ def main() -> None:
                     help="Attention modules — Phase 2b §3.2")
     ap.add_argument("--fast-lr", type=float, default=2e-4,
                     help="Same as Phase 2 single-LoRA — routing adapter")
+
+    # Student view at training time
+    ap.add_argument("--student-ctx", choices=["recent", "demo"],
+                    default="recent",
+                    help="recent = demographics + 2-turn intra-session context "
+                         "(Phase 2b Round 1 default). "
+                         "demo = demographics + chatbot_prev only (Phase 2 / "
+                         "Round 1b ablation — isolates dual structure effect).")
 
     # Rollout / KL
     ap.add_argument("--rollout-max-tokens", type=int, default=256)
@@ -340,10 +370,12 @@ def main() -> None:
           f"from {args.data_path}")
     print(f"  samples with student_recent_messages: "
           f"{n_with_recent}/{len(samples)}")
-    if n_with_recent == 0:
-        print(f"  WARNING: no sample has student_recent_messages — "
-              f"running in legacy demo-only student mode. "
-              f"Re-run build_opd_data.py with --n-context-turns 2 first?")
+    print(f"  student_ctx mode: {args.student_ctx}")
+    if args.student_ctx == "recent" and n_with_recent == 0:
+        print(f"  WARNING: --student-ctx recent but no sample has "
+              f"student_recent_messages — will silently fall back to "
+              f"demo-only for every sample. Re-run build_opd_data.py "
+              f"with --n-context-turns 2 first?")
 
     # --- Teacher (frozen) ---
     print(f"loading teacher: {args.teacher_path}")
@@ -461,7 +493,7 @@ def main() -> None:
             step = skipped_for_resume + local_step
             sample = samples[i]
 
-            s_prefix = build_student_prefix(sample, tokenizer)
+            s_prefix = build_student_prefix(sample, tokenizer, args.student_ctx)
             t_prefix = build_teacher_prefix(sample, tokenizer)
             t_prefix, truncated = truncate_teacher_prefix(
                 t_prefix, args.max_teacher_tokens,
@@ -653,6 +685,7 @@ def main() -> None:
             "slow_targets": args.slow_targets, "slow_lr": args.slow_lr,
             "fast_rank": args.fast_rank, "fast_alpha": args.fast_alpha,
             "fast_targets": args.fast_targets, "fast_lr": args.fast_lr,
+            "student_ctx": args.student_ctx,
             "rollout_max_tokens": args.rollout_max_tokens,
             "rollout_temperature": args.rollout_temperature,
             "max_teacher_tokens": args.max_teacher_tokens,
