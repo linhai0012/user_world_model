@@ -311,15 +311,18 @@ def main() -> None:
                     help="Enable per-token gating (Phase 2b §5). The gate "
                          "decides which rollout tokens contribute to the "
                          "reverse-KL loss. Mode set by --gate-mode.")
-    ap.add_argument("--gate-mode", choices=["entropy", "joint"],
+    ap.add_argument("--gate-mode",
+                    choices=["entropy", "joint", "teacher_conf"],
                     default="entropy",
                     help="entropy (R2a default): gate=H_teacher+margin<H_student. "
                          "joint (R2c): gate=(H_teacher<tau) AND "
-                         "(argmax_teacher!=argmax_student). Joint gate "
-                         "addresses two R2a failure modes — Instruct base "
-                         "overconfidence drowning out the entropy signal, "
-                         "and gating closing on tokens where student already "
-                         "agrees with teacher anyway.")
+                         "(argmax_teacher!=argmax_student). "
+                         "teacher_conf (R2c-relaxed): gate=(H_teacher<tau) "
+                         "alone — drops the disagree filter to avoid the "
+                         "negative correlation between confidence and "
+                         "disagreement collapsing the joint AND. Tokens "
+                         "where student already agrees contribute KL≈0 "
+                         "naturally — no harm including them.")
     ap.add_argument("--kl-gate-margin", type=float, default=0.0,
                     help="ENTROPY mode only: margin for H_t + margin < H_s. "
                          "0.0 = strict comparison; >0 = require teacher "
@@ -594,6 +597,8 @@ def main() -> None:
                     disagree = (top_t != top_s)
                     confident = (H_t < args.gate_tau)
                     gate = (disagree & confident).float()            # [T]
+                elif args.gate_mode == "teacher_conf":
+                    gate = (H_t < args.gate_tau).float()             # [T]
                 else:
                     raise ValueError(f"unknown gate_mode: {args.gate_mode}")
                 gate_sum_val = gate.sum().item()
