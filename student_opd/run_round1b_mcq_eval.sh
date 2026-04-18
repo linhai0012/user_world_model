@@ -24,12 +24,19 @@ BASE_MODEL="${BASE_MODEL:-Qwen/Qwen3-4B-Instruct-2507}"
 PERSONAS=(${PERSONAS:-0 4 12 14})
 TAG="${TAG:-dual_v2}"
 OUT_ROOT="${OUT_ROOT:-$SCRATCHDIR/P-OPSD/student_lora}"
+VERSION="${VERSION:-128k}"   # PersonaMem-v1 MCQ ctx version: 32k, 128k, 1M
 EVAL_JSON_DIR=dynamic_usersim/outputs   # small files stay in $HOME
 LOG_DIR=logs/round1b_eval_mcq
 mkdir -p "$LOG_DIR" "$EVAL_JSON_DIR"
 
+if [[ "$VERSION" != "32k" && "$VERSION" != "128k" && "$VERSION" != "1M" ]]; then
+    echo "ERROR: VERSION must be one of 32k / 128k / 1M (got $VERSION)"
+    exit 1
+fi
+
 echo "=========================================================="
 echo "Phase 2b Round 1b MCQ-PPL eval (auto-discover all ckpts)"
+echo "  version    : $VERSION"
 echo "  tag        : $TAG"
 echo "  out_root   : $OUT_ROOT"
 echo "  personas   : ${PERSONAS[*]}"
@@ -54,6 +61,7 @@ run_cond() {
         --persona-id "$pid" \
         --base-model "$base" "${lora_arg[@]}" \
         --context-mode "$ctx" \
+        --mcq-version "$VERSION" \
         --out-json "$outjson" \
         > "$log_file" 2>&1
     local acc=$(python3 -c "import json; print(f\"{json.load(open('$outjson'))['accuracy']:.3f}\")" 2>/dev/null || echo "?")
@@ -67,11 +75,11 @@ for pid in "${PERSONAS[@]}"; do
     # Baselines (typically cached from Phase 2 / Round 1)
     run_cond base_demo \
         "$BASE_MODEL" "" demo-only "$pid" \
-        "$EVAL_JSON_DIR/mcqppl_128k_pid${pid}_base_demo.json"
+        "$EVAL_JSON_DIR/mcqppl_${VERSION}_pid${pid}_base_demo.json"
 
     run_cond teacher_k3 \
         "$R3" "" last-n "$pid" \
-        "$EVAL_JSON_DIR/mcqppl_128k_pid${pid}_teacher_k3.json"
+        "$EVAL_JSON_DIR/mcqppl_${VERSION}_pid${pid}_teacher_k3.json"
 
     # R1b student: auto-discover every ckpt-step-N + final
     persona_dir="$OUT_ROOT/lora_pid${pid}_${TAG}_ep1_r3teacher"
@@ -92,14 +100,14 @@ for pid in "${PERSONAS[@]}"; do
         fi
         run_cond "student_${TAG}_demo_step${step}" \
             "$BASE_MODEL" "$ckpt" demo-only "$pid" \
-            "$EVAL_JSON_DIR/mcqppl_128k_pid${pid}_student_${TAG}_demo_step${step}.json"
+            "$EVAL_JSON_DIR/mcqppl_${VERSION}_pid${pid}_student_${TAG}_demo_step${step}.json"
     done
 
     # Final (root of persona_dir) — training end-of-epoch state
     if [[ -d "$persona_dir/slow" ]] && [[ -d "$persona_dir/fast" ]]; then
         run_cond "student_${TAG}_demo_final" \
             "$BASE_MODEL" "$persona_dir" demo-only "$pid" \
-            "$EVAL_JSON_DIR/mcqppl_128k_pid${pid}_student_${TAG}_demo_final.json"
+            "$EVAL_JSON_DIR/mcqppl_${VERSION}_pid${pid}_student_${TAG}_demo_final.json"
     else
         echo "  [skip final] missing slow/+fast/ in $persona_dir"
     fi
@@ -108,27 +116,28 @@ done
 # --------- Aggregate summary ---------
 echo ""
 echo "=========================================================="
-echo "SUMMARY — Phase 2b Round 1b MCQ-PPL (128k)"
+echo "SUMMARY — Phase 2b Round 1b MCQ-PPL ($VERSION)"
 echo "  tag = $TAG"
 echo "=========================================================="
 
-python3 - "$EVAL_JSON_DIR" "$TAG" "${PERSONAS[@]}" <<'PYEOF'
+python3 - "$EVAL_JSON_DIR" "$TAG" "$VERSION" "${PERSONAS[@]}" <<'PYEOF'
 import json
 import sys
 from pathlib import Path
 
 out = Path(sys.argv[1])
 tag = sys.argv[2]
-personas = [int(x) for x in sys.argv[3:]]
+version = sys.argv[3]
+personas = [int(x) for x in sys.argv[4:]]
 
 def load(name, pid):
-    p = out / f"mcqppl_128k_pid{pid}_{name}.json"
+    p = out / f"mcqppl_{version}_pid{pid}_{name}.json"
     return json.loads(p.read_text())["accuracy"] if p.exists() else None
 
 # Discover all steps present across all personas
 steps = set()
 for pid in personas:
-    for p in out.glob(f"mcqppl_128k_pid{pid}_student_{tag}_demo_step*.json"):
+    for p in out.glob(f"mcqppl_{version}_pid{pid}_student_{tag}_demo_step*.json"):
         s = p.stem.split("_step")[-1]
         if s.isdigit():
             steps.add(int(s))
@@ -203,5 +212,5 @@ for pid in personas:
 PYEOF
 
 echo ""
-echo "Done. JSONs under $EVAL_JSON_DIR/mcqppl_128k_*"
+echo "Done. JSONs under $EVAL_JSON_DIR/mcqppl_${VERSION}_*"
 echo "     Logs under $LOG_DIR/"

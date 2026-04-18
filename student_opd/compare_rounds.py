@@ -42,8 +42,11 @@ ROUNDS = [
 ]
 
 
+VERSION = "128k"  # set by main() via --version
+
+
 def acc(name: str, pid: int) -> float | None:
-    p = OUT_DIR / f"mcqppl_128k_pid{pid}_{name}.json"
+    p = OUT_DIR / f"mcqppl_{VERSION}_pid{pid}_{name}.json"
     return json.loads(p.read_text())["accuracy"] if p.exists() else None
 
 
@@ -62,7 +65,7 @@ def make_cols() -> list[tuple[str, str]]:
         for s in steps:
             jname = f"{prefix}_{step_filename(s)}"
             # Skip if no persona has this file (don't waste column width)
-            if not any((OUT_DIR / f"mcqppl_128k_pid{pid}_{jname}.json").exists()
+            if not any((OUT_DIR / f"mcqppl_{VERSION}_pid{pid}_{jname}.json").exists()
                        for pid in DEFAULT_PERSONAS):
                 continue
             cols.append((f"{rlabel}{step_label(s)}", jname))
@@ -180,8 +183,15 @@ def print_best_per_round(personas: list[int]) -> None:
 def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--personas", type=int, nargs="+", default=DEFAULT_PERSONAS)
+    ap.add_argument("--version", choices=["32k", "128k", "1M"], default="128k",
+                    help="PersonaMem-v1 MCQ context version. JSONs are looked up "
+                         "as mcqppl_<version>_pid{N}_<cond>.json.")
     args = ap.parse_args()
 
+    global VERSION
+    VERSION = args.version
+
+    print(f"### MCQ-PPL version: {VERSION} ###")
     cols = make_cols()
     print_accuracy_table(args.personas, cols)
     print_closure_table(args.personas, cols)
