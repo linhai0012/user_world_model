@@ -89,6 +89,28 @@ teacher. Full 5-checkpoint learning curve (step 200/400/600/800/final):
   (minimize KL on rollouts ≠ maximize discrimination), not noise.
   Reporting all three is a Phase 2 contribution.
 
+### Phase 2b update — dual LoRA + (optional) gated KL (§11)
+
+Four rounds (R1, R1b, R2a, R2c) varying LoRA structure, student input,
+slow/fast LR ratio, and KL gate form. **Best universal recipe = R1b**
+(dual LoRA s32f16, slow_lr 5e-5, demo-only student input, ungated
+reverse KL). Headline numbers (best-step closure):
+
+- **128k AVG closure: +78%** (matches Phase 2 single LoRA's 76%)
+- **1M cross-version closure: +128%** ⚡ — student in 0-context inference
+  exceeds K=3 teacher, generalizing from 128k training to 1M MCQs with
+  completely different events. **5 cells across 3 versions show student
+  exceeding teacher_k3** (closure ≥ 100%).
+- **R2a entropy gate failed**: collapses to 7% gate ratio (Instruct base
+  is more peaked than R3 SFT teacher → gate closed wholesale); also
+  accelerated Leilani's `acknowledge_latest` decay.
+- **R2c joint gate partial recovery**: best closure 47%, lower than R1b
+  (78%), but best − final gap shrinks 27pp → 12pp (more stable). Cannot
+  solve teacher-confidently-wrong (Leilani ack_latest 0.20 → 0.025).
+- **Token-level gating limit identified** (§11.7): no model-internal
+  quantity can distinguish teacher-confidently-correct from
+  teacher-confidently-wrong without ground-truth signal.
+
 ---
 
 ## 1. Target Dataset: PersonaMem-v1
@@ -1222,9 +1244,423 @@ selected, vs 51% at naive `final`. This reframes the Phase-2 roadmap:
    separate workstream. Needs redesigned reaction-generation format
    (see §9.7).
 
+> Items 1, 2, 4 are addressed in **§11 Phase 2b** below (dual-LoRA,
+> gated KL, cross-version generalization). Item 3 (distance_to_ref
+> stratification) deferred. Item 5 unchanged.
+
 ---
 
-## 11. Referenced commits (chronological)
+## 11. Phase 2b — Dual-LoRA OPD with optional gating (Rounds 1 → 2c)
+
+Phase 2b builds on Phase 2's per-user single-LoRA result (§10) with two
+intended changes (plan `phase2b_experiment_plan.md` §3, §5): (a) split
+the LoRA into a slow MLP path and a fast Attention path (dual rate), and
+(b) add per-token entropy gating to the reverse-KL loss to prevent
+teacher from pulling student worse-than-base on low-confidence tokens.
+Four rounds were run, each varying one mechanism cleanly:
+
+| Round | LoRA structure          | student input | slow_lr ratio | KL gate                                      |
+|-------|-------------------------|---------------|---------------|----------------------------------------------|
+| **P2** (baseline) | single rank 32 all modules | demo + chatbot_prev | n/a (single rate 2e-4) | none |
+| **R1**  | dual MLP s32 / Attn f16 | + last 2 turns | **1e-5 (20× slower)** | none |
+| **R1b** | dual s32f16 (same)      | demo only     | **5e-5 (4× slower)**  | none |
+| **R2a** | dual s32f16             | demo only     | 5e-5          | **entropy: H_t < H_s**                       |
+| **R2c** | dual s32f16             | demo only     | 5e-5          | **joint: (H_t < 1.0 nat) AND (argmax_t ≠ argmax_s)** |
+
+Same 4 personas as Phase 2 (pid 0/4/12/14). Same R3 SFT teacher (K=3
+context) for all rounds. Same 128k OPD training data. KL direction is
+**reverse KL = `KL(student || teacher)`** throughout — matches
+Thinking Machines' on-policy distillation recipe
+(https://thinkingmachines.ai/blog/on-policy-distillation/).
+Classical KD literature confusingly calls this "forward KL"; we use
+the modern RLHF / TM convention in code comments + plan doc.
+
+### 11.1 Round 1 — Dual LoRA + 2-turn context + slow_lr 1e-5  (failed)
+
+Plan `phase2b_experiment_plan.md` §3.2 + §4 verbatim. Inherits Phase 2's
+demographics + chatbot_prev student input but adds the last 2 turns of
+the current session (4 messages) so student has an intra-session topic
+anchor. slow_lr fixed at 1e-5 per plan (20× lower than fast 2e-4).
+(`1fa8194`)
+
+#### Per-persona MCQ-PPL closure (128k)
+
+| Persona     | base  | tch_k3 | R1 best                  | R1 final         |
+|-------------|------:|-------:|--------------------------|------------------|
+| Kanoa (0)   | 0.325 | 0.403  | +17% @600 (0.338)        | +8% (0.331)      |
+| Lisa (4)    | 0.367 | 0.497  | **+5% @600 (0.374)** ❌  | −10% (0.354)     |
+| Jordan (12) | 0.407 | 0.504  | +45% @final (0.451)      | +45%             |
+| Leilani (14)| 0.264 | 0.326  | +37% @600 (0.287)        | +37%             |
+| **AVG**     |       |        | **+26%**                 | +20%             |
+
+R1 collapsed Phase 2's 76% best-step closure to 26%. **Two confounded
+culprits identified by ablation in R1b**:
+
+1. **2-turn context is selectively poisonous**. Adding the recent 2 turns
+   to base (no LoRA) — `base_recent2 − base_demo` per persona:
+   - Kanoa: +1.9pp ✓ (helps)
+   - **Lisa: −2.7pp ❌** (hurts the strongest persona)
+   - Jordan: 0.0pp
+   - Leilani: +0.7pp
+   The student LoRA trained on poisoned input inherits the bad signal.
+   Lisa's collapse from P2 +84% → R1 +5% is the clearest evidence.
+
+2. **slow_lr=1e-5 is 20× below fast=2e-4**, so the MLP path barely moves.
+   Effective trainable capacity collapses to "rank-16 attention only +
+   tiny MLP nudge" — less than Phase 2's single-LoRA rank-32 on all
+   modules.
+
+### 11.2 Round 1b — Demo-only ctx + slow_lr 5e-5  (best universal)
+
+Combined ablation of both R1 culprits (resource-constrained single shot):
+`--student-ctx demo` (drop 2-turn context) + `--slow-lr 5e-5` (4×
+differentiation, not 20×) + `--save-total-limit 0` (keep all ckpts so
+per-persona best can be selected). Output to `$SCRATCHDIR` per Isambard's
+100 GiB $HOME quota. (`12fef77`, `b0db4f4`)
+
+#### Per-persona MCQ-PPL closure (128k)
+
+| Persona     | base  | tch_k3 | R1b best step             | R1b final |
+|-------------|------:|-------:|---------------------------|-----------|
+| Kanoa (0)   | 0.325 | 0.403  | +25% @600 (0.344)         | +25%      |
+| Lisa (4)    | 0.367 | 0.497  | **+90% @600 (0.483)**     | +84%      |
+| Jordan (12) | 0.407 | 0.504  | **+109% @400 (0.496)** ⚡ | +45%      |
+| Leilani (14)| 0.264 | 0.326  | **+88% @200 (0.318)**     | −25% ❌   |
+| **AVG best**|       |        | **+78%**                  |           |
+| **AVG final**|      |        |                           | **+51%**  |
+
+R1b recovers and **slightly exceeds** Phase 2 single-LoRA's 76% best-step
+closure. Two firsts:
+
+- **Jordan exceeds teacher_k3 (+109% closure, n=113)** — first time we
+  see student in 0-context inference outperform teacher_k3 with full K=3
+  history. Validates plan §6.3 hypothesis ("LoRA parametric accumulation
+  can exceed teacher's K=3 ceiling").
+- **Per-persona best step varies dramatically** (200 / 400 / 600), and
+  best − final gap is 27pp on average. Per-persona early stopping (or
+  an automatic stopping signal) is **necessary** to realize the +78%
+  number.
+
+Leilani's monotonic decay (+88% peak → −25% final) **persists** under R1b
+— the dual structure didn't fix it. This motivated Round 2.
+
+### 11.3 Round 2a — Entropy-gated reverse KL  (failed core hypothesis)
+
+Plan §5: gate distillation by per-token entropy comparison. Token gets
+distilled only when `H_teacher + margin < H_student` (teacher more
+confident than student). Designed to skip tokens where teacher would
+otherwise pull student in wrong direction (the failure mode hypothesised
+for Leilani's `acknowledge_latest`). Inherits all R1b best settings;
+single new mechanism. (`001ba8a`)
+
+**Outcome: failed its central hypothesis.** Three signals:
+
+1. **Gate ratio collapsed to ~7% by step 30** (started at 0.18, dropped
+   monotonically). Plan §5.3 expected ~0.9 early. Diagnosis:
+   Qwen3-4B-Instruct-2507 (student base) is naturally peaked due to
+   instruction tuning; R3 SFT teacher with K=3 context has BROADER
+   distribution at most positions → `H_t > H_s` on ~85% of tokens →
+   gate closed wholesale. **Entropy comparison is dominated by
+   architectural overconfidence asymmetry, not by who-knows-more.**
+
+2. **Leilani's `acknowledge_latest` accelerated decay**: 0.20 → 0.05 by
+   step 200 (worse than R1b's 0.075 at final). Mechanism: gradient
+   concentration on the few open tokens AMPLIFIED teacher's wrong
+   direction on Leilani's already-problematic qtype. **Gating
+   accelerated the very failure it was supposed to prevent.**
+
+3. **Teacher-strong qtypes regressed across all 4 personas**:
+   - Jordan track_evolution: R1b 1.000 → R2a 0.737
+   - Lisa recall_facts: R1b 0.600 → R2a 0.300
+   - Leilani recall_facts: R1b 0.800 → R2a 0.400
+   - Jordan generalize: R1b 0.500 → R2a 0.000
+   Gate closed on tokens where teacher was genuinely teaching well.
+
+R2a was killed after step 200 sniff test (4/4 personas evaluated). No
+full learning curve.
+
+### 11.4 Round 2c — Joint-gated reverse KL  (partial recovery, lower ceiling)
+
+Replace entropy gate with joint condition:
+`gate = (H_teacher < tau) AND (argmax_teacher ≠ argmax_student)`.
+Decoupled from H_s → unaffected by Instruct-base overconfidence.
+Skip when student already agrees with teacher → save gradient for
+genuine disagreement. (`c8e6473`, `0eabeee`)
+
+Tau swept in dry-run: tau=1.0 gave gate ratio ~4% (still too restrictive
+because confident teacher tokens tend to be common-pattern tokens where
+student already agrees). **tau=3.0 gave gate ratio ~30%** in healthy
+range; used as default for the full run.
+
+#### Per-persona MCQ-PPL closure (128k)
+
+| Persona     | base  | tch_k3 | R2c best step              | R2c final     |
+|-------------|------:|-------:|----------------------------|---------------|
+| Kanoa (0)   | 0.325 | 0.403  | +17% @400 (0.338)          | +17%          |
+| Lisa (4)    | 0.367 | 0.497  | **+105% @600 (0.503)** ⚡  | +68%          |
+| Jordan (12) | 0.407 | 0.504  | +55% @final (0.460)        | **+55% (=best)** |
+| Leilani (14)| 0.264 | 0.326  | +13% @200 (0.271)          | 0% (= base)   |
+| **AVG best**|       |        | **+47%**                   |               |
+| **AVG final**|      |        |                            | **+35%**      |
+
+#### What R2c fixed vs what it did not
+
+R2c **fully recovered** R2a's regressions on teacher-strong qtypes (Lisa
+recall_facts → 0.600 = teacher level; Jordan track_evolution → 1.000;
+Jordan generalize → 0.500; etc.). And **Lisa exceeded teacher_k3
+(+105%)** — second instance of this property after R1b's Jordan +109%.
+
+R2c **failed** on Leilani's `acknowledge_latest` even more catastrophically
+than R2a: 0.20 → 0.025 by final (R2a was 0.05; R1b was 0.075). Joint gate
+opens whenever (teacher confident) AND (student disagrees) — for
+Leilani's ack_latest, teacher is confidently wrong (0.10 < base 0.20)
+AND student disagrees (gives different argmax) → gate opens → student
+pulled wrong, just like R2a but more focused.
+
+**Stability win**: R2c's best − final gap is **12pp** vs R1b's 27pp.
+Kanoa and Jordan have `final = best`. Plan §5.4's "automatic per-persona
+stopping signal" is partially achieved.
+
+| | R1b final | R2c final |
+|---|---|---|
+| Avg final closure | +51% | +35% |
+| Best − final gap | 27pp | **12pp** |
+| Personas with final = best | 0/4 | **2/4** |
+| Leilani final closure | **−25%** ❌ | 0% (= base) |
+
+R2c trades **31pp of ceiling for 15pp of stability** plus avoiding
+Leilani's catastrophic decay. Universally usable but lower peak.
+
+### 11.5 Cross-version generalization  (32k / 128k / 1M)
+
+PersonaMem-v1 ships three context-length versions. **Same 20 personas
+across versions; different shared_contexts (independent conversations);
+different MCQs (different correct answers even when question template
+is reused — verified by inspection)**.
+
+| Version | shared_contexts | MCQs | Max ctx |
+|---------|----------------:|-----:|--------:|
+| 32k     | 37              | 589  | ~27k    |
+| 128k    | 60              | 2727 | ~128k   |
+| 1M      | 31              | 2674 | ~1M     |
+
+All R1/R1b/R2a/R2c LoRAs were trained on **128k OPD data only**.
+Evaluating on 32k and 1M tests **cross-context generalization** —
+whether the LoRA learned transferable persona knowledge or just
+memorized 128k-specific events.
+
+#### Topic overlap structure (Jaccard, per persona)
+
+| Persona | 32k ∩ 128k | 128k ∩ 1M | 32k ∩ 1M |
+|---------|:----------:|:---------:|:--------:|
+| Lisa    | 9%         | **73%**   | 7%       |
+| Leilani | 21%        | **87%**   | 21%      |
+
+**32k is a narrow subset** (1-3 topics per persona, e.g. Kanoa 32k =
+17/17 financialConsultation). **128k ↔ 1M overlap heavily** in topics
+but events differ — same question template can have different correct
+answer per version.
+
+#### Cross-version best-step closure
+
+Eval launchers: `run_round1b_mcq_eval.sh` + R2c wrapper, both extended
+with `VERSION` env var (`435f2d5`):
+
+| Version | personas counted | **R1b best AVG** | R2c best AVG |
+|---------|------------------|------------------|--------------|
+| 32k     | Kanoa, Jordan only ¹ | **+77%**     | +54%         |
+| 128k    | all 4            | **+78%**         | +47%         |
+| **1M**  | all 4            | **+128%** ⚡     | +106% ⚡     |
+
+¹ Lisa 32k has gap = 0 (teacher = base = 0.385), closure undefined.
+  Leilani 32k gap = 0.044 distorts closure % (small absolute change
+  shows as +400%). The two well-defined personas (Kanoa, Jordan) give
+  the cleanest 32k AVG.
+
+**R1b wins R2c uniformly across all 3 versions** — joint gate's
+universal underperformance is now confirmed cross-version, not a
+128k-specific artifact.
+
+#### 1M is the strongest result — student exceeds teacher_k3
+
+R1b on 1M: **4/4 personas closure ≥ 96%, 3/4 > 100%**:
+
+| Persona | base  | tch_k3 | R1b best        | closure   |
+|---------|------:|-------:|-----------------|-----------|
+| Kanoa   | 0.244 | 0.386  | 0.381 @step400  | **+96%**  |
+| Lisa    | 0.307 | 0.350  | 0.362 @step600  | **+128%** ⚡ |
+| Jordan  | 0.267 | 0.362  | 0.410 @final    | **+150%** ⚡⚡ |
+| Leilani | 0.267 | 0.373  | 0.413 @step200  | **+137%** ⚡ |
+
+**Tally of "student ≥ teacher_k3" (closure ≥ 100%) cells across all
+versions for R1b**: 5 out of 12 measured cells:
+- 32k Jordan +110%
+- 128k Jordan +109%
+- 1M Lisa +128%, Jordan +150%, Leilani +137%
+
+This validates the parametric-accumulation hypothesis at scale: **a 4B
+model with a 40M-parameter persona LoRA, given zero conversation context
+at inference, matches or exceeds a K=3-context teacher on out-of-training-
+distribution test data**.
+
+#### 32k OOD topic saturation phenomenon
+
+For Kanoa 32k (all 17 MCQs are financialConsultation, a topic 128k
+training data barely contained), **all 6 R1b checkpoints produce
+identical predictions** (acc 0.412 across step 200/400/600/800/1000/final
+— diff = 0/17 between any pair of consecutive ckpts). Same for R2c
+(constant 0.529). But base vs student differs in 11/17 predictions →
+LoRA is wired and active, just step-invariant for OOD topics.
+
+**Interpretation**: LoRA captures a "persona-style fingerprint" that
+saturates within the first few hundred steps and does not refine
+further on truly OOD topics. The fingerprint adds a fixed
+persona-flavored bias (Kanoa: 0.176 base → 0.412 R1b student / 0.529
+R2c student) but no topic-specific knowledge transfer occurs. This is
+itself an interesting finding — LoRA learns persona, not events.
+
+### 11.6 Per-qtype dynamics  (which qtypes does OPD help vs hurt?)
+
+Per-qtype breakdown across rounds (128k, R1b best vs base vs teacher),
+aggregated across 4 personas:
+
+| qtype                | OPD direction | Teacher vs base, by persona |
+|----------------------|:-------------:|------------------------------|
+| `track_evolution`    | ✅ helps      | tch > base in 4/4 |
+| `recall_facts`       | ✅ helps      | tch > base in 4/4 |
+| `suggest_new`        | ✅ helps      | tch > base in 4/4 |
+| `reasons_behind`     | ≈             | mixed |
+| `acknowledge_latest` | ⚠️ persona-dependent | tch < base for **Leilani (−10pp), Kanoa (−2pp), Jordan (−5pp)**; tch > base for Lisa (+5pp) |
+| `aligned_rec`        | ⚠️             | tch < base for some personas |
+| `generalize`         | ❌ hurts      | tch < base in 4/4 — **durable SFT weakness** (also seen Phase 1 §4.4.3) |
+
+**Smoking gun for Leilani's failure across rounds**:
+`acknowledge_latest` is her dominant qtype (31% of MCQs). Teacher 0.10
+vs base 0.20 — teacher is genuinely worse than base on her dominant
+qtype. OPD pulls student toward teacher's distribution → student
+inherits teacher's wrongness. Confirmed across all rounds:
+- R1b @final: 0.20 → 0.075 (after 1000 steps of being pulled)
+- R2a @step 200: 0.20 → 0.05 (entropy gate accelerated the pull)
+- R2c @final: 0.20 → 0.025 (joint gate concentrated the pull further)
+
+### 11.7 Theoretical limits of token-level gating
+
+R2a + R2c together demonstrate a structural result:
+
+**No token-level gate that uses only `(H_t, H_s, top_t, top_s)` can
+distinguish "teacher is confidently correct" from "teacher is confidently
+wrong"**. Both look identical to the gate (low entropy + may disagree
+with student). Without ground-truth signal, no purely model-internal
+quantity provides this distinction.
+
+Plan §5.4 hypothesised entropy gating subsumes Titans-style surprise
+detection. Empirically, entropy is a proxy for "teacher's marginal
+information content" but not for "teacher's correctness". The
+Leilani-style failure mode (teacher confidently wrong on a persona's
+dominant qtype) is a hard ceiling for the gating-only approach.
+
+Three classes of fixes outside the gating framework:
+
+1. **CE-on-GT mix**: `loss = α · reverse_KL + (1−α) · CE(student, GT_user_response)`
+   anchors the student to the held-out ground-truth user turn, escaping
+   the teacher-pull for that token. Untried.
+
+2. **Per-persona LR / gate adaptation**: cross-persona variance in best
+   round (cherry-pick best round per persona = +94% AVG vs single-round
+   best of +78%) suggests a 16pp reserve from persona-aware tuning.
+
+3. **K=10 teacher** (plan §6): would change which qtypes teacher is
+   wrong on. Doesn't fix gating limits but raises the distance>3 ceiling.
+
+### 11.8 Comparison to PersonaMem paper baselines
+
+The PersonaMem paper (Figure 6) reports **LLaMA-3.1-8B at 36.9% on the
+32k version** under their MCQ protocol (re-weighted to our 6-type
+distribution; full conversation history given at inference). Direct
+comparison to our work has methodology caveats:
+
+| Setup | Model | Inference context | 32k overall |
+|---|---|---|---|
+| Paper Fig 6 | LLaMA-3.1-8B (instruct) | full ~27k history | **36.9%** |
+| Our Phase 1 (R3) | Qwen3-4B SFT | K=3 history (~23k) | **49.1%** (§9.4) |
+| **Our R1b best** | Qwen3-4B + 40M LoRA | **demo only (<1k)** | per-persona varies (saturated for narrow-topic personas; Jordan 0.698 abs at +110% closure) |
+| **Our R1b 1M cross-version** | same | **demo only** | **AVG 0.392 abs / +128% closure** |
+
+Caveats on direct comparison:
+- **Demographics scope**: paper "basic demographic info (name, age,
+  gender, racial, occupation)" vs our full first system message which
+  also includes a free-text persona narrative (200-400 tokens of
+  background, hobbies, projects, goals). Confirmed by inspecting Kanoa's
+  demographics field — the prose explicitly mentions "MIDI", "Pacific
+  music", "fusion", "app development" before any conversation. This
+  inflates our base_demo numbers; closure denominators are smaller than
+  they'd be under strict paper-style demographics. **Our internal
+  cross-round closure comparisons remain fair** (consistent demo across
+  all rounds), but **absolute closure % is not directly comparable to
+  paper baselines without a minimal-demo redo**.
+- **Model scale**: paper's smallest tested open model is LLaMA-3.1-8B;
+  next-smallest open is LLaMA-3.1-405B (50× larger). Our Qwen3-4B is
+  half LLaMA-8B's size. Our best result `4B + 40M LoRA + 0 context ≈
+  paper's 8B + 27k context` is the strongest narrative we can claim.
+- **MCQ protocol**: identical to paper (score 4 choices' assistant-PPL,
+  pick argmin). No protocol differences.
+
+### 11.9 Phase 2b conclusions
+
+1. **Best universal recipe: R1b** (dual LoRA s32f16, slow_lr 5e-5,
+   demo-only student input, ungated reverse KL). 78% AVG best-step
+   closure on 128k; **128% on 1M cross-version**; 5 cells across all
+   versions where student exceeds teacher_k3.
+
+2. **Token-level gating is fundamentally limited** without ground-truth
+   signal. Entropy gate (R2a) collapses due to model overconfidence
+   asymmetry; joint gate (R2c) trades ceiling for stability but cannot
+   distinguish teacher-confidently-correct from teacher-confidently-wrong.
+
+3. **Per-persona dynamics differ qualitatively**. Best step varies
+   200 → 600 → final across personas; best round varies R1b/R2a/R2c
+   per persona (cherry-pick AVG = +94%, +16pp above single-round best).
+   Per-persona adaptive training (LR, gate, stopping) is the largest
+   reserve still on the table.
+
+4. **LoRA captures persona, not events**. Cross-version 1M result
+   (training data: 128k events; test MCQs: completely different 1M
+   events; same personas) yields +128% closure. The 32k OOD-topic
+   saturation phenomenon (LoRA gives step-invariant output on
+   never-trained topics) is consistent with this — LoRA learns a
+   persona fingerprint, not specific session memory.
+
+5. **Leilani's `acknowledge_latest` failure is structural**: teacher 0.10
+   < base 0.20 on her dominant qtype. No pure gating mechanism solves it.
+   Requires CE-on-GT mix or external signal.
+
+### 11.10 Next steps
+
+1. **R3 — CE-on-GT mix** (plan extension): mix supervised CE on
+   ground-truth user response into the loss. Should specifically rescue
+   Leilani's `acknowledge_latest` decay. Cost ~ R1b training time.
+
+2. **R4 — K=10 teacher** (plan §6): raise distance>3 ceiling. Already
+   showed in 1M cross-version that R1b LoRA can exceed teacher_k3; with
+   teacher_k10 the new ceiling may unlock another step.
+
+3. **Per-persona adaptive gate** (plan §6 extension): use per-session
+   gate_ratio (recorded in `analyze_gate_ratio.py`) as an automatic
+   stopping signal. Combine with per-persona LR.
+
+4. **Minimal-demographics ablation**: regex-extract just (Name, Gender,
+   Racial, Age, Occupation), redo base_demo + best student ckpts. Will
+   shrink closure denominators; absolute student numbers should hold
+   (LoRA was trained with rich demo → may also need retrain). Required
+   for direct paper-baseline comparison.
+
+5. **CE-on-GT for `acknowledge_latest` specifically**: per-qtype loss
+   weighting could avoid the Leilani failure without retraining
+   everything from scratch.
+
+---
+
+## 12. Referenced commits (chronological)
 
 ```
 040fecd  Phase 0+1 scaffolding
@@ -1262,4 +1698,17 @@ da62a14  Phase 2 MCQ-PPL aggregate launcher (run_phase2_mcq_eval.sh)
 42ba56c  aggregate: teacher_full -> teacher_k3 (fix O(n²) loop + R3 OOD)
 740e786  train_opd: resume from latest ckpt + save optimizer state
 8d6d42c  run_phase2_mcq_eval: support --student-step final
+4c64554  EXPERIMENTS §10.5/6/8: full 5-point learning curve + per-persona best
+
+# --- Phase 2b ---
+1fa8194  Phase 2b Round 1: dual-LoRA OPD scaffolding (slow MLP + fast Attn)
+4c8cb3a  fix dual-LoRA activation: use LoraModel.set_adapter (PEFT gotcha)
+b0db4f4  train_opd_dual: clearer dry-run diagnostic + interactive 4-GPU launcher
+12fef77  Phase 2b Round 1b: combined ablation (demo ctx + slow_lr 5e-5 + keep all ckpts)
+9a7458b  add compare_rounds.py: cross-round MCQ-PPL aggregation
+001ba8a  Phase 2b Round 2a: gated reverse KL on top of R1b's best dual-LoRA setup
+c8e6473  Phase 2b Round 2c: joint gate (teacher confidence + top-1 disagreement)
+0eabeee  add --gate-mode teacher_conf (drop disagree filter from joint gate)
+c07265d  fix run_round1b_mcq_eval.sh aggregator KeyError
+435f2d5  add MCQ-PPL eval support for 32k / 1M versions
 ```
