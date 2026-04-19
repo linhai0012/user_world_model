@@ -104,7 +104,9 @@ echo ""
 # Prevents idle GPUs waiting for a slow condition (e.g. teacher_k3 with
 # K=3 context can be 3-5× slower than demo-only conditions).
 #
-# Requires bash 5.1+ for `wait -n -p VAR` (returns finished PID).
+# Bash 4.4 compat: uses `wait -n` (added in 4.3) for "wait for any" but
+# scans `kill -0 $pid` to identify which child died (bash 5.1's
+# `wait -n -p VAR` would tell us directly, but Isambard runs 4.4).
 ts=$(date +%Y%m%d_%H%M%S)
 declare -A gpu_pid          # gpu_index -> background PID
 declare -A pid_gpu          # PID -> gpu_index
@@ -145,20 +147,34 @@ for ((g=0; g<N_GPUS && i<n_total; g++, i++)); do
     launch_on_gpu $g $i
 done
 
-# Rolling: each time any job finishes, free its GPU and launch next
+# Rolling: each time any job finishes, free its GPU and launch next.
+# Bash 4.4 doesn't have `wait -n -p`, so we wait for ANY child to finish
+# (wait -n) then scan our pool for which PID is no longer alive.
 while [[ ${#pid_gpu[@]} -gt 0 ]]; do
-    # wait -n -p VAR : wait for any background job to finish, store PID in VAR
+    # wait -n: blocks until ANY background child terminates; returns its
+    # exit code in $? (we capture as `rc` for the most-recently-finished).
+    wait -n 2>/dev/null
+    rc=$?
+
+    # Find which of our pool PIDs is no longer alive (= the one that just
+    # finished). Loop because in rare race we may need to retry.
     done_pid=""
-    if ! wait -n -p done_pid; then
-        rc=$?
-    else
-        rc=0
-    fi
+    for attempt in 1 2 3; do
+        for p in "${!pid_gpu[@]}"; do
+            if ! kill -0 "$p" 2>/dev/null; then
+                done_pid="$p"
+                break 2
+            fi
+        done
+        sleep 0.2
+    done
 
     if [[ -z "$done_pid" ]]; then
-        # bash <5.1 fallback or other oddity — break to avoid infinite loop
-        echo "  WARN: wait -n didn't return a PID; falling back to wait-all"
-        for p in "${!pid_gpu[@]}"; do wait "$p" || true; done
+        # Shouldn't happen — wait -n returned but no pool PID is dead.
+        # Defensive: full wait-all and exit loop to avoid spinning.
+        echo "  WARN: wait -n returned (rc=$rc) but no pool PID died; "
+        echo "        falling back to wait-all on remaining ${#pid_gpu[@]} jobs"
+        for p in "${!pid_gpu[@]}"; do wait "$p" 2>/dev/null || true; done
         break
     fi
 
@@ -174,10 +190,10 @@ while [[ ${#pid_gpu[@]} -gt 0 ]]; do
     echo "  [GPU$g done   $(date +%H:%M:%S) $label  ${elapsed}s  $status]  $n_done/$n_total ($pct%)"
 
     # Free GPU, drop PID
-    unset gpu_pid[$g]
-    unset pid_gpu[$done_pid]
-    unset pid_label[$done_pid]
-    unset pid_start[$done_pid]
+    unset 'gpu_pid[$g]'
+    unset 'pid_gpu[$done_pid]'
+    unset 'pid_label[$done_pid]'
+    unset 'pid_start[$done_pid]'
 
     # Dequeue next if any
     if [[ $i -lt $n_total ]]; then
