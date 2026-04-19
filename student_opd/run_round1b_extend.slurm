@@ -18,7 +18,10 @@
 set -euxo pipefail
 
 module load brics/nccl
-eval "$(conda shell.bash hook)"
+
+# sbatch doesn't source ~/.bashrc → conda not on PATH. Explicitly source
+# miniforge init script before activate.
+source $HOME/miniforge3/etc/profile.d/conda.sh
 conda activate grpo
 
 REPO_DIR="/home/u6aa/linhai.u6aa/P-OPSD"
