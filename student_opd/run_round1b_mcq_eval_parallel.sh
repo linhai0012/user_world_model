@@ -100,49 +100,89 @@ echo "$n_total conditions queued, $n_batches batches of $N_GPUS"
 echo "Estimated time: ~$((n_batches * 90 / 60)) minutes (assuming 90s per condition)"
 echo ""
 
-# Run queue, N_GPUS at a time
+# Rolling worker pool: when ANY GPU finishes, immediately dequeue next.
+# Prevents idle GPUs waiting for a slow condition (e.g. teacher_k3 with
+# K=3 context can be 3-5× slower than demo-only conditions).
+#
+# Requires bash 5.1+ for `wait -n -p VAR` (returns finished PID).
 ts=$(date +%Y%m%d_%H%M%S)
-batch_idx=0
+declare -A gpu_pid          # gpu_index -> background PID
+declare -A pid_gpu          # PID -> gpu_index
+declare -A pid_label        # PID -> "pid=X cond=Y" for logging
+declare -A pid_start        # PID -> start timestamp (seconds since epoch)
+n_done=0
+
+launch_on_gpu() {
+    local g="$1" idx="$2"
+    local name="${queue_name[$idx]}"
+    local base="${queue_base[$idx]}"
+    local lora="${queue_lora[$idx]}"
+    local ctx="${queue_ctx[$idx]}"
+    local pid="${queue_pid[$idx]}"
+    local out="${queue_out[$idx]}"
+    local log="$LOG_DIR/pid${pid}_${name}_${ts}.log"
+    local lora_arg=()
+    [[ -n "$lora" ]] && lora_arg=(--lora-path "$lora" --lora-mode dual)
+
+    CUDA_VISIBLE_DEVICES=$g python dynamic_usersim/student_opd/eval_opd.py \
+        --persona-id "$pid" \
+        --base-model "$base" "${lora_arg[@]}" \
+        --context-mode "$ctx" \
+        --mcq-version "$VERSION" \
+        --out-json "$out" \
+        > "$log" 2>&1 &
+    local p=$!
+    gpu_pid[$g]=$p
+    pid_gpu[$p]=$g
+    pid_label[$p]="pid=$pid $name"
+    pid_start[$p]=$(date +%s)
+    echo "  [GPU$g start  $(date +%H:%M:%S) pid=$pid $name]"
+}
+
+# Initial fill: launch first N_GPUS conditions
 i=0
-while [[ $i -lt $n_total ]]; do
-    batch_idx=$((batch_idx + 1))
-    batch_pids=()
-    for ((g=0; g<N_GPUS && i<n_total; g++, i++)); do
-        name="${queue_name[$i]}"
-        base="${queue_base[$i]}"
-        lora="${queue_lora[$i]}"
-        ctx="${queue_ctx[$i]}"
-        pid="${queue_pid[$i]}"
-        out="${queue_out[$i]}"
+for ((g=0; g<N_GPUS && i<n_total; g++, i++)); do
+    launch_on_gpu $g $i
+done
 
-        log="$LOG_DIR/pid${pid}_${name}_${ts}.log"
-        lora_arg=()
-        [[ -n "$lora" ]] && lora_arg=(--lora-path "$lora" --lora-mode dual)
+# Rolling: each time any job finishes, free its GPU and launch next
+while [[ ${#pid_gpu[@]} -gt 0 ]]; do
+    # wait -n -p VAR : wait for any background job to finish, store PID in VAR
+    done_pid=""
+    if ! wait -n -p done_pid; then
+        rc=$?
+    else
+        rc=0
+    fi
 
-        echo "  [GPU$g] pid=$pid $name -> $(basename $out)"
-        CUDA_VISIBLE_DEVICES=$g python dynamic_usersim/student_opd/eval_opd.py \
-            --persona-id "$pid" \
-            --base-model "$base" "${lora_arg[@]}" \
-            --context-mode "$ctx" \
-            --mcq-version "$VERSION" \
-            --out-json "$out" \
-            > "$log" 2>&1 &
-        batch_pids+=($!)
-    done
+    if [[ -z "$done_pid" ]]; then
+        # bash <5.1 fallback or other oddity — break to avoid infinite loop
+        echo "  WARN: wait -n didn't return a PID; falling back to wait-all"
+        for p in "${!pid_gpu[@]}"; do wait "$p" || true; done
+        break
+    fi
 
-    # Wait for batch to complete
-    fail=0
-    for p in "${batch_pids[@]}"; do
-        wait "$p" || fail=1
-    done
-
-    n_done=$i
+    g=${pid_gpu[$done_pid]}
+    label=${pid_label[$done_pid]}
+    start=${pid_start[$done_pid]}
+    elapsed=$(( $(date +%s) - start ))
+    n_done=$((n_done + 1))
     pct=$(( 100 * n_done / n_total ))
-    echo "  [batch $batch_idx/$n_batches done] $n_done / $n_total ($pct%)"
 
-    if [[ $fail -ne 0 ]]; then
-        echo "  WARN: at least one job in batch $batch_idx failed (see logs)"
-        # continue — other batches independent
+    status="ok"
+    [[ $rc -ne 0 ]] && status="FAIL($rc)"
+    echo "  [GPU$g done   $(date +%H:%M:%S) $label  ${elapsed}s  $status]  $n_done/$n_total ($pct%)"
+
+    # Free GPU, drop PID
+    unset gpu_pid[$g]
+    unset pid_gpu[$done_pid]
+    unset pid_label[$done_pid]
+    unset pid_start[$done_pid]
+
+    # Dequeue next if any
+    if [[ $i -lt $n_total ]]; then
+        launch_on_gpu $g $i
+        i=$((i + 1))
     fi
 done
 
