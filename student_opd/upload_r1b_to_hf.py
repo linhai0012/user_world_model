@@ -31,7 +31,7 @@ import os
 import sys
 from pathlib import Path
 
-from huggingface_hub import HfApi, create_repo
+from huggingface_hub import HfApi, create_repo, get_token
 
 
 DEFAULT_REPO_ID = "lzhang472/P-OPSD-Qwen3-4B-R1b-focal4"
@@ -180,7 +180,7 @@ def main() -> int:
         print("dry-run — exiting without upload")
         return 0
 
-    if not os.environ.get("HF_TOKEN") and not (Path.home() / ".cache/huggingface/token").exists():
+    if get_token() is None:
         print(
             "ERROR: no HF token found. Run `huggingface-cli login` first, "
             "or export HF_TOKEN=hf_...",
