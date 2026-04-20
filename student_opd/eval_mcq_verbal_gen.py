@@ -127,6 +127,8 @@ def parse_args() -> argparse.Namespace:
     # vLLM / sampling
     ap.add_argument("--max-model-len", type=int, default=8192)
     ap.add_argument("--gpu-memory-utilization", type=float, default=0.9)
+    ap.add_argument("--tensor-parallel-size", type=int, default=1,
+                    help="number of GPUs for vLLM tensor-parallel")
     ap.add_argument("--temperature", type=float, default=0.7)
     ap.add_argument("--top-p", type=float, default=0.9)
     ap.add_argument("--max-tokens", type=int, default=150)
@@ -189,6 +191,7 @@ def main() -> None:
         trust_remote_code=True,
         gpu_memory_utilization=args.gpu_memory_utilization,
         enable_prefix_caching=True,
+        tensor_parallel_size=args.tensor_parallel_size,
     )
     lora_req = None
     if args.lora_path:
