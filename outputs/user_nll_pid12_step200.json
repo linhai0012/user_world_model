@@ -1,0 +1,5035 @@
+{
+  "args": {
+    "persona_id": "12",
+    "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+    "teacher_path": "/scratch/u6aa/linhai.u6aa/P-OPSD/teacher_sft_128k_k3/final",
+    "lora_path": "dynamic_usersim/outputs/lora_pid12_r32_ep1_r3teacher/ckpt-step-200",
+    "data_path": "/home/u6aa/linhai.u6aa/P-OPSD/dynamic_usersim/outputs/opd_128k_pid12_k3.jsonl",
+    "num_samples": "100",
+    "seed": "42",
+    "max_seq_len": "40960",
+    "lm_head_chunk": "2048",
+    "gpu": "0",
+    "out_json": "dynamic_usersim/outputs/user_nll_pid12_step200.json"
+  },
+  "n_samples": 100,
+  "per_condition": {
+    "base_demo": [
+      {
+        "sample_idx": 0,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 8,
+        "mean_nll": 2.6209270770733175,
+        "n_target_tokens": 130,
+        "total_seq_len": 501
+      },
+      {
+        "sample_idx": 1,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 11,
+        "mean_nll": 2.4846986014887973,
+        "n_target_tokens": 106,
+        "total_seq_len": 437
+      },
+      {
+        "sample_idx": 2,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 12,
+        "mean_nll": 2.417191473429635,
+        "n_target_tokens": 149,
+        "total_seq_len": 520
+      },
+      {
+        "sample_idx": 3,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 17,
+        "mean_nll": 2.921032524108887,
+        "n_target_tokens": 40,
+        "total_seq_len": 2651
+      },
+      {
+        "sample_idx": 4,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 17,
+        "user_turn_idx": 21,
+        "mean_nll": 2.4985343670022897,
+        "n_target_tokens": 116,
+        "total_seq_len": 425
+      },
+      {
+        "sample_idx": 5,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 14,
+        "user_turn_idx": 23,
+        "mean_nll": 2.793878846249338,
+        "n_target_tokens": 118,
+        "total_seq_len": 461
+      },
+      {
+        "sample_idx": 6,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 18,
+        "mean_nll": 2.1536508013111675,
+        "n_target_tokens": 129,
+        "total_seq_len": 448
+      },
+      {
+        "sample_idx": 7,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 67,
+        "mean_nll": 2.69048857353103,
+        "n_target_tokens": 142,
+        "total_seq_len": 440
+      },
+      {
+        "sample_idx": 8,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 2,
+        "mean_nll": 3.3601332271800324,
+        "n_target_tokens": 17,
+        "total_seq_len": 1050
+      },
+      {
+        "sample_idx": 9,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 30,
+        "mean_nll": 2.6830682465524385,
+        "n_target_tokens": 132,
+        "total_seq_len": 512
+      },
+      {
+        "sample_idx": 10,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 42,
+        "mean_nll": 2.630869177616004,
+        "n_target_tokens": 165,
+        "total_seq_len": 505
+      },
+      {
+        "sample_idx": 11,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 12,
+        "mean_nll": 2.900641305106027,
+        "n_target_tokens": 35,
+        "total_seq_len": 1158
+      },
+      {
+        "sample_idx": 12,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 12,
+        "mean_nll": 2.5236334549753288,
+        "n_target_tokens": 133,
+        "total_seq_len": 443
+      },
+      {
+        "sample_idx": 13,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 15,
+        "user_turn_idx": 12,
+        "mean_nll": 3.6451174926757814,
+        "n_target_tokens": 25,
+        "total_seq_len": 297
+      },
+      {
+        "sample_idx": 14,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 35,
+        "mean_nll": 5.067253430684407,
+        "n_target_tokens": 12,
+        "total_seq_len": 192
+      },
+      {
+        "sample_idx": 15,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 19,
+        "user_turn_idx": 20,
+        "mean_nll": 2.5284316119025734,
+        "n_target_tokens": 17,
+        "total_seq_len": 382
+      },
+      {
+        "sample_idx": 16,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 7,
+        "user_turn_idx": 27,
+        "mean_nll": 5.067253430684407,
+        "n_target_tokens": 12,
+        "total_seq_len": 192
+      },
+      {
+        "sample_idx": 17,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 2,
+        "user_turn_idx": 2,
+        "mean_nll": 2.7467742679625986,
+        "n_target_tokens": 127,
+        "total_seq_len": 540
+      },
+      {
+        "sample_idx": 18,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 24,
+        "mean_nll": 2.409020445400611,
+        "n_target_tokens": 133,
+        "total_seq_len": 474
+      },
+      {
+        "sample_idx": 19,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 12,
+        "mean_nll": 2.06421630859375,
+        "n_target_tokens": 125,
+        "total_seq_len": 510
+      },
+      {
+        "sample_idx": 20,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 8,
+        "mean_nll": 2.478607177734375,
+        "n_target_tokens": 131,
+        "total_seq_len": 472
+      },
+      {
+        "sample_idx": 21,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 38,
+        "mean_nll": 2.531015409093325,
+        "n_target_tokens": 147,
+        "total_seq_len": 535
+      },
+      {
+        "sample_idx": 22,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 12,
+        "user_turn_idx": 36,
+        "mean_nll": 2.565893197988535,
+        "n_target_tokens": 154,
+        "total_seq_len": 536
+      },
+      {
+        "sample_idx": 23,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 0,
+        "user_turn_idx": 22,
+        "mean_nll": 2.569109199460873,
+        "n_target_tokens": 121,
+        "total_seq_len": 454
+      },
+      {
+        "sample_idx": 24,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 18,
+        "mean_nll": 2.35484521484375,
+        "n_target_tokens": 125,
+        "total_seq_len": 481
+      },
+      {
+        "sample_idx": 25,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 17,
+        "user_turn_idx": 2,
+        "mean_nll": 4.004436016082764,
+        "n_target_tokens": 16,
+        "total_seq_len": 942
+      },
+      {
+        "sample_idx": 26,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 11,
+        "user_turn_idx": 2,
+        "mean_nll": 1.87051171875,
+        "n_target_tokens": 125,
+        "total_seq_len": 484
+      },
+      {
+        "sample_idx": 27,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 38,
+        "mean_nll": 2.2944222102089533,
+        "n_target_tokens": 126,
+        "total_seq_len": 459
+      },
+      {
+        "sample_idx": 28,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 30,
+        "mean_nll": 2.6155640268083755,
+        "n_target_tokens": 197,
+        "total_seq_len": 524
+      },
+      {
+        "sample_idx": 29,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 8,
+        "mean_nll": 2.1890866737666093,
+        "n_target_tokens": 127,
+        "total_seq_len": 501
+      },
+      {
+        "sample_idx": 30,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 23,
+        "mean_nll": 4.770806376139323,
+        "n_target_tokens": 15,
+        "total_seq_len": 364
+      },
+      {
+        "sample_idx": 31,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 7,
+        "user_turn_idx": 18,
+        "mean_nll": 3.993287828233507,
+        "n_target_tokens": 9,
+        "total_seq_len": 191
+      },
+      {
+        "sample_idx": 32,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 12,
+        "mean_nll": 2.331489740416061,
+        "n_target_tokens": 129,
+        "total_seq_len": 478
+      },
+      {
+        "sample_idx": 33,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 10,
+        "user_turn_idx": 17,
+        "mean_nll": 2.788543192545573,
+        "n_target_tokens": 15,
+        "total_seq_len": 192
+      },
+      {
+        "sample_idx": 34,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 19,
+        "user_turn_idx": 17,
+        "mean_nll": 2.378636899201766,
+        "n_target_tokens": 138,
+        "total_seq_len": 466
+      },
+      {
+        "sample_idx": 35,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 18,
+        "user_turn_idx": 4,
+        "mean_nll": 3.848348546911169,
+        "n_target_tokens": 27,
+        "total_seq_len": 429
+      },
+      {
+        "sample_idx": 36,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 6,
+        "mean_nll": 2.668941722196691,
+        "n_target_tokens": 17,
+        "total_seq_len": 999
+      },
+      {
+        "sample_idx": 37,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 13,
+        "mean_nll": 2.2355937066479266,
+        "n_target_tokens": 107,
+        "total_seq_len": 455
+      },
+      {
+        "sample_idx": 38,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 0,
+        "user_turn_idx": 14,
+        "mean_nll": 2.4302431136842757,
+        "n_target_tokens": 126,
+        "total_seq_len": 415
+      },
+      {
+        "sample_idx": 39,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 19,
+        "mean_nll": 2.2900858169946914,
+        "n_target_tokens": 156,
+        "total_seq_len": 471
+      },
+      {
+        "sample_idx": 40,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 12,
+        "user_turn_idx": 40,
+        "mean_nll": 2.293014040418491,
+        "n_target_tokens": 157,
+        "total_seq_len": 546
+      },
+      {
+        "sample_idx": 41,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 34,
+        "mean_nll": 2.622647332806959,
+        "n_target_tokens": 141,
+        "total_seq_len": 535
+      },
+      {
+        "sample_idx": 42,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 6,
+        "user_turn_idx": 24,
+        "mean_nll": 3.5069707234700522,
+        "n_target_tokens": 18,
+        "total_seq_len": 304
+      },
+      {
+        "sample_idx": 43,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 14,
+        "mean_nll": 4.2532453536987305,
+        "n_target_tokens": 16,
+        "total_seq_len": 348
+      },
+      {
+        "sample_idx": 44,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 10,
+        "mean_nll": 2.4202914500799704,
+        "n_target_tokens": 127,
+        "total_seq_len": 426
+      },
+      {
+        "sample_idx": 45,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 27,
+        "mean_nll": 3.047152904753989,
+        "n_target_tokens": 47,
+        "total_seq_len": 393
+      },
+      {
+        "sample_idx": 46,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 26,
+        "mean_nll": 2.626766429227941,
+        "n_target_tokens": 136,
+        "total_seq_len": 488
+      },
+      {
+        "sample_idx": 47,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 2,
+        "mean_nll": 2.507423683449074,
+        "n_target_tokens": 108,
+        "total_seq_len": 461
+      },
+      {
+        "sample_idx": 48,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 27,
+        "mean_nll": 2.3634661921748408,
+        "n_target_tokens": 108,
+        "total_seq_len": 449
+      },
+      {
+        "sample_idx": 49,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 2,
+        "mean_nll": 2.9041689822548316,
+        "n_target_tokens": 19,
+        "total_seq_len": 1062
+      },
+      {
+        "sample_idx": 50,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 19,
+        "user_turn_idx": 4,
+        "mean_nll": 2.296171875,
+        "n_target_tokens": 100,
+        "total_seq_len": 464
+      },
+      {
+        "sample_idx": 51,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 10,
+        "mean_nll": 2.621928475119851,
+        "n_target_tokens": 88,
+        "total_seq_len": 426
+      },
+      {
+        "sample_idx": 52,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 36,
+        "mean_nll": 2.819490103886045,
+        "n_target_tokens": 116,
+        "total_seq_len": 451
+      },
+      {
+        "sample_idx": 53,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 20,
+        "mean_nll": 2.5420915253308354,
+        "n_target_tokens": 98,
+        "total_seq_len": 438
+      },
+      {
+        "sample_idx": 54,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 20,
+        "mean_nll": 2.725224849951528,
+        "n_target_tokens": 137,
+        "total_seq_len": 471
+      },
+      {
+        "sample_idx": 55,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 14,
+        "user_turn_idx": 34,
+        "mean_nll": 2.7641549517017925,
+        "n_target_tokens": 129,
+        "total_seq_len": 446
+      },
+      {
+        "sample_idx": 56,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 19,
+        "mean_nll": 2.389750921904151,
+        "n_target_tokens": 134,
+        "total_seq_len": 408
+      },
+      {
+        "sample_idx": 57,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 0,
+        "user_turn_idx": 26,
+        "mean_nll": 2.2603825698664157,
+        "n_target_tokens": 162,
+        "total_seq_len": 517
+      },
+      {
+        "sample_idx": 58,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 16,
+        "user_turn_idx": 16,
+        "mean_nll": 2.3420912000868057,
+        "n_target_tokens": 135,
+        "total_seq_len": 461
+      },
+      {
+        "sample_idx": 59,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 2,
+        "mean_nll": 2.036895751953125,
+        "n_target_tokens": 11,
+        "total_seq_len": 815
+      },
+      {
+        "sample_idx": 60,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 3,
+        "user_turn_idx": 6,
+        "mean_nll": 2.4452879238972622,
+        "n_target_tokens": 113,
+        "total_seq_len": 456
+      },
+      {
+        "sample_idx": 61,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 8,
+        "user_turn_idx": 28,
+        "mean_nll": 2.2825662466195915,
+        "n_target_tokens": 130,
+        "total_seq_len": 493
+      },
+      {
+        "sample_idx": 62,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 11,
+        "user_turn_idx": 13,
+        "mean_nll": 2.2071606080923507,
+        "n_target_tokens": 134,
+        "total_seq_len": 465
+      },
+      {
+        "sample_idx": 63,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 14,
+        "user_turn_idx": 16,
+        "mean_nll": 2.354277781951122,
+        "n_target_tokens": 117,
+        "total_seq_len": 520
+      },
+      {
+        "sample_idx": 64,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 37,
+        "mean_nll": 2.1282191122731855,
+        "n_target_tokens": 124,
+        "total_seq_len": 421
+      },
+      {
+        "sample_idx": 65,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 32,
+        "mean_nll": 2.7614882135965737,
+        "n_target_tokens": 166,
+        "total_seq_len": 554
+      },
+      {
+        "sample_idx": 66,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 8,
+        "mean_nll": 2.671816045587713,
+        "n_target_tokens": 44,
+        "total_seq_len": 940
+      },
+      {
+        "sample_idx": 67,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 16,
+        "user_turn_idx": 4,
+        "mean_nll": 2.9149621380262136,
+        "n_target_tokens": 121,
+        "total_seq_len": 460
+      },
+      {
+        "sample_idx": 68,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 19,
+        "user_turn_idx": 18,
+        "mean_nll": 2.2838994076377466,
+        "n_target_tokens": 152,
+        "total_seq_len": 508
+      },
+      {
+        "sample_idx": 69,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 62,
+        "mean_nll": 2.3371687455610797,
+        "n_target_tokens": 110,
+        "total_seq_len": 437
+      },
+      {
+        "sample_idx": 70,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 2,
+        "user_turn_idx": 15,
+        "mean_nll": 3.1784385045369468,
+        "n_target_tokens": 24,
+        "total_seq_len": 352
+      },
+      {
+        "sample_idx": 71,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 1,
+        "user_turn_idx": 22,
+        "mean_nll": 2.785818786621094,
+        "n_target_tokens": 50,
+        "total_seq_len": 347
+      },
+      {
+        "sample_idx": 72,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 26,
+        "mean_nll": 2.0782199893985784,
+        "n_target_tokens": 111,
+        "total_seq_len": 441
+      },
+      {
+        "sample_idx": 73,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 18,
+        "user_turn_idx": 10,
+        "mean_nll": 2.6467667764692164,
+        "n_target_tokens": 134,
+        "total_seq_len": 531
+      },
+      {
+        "sample_idx": 74,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 10,
+        "user_turn_idx": 36,
+        "mean_nll": 3.1213097026329915,
+        "n_target_tokens": 131,
+        "total_seq_len": 508
+      },
+      {
+        "sample_idx": 75,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 14,
+        "mean_nll": 2.661229488623403,
+        "n_target_tokens": 137,
+        "total_seq_len": 473
+      },
+      {
+        "sample_idx": 76,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 4,
+        "user_turn_idx": 18,
+        "mean_nll": 2.7621441650390626,
+        "n_target_tokens": 150,
+        "total_seq_len": 529
+      },
+      {
+        "sample_idx": 77,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 3,
+        "user_turn_idx": 10,
+        "mean_nll": 2.457793971470424,
+        "n_target_tokens": 140,
+        "total_seq_len": 480
+      },
+      {
+        "sample_idx": 78,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 12,
+        "mean_nll": 2.6757029549020235,
+        "n_target_tokens": 122,
+        "total_seq_len": 441
+      },
+      {
+        "sample_idx": 79,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 28,
+        "mean_nll": 2.2825662466195915,
+        "n_target_tokens": 130,
+        "total_seq_len": 493
+      },
+      {
+        "sample_idx": 80,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 47,
+        "mean_nll": 2.375152964650849,
+        "n_target_tokens": 162,
+        "total_seq_len": 469
+      },
+      {
+        "sample_idx": 81,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 19,
+        "user_turn_idx": 10,
+        "mean_nll": 2.560510513630319,
+        "n_target_tokens": 141,
+        "total_seq_len": 471
+      },
+      {
+        "sample_idx": 82,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 11,
+        "mean_nll": 2.5433459281921387,
+        "n_target_tokens": 16,
+        "total_seq_len": 193
+      },
+      {
+        "sample_idx": 83,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 2,
+        "mean_nll": 2.5355634765625,
+        "n_target_tokens": 125,
+        "total_seq_len": 507
+      },
+      {
+        "sample_idx": 84,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 28,
+        "mean_nll": 2.7328985083194177,
+        "n_target_tokens": 131,
+        "total_seq_len": 442
+      },
+      {
+        "sample_idx": 85,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 15,
+        "user_turn_idx": 12,
+        "mean_nll": 2.4239407243399786,
+        "n_target_tokens": 145,
+        "total_seq_len": 458
+      },
+      {
+        "sample_idx": 86,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 2,
+        "mean_nll": 2.2871241076239226,
+        "n_target_tokens": 116,
+        "total_seq_len": 441
+      },
+      {
+        "sample_idx": 87,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 10,
+        "user_turn_idx": 37,
+        "mean_nll": 3.11619741266424,
+        "n_target_tokens": 11,
+        "total_seq_len": 188
+      },
+      {
+        "sample_idx": 88,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 2,
+        "user_turn_idx": 31,
+        "mean_nll": 2.793385498046875,
+        "n_target_tokens": 125,
+        "total_seq_len": 460
+      },
+      {
+        "sample_idx": 89,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 4,
+        "mean_nll": 2.2894362110202597,
+        "n_target_tokens": 118,
+        "total_seq_len": 477
+      },
+      {
+        "sample_idx": 90,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 40,
+        "mean_nll": 2.8997306286449165,
+        "n_target_tokens": 142,
+        "total_seq_len": 507
+      },
+      {
+        "sample_idx": 91,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 16,
+        "mean_nll": 2.593219320282681,
+        "n_target_tokens": 131,
+        "total_seq_len": 470
+      },
+      {
+        "sample_idx": 92,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 12,
+        "mean_nll": 2.854555943968949,
+        "n_target_tokens": 157,
+        "total_seq_len": 498
+      },
+      {
+        "sample_idx": 93,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 11,
+        "user_turn_idx": 28,
+        "mean_nll": 2.83504056930542,
+        "n_target_tokens": 128,
+        "total_seq_len": 513
+      },
+      {
+        "sample_idx": 94,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 30,
+        "mean_nll": 2.5695367478232347,
+        "n_target_tokens": 131,
+        "total_seq_len": 429
+      },
+      {
+        "sample_idx": 95,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 17,
+        "user_turn_idx": 2,
+        "mean_nll": 2.6158010892778916,
+        "n_target_tokens": 107,
+        "total_seq_len": 476
+      },
+      {
+        "sample_idx": 96,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 17,
+        "user_turn_idx": 12,
+        "mean_nll": 2.3886549695790245,
+        "n_target_tokens": 139,
+        "total_seq_len": 460
+      },
+      {
+        "sample_idx": 97,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 5,
+        "user_turn_idx": 25,
+        "mean_nll": 4.4927978515625,
+        "n_target_tokens": 15,
+        "total_seq_len": 187
+      },
+      {
+        "sample_idx": 98,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 26,
+        "mean_nll": 2.396824398556271,
+        "n_target_tokens": 148,
+        "total_seq_len": 519
+      },
+      {
+        "sample_idx": 99,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 4,
+        "user_turn_idx": 22,
+        "mean_nll": 2.4844906455592106,
+        "n_target_tokens": 133,
+        "total_seq_len": 421
+      }
+    ],
+    "base_full": [
+      {
+        "sample_idx": 0,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 8,
+        "mean_nll": 2.154718252328726,
+        "n_target_tokens": 130,
+        "total_seq_len": 20227
+      },
+      {
+        "sample_idx": 1,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 11,
+        "mean_nll": 2.2231795113041715,
+        "n_target_tokens": 106,
+        "total_seq_len": 18791
+      },
+      {
+        "sample_idx": 2,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 12,
+        "mean_nll": 2.066308962418729,
+        "n_target_tokens": 149,
+        "total_seq_len": 10156
+      },
+      {
+        "sample_idx": 3,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 17,
+        "mean_nll": 2.572782516479492,
+        "n_target_tokens": 40,
+        "total_seq_len": 27118
+      },
+      {
+        "sample_idx": 4,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 17,
+        "user_turn_idx": 21,
+        "mean_nll": 1.9851541190311826,
+        "n_target_tokens": 116,
+        "total_seq_len": 15523
+      },
+      {
+        "sample_idx": 5,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 14,
+        "user_turn_idx": 23,
+        "mean_nll": 2.3187449827032576,
+        "n_target_tokens": 118,
+        "total_seq_len": 24137
+      },
+      {
+        "sample_idx": 6,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 18,
+        "mean_nll": 1.7499019415803658,
+        "n_target_tokens": 129,
+        "total_seq_len": 22207
+      },
+      {
+        "sample_idx": 7,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 67,
+        "mean_nll": 2.247978532818002,
+        "n_target_tokens": 142,
+        "total_seq_len": 27202
+      },
+      {
+        "sample_idx": 8,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 2,
+        "mean_nll": 1.830578411326689,
+        "n_target_tokens": 17,
+        "total_seq_len": 19348
+      },
+      {
+        "sample_idx": 9,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 30,
+        "mean_nll": 2.1527314619584517,
+        "n_target_tokens": 132,
+        "total_seq_len": 22352
+      },
+      {
+        "sample_idx": 10,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 42,
+        "mean_nll": 2.058935546875,
+        "n_target_tokens": 165,
+        "total_seq_len": 27408
+      },
+      {
+        "sample_idx": 11,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 12,
+        "mean_nll": 2.036356680733817,
+        "n_target_tokens": 35,
+        "total_seq_len": 23585
+      },
+      {
+        "sample_idx": 12,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 12,
+        "mean_nll": 2.5516820921933743,
+        "n_target_tokens": 133,
+        "total_seq_len": 17518
+      },
+      {
+        "sample_idx": 13,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 15,
+        "user_turn_idx": 12,
+        "mean_nll": 1.9894699096679687,
+        "n_target_tokens": 25,
+        "total_seq_len": 21354
+      },
+      {
+        "sample_idx": 14,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 35,
+        "mean_nll": 2.7614332834879556,
+        "n_target_tokens": 12,
+        "total_seq_len": 21278
+      },
+      {
+        "sample_idx": 15,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 19,
+        "user_turn_idx": 20,
+        "mean_nll": 1.3636252459357767,
+        "n_target_tokens": 17,
+        "total_seq_len": 18395
+      },
+      {
+        "sample_idx": 16,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 7,
+        "user_turn_idx": 27,
+        "mean_nll": 3.0698229471842446,
+        "n_target_tokens": 12,
+        "total_seq_len": 21452
+      },
+      {
+        "sample_idx": 17,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 2,
+        "user_turn_idx": 2,
+        "mean_nll": 2.4618592750369093,
+        "n_target_tokens": 127,
+        "total_seq_len": 13228
+      },
+      {
+        "sample_idx": 18,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 24,
+        "mean_nll": 2.1077662876674106,
+        "n_target_tokens": 133,
+        "total_seq_len": 12040
+      },
+      {
+        "sample_idx": 19,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 12,
+        "mean_nll": 1.69949072265625,
+        "n_target_tokens": 125,
+        "total_seq_len": 19446
+      },
+      {
+        "sample_idx": 20,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 8,
+        "mean_nll": 2.1532960848043894,
+        "n_target_tokens": 131,
+        "total_seq_len": 20557
+      },
+      {
+        "sample_idx": 21,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 38,
+        "mean_nll": 2.187015455596301,
+        "n_target_tokens": 147,
+        "total_seq_len": 25536
+      },
+      {
+        "sample_idx": 22,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 12,
+        "user_turn_idx": 36,
+        "mean_nll": 2.362841123110288,
+        "n_target_tokens": 154,
+        "total_seq_len": 25645
+      },
+      {
+        "sample_idx": 23,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 0,
+        "user_turn_idx": 22,
+        "mean_nll": 2.2966157266916323,
+        "n_target_tokens": 121,
+        "total_seq_len": 3304
+      },
+      {
+        "sample_idx": 24,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 18,
+        "mean_nll": 2.08733251953125,
+        "n_target_tokens": 125,
+        "total_seq_len": 10982
+      },
+      {
+        "sample_idx": 25,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 17,
+        "user_turn_idx": 2,
+        "mean_nll": 2.9149088859558105,
+        "n_target_tokens": 16,
+        "total_seq_len": 12825
+      },
+      {
+        "sample_idx": 26,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 11,
+        "user_turn_idx": 2,
+        "mean_nll": 1.5632783203125,
+        "n_target_tokens": 125,
+        "total_seq_len": 20698
+      },
+      {
+        "sample_idx": 27,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 38,
+        "mean_nll": 1.8220730736142112,
+        "n_target_tokens": 126,
+        "total_seq_len": 20053
+      },
+      {
+        "sample_idx": 28,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 30,
+        "mean_nll": 2.258799596486358,
+        "n_target_tokens": 197,
+        "total_seq_len": 24053
+      },
+      {
+        "sample_idx": 29,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 8,
+        "mean_nll": 1.6207232137364664,
+        "n_target_tokens": 127,
+        "total_seq_len": 14980
+      },
+      {
+        "sample_idx": 30,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 23,
+        "mean_nll": 2.4537068684895833,
+        "n_target_tokens": 15,
+        "total_seq_len": 18881
+      },
+      {
+        "sample_idx": 31,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 7,
+        "user_turn_idx": 18,
+        "mean_nll": 1.8770501878526475,
+        "n_target_tokens": 9,
+        "total_seq_len": 21177
+      },
+      {
+        "sample_idx": 32,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 12,
+        "mean_nll": 1.9612514288850533,
+        "n_target_tokens": 129,
+        "total_seq_len": 21257
+      },
+      {
+        "sample_idx": 33,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 10,
+        "user_turn_idx": 17,
+        "mean_nll": 1.850171152750651,
+        "n_target_tokens": 15,
+        "total_seq_len": 15734
+      },
+      {
+        "sample_idx": 34,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 19,
+        "user_turn_idx": 17,
+        "mean_nll": 1.933086229407269,
+        "n_target_tokens": 138,
+        "total_seq_len": 18024
+      },
+      {
+        "sample_idx": 35,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 18,
+        "user_turn_idx": 4,
+        "mean_nll": 3.6204675745081016,
+        "n_target_tokens": 27,
+        "total_seq_len": 13429
+      },
+      {
+        "sample_idx": 36,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 6,
+        "mean_nll": 1.5092598410213696,
+        "n_target_tokens": 17,
+        "total_seq_len": 22205
+      },
+      {
+        "sample_idx": 37,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 13,
+        "mean_nll": 1.725165964287018,
+        "n_target_tokens": 107,
+        "total_seq_len": 26879
+      },
+      {
+        "sample_idx": 38,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 0,
+        "user_turn_idx": 14,
+        "mean_nll": 2.124237060546875,
+        "n_target_tokens": 126,
+        "total_seq_len": 2504
+      },
+      {
+        "sample_idx": 39,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 19,
+        "mean_nll": 1.9091014372996795,
+        "n_target_tokens": 156,
+        "total_seq_len": 21385
+      },
+      {
+        "sample_idx": 40,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 12,
+        "user_turn_idx": 40,
+        "mean_nll": 2.007326940062699,
+        "n_target_tokens": 157,
+        "total_seq_len": 29717
+      },
+      {
+        "sample_idx": 41,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 34,
+        "mean_nll": 2.3661520667109928,
+        "n_target_tokens": 141,
+        "total_seq_len": 29091
+      },
+      {
+        "sample_idx": 42,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 6,
+        "user_turn_idx": 24,
+        "mean_nll": 1.9048690795898438,
+        "n_target_tokens": 18,
+        "total_seq_len": 20755
+      },
+      {
+        "sample_idx": 43,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 14,
+        "mean_nll": 2.7749130725860596,
+        "n_target_tokens": 16,
+        "total_seq_len": 17723
+      },
+      {
+        "sample_idx": 44,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 10,
+        "mean_nll": 2.1444478673259106,
+        "n_target_tokens": 127,
+        "total_seq_len": 18624
+      },
+      {
+        "sample_idx": 45,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 27,
+        "mean_nll": 2.5159545249127326,
+        "n_target_tokens": 47,
+        "total_seq_len": 28857
+      },
+      {
+        "sample_idx": 46,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 26,
+        "mean_nll": 2.1938099580652572,
+        "n_target_tokens": 136,
+        "total_seq_len": 27497
+      },
+      {
+        "sample_idx": 47,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 2,
+        "mean_nll": 1.9638242368344907,
+        "n_target_tokens": 108,
+        "total_seq_len": 19570
+      },
+      {
+        "sample_idx": 48,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 27,
+        "mean_nll": 1.7169573748553242,
+        "n_target_tokens": 108,
+        "total_seq_len": 22546
+      },
+      {
+        "sample_idx": 49,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 2,
+        "mean_nll": 1.7187074360094572,
+        "n_target_tokens": 19,
+        "total_seq_len": 16010
+      },
+      {
+        "sample_idx": 50,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 19,
+        "user_turn_idx": 4,
+        "mean_nll": 2.1810003662109376,
+        "n_target_tokens": 100,
+        "total_seq_len": 15851
+      },
+      {
+        "sample_idx": 51,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 10,
+        "mean_nll": 2.3661620400168677,
+        "n_target_tokens": 88,
+        "total_seq_len": 19079
+      },
+      {
+        "sample_idx": 52,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 36,
+        "mean_nll": 2.2323295330179147,
+        "n_target_tokens": 116,
+        "total_seq_len": 27292
+      },
+      {
+        "sample_idx": 53,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 20,
+        "mean_nll": 2.1641264934929048,
+        "n_target_tokens": 98,
+        "total_seq_len": 20800
+      },
+      {
+        "sample_idx": 54,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 20,
+        "mean_nll": 2.428419572593522,
+        "n_target_tokens": 137,
+        "total_seq_len": 27414
+      },
+      {
+        "sample_idx": 55,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 14,
+        "user_turn_idx": 34,
+        "mean_nll": 2.126229692799176,
+        "n_target_tokens": 129,
+        "total_seq_len": 36916
+      },
+      {
+        "sample_idx": 56,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 19,
+        "mean_nll": 2.0056956276964786,
+        "n_target_tokens": 134,
+        "total_seq_len": 20018
+      },
+      {
+        "sample_idx": 57,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 0,
+        "user_turn_idx": 26,
+        "mean_nll": 2.108711525245949,
+        "n_target_tokens": 162,
+        "total_seq_len": 4003
+      },
+      {
+        "sample_idx": 58,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 16,
+        "user_turn_idx": 16,
+        "mean_nll": 1.8275404188368056,
+        "n_target_tokens": 135,
+        "total_seq_len": 18355
+      },
+      {
+        "sample_idx": 59,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 2,
+        "mean_nll": 0.8626467964865945,
+        "n_target_tokens": 11,
+        "total_seq_len": 20629
+      },
+      {
+        "sample_idx": 60,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 3,
+        "user_turn_idx": 6,
+        "mean_nll": 2.052122673102185,
+        "n_target_tokens": 113,
+        "total_seq_len": 17793
+      },
+      {
+        "sample_idx": 61,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 8,
+        "user_turn_idx": 28,
+        "mean_nll": 2.05754887507512,
+        "n_target_tokens": 130,
+        "total_seq_len": 16924
+      },
+      {
+        "sample_idx": 62,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 11,
+        "user_turn_idx": 13,
+        "mean_nll": 1.7563092815342234,
+        "n_target_tokens": 134,
+        "total_seq_len": 17471
+      },
+      {
+        "sample_idx": 63,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 14,
+        "user_turn_idx": 16,
+        "mean_nll": 1.8236656515007346,
+        "n_target_tokens": 117,
+        "total_seq_len": 30266
+      },
+      {
+        "sample_idx": 64,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 37,
+        "mean_nll": 1.80831786124937,
+        "n_target_tokens": 124,
+        "total_seq_len": 22630
+      },
+      {
+        "sample_idx": 65,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 32,
+        "mean_nll": 2.36819237398814,
+        "n_target_tokens": 166,
+        "total_seq_len": 26592
+      },
+      {
+        "sample_idx": 66,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 8,
+        "mean_nll": 2.4257313121448862,
+        "n_target_tokens": 44,
+        "total_seq_len": 20556
+      },
+      {
+        "sample_idx": 67,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 16,
+        "user_turn_idx": 4,
+        "mean_nll": 2.456325058109504,
+        "n_target_tokens": 121,
+        "total_seq_len": 17759
+      },
+      {
+        "sample_idx": 68,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 19,
+        "user_turn_idx": 18,
+        "mean_nll": 2.0318157798365544,
+        "n_target_tokens": 152,
+        "total_seq_len": 15727
+      },
+      {
+        "sample_idx": 69,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 62,
+        "mean_nll": 1.828657947887074,
+        "n_target_tokens": 110,
+        "total_seq_len": 30266
+      },
+      {
+        "sample_idx": 70,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 2,
+        "user_turn_idx": 15,
+        "mean_nll": 3.268319765726725,
+        "n_target_tokens": 24,
+        "total_seq_len": 15923
+      },
+      {
+        "sample_idx": 71,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 1,
+        "user_turn_idx": 22,
+        "mean_nll": 2.1387760925292967,
+        "n_target_tokens": 50,
+        "total_seq_len": 10142
+      },
+      {
+        "sample_idx": 72,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 26,
+        "mean_nll": 1.5514655585761543,
+        "n_target_tokens": 111,
+        "total_seq_len": 28503
+      },
+      {
+        "sample_idx": 73,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 18,
+        "user_turn_idx": 10,
+        "mean_nll": 2.1840619898554103,
+        "n_target_tokens": 134,
+        "total_seq_len": 15974
+      },
+      {
+        "sample_idx": 74,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 10,
+        "user_turn_idx": 36,
+        "mean_nll": 3.0273097380427005,
+        "n_target_tokens": 131,
+        "total_seq_len": 29775
+      },
+      {
+        "sample_idx": 75,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 14,
+        "mean_nll": 2.1843983448334856,
+        "n_target_tokens": 137,
+        "total_seq_len": 15950
+      },
+      {
+        "sample_idx": 76,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 4,
+        "user_turn_idx": 18,
+        "mean_nll": 2.4841243489583333,
+        "n_target_tokens": 150,
+        "total_seq_len": 21449
+      },
+      {
+        "sample_idx": 77,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 3,
+        "user_turn_idx": 10,
+        "mean_nll": 2.0955771309988838,
+        "n_target_tokens": 140,
+        "total_seq_len": 18488
+      },
+      {
+        "sample_idx": 78,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 12,
+        "mean_nll": 2.18405776727395,
+        "n_target_tokens": 122,
+        "total_seq_len": 22594
+      },
+      {
+        "sample_idx": 79,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 28,
+        "mean_nll": 1.9637441781850962,
+        "n_target_tokens": 130,
+        "total_seq_len": 23819
+      },
+      {
+        "sample_idx": 80,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 47,
+        "mean_nll": 2.030740808557581,
+        "n_target_tokens": 162,
+        "total_seq_len": 25511
+      },
+      {
+        "sample_idx": 81,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 19,
+        "user_turn_idx": 10,
+        "mean_nll": 2.3618583949745124,
+        "n_target_tokens": 141,
+        "total_seq_len": 14392
+      },
+      {
+        "sample_idx": 82,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 11,
+        "mean_nll": 1.9494094848632812,
+        "n_target_tokens": 16,
+        "total_seq_len": 20630
+      },
+      {
+        "sample_idx": 83,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 2,
+        "mean_nll": 2.359517578125,
+        "n_target_tokens": 125,
+        "total_seq_len": 16149
+      },
+      {
+        "sample_idx": 84,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 28,
+        "mean_nll": 2.5087918580033395,
+        "n_target_tokens": 131,
+        "total_seq_len": 21983
+      },
+      {
+        "sample_idx": 85,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 15,
+        "user_turn_idx": 12,
+        "mean_nll": 2.1651169349407327,
+        "n_target_tokens": 145,
+        "total_seq_len": 29967
+      },
+      {
+        "sample_idx": 86,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 2,
+        "mean_nll": 1.951281975055563,
+        "n_target_tokens": 116,
+        "total_seq_len": 25441
+      },
+      {
+        "sample_idx": 87,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 10,
+        "user_turn_idx": 37,
+        "mean_nll": 1.349294575777921,
+        "n_target_tokens": 11,
+        "total_seq_len": 16217
+      },
+      {
+        "sample_idx": 88,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 2,
+        "user_turn_idx": 31,
+        "mean_nll": 2.54473876953125,
+        "n_target_tokens": 125,
+        "total_seq_len": 18351
+      },
+      {
+        "sample_idx": 89,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 4,
+        "mean_nll": 2.048457905397577,
+        "n_target_tokens": 118,
+        "total_seq_len": 21564
+      },
+      {
+        "sample_idx": 90,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 40,
+        "mean_nll": 2.360810615647007,
+        "n_target_tokens": 142,
+        "total_seq_len": 30207
+      },
+      {
+        "sample_idx": 91,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 16,
+        "mean_nll": 2.1360068284828246,
+        "n_target_tokens": 131,
+        "total_seq_len": 23563
+      },
+      {
+        "sample_idx": 92,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 12,
+        "mean_nll": 2.77049090148537,
+        "n_target_tokens": 157,
+        "total_seq_len": 26087
+      },
+      {
+        "sample_idx": 93,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 11,
+        "user_turn_idx": 28,
+        "mean_nll": 2.1621620655059814,
+        "n_target_tokens": 128,
+        "total_seq_len": 24469
+      },
+      {
+        "sample_idx": 94,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 30,
+        "mean_nll": 2.1566737517145755,
+        "n_target_tokens": 131,
+        "total_seq_len": 25406
+      },
+      {
+        "sample_idx": 95,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 17,
+        "user_turn_idx": 2,
+        "mean_nll": 2.0449963150737442,
+        "n_target_tokens": 107,
+        "total_seq_len": 12753
+      },
+      {
+        "sample_idx": 96,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 17,
+        "user_turn_idx": 12,
+        "mean_nll": 1.9996065647482015,
+        "n_target_tokens": 139,
+        "total_seq_len": 21565
+      },
+      {
+        "sample_idx": 97,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 5,
+        "user_turn_idx": 25,
+        "mean_nll": 1.7990301767985026,
+        "n_target_tokens": 15,
+        "total_seq_len": 23500
+      },
+      {
+        "sample_idx": 98,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 26,
+        "mean_nll": 2.1560642139331714,
+        "n_target_tokens": 148,
+        "total_seq_len": 23338
+      },
+      {
+        "sample_idx": 99,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 4,
+        "user_turn_idx": 22,
+        "mean_nll": 2.0718149744478382,
+        "n_target_tokens": 133,
+        "total_seq_len": 22104
+      }
+    ],
+    "teacher_demo": [
+      {
+        "sample_idx": 0,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 8,
+        "mean_nll": 1.1085337712214542,
+        "n_target_tokens": 130,
+        "total_seq_len": 501
+      },
+      {
+        "sample_idx": 1,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 11,
+        "mean_nll": 1.4094851511829305,
+        "n_target_tokens": 106,
+        "total_seq_len": 437
+      },
+      {
+        "sample_idx": 2,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 12,
+        "mean_nll": 1.2887413485738255,
+        "n_target_tokens": 149,
+        "total_seq_len": 520
+      },
+      {
+        "sample_idx": 3,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 17,
+        "mean_nll": 1.74442138671875,
+        "n_target_tokens": 40,
+        "total_seq_len": 2651
+      },
+      {
+        "sample_idx": 4,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 17,
+        "user_turn_idx": 21,
+        "mean_nll": 1.1453633801690464,
+        "n_target_tokens": 116,
+        "total_seq_len": 425
+      },
+      {
+        "sample_idx": 5,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 14,
+        "user_turn_idx": 23,
+        "mean_nll": 1.4284424862619174,
+        "n_target_tokens": 118,
+        "total_seq_len": 461
+      },
+      {
+        "sample_idx": 6,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 18,
+        "mean_nll": 1.111448657605075,
+        "n_target_tokens": 129,
+        "total_seq_len": 448
+      },
+      {
+        "sample_idx": 7,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 67,
+        "mean_nll": 1.1989097057933538,
+        "n_target_tokens": 142,
+        "total_seq_len": 440
+      },
+      {
+        "sample_idx": 8,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 2,
+        "mean_nll": 0.15876513368943157,
+        "n_target_tokens": 17,
+        "total_seq_len": 1050
+      },
+      {
+        "sample_idx": 9,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 30,
+        "mean_nll": 1.4823398012103457,
+        "n_target_tokens": 132,
+        "total_seq_len": 512
+      },
+      {
+        "sample_idx": 10,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 42,
+        "mean_nll": 1.609747499408144,
+        "n_target_tokens": 165,
+        "total_seq_len": 505
+      },
+      {
+        "sample_idx": 11,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 12,
+        "mean_nll": 1.8090386526925224,
+        "n_target_tokens": 35,
+        "total_seq_len": 1158
+      },
+      {
+        "sample_idx": 12,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 12,
+        "mean_nll": 1.4196647701406837,
+        "n_target_tokens": 133,
+        "total_seq_len": 443
+      },
+      {
+        "sample_idx": 13,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 15,
+        "user_turn_idx": 12,
+        "mean_nll": 1.7632000732421875,
+        "n_target_tokens": 25,
+        "total_seq_len": 297
+      },
+      {
+        "sample_idx": 14,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 35,
+        "mean_nll": 1.7865095138549805,
+        "n_target_tokens": 12,
+        "total_seq_len": 192
+      },
+      {
+        "sample_idx": 15,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 19,
+        "user_turn_idx": 20,
+        "mean_nll": 1.021346597110524,
+        "n_target_tokens": 17,
+        "total_seq_len": 382
+      },
+      {
+        "sample_idx": 16,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 7,
+        "user_turn_idx": 27,
+        "mean_nll": 1.7865095138549805,
+        "n_target_tokens": 12,
+        "total_seq_len": 192
+      },
+      {
+        "sample_idx": 17,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 2,
+        "user_turn_idx": 2,
+        "mean_nll": 1.499772920383243,
+        "n_target_tokens": 127,
+        "total_seq_len": 540
+      },
+      {
+        "sample_idx": 18,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 24,
+        "mean_nll": 1.2649974392769032,
+        "n_target_tokens": 133,
+        "total_seq_len": 474
+      },
+      {
+        "sample_idx": 19,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 12,
+        "mean_nll": 1.095619140625,
+        "n_target_tokens": 125,
+        "total_seq_len": 510
+      },
+      {
+        "sample_idx": 20,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 8,
+        "mean_nll": 1.0568409694060115,
+        "n_target_tokens": 131,
+        "total_seq_len": 472
+      },
+      {
+        "sample_idx": 21,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 38,
+        "mean_nll": 1.2460399809337797,
+        "n_target_tokens": 147,
+        "total_seq_len": 535
+      },
+      {
+        "sample_idx": 22,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 12,
+        "user_turn_idx": 36,
+        "mean_nll": 1.3103308739600243,
+        "n_target_tokens": 154,
+        "total_seq_len": 536
+      },
+      {
+        "sample_idx": 23,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 0,
+        "user_turn_idx": 22,
+        "mean_nll": 1.2353182705965908,
+        "n_target_tokens": 121,
+        "total_seq_len": 454
+      },
+      {
+        "sample_idx": 24,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 18,
+        "mean_nll": 1.18304443359375,
+        "n_target_tokens": 125,
+        "total_seq_len": 481
+      },
+      {
+        "sample_idx": 25,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 17,
+        "user_turn_idx": 2,
+        "mean_nll": 2.1299214363098145,
+        "n_target_tokens": 16,
+        "total_seq_len": 942
+      },
+      {
+        "sample_idx": 26,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 11,
+        "user_turn_idx": 2,
+        "mean_nll": 0.7866268310546874,
+        "n_target_tokens": 125,
+        "total_seq_len": 484
+      },
+      {
+        "sample_idx": 27,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 38,
+        "mean_nll": 1.2500198606460813,
+        "n_target_tokens": 126,
+        "total_seq_len": 459
+      },
+      {
+        "sample_idx": 28,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 30,
+        "mean_nll": 1.2310440915490164,
+        "n_target_tokens": 197,
+        "total_seq_len": 524
+      },
+      {
+        "sample_idx": 29,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 8,
+        "mean_nll": 1.2207857867864174,
+        "n_target_tokens": 127,
+        "total_seq_len": 501
+      },
+      {
+        "sample_idx": 30,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 23,
+        "mean_nll": 1.6180898030598958,
+        "n_target_tokens": 15,
+        "total_seq_len": 364
+      },
+      {
+        "sample_idx": 31,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 7,
+        "user_turn_idx": 18,
+        "mean_nll": 1.6410707897610135,
+        "n_target_tokens": 9,
+        "total_seq_len": 191
+      },
+      {
+        "sample_idx": 32,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 12,
+        "mean_nll": 0.9787931220476017,
+        "n_target_tokens": 129,
+        "total_seq_len": 478
+      },
+      {
+        "sample_idx": 33,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 10,
+        "user_turn_idx": 17,
+        "mean_nll": 1.1876075744628907,
+        "n_target_tokens": 15,
+        "total_seq_len": 192
+      },
+      {
+        "sample_idx": 34,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 19,
+        "user_turn_idx": 17,
+        "mean_nll": 0.9625865549281023,
+        "n_target_tokens": 138,
+        "total_seq_len": 466
+      },
+      {
+        "sample_idx": 35,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 18,
+        "user_turn_idx": 4,
+        "mean_nll": 1.8590381763599537,
+        "n_target_tokens": 27,
+        "total_seq_len": 429
+      },
+      {
+        "sample_idx": 36,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 6,
+        "mean_nll": 0.13842276965870576,
+        "n_target_tokens": 17,
+        "total_seq_len": 999
+      },
+      {
+        "sample_idx": 37,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 13,
+        "mean_nll": 1.303641060802424,
+        "n_target_tokens": 107,
+        "total_seq_len": 455
+      },
+      {
+        "sample_idx": 38,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 0,
+        "user_turn_idx": 14,
+        "mean_nll": 1.2952511499798487,
+        "n_target_tokens": 126,
+        "total_seq_len": 415
+      },
+      {
+        "sample_idx": 39,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 19,
+        "mean_nll": 1.1737008706117287,
+        "n_target_tokens": 156,
+        "total_seq_len": 471
+      },
+      {
+        "sample_idx": 40,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 12,
+        "user_turn_idx": 40,
+        "mean_nll": 1.1776140541028066,
+        "n_target_tokens": 157,
+        "total_seq_len": 546
+      },
+      {
+        "sample_idx": 41,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 34,
+        "mean_nll": 1.4903858807070036,
+        "n_target_tokens": 141,
+        "total_seq_len": 535
+      },
+      {
+        "sample_idx": 42,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 6,
+        "user_turn_idx": 24,
+        "mean_nll": 1.731157726711697,
+        "n_target_tokens": 18,
+        "total_seq_len": 304
+      },
+      {
+        "sample_idx": 43,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 14,
+        "mean_nll": 2.148716926574707,
+        "n_target_tokens": 16,
+        "total_seq_len": 348
+      },
+      {
+        "sample_idx": 44,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 10,
+        "mean_nll": 1.6059948778527928,
+        "n_target_tokens": 127,
+        "total_seq_len": 426
+      },
+      {
+        "sample_idx": 45,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 27,
+        "mean_nll": 1.6924331340383976,
+        "n_target_tokens": 47,
+        "total_seq_len": 393
+      },
+      {
+        "sample_idx": 46,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 26,
+        "mean_nll": 1.4414301479563993,
+        "n_target_tokens": 136,
+        "total_seq_len": 488
+      },
+      {
+        "sample_idx": 47,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 2,
+        "mean_nll": 1.0581817626953125,
+        "n_target_tokens": 108,
+        "total_seq_len": 461
+      },
+      {
+        "sample_idx": 48,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 27,
+        "mean_nll": 1.1505757084599249,
+        "n_target_tokens": 108,
+        "total_seq_len": 449
+      },
+      {
+        "sample_idx": 49,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 2,
+        "mean_nll": 1.3625436080129523,
+        "n_target_tokens": 19,
+        "total_seq_len": 1062
+      },
+      {
+        "sample_idx": 50,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 19,
+        "user_turn_idx": 4,
+        "mean_nll": 1.4087542724609374,
+        "n_target_tokens": 100,
+        "total_seq_len": 464
+      },
+      {
+        "sample_idx": 51,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 10,
+        "mean_nll": 1.7359166578813032,
+        "n_target_tokens": 88,
+        "total_seq_len": 426
+      },
+      {
+        "sample_idx": 52,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 36,
+        "mean_nll": 1.5613174438476562,
+        "n_target_tokens": 116,
+        "total_seq_len": 451
+      },
+      {
+        "sample_idx": 53,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 20,
+        "mean_nll": 1.2805302678322306,
+        "n_target_tokens": 98,
+        "total_seq_len": 438
+      },
+      {
+        "sample_idx": 54,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 20,
+        "mean_nll": 1.4604461001653741,
+        "n_target_tokens": 137,
+        "total_seq_len": 471
+      },
+      {
+        "sample_idx": 55,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 14,
+        "user_turn_idx": 34,
+        "mean_nll": 1.460849259250848,
+        "n_target_tokens": 129,
+        "total_seq_len": 446
+      },
+      {
+        "sample_idx": 56,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 19,
+        "mean_nll": 1.3288651651410914,
+        "n_target_tokens": 134,
+        "total_seq_len": 408
+      },
+      {
+        "sample_idx": 57,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 0,
+        "user_turn_idx": 26,
+        "mean_nll": 1.081072489420573,
+        "n_target_tokens": 162,
+        "total_seq_len": 517
+      },
+      {
+        "sample_idx": 58,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 16,
+        "user_turn_idx": 16,
+        "mean_nll": 1.1911650481047453,
+        "n_target_tokens": 135,
+        "total_seq_len": 461
+      },
+      {
+        "sample_idx": 59,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 2,
+        "mean_nll": 0.27884526686234906,
+        "n_target_tokens": 11,
+        "total_seq_len": 815
+      },
+      {
+        "sample_idx": 60,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 3,
+        "user_turn_idx": 6,
+        "mean_nll": 1.2151490608147815,
+        "n_target_tokens": 113,
+        "total_seq_len": 456
+      },
+      {
+        "sample_idx": 61,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 8,
+        "user_turn_idx": 28,
+        "mean_nll": 1.070016362116887,
+        "n_target_tokens": 130,
+        "total_seq_len": 493
+      },
+      {
+        "sample_idx": 62,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 11,
+        "user_turn_idx": 13,
+        "mean_nll": 0.9909909376457556,
+        "n_target_tokens": 134,
+        "total_seq_len": 465
+      },
+      {
+        "sample_idx": 63,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 14,
+        "user_turn_idx": 16,
+        "mean_nll": 1.0159969492855234,
+        "n_target_tokens": 117,
+        "total_seq_len": 520
+      },
+      {
+        "sample_idx": 64,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 37,
+        "mean_nll": 0.9222596076227003,
+        "n_target_tokens": 124,
+        "total_seq_len": 421
+      },
+      {
+        "sample_idx": 65,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 32,
+        "mean_nll": 1.4178413483033698,
+        "n_target_tokens": 166,
+        "total_seq_len": 554
+      },
+      {
+        "sample_idx": 66,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 8,
+        "mean_nll": 1.1268851540305398,
+        "n_target_tokens": 44,
+        "total_seq_len": 940
+      },
+      {
+        "sample_idx": 67,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 16,
+        "user_turn_idx": 4,
+        "mean_nll": 1.390134448847495,
+        "n_target_tokens": 121,
+        "total_seq_len": 460
+      },
+      {
+        "sample_idx": 68,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 19,
+        "user_turn_idx": 18,
+        "mean_nll": 1.2952273519415605,
+        "n_target_tokens": 152,
+        "total_seq_len": 508
+      },
+      {
+        "sample_idx": 69,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 62,
+        "mean_nll": 1.3048446655273438,
+        "n_target_tokens": 110,
+        "total_seq_len": 437
+      },
+      {
+        "sample_idx": 70,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 2,
+        "user_turn_idx": 15,
+        "mean_nll": 1.6836520830790203,
+        "n_target_tokens": 24,
+        "total_seq_len": 352
+      },
+      {
+        "sample_idx": 71,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 1,
+        "user_turn_idx": 22,
+        "mean_nll": 1.5725703430175781,
+        "n_target_tokens": 50,
+        "total_seq_len": 347
+      },
+      {
+        "sample_idx": 72,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 26,
+        "mean_nll": 1.097738455007742,
+        "n_target_tokens": 111,
+        "total_seq_len": 441
+      },
+      {
+        "sample_idx": 73,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 18,
+        "user_turn_idx": 10,
+        "mean_nll": 1.4525149900521805,
+        "n_target_tokens": 134,
+        "total_seq_len": 531
+      },
+      {
+        "sample_idx": 74,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 10,
+        "user_turn_idx": 36,
+        "mean_nll": 1.6278615471060949,
+        "n_target_tokens": 131,
+        "total_seq_len": 508
+      },
+      {
+        "sample_idx": 75,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 14,
+        "mean_nll": 1.5863110618869753,
+        "n_target_tokens": 137,
+        "total_seq_len": 473
+      },
+      {
+        "sample_idx": 76,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 4,
+        "user_turn_idx": 18,
+        "mean_nll": 1.2588645426432292,
+        "n_target_tokens": 150,
+        "total_seq_len": 529
+      },
+      {
+        "sample_idx": 77,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 3,
+        "user_turn_idx": 10,
+        "mean_nll": 1.154547337123326,
+        "n_target_tokens": 140,
+        "total_seq_len": 480
+      },
+      {
+        "sample_idx": 78,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 12,
+        "mean_nll": 1.4350130675268955,
+        "n_target_tokens": 122,
+        "total_seq_len": 441
+      },
+      {
+        "sample_idx": 79,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 28,
+        "mean_nll": 1.070016362116887,
+        "n_target_tokens": 130,
+        "total_seq_len": 493
+      },
+      {
+        "sample_idx": 80,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 47,
+        "mean_nll": 1.0192642211914062,
+        "n_target_tokens": 162,
+        "total_seq_len": 469
+      },
+      {
+        "sample_idx": 81,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 19,
+        "user_turn_idx": 10,
+        "mean_nll": 1.3837574627382536,
+        "n_target_tokens": 141,
+        "total_seq_len": 471
+      },
+      {
+        "sample_idx": 82,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 11,
+        "mean_nll": 0.7231684923171997,
+        "n_target_tokens": 16,
+        "total_seq_len": 193
+      },
+      {
+        "sample_idx": 83,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 2,
+        "mean_nll": 1.23246484375,
+        "n_target_tokens": 125,
+        "total_seq_len": 507
+      },
+      {
+        "sample_idx": 84,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 28,
+        "mean_nll": 1.4866265449815124,
+        "n_target_tokens": 131,
+        "total_seq_len": 442
+      },
+      {
+        "sample_idx": 85,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 15,
+        "user_turn_idx": 12,
+        "mean_nll": 1.450763149919181,
+        "n_target_tokens": 145,
+        "total_seq_len": 458
+      },
+      {
+        "sample_idx": 86,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 2,
+        "mean_nll": 1.173748937146417,
+        "n_target_tokens": 116,
+        "total_seq_len": 441
+      },
+      {
+        "sample_idx": 87,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 10,
+        "user_turn_idx": 37,
+        "mean_nll": 1.610417452725497,
+        "n_target_tokens": 11,
+        "total_seq_len": 188
+      },
+      {
+        "sample_idx": 88,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 2,
+        "user_turn_idx": 31,
+        "mean_nll": 1.85084765625,
+        "n_target_tokens": 125,
+        "total_seq_len": 460
+      },
+      {
+        "sample_idx": 89,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 4,
+        "mean_nll": 1.037276510464943,
+        "n_target_tokens": 118,
+        "total_seq_len": 477
+      },
+      {
+        "sample_idx": 90,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 40,
+        "mean_nll": 1.502564336212588,
+        "n_target_tokens": 142,
+        "total_seq_len": 507
+      },
+      {
+        "sample_idx": 91,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 16,
+        "mean_nll": 1.2595815876968035,
+        "n_target_tokens": 131,
+        "total_seq_len": 470
+      },
+      {
+        "sample_idx": 92,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 12,
+        "mean_nll": 1.3905946768013535,
+        "n_target_tokens": 157,
+        "total_seq_len": 498
+      },
+      {
+        "sample_idx": 93,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 11,
+        "user_turn_idx": 28,
+        "mean_nll": 1.2274975776672363,
+        "n_target_tokens": 128,
+        "total_seq_len": 513
+      },
+      {
+        "sample_idx": 94,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 30,
+        "mean_nll": 1.5528838179493678,
+        "n_target_tokens": 131,
+        "total_seq_len": 429
+      },
+      {
+        "sample_idx": 95,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 17,
+        "user_turn_idx": 2,
+        "mean_nll": 1.0296796281761098,
+        "n_target_tokens": 107,
+        "total_seq_len": 476
+      },
+      {
+        "sample_idx": 96,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 17,
+        "user_turn_idx": 12,
+        "mean_nll": 1.0587276760622752,
+        "n_target_tokens": 139,
+        "total_seq_len": 460
+      },
+      {
+        "sample_idx": 97,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 5,
+        "user_turn_idx": 25,
+        "mean_nll": 1.9065511067708334,
+        "n_target_tokens": 15,
+        "total_seq_len": 187
+      },
+      {
+        "sample_idx": 98,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 26,
+        "mean_nll": 0.9866695919552365,
+        "n_target_tokens": 148,
+        "total_seq_len": 519
+      },
+      {
+        "sample_idx": 99,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 4,
+        "user_turn_idx": 22,
+        "mean_nll": 1.2022133733993186,
+        "n_target_tokens": 133,
+        "total_seq_len": 421
+      }
+    ],
+    "teacher_full": [
+      {
+        "sample_idx": 0,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 8,
+        "mean_nll": 1.025651080791767,
+        "n_target_tokens": 130,
+        "total_seq_len": 20227
+      },
+      {
+        "sample_idx": 1,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 11,
+        "mean_nll": 1.2553935500810731,
+        "n_target_tokens": 106,
+        "total_seq_len": 18791
+      },
+      {
+        "sample_idx": 2,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 12,
+        "mean_nll": 1.176077823510906,
+        "n_target_tokens": 149,
+        "total_seq_len": 10156
+      },
+      {
+        "sample_idx": 3,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 17,
+        "mean_nll": 1.5413431167602538,
+        "n_target_tokens": 40,
+        "total_seq_len": 27118
+      },
+      {
+        "sample_idx": 4,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 17,
+        "user_turn_idx": 21,
+        "mean_nll": 0.911175563417632,
+        "n_target_tokens": 116,
+        "total_seq_len": 15523
+      },
+      {
+        "sample_idx": 5,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 14,
+        "user_turn_idx": 23,
+        "mean_nll": 1.146508944236626,
+        "n_target_tokens": 118,
+        "total_seq_len": 24137
+      },
+      {
+        "sample_idx": 6,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 18,
+        "mean_nll": 0.9522964714109435,
+        "n_target_tokens": 129,
+        "total_seq_len": 22207
+      },
+      {
+        "sample_idx": 7,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 67,
+        "mean_nll": 1.041136728206151,
+        "n_target_tokens": 142,
+        "total_seq_len": 27202
+      },
+      {
+        "sample_idx": 8,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 2,
+        "mean_nll": 0.04460455038968254,
+        "n_target_tokens": 17,
+        "total_seq_len": 19348
+      },
+      {
+        "sample_idx": 9,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 30,
+        "mean_nll": 1.291918436686198,
+        "n_target_tokens": 132,
+        "total_seq_len": 22352
+      },
+      {
+        "sample_idx": 10,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 42,
+        "mean_nll": 1.3824816154711175,
+        "n_target_tokens": 165,
+        "total_seq_len": 27408
+      },
+      {
+        "sample_idx": 11,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 12,
+        "mean_nll": 0.9880157470703125,
+        "n_target_tokens": 35,
+        "total_seq_len": 23585
+      },
+      {
+        "sample_idx": 12,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 12,
+        "mean_nll": 1.3469931236783366,
+        "n_target_tokens": 133,
+        "total_seq_len": 17518
+      },
+      {
+        "sample_idx": 13,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 15,
+        "user_turn_idx": 12,
+        "mean_nll": 0.95605224609375,
+        "n_target_tokens": 25,
+        "total_seq_len": 21354
+      },
+      {
+        "sample_idx": 14,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 35,
+        "mean_nll": 0.8878123760223389,
+        "n_target_tokens": 12,
+        "total_seq_len": 21278
+      },
+      {
+        "sample_idx": 15,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 19,
+        "user_turn_idx": 20,
+        "mean_nll": 0.5857352649464327,
+        "n_target_tokens": 17,
+        "total_seq_len": 18395
+      },
+      {
+        "sample_idx": 16,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 7,
+        "user_turn_idx": 27,
+        "mean_nll": 0.8754971822102865,
+        "n_target_tokens": 12,
+        "total_seq_len": 21452
+      },
+      {
+        "sample_idx": 17,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 2,
+        "user_turn_idx": 2,
+        "mean_nll": 1.2371203805517963,
+        "n_target_tokens": 127,
+        "total_seq_len": 13228
+      },
+      {
+        "sample_idx": 18,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 24,
+        "mean_nll": 1.1817670549665178,
+        "n_target_tokens": 133,
+        "total_seq_len": 12040
+      },
+      {
+        "sample_idx": 19,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 12,
+        "mean_nll": 0.97746435546875,
+        "n_target_tokens": 125,
+        "total_seq_len": 19446
+      },
+      {
+        "sample_idx": 20,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 8,
+        "mean_nll": 0.9764374012255487,
+        "n_target_tokens": 131,
+        "total_seq_len": 20557
+      },
+      {
+        "sample_idx": 21,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 38,
+        "mean_nll": 1.132801289461097,
+        "n_target_tokens": 147,
+        "total_seq_len": 25536
+      },
+      {
+        "sample_idx": 22,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 12,
+        "user_turn_idx": 36,
+        "mean_nll": 1.2337941751851664,
+        "n_target_tokens": 154,
+        "total_seq_len": 25645
+      },
+      {
+        "sample_idx": 23,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 0,
+        "user_turn_idx": 22,
+        "mean_nll": 1.0767476736021435,
+        "n_target_tokens": 121,
+        "total_seq_len": 3304
+      },
+      {
+        "sample_idx": 24,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 18,
+        "mean_nll": 1.106279541015625,
+        "n_target_tokens": 125,
+        "total_seq_len": 10982
+      },
+      {
+        "sample_idx": 25,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 17,
+        "user_turn_idx": 2,
+        "mean_nll": 2.0714333057403564,
+        "n_target_tokens": 16,
+        "total_seq_len": 12825
+      },
+      {
+        "sample_idx": 26,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 11,
+        "user_turn_idx": 2,
+        "mean_nll": 0.7583969116210938,
+        "n_target_tokens": 125,
+        "total_seq_len": 20698
+      },
+      {
+        "sample_idx": 27,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 38,
+        "mean_nll": 1.136567615327381,
+        "n_target_tokens": 126,
+        "total_seq_len": 20053
+      },
+      {
+        "sample_idx": 28,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 30,
+        "mean_nll": 1.1583545510538944,
+        "n_target_tokens": 197,
+        "total_seq_len": 24053
+      },
+      {
+        "sample_idx": 29,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 8,
+        "mean_nll": 1.0944460170475516,
+        "n_target_tokens": 127,
+        "total_seq_len": 14980
+      },
+      {
+        "sample_idx": 30,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 23,
+        "mean_nll": 1.2168019612630208,
+        "n_target_tokens": 15,
+        "total_seq_len": 18881
+      },
+      {
+        "sample_idx": 31,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 7,
+        "user_turn_idx": 18,
+        "mean_nll": 0.9177001317342123,
+        "n_target_tokens": 9,
+        "total_seq_len": 21177
+      },
+      {
+        "sample_idx": 32,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 12,
+        "mean_nll": 0.8457367179929748,
+        "n_target_tokens": 129,
+        "total_seq_len": 21257
+      },
+      {
+        "sample_idx": 33,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 10,
+        "user_turn_idx": 17,
+        "mean_nll": 0.8341379165649414,
+        "n_target_tokens": 15,
+        "total_seq_len": 15734
+      },
+      {
+        "sample_idx": 34,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 19,
+        "user_turn_idx": 17,
+        "mean_nll": 0.8398621047752491,
+        "n_target_tokens": 138,
+        "total_seq_len": 18024
+      },
+      {
+        "sample_idx": 35,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 18,
+        "user_turn_idx": 4,
+        "mean_nll": 1.669960587112992,
+        "n_target_tokens": 27,
+        "total_seq_len": 13429
+      },
+      {
+        "sample_idx": 36,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 6,
+        "mean_nll": 0.06104545733507942,
+        "n_target_tokens": 17,
+        "total_seq_len": 22205
+      },
+      {
+        "sample_idx": 37,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 13,
+        "mean_nll": 1.2666924022068486,
+        "n_target_tokens": 107,
+        "total_seq_len": 26879
+      },
+      {
+        "sample_idx": 38,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 0,
+        "user_turn_idx": 14,
+        "mean_nll": 1.1322774735708085,
+        "n_target_tokens": 126,
+        "total_seq_len": 2504
+      },
+      {
+        "sample_idx": 39,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 19,
+        "mean_nll": 0.9675688132261618,
+        "n_target_tokens": 156,
+        "total_seq_len": 21385
+      },
+      {
+        "sample_idx": 40,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 12,
+        "user_turn_idx": 40,
+        "mean_nll": 1.052516864363555,
+        "n_target_tokens": 157,
+        "total_seq_len": 29717
+      },
+      {
+        "sample_idx": 41,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 34,
+        "mean_nll": 1.3528797339040337,
+        "n_target_tokens": 141,
+        "total_seq_len": 29091
+      },
+      {
+        "sample_idx": 42,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 6,
+        "user_turn_idx": 24,
+        "mean_nll": 0.8387530644734701,
+        "n_target_tokens": 18,
+        "total_seq_len": 20755
+      },
+      {
+        "sample_idx": 43,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 14,
+        "mean_nll": 1.3780748844146729,
+        "n_target_tokens": 16,
+        "total_seq_len": 17723
+      },
+      {
+        "sample_idx": 44,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 10,
+        "mean_nll": 1.4321736012856792,
+        "n_target_tokens": 127,
+        "total_seq_len": 18624
+      },
+      {
+        "sample_idx": 45,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 27,
+        "mean_nll": 1.3321311626028507,
+        "n_target_tokens": 47,
+        "total_seq_len": 28857
+      },
+      {
+        "sample_idx": 46,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 26,
+        "mean_nll": 1.2828067330753101,
+        "n_target_tokens": 136,
+        "total_seq_len": 27497
+      },
+      {
+        "sample_idx": 47,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 2,
+        "mean_nll": 1.009441446374964,
+        "n_target_tokens": 108,
+        "total_seq_len": 19570
+      },
+      {
+        "sample_idx": 48,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 27,
+        "mean_nll": 0.8770716631854022,
+        "n_target_tokens": 108,
+        "total_seq_len": 22546
+      },
+      {
+        "sample_idx": 49,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 2,
+        "mean_nll": 1.3096004285310443,
+        "n_target_tokens": 19,
+        "total_seq_len": 16010
+      },
+      {
+        "sample_idx": 50,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 19,
+        "user_turn_idx": 4,
+        "mean_nll": 1.3745599365234376,
+        "n_target_tokens": 100,
+        "total_seq_len": 15851
+      },
+      {
+        "sample_idx": 51,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 10,
+        "mean_nll": 1.5097151669588955,
+        "n_target_tokens": 88,
+        "total_seq_len": 19079
+      },
+      {
+        "sample_idx": 52,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 36,
+        "mean_nll": 1.4041003523201778,
+        "n_target_tokens": 116,
+        "total_seq_len": 27292
+      },
+      {
+        "sample_idx": 53,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 20,
+        "mean_nll": 1.0486917301100127,
+        "n_target_tokens": 98,
+        "total_seq_len": 20800
+      },
+      {
+        "sample_idx": 54,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 20,
+        "mean_nll": 1.3223657538420963,
+        "n_target_tokens": 137,
+        "total_seq_len": 27414
+      },
+      {
+        "sample_idx": 55,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 14,
+        "user_turn_idx": 34,
+        "mean_nll": 1.161192309948825,
+        "n_target_tokens": 129,
+        "total_seq_len": 36916
+      },
+      {
+        "sample_idx": 56,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 19,
+        "mean_nll": 1.202225073059993,
+        "n_target_tokens": 134,
+        "total_seq_len": 20018
+      },
+      {
+        "sample_idx": 57,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 0,
+        "user_turn_idx": 26,
+        "mean_nll": 0.9430696463879243,
+        "n_target_tokens": 162,
+        "total_seq_len": 4003
+      },
+      {
+        "sample_idx": 58,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 16,
+        "user_turn_idx": 16,
+        "mean_nll": 1.1079291449652777,
+        "n_target_tokens": 135,
+        "total_seq_len": 18355
+      },
+      {
+        "sample_idx": 59,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 2,
+        "mean_nll": 0.07068906047127464,
+        "n_target_tokens": 11,
+        "total_seq_len": 20629
+      },
+      {
+        "sample_idx": 60,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 3,
+        "user_turn_idx": 6,
+        "mean_nll": 1.0345907295699668,
+        "n_target_tokens": 113,
+        "total_seq_len": 17793
+      },
+      {
+        "sample_idx": 61,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 8,
+        "user_turn_idx": 28,
+        "mean_nll": 0.8975568331204928,
+        "n_target_tokens": 130,
+        "total_seq_len": 16924
+      },
+      {
+        "sample_idx": 62,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 11,
+        "user_turn_idx": 13,
+        "mean_nll": 0.830518238580049,
+        "n_target_tokens": 134,
+        "total_seq_len": 17471
+      },
+      {
+        "sample_idx": 63,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 14,
+        "user_turn_idx": 16,
+        "mean_nll": 0.8974395491119124,
+        "n_target_tokens": 117,
+        "total_seq_len": 30266
+      },
+      {
+        "sample_idx": 64,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 37,
+        "mean_nll": 0.8408617819509199,
+        "n_target_tokens": 124,
+        "total_seq_len": 22630
+      },
+      {
+        "sample_idx": 65,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 32,
+        "mean_nll": 1.2971326529261578,
+        "n_target_tokens": 166,
+        "total_seq_len": 26592
+      },
+      {
+        "sample_idx": 66,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 8,
+        "mean_nll": 0.9149312106045809,
+        "n_target_tokens": 44,
+        "total_seq_len": 20556
+      },
+      {
+        "sample_idx": 67,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 16,
+        "user_turn_idx": 4,
+        "mean_nll": 1.1442830739927685,
+        "n_target_tokens": 121,
+        "total_seq_len": 17759
+      },
+      {
+        "sample_idx": 68,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 19,
+        "user_turn_idx": 18,
+        "mean_nll": 1.2635364532470703,
+        "n_target_tokens": 152,
+        "total_seq_len": 15727
+      },
+      {
+        "sample_idx": 69,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 62,
+        "mean_nll": 1.2167003284801137,
+        "n_target_tokens": 110,
+        "total_seq_len": 30266
+      },
+      {
+        "sample_idx": 70,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 2,
+        "user_turn_idx": 15,
+        "mean_nll": 1.4943647384643555,
+        "n_target_tokens": 24,
+        "total_seq_len": 15923
+      },
+      {
+        "sample_idx": 71,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 1,
+        "user_turn_idx": 22,
+        "mean_nll": 1.0776327514648438,
+        "n_target_tokens": 50,
+        "total_seq_len": 10142
+      },
+      {
+        "sample_idx": 72,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 26,
+        "mean_nll": 1.026297766883094,
+        "n_target_tokens": 111,
+        "total_seq_len": 28503
+      },
+      {
+        "sample_idx": 73,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 18,
+        "user_turn_idx": 10,
+        "mean_nll": 1.2642111707089552,
+        "n_target_tokens": 134,
+        "total_seq_len": 15974
+      },
+      {
+        "sample_idx": 74,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 10,
+        "user_turn_idx": 36,
+        "mean_nll": 1.5403732416283993,
+        "n_target_tokens": 131,
+        "total_seq_len": 29775
+      },
+      {
+        "sample_idx": 75,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 14,
+        "mean_nll": 1.4010949796133667,
+        "n_target_tokens": 137,
+        "total_seq_len": 15950
+      },
+      {
+        "sample_idx": 76,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 4,
+        "user_turn_idx": 18,
+        "mean_nll": 1.1751326497395833,
+        "n_target_tokens": 150,
+        "total_seq_len": 21449
+      },
+      {
+        "sample_idx": 77,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 3,
+        "user_turn_idx": 10,
+        "mean_nll": 1.0480428423200334,
+        "n_target_tokens": 140,
+        "total_seq_len": 18488
+      },
+      {
+        "sample_idx": 78,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 12,
+        "mean_nll": 1.3347737046538806,
+        "n_target_tokens": 122,
+        "total_seq_len": 22594
+      },
+      {
+        "sample_idx": 79,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 28,
+        "mean_nll": 0.9035885150615985,
+        "n_target_tokens": 130,
+        "total_seq_len": 23819
+      },
+      {
+        "sample_idx": 80,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 47,
+        "mean_nll": 0.9151090457115645,
+        "n_target_tokens": 162,
+        "total_seq_len": 25511
+      },
+      {
+        "sample_idx": 81,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 19,
+        "user_turn_idx": 10,
+        "mean_nll": 1.3005299669630983,
+        "n_target_tokens": 141,
+        "total_seq_len": 14392
+      },
+      {
+        "sample_idx": 82,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 11,
+        "mean_nll": 0.5736708641052246,
+        "n_target_tokens": 16,
+        "total_seq_len": 20630
+      },
+      {
+        "sample_idx": 83,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 2,
+        "mean_nll": 1.2228955078125,
+        "n_target_tokens": 125,
+        "total_seq_len": 16149
+      },
+      {
+        "sample_idx": 84,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 28,
+        "mean_nll": 1.3780139020381084,
+        "n_target_tokens": 131,
+        "total_seq_len": 21983
+      },
+      {
+        "sample_idx": 85,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 15,
+        "user_turn_idx": 12,
+        "mean_nll": 1.3712633856411638,
+        "n_target_tokens": 145,
+        "total_seq_len": 29967
+      },
+      {
+        "sample_idx": 86,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 2,
+        "mean_nll": 1.1914412399818157,
+        "n_target_tokens": 116,
+        "total_seq_len": 25441
+      },
+      {
+        "sample_idx": 87,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 10,
+        "user_turn_idx": 37,
+        "mean_nll": 0.5603229349309747,
+        "n_target_tokens": 11,
+        "total_seq_len": 16217
+      },
+      {
+        "sample_idx": 88,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 2,
+        "user_turn_idx": 31,
+        "mean_nll": 1.810872314453125,
+        "n_target_tokens": 125,
+        "total_seq_len": 18351
+      },
+      {
+        "sample_idx": 89,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 4,
+        "mean_nll": 0.9571412943177304,
+        "n_target_tokens": 118,
+        "total_seq_len": 21564
+      },
+      {
+        "sample_idx": 90,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 40,
+        "mean_nll": 1.278775282309089,
+        "n_target_tokens": 142,
+        "total_seq_len": 30207
+      },
+      {
+        "sample_idx": 91,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 16,
+        "mean_nll": 1.1548778737774332,
+        "n_target_tokens": 131,
+        "total_seq_len": 23563
+      },
+      {
+        "sample_idx": 92,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 12,
+        "mean_nll": 1.3015261121616242,
+        "n_target_tokens": 157,
+        "total_seq_len": 26087
+      },
+      {
+        "sample_idx": 93,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 11,
+        "user_turn_idx": 28,
+        "mean_nll": 1.0617225170135498,
+        "n_target_tokens": 128,
+        "total_seq_len": 24469
+      },
+      {
+        "sample_idx": 94,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 30,
+        "mean_nll": 1.4123464103873449,
+        "n_target_tokens": 131,
+        "total_seq_len": 25406
+      },
+      {
+        "sample_idx": 95,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 17,
+        "user_turn_idx": 2,
+        "mean_nll": 0.8826579156323014,
+        "n_target_tokens": 107,
+        "total_seq_len": 12753
+      },
+      {
+        "sample_idx": 96,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 17,
+        "user_turn_idx": 12,
+        "mean_nll": 0.9470616621936826,
+        "n_target_tokens": 139,
+        "total_seq_len": 21565
+      },
+      {
+        "sample_idx": 97,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 5,
+        "user_turn_idx": 25,
+        "mean_nll": 0.7556467692057292,
+        "n_target_tokens": 15,
+        "total_seq_len": 23500
+      },
+      {
+        "sample_idx": 98,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 26,
+        "mean_nll": 0.8614450918661581,
+        "n_target_tokens": 148,
+        "total_seq_len": 23338
+      },
+      {
+        "sample_idx": 99,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 4,
+        "user_turn_idx": 22,
+        "mean_nll": 1.1082184296801574,
+        "n_target_tokens": 133,
+        "total_seq_len": 22104
+      }
+    ],
+    "student_demo": [
+      {
+        "sample_idx": 0,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 8,
+        "mean_nll": 1.5805496215820312,
+        "n_target_tokens": 130,
+        "total_seq_len": 501
+      },
+      {
+        "sample_idx": 1,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 11,
+        "mean_nll": 2.02822530494546,
+        "n_target_tokens": 106,
+        "total_seq_len": 437
+      },
+      {
+        "sample_idx": 2,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 12,
+        "mean_nll": 1.5539408434157405,
+        "n_target_tokens": 149,
+        "total_seq_len": 520
+      },
+      {
+        "sample_idx": 3,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 17,
+        "mean_nll": 2.534610939025879,
+        "n_target_tokens": 40,
+        "total_seq_len": 2651
+      },
+      {
+        "sample_idx": 4,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 17,
+        "user_turn_idx": 21,
+        "mean_nll": 1.7887252281452048,
+        "n_target_tokens": 116,
+        "total_seq_len": 425
+      },
+      {
+        "sample_idx": 5,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 14,
+        "user_turn_idx": 23,
+        "mean_nll": 1.945175429521981,
+        "n_target_tokens": 118,
+        "total_seq_len": 461
+      },
+      {
+        "sample_idx": 6,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 18,
+        "mean_nll": 1.5364058147105135,
+        "n_target_tokens": 129,
+        "total_seq_len": 448
+      },
+      {
+        "sample_idx": 7,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 67,
+        "mean_nll": 1.7945026881258253,
+        "n_target_tokens": 142,
+        "total_seq_len": 440
+      },
+      {
+        "sample_idx": 8,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 2,
+        "mean_nll": 2.4236708248362824,
+        "n_target_tokens": 17,
+        "total_seq_len": 1050
+      },
+      {
+        "sample_idx": 9,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 30,
+        "mean_nll": 1.7636146545410156,
+        "n_target_tokens": 132,
+        "total_seq_len": 512
+      },
+      {
+        "sample_idx": 10,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 42,
+        "mean_nll": 1.758541222774621,
+        "n_target_tokens": 165,
+        "total_seq_len": 505
+      },
+      {
+        "sample_idx": 11,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 9,
+        "user_turn_idx": 12,
+        "mean_nll": 2.349648175920759,
+        "n_target_tokens": 35,
+        "total_seq_len": 1158
+      },
+      {
+        "sample_idx": 12,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 12,
+        "mean_nll": 1.8776575533070958,
+        "n_target_tokens": 133,
+        "total_seq_len": 443
+      },
+      {
+        "sample_idx": 13,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 15,
+        "user_turn_idx": 12,
+        "mean_nll": 2.6335699462890627,
+        "n_target_tokens": 25,
+        "total_seq_len": 297
+      },
+      {
+        "sample_idx": 14,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 35,
+        "mean_nll": 2.413926601409912,
+        "n_target_tokens": 12,
+        "total_seq_len": 192
+      },
+      {
+        "sample_idx": 15,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 19,
+        "user_turn_idx": 20,
+        "mean_nll": 1.9872941409840303,
+        "n_target_tokens": 17,
+        "total_seq_len": 382
+      },
+      {
+        "sample_idx": 16,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 7,
+        "user_turn_idx": 27,
+        "mean_nll": 2.413926601409912,
+        "n_target_tokens": 12,
+        "total_seq_len": 192
+      },
+      {
+        "sample_idx": 17,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 2,
+        "user_turn_idx": 2,
+        "mean_nll": 2.0338500015378935,
+        "n_target_tokens": 127,
+        "total_seq_len": 540
+      },
+      {
+        "sample_idx": 18,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 24,
+        "mean_nll": 1.649824787799577,
+        "n_target_tokens": 133,
+        "total_seq_len": 474
+      },
+      {
+        "sample_idx": 19,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 12,
+        "mean_nll": 1.280104736328125,
+        "n_target_tokens": 125,
+        "total_seq_len": 510
+      },
+      {
+        "sample_idx": 20,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 8,
+        "mean_nll": 1.679347846344227,
+        "n_target_tokens": 131,
+        "total_seq_len": 472
+      },
+      {
+        "sample_idx": 21,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 38,
+        "mean_nll": 1.801868672273597,
+        "n_target_tokens": 147,
+        "total_seq_len": 535
+      },
+      {
+        "sample_idx": 22,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 12,
+        "user_turn_idx": 36,
+        "mean_nll": 1.8773561948305602,
+        "n_target_tokens": 154,
+        "total_seq_len": 536
+      },
+      {
+        "sample_idx": 23,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 0,
+        "user_turn_idx": 22,
+        "mean_nll": 1.6542743020806432,
+        "n_target_tokens": 121,
+        "total_seq_len": 454
+      },
+      {
+        "sample_idx": 24,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 1,
+        "user_turn_idx": 18,
+        "mean_nll": 1.3924443359375,
+        "n_target_tokens": 125,
+        "total_seq_len": 481
+      },
+      {
+        "sample_idx": 25,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 17,
+        "user_turn_idx": 2,
+        "mean_nll": 2.9908335208892822,
+        "n_target_tokens": 16,
+        "total_seq_len": 942
+      },
+      {
+        "sample_idx": 26,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 11,
+        "user_turn_idx": 2,
+        "mean_nll": 1.12949169921875,
+        "n_target_tokens": 125,
+        "total_seq_len": 484
+      },
+      {
+        "sample_idx": 27,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 38,
+        "mean_nll": 1.508698962983631,
+        "n_target_tokens": 126,
+        "total_seq_len": 459
+      },
+      {
+        "sample_idx": 28,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 30,
+        "mean_nll": 1.7617943468432742,
+        "n_target_tokens": 197,
+        "total_seq_len": 524
+      },
+      {
+        "sample_idx": 29,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 8,
+        "mean_nll": 1.4194857379582924,
+        "n_target_tokens": 127,
+        "total_seq_len": 501
+      },
+      {
+        "sample_idx": 30,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 23,
+        "mean_nll": 3.6553609212239584,
+        "n_target_tokens": 15,
+        "total_seq_len": 364
+      },
+      {
+        "sample_idx": 31,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 7,
+        "user_turn_idx": 18,
+        "mean_nll": 1.9098983340793185,
+        "n_target_tokens": 9,
+        "total_seq_len": 191
+      },
+      {
+        "sample_idx": 32,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 12,
+        "mean_nll": 1.5274937356165212,
+        "n_target_tokens": 129,
+        "total_seq_len": 478
+      },
+      {
+        "sample_idx": 33,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 10,
+        "user_turn_idx": 17,
+        "mean_nll": 1.9783373514811198,
+        "n_target_tokens": 15,
+        "total_seq_len": 192
+      },
+      {
+        "sample_idx": 34,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 19,
+        "user_turn_idx": 17,
+        "mean_nll": 1.4125180451766304,
+        "n_target_tokens": 138,
+        "total_seq_len": 466
+      },
+      {
+        "sample_idx": 35,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 18,
+        "user_turn_idx": 4,
+        "mean_nll": 2.926359388563368,
+        "n_target_tokens": 27,
+        "total_seq_len": 429
+      },
+      {
+        "sample_idx": 36,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 6,
+        "mean_nll": 1.9343084447524126,
+        "n_target_tokens": 17,
+        "total_seq_len": 999
+      },
+      {
+        "sample_idx": 37,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 13,
+        "mean_nll": 1.4393642817702248,
+        "n_target_tokens": 107,
+        "total_seq_len": 455
+      },
+      {
+        "sample_idx": 38,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 0,
+        "user_turn_idx": 14,
+        "mean_nll": 1.7232242160373263,
+        "n_target_tokens": 126,
+        "total_seq_len": 415
+      },
+      {
+        "sample_idx": 39,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 19,
+        "mean_nll": 1.652467776567508,
+        "n_target_tokens": 156,
+        "total_seq_len": 471
+      },
+      {
+        "sample_idx": 40,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 12,
+        "user_turn_idx": 40,
+        "mean_nll": 1.5062245168503683,
+        "n_target_tokens": 157,
+        "total_seq_len": 546
+      },
+      {
+        "sample_idx": 41,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 34,
+        "mean_nll": 1.9147304237311613,
+        "n_target_tokens": 141,
+        "total_seq_len": 535
+      },
+      {
+        "sample_idx": 42,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 6,
+        "user_turn_idx": 24,
+        "mean_nll": 2.986758338080512,
+        "n_target_tokens": 18,
+        "total_seq_len": 304
+      },
+      {
+        "sample_idx": 43,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 14,
+        "mean_nll": 3.1494860649108887,
+        "n_target_tokens": 16,
+        "total_seq_len": 348
+      },
+      {
+        "sample_idx": 44,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 10,
+        "mean_nll": 1.8523279625599778,
+        "n_target_tokens": 127,
+        "total_seq_len": 426
+      },
+      {
+        "sample_idx": 45,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 27,
+        "mean_nll": 2.2891663896276597,
+        "n_target_tokens": 47,
+        "total_seq_len": 393
+      },
+      {
+        "sample_idx": 46,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 26,
+        "mean_nll": 1.763033249798943,
+        "n_target_tokens": 136,
+        "total_seq_len": 488
+      },
+      {
+        "sample_idx": 47,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 2,
+        "mean_nll": 1.4676541928891782,
+        "n_target_tokens": 108,
+        "total_seq_len": 461
+      },
+      {
+        "sample_idx": 48,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 27,
+        "mean_nll": 1.4557986789279513,
+        "n_target_tokens": 108,
+        "total_seq_len": 449
+      },
+      {
+        "sample_idx": 49,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 2,
+        "mean_nll": 1.5377450240285773,
+        "n_target_tokens": 19,
+        "total_seq_len": 1062
+      },
+      {
+        "sample_idx": 50,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 19,
+        "user_turn_idx": 4,
+        "mean_nll": 1.6064085388183593,
+        "n_target_tokens": 100,
+        "total_seq_len": 464
+      },
+      {
+        "sample_idx": 51,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 10,
+        "mean_nll": 1.980154037475586,
+        "n_target_tokens": 88,
+        "total_seq_len": 426
+      },
+      {
+        "sample_idx": 52,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 36,
+        "mean_nll": 2.0205780555462014,
+        "n_target_tokens": 116,
+        "total_seq_len": 451
+      },
+      {
+        "sample_idx": 53,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 20,
+        "mean_nll": 1.6077558556381537,
+        "n_target_tokens": 98,
+        "total_seq_len": 438
+      },
+      {
+        "sample_idx": 54,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 20,
+        "mean_nll": 1.8478746623018363,
+        "n_target_tokens": 137,
+        "total_seq_len": 471
+      },
+      {
+        "sample_idx": 55,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 14,
+        "user_turn_idx": 34,
+        "mean_nll": 1.877575541651526,
+        "n_target_tokens": 129,
+        "total_seq_len": 446
+      },
+      {
+        "sample_idx": 56,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 2,
+        "user_turn_idx": 19,
+        "mean_nll": 1.434956109345849,
+        "n_target_tokens": 134,
+        "total_seq_len": 408
+      },
+      {
+        "sample_idx": 57,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 0,
+        "user_turn_idx": 26,
+        "mean_nll": 1.5476438734266493,
+        "n_target_tokens": 162,
+        "total_seq_len": 517
+      },
+      {
+        "sample_idx": 58,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 16,
+        "user_turn_idx": 16,
+        "mean_nll": 1.4374388518156829,
+        "n_target_tokens": 135,
+        "total_seq_len": 461
+      },
+      {
+        "sample_idx": 59,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 2,
+        "mean_nll": 1.4174210808493874,
+        "n_target_tokens": 11,
+        "total_seq_len": 815
+      },
+      {
+        "sample_idx": 60,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 3,
+        "user_turn_idx": 6,
+        "mean_nll": 1.7721906003698837,
+        "n_target_tokens": 113,
+        "total_seq_len": 456
+      },
+      {
+        "sample_idx": 61,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 8,
+        "user_turn_idx": 28,
+        "mean_nll": 1.6405508188100961,
+        "n_target_tokens": 130,
+        "total_seq_len": 493
+      },
+      {
+        "sample_idx": 62,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 11,
+        "user_turn_idx": 13,
+        "mean_nll": 1.314896540855294,
+        "n_target_tokens": 134,
+        "total_seq_len": 465
+      },
+      {
+        "sample_idx": 63,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 14,
+        "user_turn_idx": 16,
+        "mean_nll": 1.4396842239249465,
+        "n_target_tokens": 117,
+        "total_seq_len": 520
+      },
+      {
+        "sample_idx": 64,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 7,
+        "user_turn_idx": 37,
+        "mean_nll": 1.4655564831149193,
+        "n_target_tokens": 124,
+        "total_seq_len": 421
+      },
+      {
+        "sample_idx": 65,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 32,
+        "mean_nll": 1.8402868064053088,
+        "n_target_tokens": 166,
+        "total_seq_len": 554
+      },
+      {
+        "sample_idx": 66,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 8,
+        "mean_nll": 2.7703569585626777,
+        "n_target_tokens": 44,
+        "total_seq_len": 940
+      },
+      {
+        "sample_idx": 67,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 16,
+        "user_turn_idx": 4,
+        "mean_nll": 1.9953189566115703,
+        "n_target_tokens": 121,
+        "total_seq_len": 460
+      },
+      {
+        "sample_idx": 68,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 19,
+        "user_turn_idx": 18,
+        "mean_nll": 1.6648631848787006,
+        "n_target_tokens": 152,
+        "total_seq_len": 508
+      },
+      {
+        "sample_idx": 69,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 13,
+        "user_turn_idx": 62,
+        "mean_nll": 1.5752003062855113,
+        "n_target_tokens": 110,
+        "total_seq_len": 437
+      },
+      {
+        "sample_idx": 70,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 2,
+        "user_turn_idx": 15,
+        "mean_nll": 2.791461626688639,
+        "n_target_tokens": 24,
+        "total_seq_len": 352
+      },
+      {
+        "sample_idx": 71,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 1,
+        "user_turn_idx": 22,
+        "mean_nll": 2.248213653564453,
+        "n_target_tokens": 50,
+        "total_seq_len": 347
+      },
+      {
+        "sample_idx": 72,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 26,
+        "mean_nll": 1.4090950080940314,
+        "n_target_tokens": 111,
+        "total_seq_len": 441
+      },
+      {
+        "sample_idx": 73,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 18,
+        "user_turn_idx": 10,
+        "mean_nll": 1.7477834900813316,
+        "n_target_tokens": 134,
+        "total_seq_len": 531
+      },
+      {
+        "sample_idx": 74,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 10,
+        "user_turn_idx": 36,
+        "mean_nll": 2.223058336563693,
+        "n_target_tokens": 131,
+        "total_seq_len": 508
+      },
+      {
+        "sample_idx": 75,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 7,
+        "user_turn_idx": 14,
+        "mean_nll": 1.7541011615391195,
+        "n_target_tokens": 137,
+        "total_seq_len": 473
+      },
+      {
+        "sample_idx": 76,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 4,
+        "user_turn_idx": 18,
+        "mean_nll": 2.009869384765625,
+        "n_target_tokens": 150,
+        "total_seq_len": 529
+      },
+      {
+        "sample_idx": 77,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 3,
+        "user_turn_idx": 10,
+        "mean_nll": 1.7156770978655134,
+        "n_target_tokens": 140,
+        "total_seq_len": 480
+      },
+      {
+        "sample_idx": 78,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 12,
+        "mean_nll": 1.6670339615618597,
+        "n_target_tokens": 122,
+        "total_seq_len": 441
+      },
+      {
+        "sample_idx": 79,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 12,
+        "user_turn_idx": 28,
+        "mean_nll": 1.6405508188100961,
+        "n_target_tokens": 130,
+        "total_seq_len": 493
+      },
+      {
+        "sample_idx": 80,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 11,
+        "user_turn_idx": 47,
+        "mean_nll": 1.7493986906828705,
+        "n_target_tokens": 162,
+        "total_seq_len": 469
+      },
+      {
+        "sample_idx": 81,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 19,
+        "user_turn_idx": 10,
+        "mean_nll": 1.7354861861425088,
+        "n_target_tokens": 141,
+        "total_seq_len": 471
+      },
+      {
+        "sample_idx": 82,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 5,
+        "user_turn_idx": 11,
+        "mean_nll": 1.9666428565979004,
+        "n_target_tokens": 16,
+        "total_seq_len": 193
+      },
+      {
+        "sample_idx": 83,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 18,
+        "user_turn_idx": 2,
+        "mean_nll": 1.608672607421875,
+        "n_target_tokens": 125,
+        "total_seq_len": 507
+      },
+      {
+        "sample_idx": 84,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 6,
+        "user_turn_idx": 28,
+        "mean_nll": 1.7621211860016102,
+        "n_target_tokens": 131,
+        "total_seq_len": 442
+      },
+      {
+        "sample_idx": 85,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 15,
+        "user_turn_idx": 12,
+        "mean_nll": 1.7544907142376078,
+        "n_target_tokens": 145,
+        "total_seq_len": 458
+      },
+      {
+        "sample_idx": 86,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 16,
+        "user_turn_idx": 2,
+        "mean_nll": 1.420782155004041,
+        "n_target_tokens": 116,
+        "total_seq_len": 441
+      },
+      {
+        "sample_idx": 87,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 10,
+        "user_turn_idx": 37,
+        "mean_nll": 1.9271930347789417,
+        "n_target_tokens": 11,
+        "total_seq_len": 188
+      },
+      {
+        "sample_idx": 88,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 2,
+        "user_turn_idx": 31,
+        "mean_nll": 2.11551171875,
+        "n_target_tokens": 125,
+        "total_seq_len": 460
+      },
+      {
+        "sample_idx": 89,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 4,
+        "mean_nll": 1.4589626506223516,
+        "n_target_tokens": 118,
+        "total_seq_len": 477
+      },
+      {
+        "sample_idx": 90,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 8,
+        "user_turn_idx": 40,
+        "mean_nll": 1.9791313493755502,
+        "n_target_tokens": 142,
+        "total_seq_len": 507
+      },
+      {
+        "sample_idx": 91,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 4,
+        "user_turn_idx": 16,
+        "mean_nll": 1.7381948223550812,
+        "n_target_tokens": 131,
+        "total_seq_len": 470
+      },
+      {
+        "sample_idx": 92,
+        "persona_id": "12",
+        "context_id": "6d68c487",
+        "session_idx": 3,
+        "user_turn_idx": 12,
+        "mean_nll": 2.078787445262739,
+        "n_target_tokens": 157,
+        "total_seq_len": 498
+      },
+      {
+        "sample_idx": 93,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 11,
+        "user_turn_idx": 28,
+        "mean_nll": 1.9365277290344238,
+        "n_target_tokens": 128,
+        "total_seq_len": 513
+      },
+      {
+        "sample_idx": 94,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 4,
+        "user_turn_idx": 30,
+        "mean_nll": 1.8469806700262406,
+        "n_target_tokens": 131,
+        "total_seq_len": 429
+      },
+      {
+        "sample_idx": 95,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 17,
+        "user_turn_idx": 2,
+        "mean_nll": 1.598002496166764,
+        "n_target_tokens": 107,
+        "total_seq_len": 476
+      },
+      {
+        "sample_idx": 96,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 17,
+        "user_turn_idx": 12,
+        "mean_nll": 1.579473262210544,
+        "n_target_tokens": 139,
+        "total_seq_len": 460
+      },
+      {
+        "sample_idx": 97,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 5,
+        "user_turn_idx": 25,
+        "mean_nll": 1.9195364634195964,
+        "n_target_tokens": 15,
+        "total_seq_len": 187
+      },
+      {
+        "sample_idx": 98,
+        "persona_id": "12",
+        "context_id": "7e27f939",
+        "session_idx": 3,
+        "user_turn_idx": 26,
+        "mean_nll": 1.5752033542942356,
+        "n_target_tokens": 148,
+        "total_seq_len": 519
+      },
+      {
+        "sample_idx": 99,
+        "persona_id": "12",
+        "context_id": "35b510c7",
+        "session_idx": 4,
+        "user_turn_idx": 22,
+        "mean_nll": 1.663794496005639,
+        "n_target_tokens": 133,
+        "total_seq_len": 421
+      }
+    ]
+  },
+  "summary": {
+    "base_demo": 2.7158465608753914,
+    "base_full": 2.1386011347409695,
+    "teacher_demo": 1.3136156146747415,
+    "teacher_full": 1.0996067714813642,
+    "student_demo": 1.855240679872573
+  }
+}

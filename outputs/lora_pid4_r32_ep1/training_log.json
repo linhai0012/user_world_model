@@ -1,0 +1,194 @@
+{
+  "persona_id": "4",
+  "n_samples": 20,
+  "n_epochs": 1,
+  "lora_rank": 32,
+  "lora_alpha": 64,
+  "lora_targets": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj"
+  ],
+  "lr": 0.0002,
+  "rollout_max_tokens": 160,
+  "rollout_temperature": 1.0,
+  "max_teacher_tokens": 32768,
+  "truncation_count": 0,
+  "skipped_empty_rollouts": 0,
+  "training_log": [
+    {
+      "epoch": 0,
+      "avg_kl": 0.3490955799818039,
+      "n_samples": 20,
+      "n_tokens": 3200,
+      "elapsed_s": 475.11048913002014
+    }
+  ],
+  "per_step_losses": [
+    {
+      "epoch": 0,
+      "step": 0,
+      "loss": 0.3435121476650238,
+      "min_len": 160,
+      "sample_idx": 19
+    },
+    {
+      "epoch": 0,
+      "step": 1,
+      "loss": 0.5846476554870605,
+      "min_len": 160,
+      "sample_idx": 5
+    },
+    {
+      "epoch": 0,
+      "step": 2,
+      "loss": 0.637607753276825,
+      "min_len": 160,
+      "sample_idx": 14
+    },
+    {
+      "epoch": 0,
+      "step": 3,
+      "loss": 0.48093125224113464,
+      "min_len": 160,
+      "sample_idx": 4
+    },
+    {
+      "epoch": 0,
+      "step": 4,
+      "loss": 0.399696409702301,
+      "min_len": 160,
+      "sample_idx": 9
+    },
+    {
+      "epoch": 0,
+      "step": 5,
+      "loss": 0.4707465171813965,
+      "min_len": 160,
+      "sample_idx": 13
+    },
+    {
+      "epoch": 0,
+      "step": 6,
+      "loss": 0.37943825125694275,
+      "min_len": 160,
+      "sample_idx": 15
+    },
+    {
+      "epoch": 0,
+      "step": 7,
+      "loss": 0.3793768286705017,
+      "min_len": 160,
+      "sample_idx": 18
+    },
+    {
+      "epoch": 0,
+      "step": 8,
+      "loss": 0.33344578742980957,
+      "min_len": 160,
+      "sample_idx": 6
+    },
+    {
+      "epoch": 0,
+      "step": 9,
+      "loss": 0.2928321063518524,
+      "min_len": 160,
+      "sample_idx": 12
+    },
+    {
+      "epoch": 0,
+      "step": 10,
+      "loss": 0.2875235378742218,
+      "min_len": 160,
+      "sample_idx": 17
+    },
+    {
+      "epoch": 0,
+      "step": 11,
+      "loss": 0.2902754843235016,
+      "min_len": 160,
+      "sample_idx": 10
+    },
+    {
+      "epoch": 0,
+      "step": 12,
+      "loss": 0.25393572449684143,
+      "min_len": 160,
+      "sample_idx": 1
+    },
+    {
+      "epoch": 0,
+      "step": 13,
+      "loss": 0.34202930331230164,
+      "min_len": 160,
+      "sample_idx": 11
+    },
+    {
+      "epoch": 0,
+      "step": 14,
+      "loss": 0.24109454452991486,
+      "min_len": 160,
+      "sample_idx": 2
+    },
+    {
+      "epoch": 0,
+      "step": 15,
+      "loss": 0.20668844878673553,
+      "min_len": 160,
+      "sample_idx": 16
+    },
+    {
+      "epoch": 0,
+      "step": 16,
+      "loss": 0.2534719407558441,
+      "min_len": 160,
+      "sample_idx": 7
+    },
+    {
+      "epoch": 0,
+      "step": 17,
+      "loss": 0.2501926124095917,
+      "min_len": 160,
+      "sample_idx": 8
+    },
+    {
+      "epoch": 0,
+      "step": 18,
+      "loss": 0.29270753264427185,
+      "min_len": 160,
+      "sample_idx": 0
+    },
+    {
+      "epoch": 0,
+      "step": 19,
+      "loss": 0.2617577612400055,
+      "min_len": 160,
+      "sample_idx": 3
+    }
+  ],
+  "args": {
+    "persona_id": "4",
+    "data_path": "/home/u6aa/linhai.u6aa/P-OPSD/dynamic_usersim/outputs/opd_128k_pid4_k3.jsonl",
+    "teacher_path": "/scratch/u6aa/linhai.u6aa/P-OPSD/teacher_sft_128k/checkpoint-50",
+    "student_base": "Qwen/Qwen3-4B",
+    "output_dir": "/home/u6aa/linhai.u6aa/P-OPSD/dynamic_usersim/outputs/lora_pid4_r32_ep1",
+    "lora_rank": "32",
+    "lora_alpha": "64",
+    "lora_dropout": "0.0",
+    "lora_targets": "['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj']",
+    "lr": "0.0002",
+    "epochs": "1",
+    "rollout_max_tokens": "160",
+    "rollout_temperature": "1.0",
+    "max_teacher_tokens": "32768",
+    "grad_clip": "1.0",
+    "seed": "42",
+    "log_every": "5",
+    "max_samples": "20",
+    "gpu": "0",
+    "dry_run": "False"
+  }
+}

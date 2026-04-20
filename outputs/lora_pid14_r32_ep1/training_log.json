@@ -1,0 +1,194 @@
+{
+  "persona_id": "14",
+  "n_samples": 20,
+  "n_epochs": 1,
+  "lora_rank": 32,
+  "lora_alpha": 64,
+  "lora_targets": [
+    "q_proj",
+    "k_proj",
+    "v_proj",
+    "o_proj",
+    "gate_proj",
+    "up_proj"
+  ],
+  "lr": 0.0002,
+  "rollout_max_tokens": 160,
+  "rollout_temperature": 1.0,
+  "max_teacher_tokens": 32768,
+  "truncation_count": 0,
+  "skipped_empty_rollouts": 0,
+  "training_log": [
+    {
+      "epoch": 0,
+      "avg_kl": 0.45737133856642254,
+      "n_samples": 20,
+      "n_tokens": 3142,
+      "elapsed_s": 423.8998465538025
+    }
+  ],
+  "per_step_losses": [
+    {
+      "epoch": 0,
+      "step": 0,
+      "loss": 1.2715612649917603,
+      "min_len": 160,
+      "sample_idx": 19
+    },
+    {
+      "epoch": 0,
+      "step": 1,
+      "loss": 0.873974621295929,
+      "min_len": 160,
+      "sample_idx": 5
+    },
+    {
+      "epoch": 0,
+      "step": 2,
+      "loss": 0.4671275317668915,
+      "min_len": 160,
+      "sample_idx": 14
+    },
+    {
+      "epoch": 0,
+      "step": 3,
+      "loss": 0.6554040312767029,
+      "min_len": 160,
+      "sample_idx": 4
+    },
+    {
+      "epoch": 0,
+      "step": 4,
+      "loss": 0.49019643664360046,
+      "min_len": 160,
+      "sample_idx": 9
+    },
+    {
+      "epoch": 0,
+      "step": 5,
+      "loss": 0.5310807824134827,
+      "min_len": 160,
+      "sample_idx": 13
+    },
+    {
+      "epoch": 0,
+      "step": 6,
+      "loss": 0.44485217332839966,
+      "min_len": 160,
+      "sample_idx": 15
+    },
+    {
+      "epoch": 0,
+      "step": 7,
+      "loss": 0.36259958148002625,
+      "min_len": 160,
+      "sample_idx": 18
+    },
+    {
+      "epoch": 0,
+      "step": 8,
+      "loss": 0.4263291358947754,
+      "min_len": 160,
+      "sample_idx": 6
+    },
+    {
+      "epoch": 0,
+      "step": 9,
+      "loss": 0.33687326312065125,
+      "min_len": 160,
+      "sample_idx": 12
+    },
+    {
+      "epoch": 0,
+      "step": 10,
+      "loss": 0.3484804630279541,
+      "min_len": 160,
+      "sample_idx": 17
+    },
+    {
+      "epoch": 0,
+      "step": 11,
+      "loss": 0.264376699924469,
+      "min_len": 160,
+      "sample_idx": 10
+    },
+    {
+      "epoch": 0,
+      "step": 12,
+      "loss": 0.3527573347091675,
+      "min_len": 160,
+      "sample_idx": 1
+    },
+    {
+      "epoch": 0,
+      "step": 13,
+      "loss": 0.3377063572406769,
+      "min_len": 160,
+      "sample_idx": 11
+    },
+    {
+      "epoch": 0,
+      "step": 14,
+      "loss": 0.33735352754592896,
+      "min_len": 160,
+      "sample_idx": 2
+    },
+    {
+      "epoch": 0,
+      "step": 15,
+      "loss": 0.31853240728378296,
+      "min_len": 160,
+      "sample_idx": 16
+    },
+    {
+      "epoch": 0,
+      "step": 16,
+      "loss": 0.2556089758872986,
+      "min_len": 160,
+      "sample_idx": 7
+    },
+    {
+      "epoch": 0,
+      "step": 17,
+      "loss": 0.4296140670776367,
+      "min_len": 160,
+      "sample_idx": 8
+    },
+    {
+      "epoch": 0,
+      "step": 18,
+      "loss": 0.30389270186424255,
+      "min_len": 102,
+      "sample_idx": 0
+    },
+    {
+      "epoch": 0,
+      "step": 19,
+      "loss": 0.28346940875053406,
+      "min_len": 160,
+      "sample_idx": 3
+    }
+  ],
+  "args": {
+    "persona_id": "14",
+    "data_path": "/home/u6aa/linhai.u6aa/P-OPSD/dynamic_usersim/outputs/opd_128k_pid14_k3.jsonl",
+    "teacher_path": "/scratch/u6aa/linhai.u6aa/P-OPSD/teacher_sft_128k/checkpoint-50",
+    "student_base": "Qwen/Qwen3-4B",
+    "output_dir": "/home/u6aa/linhai.u6aa/P-OPSD/dynamic_usersim/outputs/lora_pid14_r32_ep1",
+    "lora_rank": "32",
+    "lora_alpha": "64",
+    "lora_dropout": "0.0",
+    "lora_targets": "['q_proj', 'k_proj', 'v_proj', 'o_proj', 'gate_proj', 'up_proj']",
+    "lr": "0.0002",
+    "epochs": "1",
+    "rollout_max_tokens": "160",
+    "rollout_temperature": "1.0",
+    "max_teacher_tokens": "32768",
+    "grad_clip": "1.0",
+    "seed": "42",
+    "log_every": "5",
+    "max_samples": "20",
+    "gpu": "0",
+    "dry_run": "False"
+  }
+}

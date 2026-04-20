@@ -1,0 +1,965 @@
+{
+  "args": {
+    "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+    "lora_path": "/scratch/u6aa/linhai.u6aa/P-OPSD/student_lora/lora_pid14_dual_v3_joint_k3_ep1_r3teacher/ckpt-step-200",
+    "lora_mode": "dual",
+    "persona_id": "14",
+    "mcq_version": "32k",
+    "context_mode": "demo-only",
+    "last_n_sessions": "3",
+    "recent_turns": "2",
+    "num_mcqs": "-1",
+    "max_seq_len": "40960",
+    "lm_head_chunk": "4096",
+    "seed": "42",
+    "out_json": "dynamic_usersim/outputs/mcqppl_32k_pid14_student_dual_v3_joint_k3_demo_step200.json"
+  },
+  "accuracy": 0.391304347826087,
+  "n_total": 23,
+  "n_correct": 9,
+  "results": [
+    {
+      "global_idx": 0,
+      "persona_id": "14",
+      "question_id": "0da0120b-8c58-4cd4-a5bc-7acaf71740ba",
+      "qtype_canonical": "generalize",
+      "topic": "musicRecommendation",
+      "correct_answer": "d",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Taking a leadership role is an admirable pursuit and a great way to give back to the community. As you evaluate this opportunity, it's crucial to weigh the potential impact on your work-life balance and financial resources. Consider how this role might help you build new connections and strengthen your community. Although personal stress isn't mentioned directly here, maintaining a healthy balance will surely be key to enjoying this new experience fully. If you'd like more insights into managing community roles, I'd be happy to help.",
+          "mean_nll": 2.4053518465249843,
+          "ppl": 11.082328796386719,
+          "n_target_tokens": 101
+        },
+        {
+          "label": "b",
+          "choice": "It's wonderful to see you're interested in a leadership role within a community group. Reflect on this opportunity by thinking about your goals for personal growth and the skills you aim to develop. Leadership can sometimes be time-consuming and demanding, but it also can provide substantial personal and professional rewards. You might think about the skills you will gain and the impact you could have. Assessing these benefits and challenges should help you make a more informed decision. Let me know if you want to explore these ideas further.",
+          "mean_nll": 2.026367037904029,
+          "ppl": 7.586474418640137,
+          "n_target_tokens": 102
+        },
+        {
+          "label": "c",
+          "choice": "It's fantastic that you're thinking about stepping into a leadership role in your community. When considering this opportunity, you might evaluate the potential for personal growth and the development of new skills. Think about how the role could enhance your confidence and decision-making abilities. While the stress and time commitments are important to consider, the enriching experience and networking opportunities that come with such roles could also be very rewarding. Let me know if you want to explore strategies on how to manage responsibilities effectively.",
+          "mean_nll": 1.9456914784956951,
+          "ppl": 6.998469352722168,
+          "n_target_tokens": 98
+        },
+        {
+          "label": "d",
+          "choice": "It's great that you're considering ways to contribute to your community. If you've found in the past that activities requiring significant collaborative effort and time commitments were stressful, you may want to reflect on whether this leadership role aligns with your personal working style and how much time and energy you're willing to dedicate. It's important to consider if leading a group may similarly impact your personal time and stress levels. Perhaps assessing the flexibility and independence within the role could help in your decision-making process. If you find independent work more fulfilling, maybe there are other ways to contribute that align better with your preferences. Let me know if you'd like to explore more options or have additional concerns.",
+          "mean_nll": 2.1252585148465806,
+          "ppl": 8.375061988830566,
+          "n_target_tokens": 138
+        }
+      ],
+      "wall_s": 1.2185826301574707
+    },
+    {
+      "global_idx": 1,
+      "persona_id": "14",
+      "question_id": "a30c10c5-145a-49b0-b3d5-1479bf3c6797",
+      "qtype_canonical": "suggest_new",
+      "topic": "musicRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "You might consider joining a diverse group for musical collaboration, where each member brings unique influences. It can lead to exciting discussions and exploration of different musical styles and techniques.",
+          "mean_nll": 2.495831734793527,
+          "ppl": 12.131819725036621,
+          "n_target_tokens": 35
+        },
+        {
+          "label": "b",
+          "choice": "I tried participating in online music collaborations, where musicians from around the world come together to create unique tracks. Each person brings a different style to the table, and the end result is often something truly special that none of us could have created alone. These virtual jam sessions help me learn about different cultures and musical influences, expanding my understanding and appreciation of global music. It's an awesome way to connect with like-minded individuals and share bits of my musical journey, while learning from theirs.",
+          "mean_nll": 2.0170247603435905,
+          "ppl": 7.515929698944092,
+          "n_target_tokens": 98
+        },
+        {
+          "label": "c",
+          "choice": "I've started a personal project where I compose short, themed soundtracks for everyday activities. Whether it's a morning routine, a walk in the park, or a cozy evening at home, I find inspiration in daily life and channel that into creating something melodic. This endeavor not only sharpens my composition skills but also allows me to capture fleeting moments in a musical format. It encourages me to view the world differently, paying attention to the details and translating those into sound, which has become a profound form of self-expression.",
+          "mean_nll": 1.9460424975814106,
+          "ppl": 7.000926971435547,
+          "n_target_tokens": 107
+        },
+        {
+          "label": "d",
+          "choice": "I recently started experimenting with creating my own musical mashups from different eras! By combining the melodies and rhythms of songs from various genres and decades, I've discovered new ways to infuse old classics with modern sounds. It's amazing how blending something familiar with a fresh twist not only brings a new vibe to a piece but also offers endless avenues for creativity. This process challenges me to think outside the box and explore uncharted territory, engaging deeper with the diverse musical landscape and enriching my personal expression.",
+          "mean_nll": 2.205489371586772,
+          "ppl": 9.074691772460938,
+          "n_target_tokens": 103
+        }
+      ],
+      "wall_s": 2.507477283477783
+    },
+    {
+      "global_idx": 2,
+      "persona_id": "14",
+      "question_id": "9161909e-12fd-45a3-8c83-c852490945f8",
+      "qtype_canonical": "suggest_new",
+      "topic": "musicRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "You might consider joining a diverse group for musical collaboration, where each member brings unique influences. It can lead to exciting discussions and exploration of different musical styles and techniques.",
+          "mean_nll": 2.495831734793527,
+          "ppl": 12.131819725036621,
+          "n_target_tokens": 35
+        },
+        {
+          "label": "b",
+          "choice": "I recently started experimenting with creating my own musical mashups from different eras! By combining the melodies and rhythms of songs from various genres and decades, I've discovered new ways to infuse old classics with modern sounds. It's amazing how blending something familiar with a fresh twist not only brings a new vibe to a piece but also offers endless avenues for creativity. This process challenges me to think outside the box and explore uncharted territory, engaging deeper with the diverse musical landscape and enriching my personal expression.",
+          "mean_nll": 2.205489371586772,
+          "ppl": 9.074691772460938,
+          "n_target_tokens": 103
+        },
+        {
+          "label": "c",
+          "choice": "I've started a personal project where I compose short, themed soundtracks for everyday activities. Whether it's a morning routine, a walk in the park, or a cozy evening at home, I find inspiration in daily life and channel that into creating something melodic. This endeavor not only sharpens my composition skills but also allows me to capture fleeting moments in a musical format. It encourages me to view the world differently, paying attention to the details and translating those into sound, which has become a profound form of self-expression.",
+          "mean_nll": 1.9460424975814106,
+          "ppl": 7.000926971435547,
+          "n_target_tokens": 107
+        },
+        {
+          "label": "d",
+          "choice": "I tried participating in online music collaborations, where musicians from around the world come together to create unique tracks. Each person brings a different style to the table, and the end result is often something truly special that none of us could have created alone. These virtual jam sessions help me learn about different cultures and musical influences, expanding my understanding and appreciation of global music. It's an awesome way to connect with like-minded individuals and share bits of my musical journey, while learning from theirs.",
+          "mean_nll": 2.0170247603435905,
+          "ppl": 7.515929698944092,
+          "n_target_tokens": 98
+        }
+      ],
+      "wall_s": 1.3399217128753662
+    },
+    {
+      "global_idx": 3,
+      "persona_id": "14",
+      "question_id": "4b742ee7-077d-4cce-9c27-51dfe81fcdc4",
+      "qtype_canonical": "aligned_rec",
+      "topic": "musicRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "How about diving into the atmospheric depths of 'In Rainbows' by Radiohead? The rich texture and warm undertones of this vinyl are perfect for an immersive listening experience. This album beautifully weaves through diverse genres, just like your cherished explorations at the record shop. As you sip your wine, let each crackle and pop from the vinyl envelop you in a world of melodious curiosity and nostalgic charm.",
+          "mean_nll": 2.6072617474724264,
+          "ppl": 13.56186294555664,
+          "n_target_tokens": 85
+        },
+        {
+          "label": "b",
+          "choice": "Consider embarking on an emotional journey with Adele's '21'. This well-crafted digital album is filled with soulful ballads and passionate vocal performances that resonate deeply, even when played on standard audio systems. The blend of heartfelt lyrics and powerful arrangements takes you through a spectrum of feelings akin to those invigorating conversations you cherish. While you relax at home, let the emotional swells and poignant melodies accompany your quiet reflections over a glass of wine.",
+          "mean_nll": 2.598858642578125,
+          "ppl": 13.448379516601562,
+          "n_target_tokens": 95
+        },
+        {
+          "label": "c",
+          "choice": "Why not escape into the vibrant and dynamic 'Random Access Memories' by Daft Punk? Its electronic beats and harmonic layering make for an energizing auditory trip, especially through high-quality headphones. This digital masterpiece brilliantly fuses elements of disco, funk, and pop, offering a crisp, futuristic sound that might remind you of late-night electronic explorations. As you enjoy your evening, let the precise beats and pulsating rhythms offer a thrilling contrast to your wine's silky smoothness.",
+          "mean_nll": 2.835619685625789,
+          "ppl": 17.040956497192383,
+          "n_target_tokens": 99
+        },
+        {
+          "label": "d",
+          "choice": "\"Why not lose yourself in the tropical rhythms of 'Songs of the Islands' by Alfred Apaka? This album showcases the vibrant melodies and traditional Pacific Islander sounds, infusing your evening with a sense of warmth and cultural richness. As the gentle hum of the ukulele mingles with your wine, it crafts a serene atmosphere, perfectly blending familiar tunes with the peaceful ambience of your cozy retreat.\"",
+          "mean_nll": 2.741752900272967,
+          "ppl": 15.514155387878418,
+          "n_target_tokens": 83
+        }
+      ],
+      "wall_s": 1.2854325771331787
+    },
+    {
+      "global_idx": 4,
+      "persona_id": "14",
+      "question_id": "f817828d-7bed-46a0-806b-2fd7cedfb7af",
+      "qtype_canonical": "recall_facts",
+      "topic": "movieRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I know you haven't been a fan of film festivals in the past. Let me know if there's anything specific you'd like to explore or discuss about them!",
+          "mean_nll": 1.5918875558035714,
+          "ppl": 4.913013935089111,
+          "n_target_tokens": 35
+        },
+        {
+          "label": "b",
+          "choice": "Film festivals are a great way to discover indie movies. Let me know if there's anything specific you'd like to explore or discuss about them!",
+          "mean_nll": 1.452760757938508,
+          "ppl": 4.274900436401367,
+          "n_target_tokens": 31
+        },
+        {
+          "label": "c",
+          "choice": "It sounds like you've enjoyed film festivals in the past. Let me know if there's anything specific you'd like to explore or discuss about them!",
+          "mean_nll": 1.5633598566055298,
+          "ppl": 4.774837017059326,
+          "n_target_tokens": 32
+        },
+        {
+          "label": "d",
+          "choice": "It sounds like you've enjoyed musical concerts in the past. Let me know if there's anything specific you'd like to explore or discuss about them!",
+          "mean_nll": 1.9450724124908447,
+          "ppl": 6.994138240814209,
+          "n_target_tokens": 32
+        }
+      ],
+      "wall_s": 0.2996199131011963
+    },
+    {
+      "global_idx": 5,
+      "persona_id": "14",
+      "question_id": "ef856a81-e777-416e-bb23-5c518aa0f73b",
+      "qtype_canonical": "recall_facts",
+      "topic": "musicRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Spending time flipping through vinyl records at a local record shop is a wonderful activity that can significantly enhance your appreciation for different music genres. It seems like you really enjoyed the nostalgic experience and the thrill of discovering new artists, much like finding long-lost treasures.",
+          "mean_nll": 2.3257217407226562,
+          "ppl": 10.234064102172852,
+          "n_target_tokens": 54
+        },
+        {
+          "label": "b",
+          "choice": "Reading biographies and watching documentaries of famous musicians from different genres can deepen your understanding of their creative process and historical context, much like opening a window into the diverse worlds that shaped their music.",
+          "mean_nll": 2.637071418762207,
+          "ppl": 13.972224235534668,
+          "n_target_tokens": 40
+        },
+        {
+          "label": "c",
+          "choice": "Joining a group dance class focused on various cultural dances immerses you in the rhythms and beats of different music genres, allowing your body to interface with the music as if you're learning a new language through movement.",
+          "mean_nll": 2.6085934846297554,
+          "ppl": 13.579936981201172,
+          "n_target_tokens": 46
+        },
+        {
+          "label": "d",
+          "choice": "Attending live rock concerts frequently is an enjoyable way to enhance appreciation for different music genres, allowing you to experience the energy and passion of performers up close, much like getting a taste of a different musical culture firsthand.",
+          "mean_nll": 2.5090152316623264,
+          "ppl": 12.29281997680664,
+          "n_target_tokens": 45
+        }
+      ],
+      "wall_s": 0.22663450241088867
+    },
+    {
+      "global_idx": 6,
+      "persona_id": "14",
+      "question_id": "df1778bf-bc0a-4679-ad94-914a13529242",
+      "qtype_canonical": "suggest_new",
+      "topic": "musicRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "How about visiting an outdoor food festival? You can enjoy gourmet snacks and a vibrant atmosphere while exploring different vendors.",
+          "mean_nll": 2.671624183654785,
+          "ppl": 14.463441848754883,
+          "n_target_tokens": 24
+        },
+        {
+          "label": "b",
+          "choice": "How about organizing a themed outdoor picnic where you and your friends can curate playlists that set the mood for a relaxing day under the sun? Pick a beautiful spot in nature, pack a variety of delicious homemade dishes, and bring a speaker to enjoy your favorite tunes. Much like creating a soundtrack to your weekend, the combination of the serene surroundings, tasty bites, and thoughtfully selected music can make for a truly memorable experience. Whether you choose a laid-back acoustic vibe or something more upbeat, linking the music to the setting and food can evoke different emotions and memories, turning a simple picnic into a delightful retreat.",
+          "mean_nll": 2.178589359406502,
+          "ppl": 8.83383560180664,
+          "n_target_tokens": 124
+        },
+        {
+          "label": "c",
+          "choice": "Consider trying an outdoor cooking class or a community farm-to-table event. These experiences allow you to immerse yourself in nature, learn new culinary skills, and enjoy fresh, locally sourced food. Being outside, surrounded by the beauty of the natural world, while engaging in a shared learning experience can provide a sense of connection and fulfillment. It's not just about eating well but also gaining appreciation for where your food comes from and the effort that goes into preparing it. The combination of outdoor learning and savoring the outcome can serve as a refreshing break from your daily routine.",
+          "mean_nll": 1.6150857333479256,
+          "ppl": 5.028318881988525,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "d",
+          "choice": "If you're looking for something a bit different, why not embark on a weekend food adventure with a twist? Create a treasure hunt or a scavenger hunt focusing on local eateries and scenic spots. Plan your route around town or through the countryside, stopping at unique cafes, farmers' markets, or food trucks along the way. The excitement of the hunt, the camaraderie with friends or family, and the opportunity to sample a variety of delicious foods will make for a unique and engaging weekend activity. Plus, being outdoors allows you to appreciate both the culinary and natural landscapes around you.",
+          "mean_nll": 1.7036786397298178,
+          "ppl": 5.494121074676514,
+          "n_target_tokens": 120
+        }
+      ],
+      "wall_s": 0.334735631942749
+    },
+    {
+      "global_idx": 7,
+      "persona_id": "14",
+      "question_id": "0439324c-7152-40fd-9092-1fb29983bcf3",
+      "qtype_canonical": "track_evolution",
+      "topic": "musicRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I see that your appreciation for music documentaries has evolved over time. Initially, you liked them, then there was a period where you liked them even more, but recently your interest has returned, possibly due to joining a film club that enriches your understanding and appreciation of this genre. It's great to see how your preferences have changed and how your engagement with music documentaries has deepened over time.",
+          "mean_nll": 1.9291167082609955,
+          "ppl": 6.883427619934082,
+          "n_target_tokens": 81
+        },
+        {
+          "label": "b",
+          "choice": "I see that your appreciation for music documentaries has evolved over time. Initially, you liked them, then there was a period where you disliked them, but recently your interest has returned, possibly due to joining a film club that enriches your understanding and appreciation of this genre. It's great to see how your preferences have changed and how your engagement with music documentaries has deepened over time.",
+          "mean_nll": 1.8124689029741892,
+          "ppl": 6.125552177429199,
+          "n_target_tokens": 79
+        },
+        {
+          "label": "c",
+          "choice": "I see that your appreciation for music documentaries has evolved over time. Initially, you disliked them, then there was a period where you liked them, but recently your interest has returned, possibly due to joining a film club that enriches your understanding and appreciation of this genre. It's great to see how your preferences have changed and how your engagement with music documentaries has deepened over time.",
+          "mean_nll": 1.9399529952037184,
+          "ppl": 6.958423614501953,
+          "n_target_tokens": 79
+        },
+        {
+          "label": "d",
+          "choice": "I see that your appreciation for music documentaries has evolved over time. Initially, you disliked them, then there was a period where you disliked them more, but recently your interest has returned, possibly due to joining a film club that enriches your understanding and appreciation of this genre. It's great to see how your preferences have changed and how your engagement with music documentaries has deepened over time.",
+          "mean_nll": 1.9753368377685547,
+          "ppl": 7.209047317504883,
+          "n_target_tokens": 80
+        }
+      ],
+      "wall_s": 0.21813368797302246
+    },
+    {
+      "global_idx": 8,
+      "persona_id": "14",
+      "question_id": "ced344f8-d07a-458f-bebe-131e8e7a6b88",
+      "qtype_canonical": "aligned_rec",
+      "topic": "studyConsultation",
+      "correct_answer": "d",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Why not escape into nature and plan an adventurous weekend hiking trip with some friends? Embrace the opportunity to disconnect from daily routines, explore new trails, and enjoy the beauty of the wilderness. It's a great way to clear your mind and bond with others over shared experiences and the challenges of the great outdoors. Plus, you get to bask in the joy of reaching new heights, both literally and figuratively. Trust me, this refreshing break from the norm is perfect for recharging and sharing memorable moments!",
+          "mean_nll": 2.003995432437045,
+          "ppl": 7.418637275695801,
+          "n_target_tokens": 103
+        },
+        {
+          "label": "b",
+          "choice": "I'm sorry, I can't comply with that request.",
+          "mean_nll": 1.8550259726388114,
+          "ppl": 6.39186429977417,
+          "n_target_tokens": 14
+        },
+        {
+          "label": "c",
+          "choice": "Consider hosting a culinary weekend where you bring together some food enthusiasts to explore exotic cuisines. You can take turns showcasing unique recipes from different cultures, cooking together in a relaxed and fun atmosphere. Introduce a 'recipe swap' session where everyone gets to share their favorite dishes and cooking secrets. It will not only deepen your appreciation for diverse flavors but also strengthen social bonds as you savor delightful meals together. Trust me, it's a delicious way to connect with others and expand your palate!",
+          "mean_nll": 2.2014065551757813,
+          "ppl": 9.037715911865234,
+          "n_target_tokens": 100
+        },
+        {
+          "label": "d",
+          "choice": "How about organizing an interdisciplinary study retreat? Gather a small group of intellectually curious friends and dive into explorations of various subjects, from philosophy to physics. You can create themed discussion tables where each participant brings their unique insights. To make it more fun, set up a ‘brainstorming hour’ where you collectively tackle intriguing questions or global puzzles. This way, you'll not only enhance your understanding but also cultivate a lively and collaborative atmosphere. Trust me, it's the perfect way to spend a weekend, intellectually refreshing and socially engaging!",
+          "mean_nll": 2.3113614703537126,
+          "ppl": 10.088150978088379,
+          "n_target_tokens": 109
+        }
+      ],
+      "wall_s": 0.4026980400085449
+    },
+    {
+      "global_idx": 9,
+      "persona_id": "14",
+      "question_id": "3e9b1cc4-dfde-413b-8966-85308430fc5d",
+      "qtype_canonical": "reasons_behind",
+      "topic": "musicRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's wonderful to hear that you're diving back into discovering new artists, especially in the indie genre! Your excitement about connecting with fresh sounds and perspectives is palpable. It’s interesting to see how your experiences in that online community have helped reignite your passion, especially after previously preferring familiarity due to feeling overwhelmed by the volume of new music available. Embracing the unique lenses that these artists provide can truly enhance your appreciation for the evolving indie scene.",
+          "mean_nll": 2.2457477200415825,
+          "ppl": 9.447477340698242,
+          "n_target_tokens": 93
+        },
+        {
+          "label": "b",
+          "choice": "I'm thrilled to know that you're exploring new artists in the indie genre! It's impressive how you’re drawing inspiration from various platforms and playlists. Your inclination to discover new music has undoubtedly been influenced by your curiosity and desire to expand your listening horizons, although it's understandable that you strayed from indie previously while navigating the complexities of mainstream music.",
+          "mean_nll": 2.68967176463506,
+          "ppl": 14.72684097290039,
+          "n_target_tokens": 73
+        },
+        {
+          "label": "c",
+          "choice": "It's great that you’re venturing into the indie music scene! Your connection with these artists can bring such fresh energy and creativity to your playlists. While it’s important to explore new sounds, it’s understandable that your previous preference leaned towards the pop genre where the catchy, familiar hooks were more appealing. Shifting your focus can really broaden your artistic horizons in unexpected ways.",
+          "mean_nll": 2.4455550756209936,
+          "ppl": 11.536951065063477,
+          "n_target_tokens": 78
+        },
+        {
+          "label": "d",
+          "choice": "It's fantastic to hear that you're embracing the warmth of familiar sounds! Your appreciation for the indie genre shines through, especially as you've enjoyed revisiting favorite artists recently. The community you engage with has surely provided insights to help affirm those preferences, which can be quite comforting amidst a sea of new releases. It's great how this blend of familiarity and personal connections enhances your listening experience.",
+          "mean_nll": 2.568879318237305,
+          "ppl": 13.051191329956055,
+          "n_target_tokens": 80
+        }
+      ],
+      "wall_s": 0.2488546371459961
+    },
+    {
+      "global_idx": 10,
+      "persona_id": "14",
+      "question_id": "932a77e4-2654-415b-9692-32d527ecb10e",
+      "qtype_canonical": "track_evolution",
+      "topic": "musicRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "c",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I see that your preferences for music festivals have evolved over time. Initially, you found attending them overwhelming, but recently, after experiencing a smaller and more intimate festival, you've found enjoyment in the spontaneity and connection offered in such settings. It's interesting how you've transitioned from not liking festivals to appreciating the unique and personal touches of smaller events.",
+          "mean_nll": 2.1917854817708333,
+          "ppl": 8.951181411743164,
+          "n_target_tokens": 75
+        },
+        {
+          "label": "b",
+          "choice": "I see that your preferences for music festivals have evolved over time. Initially, you enjoyed attending them, but recently, after experiencing a smaller and more intimate festival, you've found enjoyment in the spontaneity and connection offered in such settings. It's interesting how you've transitioned from finding larger festivals overwhelming to appreciating the unique and personal touches of smaller events.",
+          "mean_nll": 2.0626204427083334,
+          "ppl": 7.866556167602539,
+          "n_target_tokens": 75
+        },
+        {
+          "label": "c",
+          "choice": "I see that your preferences for music festivals have evolved over time. Initially, you disliked attending them, but recently, after experiencing a smaller and more intimate festival, you've found enjoyment in the spontaneity and connection offered in such settings. It's interesting how you've transitioned from finding larger festivals overwhelming to appreciating the unique and personal touches of smaller events.",
+          "mean_nll": 1.994620361328125,
+          "ppl": 7.349411964416504,
+          "n_target_tokens": 75
+        },
+        {
+          "label": "d",
+          "choice": "I see that your preferences for music festivals have evolved over time. Initially, you didn't mention attending them, but recently, after experiencing a smaller and more intimate festival, you've found enjoyment in the spontaneity and connection offered in such settings. It's interesting how you've transitioned from being hesitant to appreciating the unique and personal touches of smaller events.",
+          "mean_nll": 2.154801432291667,
+          "ppl": 8.626176834106445,
+          "n_target_tokens": 75
+        }
+      ],
+      "wall_s": 0.19973325729370117
+    },
+    {
+      "global_idx": 11,
+      "persona_id": "14",
+      "question_id": "f6cb61c7-b41d-4c26-8100-f0de3451cae4",
+      "qtype_canonical": "aligned_rec",
+      "topic": "musicRecommendation",
+      "correct_answer": "d",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "\"Why not lose yourself in the tropical rhythms of 'Songs of the Islands' by Alfred Apaka? This album showcases the vibrant melodies and traditional Pacific Islander sounds, infusing your evening with a sense of warmth and cultural richness. As the gentle hum of the ukulele mingles with your wine, it crafts a serene atmosphere, perfectly blending familiar tunes with the peaceful ambience of your cozy retreat.\"",
+          "mean_nll": 2.741752900272967,
+          "ppl": 15.514155387878418,
+          "n_target_tokens": 83
+        },
+        {
+          "label": "b",
+          "choice": "Why not escape into the vibrant and dynamic 'Random Access Memories' by Daft Punk? Its electronic beats and harmonic layering make for an energizing auditory trip, especially through high-quality headphones. This digital masterpiece brilliantly fuses elements of disco, funk, and pop, offering a crisp, futuristic sound that might remind you of late-night electronic explorations. As you enjoy your evening, let the precise beats and pulsating rhythms offer a thrilling contrast to your wine's silky smoothness.",
+          "mean_nll": 2.835619685625789,
+          "ppl": 17.040956497192383,
+          "n_target_tokens": 99
+        },
+        {
+          "label": "c",
+          "choice": "Consider embarking on an emotional journey with Adele's '21'. This well-crafted digital album is filled with soulful ballads and passionate vocal performances that resonate deeply, even when played on standard audio systems. The blend of heartfelt lyrics and powerful arrangements takes you through a spectrum of feelings akin to those invigorating conversations you cherish. While you relax at home, let the emotional swells and poignant melodies accompany your quiet reflections over a glass of wine.",
+          "mean_nll": 2.598858642578125,
+          "ppl": 13.448379516601562,
+          "n_target_tokens": 95
+        },
+        {
+          "label": "d",
+          "choice": "How about diving into the atmospheric depths of 'In Rainbows' by Radiohead? The rich texture and warm undertones of this vinyl are perfect for an immersive listening experience. This album beautifully weaves through diverse genres, just like your cherished explorations at the record shop. As you sip your wine, let each crackle and pop from the vinyl envelop you in a world of melodious curiosity and nostalgic charm.",
+          "mean_nll": 2.6072617474724264,
+          "ppl": 13.56186294555664,
+          "n_target_tokens": 85
+        }
+      ],
+      "wall_s": 0.18940353393554688
+    },
+    {
+      "global_idx": 12,
+      "persona_id": "14",
+      "question_id": "e86a1aad-0117-4021-9c68-f923f4111d5f",
+      "qtype_canonical": "reasons_behind",
+      "topic": "musicRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's great to hear that you're considering writing music reviews again! Remember, it's normal to feel apprehensive after experiencing discouragement, especially regarding feedback. Reflecting on your previous decision, it’s important to prioritize your enjoyment of music while exploring this hobby. You might find a balance between sharing your thoughts and keeping the joy of music at the forefront.",
+          "mean_nll": 2.0147317422402873,
+          "ppl": 7.498714923858643,
+          "n_target_tokens": 74
+        },
+        {
+          "label": "b",
+          "choice": "I'm glad to hear you're contemplating writing music reviews again! It's important to remember that everyone faces challenges in creative endeavors. Reflecting on how others have successfully navigated feedback could inspire you to approach your writing with renewed confidence and creativity, without worrying too much about the opinions of others.",
+          "mean_nll": 1.9610496896212217,
+          "ppl": 7.106782913208008,
+          "n_target_tokens": 61
+        },
+        {
+          "label": "c",
+          "choice": "It's exciting that you're considering writing music reviews again! Remember that taking creative risks can lead to personal growth. Instead of focusing on the struggles you faced previously, perhaps you can channel your experiences into encouraging others and uplifting the music community, which might bring you joy.",
+          "mean_nll": 2.029908997671945,
+          "ppl": 7.6133928298950195,
+          "n_target_tokens": 56
+        },
+        {
+          "label": "d",
+          "choice": "It's wonderful to hear that you're thinking about writing music reviews again! It's key to recognize the positive feedback you've received in the past and use it as motivation. Focusing on your enthusiasm for sharing music will help you re-engage with this passion and enjoy the process of writing while connecting with others.",
+          "mean_nll": 1.800186509352464,
+          "ppl": 6.05077600479126,
+          "n_target_tokens": 65
+        }
+      ],
+      "wall_s": 0.2281949520111084
+    },
+    {
+      "global_idx": 13,
+      "persona_id": "14",
+      "question_id": "7b638718-497e-46e4-ae40-26ab3b77ff03",
+      "qtype_canonical": "track_evolution",
+      "topic": "musicRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I see that your journey with musical instruments has evolved significantly! Initially, you were eager to learn to play a musical instrument. However, as time passed, your interest declined until you discovered the joy of playing the ukulele, which introduced you to a new dimension of musical expression. This newfound passion led you to explore further by starting piano lessons. It’s wonderful to witness how your perspective shifted from an initial eagerness to a more profound commitment to mastering an instrument, with each step deepening your creative exploration.",
+          "mean_nll": 1.957792736235119,
+          "ppl": 7.083674430847168,
+          "n_target_tokens": 105
+        },
+        {
+          "label": "b",
+          "choice": "I see that your journey with musical instruments has evolved significantly! Initially, you weren’t fond of the idea of learning to play a musical instrument. However, as time passed, your interest took a turn when you discovered the joy of playing the ukulele, which introduced you to a new dimension of musical expression. This newfound passion led you to explore further by starting piano lessons. It’s wonderful to witness how your perspective shifted from disliking the idea of learning an instrument to embracing it wholeheartedly, with each step deepening your creative exploration.",
+          "mean_nll": 1.6389736749429618,
+          "ppl": 5.149881362915039,
+          "n_target_tokens": 113
+        },
+        {
+          "label": "c",
+          "choice": "I see that your journey with musical instruments has evolved significantly! Initially, you were quite enthusiastic about learning to play a musical instrument. However, as time passed, your enthusiasm waned until you discovered the joy of playing the ukulele, which introduced you to a new dimension of musical expression. This newfound passion led you to explore further by starting piano lessons. It’s wonderful to witness how your perspective shifted from initial enthusiasm to a rejuvenated passion, with each step deepening your creative exploration.",
+          "mean_nll": 2.00072184647664,
+          "ppl": 7.394392490386963,
+          "n_target_tokens": 101
+        },
+        {
+          "label": "d",
+          "choice": "I see that your journey with musical instruments has evolved significantly! Initially, you were indifferent to the idea of learning to play a musical instrument. However, as time passed, your interest grew when you discovered the joy of playing the guitar, which introduced you to a new dimension of musical expression. This newfound passion led you to explore further by starting piano lessons. It’s wonderful to witness how your perspective shifted from initial indifference to embracing musical expression, with each step deepening your creative exploration.",
+          "mean_nll": 1.9864760890151516,
+          "ppl": 7.289799690246582,
+          "n_target_tokens": 99
+        }
+      ],
+      "wall_s": 0.21651721000671387
+    },
+    {
+      "global_idx": 14,
+      "persona_id": "14",
+      "question_id": "e3ee6ae7-78c2-4ad4-b0f0-37fcec17cd7e",
+      "qtype_canonical": "track_evolution",
+      "topic": "musicRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's wonderful to hear about your renewed excitement for discovering new artists, especially in the indie genre. It's clear that your journey with music has been dynamic, flowing from an enjoyment of live concerts to a period where you weren't as interested in exploring new artists. Now, you have come full circle, embracing the thrill of new musical discoveries once again. Your engagement with the online community further enriches this experience, demonstrating how your preferences have evolved and deepened over time.",
+          "mean_nll": 1.9213974156330542,
+          "ppl": 6.830496788024902,
+          "n_target_tokens": 97
+        },
+        {
+          "label": "b",
+          "choice": "It's wonderful to hear about your renewed excitement for discovering new artists, especially in the indie genre. It's clear that your journey with music has been dynamic, moving from a love of pop charts to a period where you weren't as interested in live concerts. Now, you have come full circle, embracing the thrill of new musical discoveries once again. Your engagement with the online community further enriches this experience, demonstrating how your preferences have evolved and deepened over time.",
+          "mean_nll": 2.1057518323262534,
+          "ppl": 8.213274955749512,
+          "n_target_tokens": 96
+        },
+        {
+          "label": "c",
+          "choice": "It's wonderful to hear about your renewed excitement for discovering new artists, especially in the indie genre. It's clear that your journey with music has developed with a focus on classical genres before shifting to a period where you weren't as interested in exploring new artists. Now, you have come full circle, embracing the thrill of new musical discoveries once again. Your engagement with the online community further enriches this experience, demonstrating how your preferences have evolved and deepened over time.",
+          "mean_nll": 2.1652282079060874,
+          "ppl": 8.71658992767334,
+          "n_target_tokens": 96
+        },
+        {
+          "label": "d",
+          "choice": "It's wonderful to hear about your renewed excitement for discovering new artists, especially in the indie genre. It's clear that your journey with music initially centered on streaming services before a period where you weren't as interested in exploring new artists. Now, you have come full circle, embracing the thrill of new musical discoveries once again. Your engagement with the online community further enriches this experience, demonstrating how your preferences have evolved and deepened over time.",
+          "mean_nll": 2.0904725462525757,
+          "ppl": 8.088735580444336,
+          "n_target_tokens": 91
+        }
+      ],
+      "wall_s": 0.23179411888122559
+    },
+    {
+      "global_idx": 15,
+      "persona_id": "14",
+      "question_id": "8d52f6de-0bc5-4cac-8873-ca57060186b3",
+      "qtype_canonical": "recall_facts",
+      "topic": "studyConsultation",
+      "correct_answer": "d",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I remember you don't usually enjoy study groups, but it's good that you're making an effort with your exam preparations. Hang in there!",
+          "mean_nll": 2.1614793346774195,
+          "ppl": 8.68397331237793,
+          "n_target_tokens": 31
+        },
+        {
+          "label": "b",
+          "choice": "I remember you love organizing outdoor adventures! It's interesting that you're now focusing on exam prep. Keep exploring new ways to study!",
+          "mean_nll": 3.00506644413389,
+          "ppl": 20.187557220458984,
+          "n_target_tokens": 29
+        },
+        {
+          "label": "c",
+          "choice": "I see that you had another study session. It's great to see you engaging in preparation for your exams. Best of luck!",
+          "mean_nll": 1.5472830363682337,
+          "ppl": 4.698686599731445,
+          "n_target_tokens": 28
+        },
+        {
+          "label": "d",
+          "choice": "I remember you like organizing study groups! It's great that you're finding ways to tackle those exam preparations. Keep it up!",
+          "mean_nll": 2.4817701067243303,
+          "ppl": 11.962419509887695,
+          "n_target_tokens": 28
+        }
+      ],
+      "wall_s": 0.24944472312927246
+    },
+    {
+      "global_idx": 16,
+      "persona_id": "14",
+      "question_id": "af67ab1b-1701-4313-95dd-184ee080fca1",
+      "qtype_canonical": "suggest_new",
+      "topic": "musicRecommendation",
+      "correct_answer": "d",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "How about organizing a themed outdoor picnic where you and your friends can curate playlists that set the mood for a relaxing day under the sun? Pick a beautiful spot in nature, pack a variety of delicious homemade dishes, and bring a speaker to enjoy your favorite tunes. Much like creating a soundtrack to your weekend, the combination of the serene surroundings, tasty bites, and thoughtfully selected music can make for a truly memorable experience. Whether you choose a laid-back acoustic vibe or something more upbeat, linking the music to the setting and food can evoke different emotions and memories, turning a simple picnic into a delightful retreat.",
+          "mean_nll": 2.178589359406502,
+          "ppl": 8.83383560180664,
+          "n_target_tokens": 124
+        },
+        {
+          "label": "b",
+          "choice": "Consider trying an outdoor cooking class or a community farm-to-table event. These experiences allow you to immerse yourself in nature, learn new culinary skills, and enjoy fresh, locally sourced food. Being outside, surrounded by the beauty of the natural world, while engaging in a shared learning experience can provide a sense of connection and fulfillment. It's not just about eating well but also gaining appreciation for where your food comes from and the effort that goes into preparing it. The combination of outdoor learning and savoring the outcome can serve as a refreshing break from your daily routine.",
+          "mean_nll": 1.6150857333479256,
+          "ppl": 5.028318881988525,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "c",
+          "choice": "If you're looking for something a bit different, why not embark on a weekend food adventure with a twist? Create a treasure hunt or a scavenger hunt focusing on local eateries and scenic spots. Plan your route around town or through the countryside, stopping at unique cafes, farmers' markets, or food trucks along the way. The excitement of the hunt, the camaraderie with friends or family, and the opportunity to sample a variety of delicious foods will make for a unique and engaging weekend activity. Plus, being outdoors allows you to appreciate both the culinary and natural landscapes around you.",
+          "mean_nll": 1.7036786397298178,
+          "ppl": 5.494121074676514,
+          "n_target_tokens": 120
+        },
+        {
+          "label": "d",
+          "choice": "How about visiting an outdoor food festival? You can enjoy gourmet snacks and a vibrant atmosphere while exploring different vendors.",
+          "mean_nll": 2.671624183654785,
+          "ppl": 14.463441848754883,
+          "n_target_tokens": 24
+        }
+      ],
+      "wall_s": 0.2083418369293213
+    },
+    {
+      "global_idx": 17,
+      "persona_id": "14",
+      "question_id": "7cb7b1c0-4a29-4ab3-9f38-e41243ec50dd",
+      "qtype_canonical": "suggest_new",
+      "topic": "musicRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Exploring virtual reality concerts is another captivating way to immerse yourself in music without the need for large crowds. I've been attending these digital events that transport me into a unique concert experience, often even more visually stunning than their physical counterparts. It's a way to feel close to the live performance atmosphere, complete with dynamic soundscapes and artist interactions from the comfort of your home. It’s become an exciting blend of technology and art, offering a fresh way to enjoy music.",
+          "mean_nll": 2.0562270806760203,
+          "ppl": 7.816422462463379,
+          "n_target_tokens": 98
+        },
+        {
+          "label": "b",
+          "choice": "Considering your preference for avoiding overwhelming environments, perhaps exploring online music streaming platforms or attending virtual concerts could be enjoyable. They allow you to experience live music from the comfort of your home.",
+          "mean_nll": 1.9022594251130756,
+          "ppl": 6.701018333435059,
+          "n_target_tokens": 38
+        },
+        {
+          "label": "c",
+          "choice": "I recently began diving into music production and learning to create my own tracks. Exploring digital music tools and synthesizers has opened up a new world of creativity for me. There’s so much satisfaction in crafting a melody or beat that feels truly personal. Online forums and video tutorials have made this journey enjoyable, and it's fantastic observing my progress as I tweak sounds and delve into new styles. If you have an interest in the technical side of music, this could be a rewarding way to engage with music on a deeper level.",
+          "mean_nll": 2.106223560939325,
+          "ppl": 8.217151641845703,
+          "n_target_tokens": 107
+        },
+        {
+          "label": "d",
+          "choice": "Have you considered starting a personal podcast where you explore different music genres or themes? It could be an exciting journey into sound, and you'll have the creative freedom to dissect albums, eras, or cultural impacts of music at your own pace. It's a great way to engage with music on a deeper level, offering insightful commentary that might resonate with listeners who share your interests. Plus, connecting with guest speakers or fellow enthusiasts can offer fresh perspectives, ultimately enriching your musical journey without the need for large gatherings.",
+          "mean_nll": 2.011453683035714,
+          "ppl": 7.4741740226745605,
+          "n_target_tokens": 105
+        }
+      ],
+      "wall_s": 0.20798015594482422
+    },
+    {
+      "global_idx": 18,
+      "persona_id": "14",
+      "question_id": "8775476d-8b8a-4534-98c7-88c34da48b64",
+      "qtype_canonical": "reasons_behind",
+      "topic": "musicRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's wonderful to hear that you've taken such a big step forward by starting piano lessons! Your journey with the ukulele and the joy you found in those earlier classes clearly sparked a desire to explore deeper musical expressions. It's fascinating how the experiences you had with the ukulele, and the creativity it unlocked within you, have motivated you to take on the challenges of the piano. This next step seems like a natural progression in your musical journey, and I can see how excited you are to expand your composition skills. Your earlier reason for embracing learning a musical instrument has beautifully paved the way for this new adventure.",
+          "mean_nll": 1.8547291192482775,
+          "ppl": 6.389967441558838,
+          "n_target_tokens": 127
+        },
+        {
+          "label": "b",
+          "choice": "I'm thrilled to learn that you've embarked on piano lessons! Your previous interest in drums highlighted your passion for rhythm and beat, which might have energized your decision to explore the piano. Transitioning to this new instrument opens up wonderful possibilities for you to delve deeper into music theory and composition, and it's clear you're ready to take this exciting step forward.",
+          "mean_nll": 2.018499755859375,
+          "ppl": 7.527024745941162,
+          "n_target_tokens": 75
+        },
+        {
+          "label": "c",
+          "choice": "It's wonderful that you've started piano lessons! Your prior work with the flute showcased your interest in melodic structure, encouraging this next phase of your musical journey. Exploring different instruments can only strengthen your skills and creativity. It's delightful to see your enthusiasm for expanding your musical horizons, and I can't wait to hear all about it!",
+          "mean_nll": 2.395220014784071,
+          "ppl": 10.970611572265625,
+          "n_target_tokens": 72
+        },
+        {
+          "label": "d",
+          "choice": "It's great to hear that you're diving into piano lessons! Your earlier experiences with the guitar and the confidence it gave you certainly indicate a strong musical inclination. It's impressive how your enjoyment of playing the guitar has led you to take on the complexities of the piano. This move seems to be a fantastic opportunity for you to further develop your artistic side, and your eagerness to enhance your skills is truly inspiring.",
+          "mean_nll": 2.088266529756434,
+          "ppl": 8.070913314819336,
+          "n_target_tokens": 85
+        }
+      ],
+      "wall_s": 0.29344606399536133
+    },
+    {
+      "global_idx": 19,
+      "persona_id": "14",
+      "question_id": "a0a864d0-1262-48b9-a77f-956e2bffd761",
+      "qtype_canonical": "reasons_behind",
+      "topic": "musicRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I'm thrilled to learn about your involvement in a film club centered on music documentaries! Your enthusiasm for communal exploration of artistic expression is inspiring. This new direction appears to echo your broader interest in multimedia works, which can enhance your appreciation for visual storytelling. Collaborating with like-minded individuals can lead to insightful discussions that deepen your connection to the material.",
+          "mean_nll": 2.2090535768320865,
+          "ppl": 9.10709285736084,
+          "n_target_tokens": 71
+        },
+        {
+          "label": "b",
+          "choice": "It's great to hear that you've joined a film club focusing on music documentaries! Your desire to gain a deeper understanding of music storytelling is a wonderful motivation. It’s interesting to see how this aligns with your earlier experience of being inspired by a compelling documentary. That previous shift in your perspective really highlighted how music documentaries can connect to personal experiences and emotions, much like your latest insights. You seem to have found a community that shares your passion, enriching your appreciation for the sociocultural contexts that shape the artists' journeys. It sounds like a fulfilling venture!",
+          "mean_nll": 1.9662805754562904,
+          "ppl": 7.144055366516113,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "c",
+          "choice": "It's wonderful to hear that you've joined a film club dedicated to music documentaries! Your quest for knowledge about the art of filmmaking is commendable. It seems like this new initiative is tied to your earlier love for narrative structures in cinema, which can offer a fresh lens to appreciate various storytelling techniques. Engaging with others who share your interests may elevate your understanding of different cultural influences.",
+          "mean_nll": 2.3106943130493165,
+          "ppl": 10.0814208984375,
+          "n_target_tokens": 80
+        },
+        {
+          "label": "d",
+          "choice": "It's great to hear that you've joined a film club focusing on music documentaries! Your desire to explore new genres is quite admirable. It's fascinating how this reflects your ongoing journey in discovering different artistic forms. Finding a community that shares your interests can really enhance your overall experience and spark new ideas. Embracing diverse perspectives will undoubtedly lead to a richer appreciation for storytelling in film!",
+          "mean_nll": 1.9083458622799645,
+          "ppl": 6.741927146911621,
+          "n_target_tokens": 79
+        }
+      ],
+      "wall_s": 0.397655725479126
+    },
+    {
+      "global_idx": 20,
+      "persona_id": "14",
+      "question_id": "c0af6d57-9c9e-4c7a-ab49-58694a315162",
+      "qtype_canonical": "recall_facts",
+      "topic": "musicRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "c",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Attending live rock concerts frequently is an enjoyable way to enhance appreciation for different music genres, allowing you to experience the energy and passion of performers up close, much like getting a taste of a different musical culture firsthand.",
+          "mean_nll": 2.5090152316623264,
+          "ppl": 12.29281997680664,
+          "n_target_tokens": 45
+        },
+        {
+          "label": "b",
+          "choice": "Joining a group dance class focused on various cultural dances immerses you in the rhythms and beats of different music genres, allowing your body to interface with the music as if you're learning a new language through movement.",
+          "mean_nll": 2.6085934846297554,
+          "ppl": 13.579936981201172,
+          "n_target_tokens": 46
+        },
+        {
+          "label": "c",
+          "choice": "Spending time flipping through vinyl records at a local record shop is a wonderful activity that can significantly enhance your appreciation for different music genres. It seems like you really enjoyed the nostalgic experience and the thrill of discovering new artists, much like finding long-lost treasures.",
+          "mean_nll": 2.3257217407226562,
+          "ppl": 10.234064102172852,
+          "n_target_tokens": 54
+        },
+        {
+          "label": "d",
+          "choice": "Reading biographies and watching documentaries of famous musicians from different genres can deepen your understanding of their creative process and historical context, much like opening a window into the diverse worlds that shaped their music.",
+          "mean_nll": 2.637071418762207,
+          "ppl": 13.972224235534668,
+          "n_target_tokens": 40
+        }
+      ],
+      "wall_s": 0.22604084014892578
+    },
+    {
+      "global_idx": 21,
+      "persona_id": "14",
+      "question_id": "b6ce6468-a569-437b-a5c2-b3d9575c9763",
+      "qtype_canonical": "generalize",
+      "topic": "musicRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Taking a leadership role is an admirable pursuit and a great way to give back to the community. As you evaluate this opportunity, it's crucial to weigh the potential impact on your work-life balance and financial resources. Consider how this role might help you build new connections and strengthen your community. Although personal stress isn't mentioned directly here, maintaining a healthy balance will surely be key to enjoying this new experience fully. If you'd like more insights into managing community roles, I'd be happy to help.",
+          "mean_nll": 2.4053518465249843,
+          "ppl": 11.082328796386719,
+          "n_target_tokens": 101
+        },
+        {
+          "label": "b",
+          "choice": "It's great that you're considering ways to contribute to your community. If you've found in the past that activities requiring significant collaborative effort and time commitments were stressful, you may want to reflect on whether this leadership role aligns with your personal working style and how much time and energy you're willing to dedicate. It's important to consider if leading a group may similarly impact your personal time and stress levels. Perhaps assessing the flexibility and independence within the role could help in your decision-making process. If you find independent work more fulfilling, maybe there are other ways to contribute that align better with your preferences. Let me know if you'd like to explore more options or have additional concerns.",
+          "mean_nll": 2.1252585148465806,
+          "ppl": 8.375061988830566,
+          "n_target_tokens": 138
+        },
+        {
+          "label": "c",
+          "choice": "It's fantastic that you're thinking about stepping into a leadership role in your community. When considering this opportunity, you might evaluate the potential for personal growth and the development of new skills. Think about how the role could enhance your confidence and decision-making abilities. While the stress and time commitments are important to consider, the enriching experience and networking opportunities that come with such roles could also be very rewarding. Let me know if you want to explore strategies on how to manage responsibilities effectively.",
+          "mean_nll": 1.9456914784956951,
+          "ppl": 6.998469352722168,
+          "n_target_tokens": 98
+        },
+        {
+          "label": "d",
+          "choice": "It's wonderful to see you're interested in a leadership role within a community group. Reflect on this opportunity by thinking about your goals for personal growth and the skills you aim to develop. Leadership can sometimes be time-consuming and demanding, but it also can provide substantial personal and professional rewards. You might think about the skills you will gain and the impact you could have. Assessing these benefits and challenges should help you make a more informed decision. Let me know if you want to explore these ideas further.",
+          "mean_nll": 2.026367037904029,
+          "ppl": 7.586474418640137,
+          "n_target_tokens": 102
+        }
+      ],
+      "wall_s": 0.22060894966125488
+    },
+    {
+      "global_idx": 22,
+      "persona_id": "14",
+      "question_id": "aae3e12c-fce9-4a8b-bb43-3623b2c2e1e3",
+      "qtype_canonical": "reasons_behind",
+      "topic": "musicRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I understand that you’re feeling overwhelmed now, even after enjoying that intimate festival with your friend. It’s completely normal to have mixed feelings, especially about something that once felt so personal and engaging. If you ever want to talk about what specifically makes you feel uncomfortable or explore different types of events, I'm here to help.",
+          "mean_nll": 2.4603066515566696,
+          "ppl": 11.70840072631836,
+          "n_target_tokens": 67
+        },
+        {
+          "label": "b",
+          "choice": "I can see you're excited about planning more social gatherings with your family. It's great to have such a strong connection with them. If you want to discuss different types of events or how to make those gatherings even more enjoyable, I'm here to help.",
+          "mean_nll": 1.8905328821252894,
+          "ppl": 6.622896671295166,
+          "n_target_tokens": 54
+        },
+        {
+          "label": "c",
+          "choice": "I recognize that you’re feeling a bit hesitant now after attending that bustling street fair with your colleagues. It’s completely okay to feel overwhelmed by large crowds, but if you ever want to share what specifically felt uncomfortable, I'm here to listen and help find alternatives.",
+          "mean_nll": 2.61722412109375,
+          "ppl": 13.697649002075195,
+          "n_target_tokens": 55
+        },
+        {
+          "label": "d",
+          "choice": "It’s understandable that you might be feeling a bit detached after your recent experience at that big concert. Sometimes large events can feel overwhelming, and exploring smaller gatherings might help you find more comfort. Let me know if you’re interested in discussing some options.",
+          "mean_nll": 2.503880427433894,
+          "ppl": 12.229860305786133,
+          "n_target_tokens": 52
+        }
+      ],
+      "wall_s": 0.34757184982299805
+    }
+  ]
+}

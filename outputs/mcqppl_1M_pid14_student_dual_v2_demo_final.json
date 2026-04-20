@@ -1,0 +1,3097 @@
+{
+  "args": {
+    "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+    "lora_path": "/scratch/u6aa/linhai.u6aa/P-OPSD/student_lora/lora_pid14_dual_v2_ep1_r3teacher",
+    "lora_mode": "dual",
+    "persona_id": "14",
+    "mcq_version": "1M",
+    "context_mode": "demo-only",
+    "last_n_sessions": "3",
+    "recent_turns": "2",
+    "num_mcqs": "-1",
+    "max_seq_len": "40960",
+    "lm_head_chunk": "4096",
+    "seed": "42",
+    "out_json": "dynamic_usersim/outputs/mcqppl_1M_pid14_student_dual_v2_demo_final.json"
+  },
+  "accuracy": 0.3333333333333333,
+  "n_total": 75,
+  "n_correct": 25,
+  "results": [
+    {
+      "global_idx": 0,
+      "persona_id": "14",
+      "question_id": "37e51669-abe7-466d-a0a4-3b43eb233761",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "travelPlanning",
+      "correct_answer": "c",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's nice to hear about your travel stories from the meet-up. Did you get any inspiration for your next adventure?",
+          "mean_nll": 1.7530081822321966,
+          "ppl": 5.771939277648926,
+          "n_target_tokens": 26
+        },
+        {
+          "label": "b",
+          "choice": "I recall that you prefer staying away from organizing events. It's surprising to hear about your involvement in these gatherings. Have you found any new places to visit during the meet-ups?",
+          "mean_nll": 2.5304489135742188,
+          "ppl": 12.55914306640625,
+          "n_target_tokens": 38
+        },
+        {
+          "label": "c",
+          "choice": "I remember you enjoy organizing travel meet-ups. It's great to hear about your continued involvement in these gatherings. Have you discovered any new destinations to explore?",
+          "mean_nll": 2.2172208843809185,
+          "ppl": 9.181777000427246,
+          "n_target_tokens": 33
+        },
+        {
+          "label": "d",
+          "choice": "I remember you love attending photography workshops. It's nice to hear about your travel meet-up involvement as well. Have you captured any striking photos during your travels?",
+          "mean_nll": 2.932810390696806,
+          "ppl": 18.78033447265625,
+          "n_target_tokens": 34
+        }
+      ],
+      "wall_s": 1.1408483982086182
+    },
+    {
+      "global_idx": 1,
+      "persona_id": "14",
+      "question_id": "5e36ab7c-ea71-4ef3-ae74-f8bdd1c4479e",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "travelPlanning",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Attending local events with international dishes sounds like a great way to spend your time! If you’re ever interested in learning more, feel free to ask.",
+          "mean_nll": 2.413199684836648,
+          "ppl": 11.16964340209961,
+          "n_target_tokens": 33
+        },
+        {
+          "label": "b",
+          "choice": "Since you enjoy trying local cuisines, you might have discovered some delightful flavors there. Let me know if you'd like any cooking tips or recipes.",
+          "mean_nll": 2.331911563873291,
+          "ppl": 10.297607421875,
+          "n_target_tokens": 32
+        },
+        {
+          "label": "c",
+          "choice": "Since you enjoy art exhibits, you might have discovered some inspiring works there. Let me know if you'd like to hear about any upcoming showcases.",
+          "mean_nll": 2.805077829668599,
+          "ppl": 16.528362274169922,
+          "n_target_tokens": 31
+        },
+        {
+          "label": "d",
+          "choice": "I remember you mentioning that you're not a fan of trying new foods. On another note, keep exploring and enjoy your discoveries.",
+          "mean_nll": 2.6116466522216797,
+          "ppl": 13.621461868286133,
+          "n_target_tokens": 28
+        }
+      ],
+      "wall_s": 1.1287858486175537
+    },
+    {
+      "global_idx": 2,
+      "persona_id": "14",
+      "question_id": "f6d29b27-dbca-465d-8f77-ef0122cd11f0",
+      "qtype_canonical": "suggest_new",
+      "topic": "musicRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "You might consider joining a diverse group for musical collaboration, where each member brings unique influences. It can lead to exciting discussions and exploration of different musical styles and techniques.",
+          "mean_nll": 2.7878021240234374,
+          "ppl": 16.245277404785156,
+          "n_target_tokens": 35
+        },
+        {
+          "label": "b",
+          "choice": "I've started a personal project where I compose short, themed soundtracks for everyday activities. Whether it's a morning routine, a walk in the park, or a cozy evening at home, I find inspiration in daily life and channel that into creating something melodic. This endeavor not only sharpens my composition skills but also allows me to capture fleeting moments in a musical format. It encourages me to view the world differently, paying attention to the details and translating those into sound, which has become a profound form of self-expression.",
+          "mean_nll": 2.042488454658294,
+          "ppl": 7.7097697257995605,
+          "n_target_tokens": 107
+        },
+        {
+          "label": "c",
+          "choice": "I recently started experimenting with creating my own musical mashups from different eras! By combining the melodies and rhythms of songs from various genres and decades, I've discovered new ways to infuse old classics with modern sounds. It's amazing how blending something familiar with a fresh twist not only brings a new vibe to a piece but also offers endless avenues for creativity. This process challenges me to think outside the box and explore uncharted territory, engaging deeper with the diverse musical landscape and enriching my personal expression.",
+          "mean_nll": 2.357619498539897,
+          "ppl": 10.565770149230957,
+          "n_target_tokens": 103
+        },
+        {
+          "label": "d",
+          "choice": "I tried participating in online music collaborations, where musicians from around the world come together to create unique tracks. Each person brings a different style to the table, and the end result is often something truly special that none of us could have created alone. These virtual jam sessions help me learn about different cultures and musical influences, expanding my understanding and appreciation of global music. It's an awesome way to connect with like-minded individuals and share bits of my musical journey, while learning from theirs.",
+          "mean_nll": 2.1513622050382653,
+          "ppl": 8.59656047821045,
+          "n_target_tokens": 98
+        }
+      ],
+      "wall_s": 1.0636301040649414
+    },
+    {
+      "global_idx": 3,
+      "persona_id": "14",
+      "question_id": "784e9af3-2a9e-48a4-ab71-085c65bfc2f7",
+      "qtype_canonical": "reasons_behind",
+      "topic": "foodRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's interesting to witness your culinary journey. I recall your intrigue with traditional dishes after exploring the local food experiences that capture the essence of each region. What drives this current exploration into new culinary territories? Your evolving taste journey seems quite adventurous!",
+          "mean_nll": 3.4841326904296874,
+          "ppl": 32.594146728515625,
+          "n_target_tokens": 50
+        },
+        {
+          "label": "b",
+          "choice": "Your evolving palate is truly captivating. Previously, you seemed to favor minimalist cuisine, drawn by its focus on simple, clean ingredients. What sparks this latest interest in culinary experimentation? It's fascinating to watch your taste preferences continue to evolve!",
+          "mean_nll": 3.358662507971939,
+          "ppl": 28.750713348388672,
+          "n_target_tokens": 49
+        },
+        {
+          "label": "c",
+          "choice": "It's fascinating to see how your culinary preferences continue to evolve. I remember you previously embraced fusion cuisine after your travels highlighted the beautiful cultural connections such flavors can create. What's inspiring this latest shift in your attitude towards experimenting with cuisine? Your journey with taste seems to be ever-evolving!",
+          "mean_nll": 3.367375691731771,
+          "ppl": 29.0023136138916,
+          "n_target_tokens": 60
+        },
+        {
+          "label": "d",
+          "choice": "I'm intrigued by your ever-changing culinary tastes. Last time, I noted your move towards sustainable and locally-sourced ingredients, which reflected your commitment to environmental responsibility. What brings about this new experimentation with flavors? Your taste evolution is indeed remarkable!",
+          "mean_nll": 3.147885191674326,
+          "ppl": 23.286762237548828,
+          "n_target_tokens": 51
+        }
+      ],
+      "wall_s": 1.1225507259368896
+    },
+    {
+      "global_idx": 4,
+      "persona_id": "14",
+      "question_id": "b6e0ec6c-eaec-4076-95b0-975ecc532614",
+      "qtype_canonical": "generalize",
+      "topic": "foodRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Based on your past experiences and how you value exploring cultural connections, attending the local cultural festival could be a fulfilling choice. They offer a rich blend of experiences and interactions that might satisfy your craving for diverse cultural expressions. You could discover new perspectives and inspirations that align with your appreciation for blending different cultural elements. Enjoying cultures that are different from our own often leads to the most meaningful experiences.",
+          "mean_nll": 2.704707769700039,
+          "ppl": 14.94994831085205,
+          "n_target_tokens": 81
+        },
+        {
+          "label": "b",
+          "choice": "Choosing to stay home and watch documentaries can also be a rewarding experience. Documentaries often delve deeply into specific topics and can provide enriching knowledge from around the world. They’re a great way to gain detailed insight into different cultures without leaving your living room. You might even discover intriguing stories and alternatives that could relate to your affinity for exploring cultural mixes.",
+          "mean_nll": 2.763824039035373,
+          "ppl": 15.860377311706543,
+          "n_target_tokens": 72
+        },
+        {
+          "label": "c",
+          "choice": "Considering your appreciation for cultural depth, staying home to watch documentaries could be the way to go. Documentaries often offer compelling narratives and insights into various lifestyles and histories, perfect for someone who enjoys learning about cultural diversity. This choice provides a comfortable setting where you can digest information at your pace and potentially stimulate your curiosity in other areas.",
+          "mean_nll": 2.5016869937672332,
+          "ppl": 12.20306396484375,
+          "n_target_tokens": 68
+        },
+        {
+          "label": "d",
+          "choice": "Attending a cultural festival usually comes with vibrant atmospheres and lively interactions, offering a break from routine. If your goal is to step out and engage directly with the community, this could be an excellent pick. Festivals often provide live music, food, and activities that may lead to refreshing experiences, though it’s less like the quiet exploration documentaries offer.",
+          "mean_nll": 2.6041121809449916,
+          "ppl": 13.519216537475586,
+          "n_target_tokens": 73
+        }
+      ],
+      "wall_s": 0.28008294105529785
+    },
+    {
+      "global_idx": 5,
+      "persona_id": "14",
+      "question_id": "87e1f1bd-b620-4aba-b5db-fb0cb6dbbd27",
+      "qtype_canonical": "suggest_new",
+      "topic": "familyRelations",
+      "correct_answer": "c",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Designing a collective storytelling board could be a fresh way to tap into the creative minds of each family member. Dedicate a wall or a large bulletin board in your home for pinning various writing prompts, images, or props that inspire or begin a story. Each family member can contribute by adding to the story or even starting new threads. This dynamic and collaborative exercise stimulates imagination and ensures each participant leaves their mark on the evolving narrative. The focus is on constructing a shared creative space where stories can evolve, intertwine, and capture the richness of your family’s imagination.",
+          "mean_nll": 2.936169591443292,
+          "ppl": 18.843530654907227,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "b",
+          "choice": "How about starting a weekly family cooking night? You can all pick a cuisine or a type of dish to try making together. Not only does this foster teamwork as you navigate recipes and cooking techniques, but it also becomes a venue for laughter and creativity. The process of cooking together means everyone has a role to play, whether it’s chopping, stirring, or setting the table. Plus, it culminates in a delicious reward you can all enjoy. The goal is to have fun, share stories, and delight in discovering new flavors together.",
+          "mean_nll": 1.7678122780539773,
+          "ppl": 5.858023643493652,
+          "n_target_tokens": 110
+        },
+        {
+          "label": "c",
+          "choice": "How about trying cooperative activities like cooking a meal together, going for nature walks, or starting a family book club? These can promote bonding and enjoyment without the competitive element.",
+          "mean_nll": 2.1006226009792752,
+          "ppl": 8.171256065368652,
+          "n_target_tokens": 36
+        },
+        {
+          "label": "d",
+          "choice": "Creating a photo scavenger hunt could be a thrilling way to spend an afternoon together. You can compile a list of things for family members to find and photograph around the neighborhood or even in your own backyard. This activity encourages everyone to see the world from a different perspective and share the unique moments they capture. It’s not about who captures the best picture but about finding beauty in everyday places and adding chapters to your family's visual history through lenses that look for wonder rather than perfection.",
+          "mean_nll": 2.452135981345663,
+          "ppl": 11.613126754760742,
+          "n_target_tokens": 98
+        }
+      ],
+      "wall_s": 0.2296450138092041
+    },
+    {
+      "global_idx": 6,
+      "persona_id": "14",
+      "question_id": "437fefe9-8278-46fb-a2ce-0a3bf872c455",
+      "qtype_canonical": "track_evolution",
+      "topic": "foodRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I see that your journey with trying international cuisines has been quite dynamic. Initially, you expressed an enjoyment of international flavors, which then shifted to a disinterest. However, after traveling abroad, it appears you've come full circle, gaining a renewed appreciation for the diverse and intricate stories behind these cuisines. This progression highlights how experiences, like traveling, can influence and reshape our preferences over time.",
+          "mean_nll": 2.3161472227515243,
+          "ppl": 10.13654613494873,
+          "n_target_tokens": 82
+        },
+        {
+          "label": "b",
+          "choice": "I see that your journey with trying international cuisines has been quite dynamic. Initially, you expressed an enjoyment of international flavors, which then was followed by no updates. However, after traveling abroad, it appears you've come full circle, gaining a renewed appreciation for the diverse and intricate stories behind these cuisines. This progression highlights how experiences, like traveling, can influence and reshape our preferences over time.",
+          "mean_nll": 2.584065507097942,
+          "ppl": 13.250899314880371,
+          "n_target_tokens": 82
+        },
+        {
+          "label": "c",
+          "choice": "I see that your journey with trying international cuisines has been quite dynamic. Initially, you expressed no enjoyment of international flavors, which then shifted to a growing interest. However, after traveling abroad, it appears you've come full circle, gaining a renewed appreciation for the diverse and intricate stories behind these cuisines. This progression highlights how experiences, like traveling, can influence and reshape our preferences over time.",
+          "mean_nll": 2.535980596774962,
+          "ppl": 12.628809928894043,
+          "n_target_tokens": 82
+        },
+        {
+          "label": "d",
+          "choice": "I see that your journey with trying international cuisines has been quite dynamic. Initially, you expressed an initial disinterest of international flavors, which then shifted to an enjoyment. However, after traveling abroad, it appears you've come full circle, gaining a renewed appreciation for the diverse and intricate stories behind these cuisines. This progression highlights how experiences, like traveling, can influence and reshape our preferences over time.",
+          "mean_nll": 2.6284517954631026,
+          "ppl": 13.852307319641113,
+          "n_target_tokens": 83
+        }
+      ],
+      "wall_s": 0.23244452476501465
+    },
+    {
+      "global_idx": 7,
+      "persona_id": "14",
+      "question_id": "bd59c880-7c8e-4490-b3cf-ce5e5b1b4cec",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "familyRelations",
+      "correct_answer": "c",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Family fitness challenges can be a great way to bond, even if it has been some time. There are always new activities out there to discover together.",
+          "mean_nll": 1.9732195138931274,
+          "ppl": 7.19379997253418,
+          "n_target_tokens": 32
+        },
+        {
+          "label": "b",
+          "choice": "Family fitness challenges can sometimes lead to tension, which might make them less enjoyable. It's good to explore other activities that encourage bonding without the competitive edge.",
+          "mean_nll": 2.0348862156723486,
+          "ppl": 7.65138053894043,
+          "n_target_tokens": 33
+        },
+        {
+          "label": "c",
+          "choice": "I remember you mentioned opting out of family fitness challenges to avoid tension. It's great to explore other enjoyable activities together that foster connection.",
+          "mean_nll": 2.6176615747912177,
+          "ppl": 13.70363998413086,
+          "n_target_tokens": 29
+        },
+        {
+          "label": "d",
+          "choice": "It's surprising to hear about tension because I thought family fitness challenges were enjoyed by all. Perhaps now's a good time to explore new activities to keep things fresh and exciting for everyone.",
+          "mean_nll": 2.775228255834335,
+          "ppl": 16.042287826538086,
+          "n_target_tokens": 39
+        }
+      ],
+      "wall_s": 0.23472166061401367
+    },
+    {
+      "global_idx": 8,
+      "persona_id": "14",
+      "question_id": "08584d7d-ad1a-4007-947b-b2e4d8be6262",
+      "qtype_canonical": "suggest_new",
+      "topic": "datingConsultation",
+      "correct_answer": "a",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "You could consider expanding into community gardening projects. They not only promote eco-friendly practices but also provide a shared sense of accomplishment and offer opportunities to connect with others over a common goal.",
+          "mean_nll": 2.2928131505062708,
+          "ppl": 9.902755737304688,
+          "n_target_tokens": 38
+        },
+        {
+          "label": "b",
+          "choice": "Another idea is joining an outdoor yoga class held in parks or gardens. These settings can make the practice even more invigorating, surrounded by fresh air and the sounds of nature. I found it to be a serene way to relieve stress while also getting to know health-conscious individuals. The tranquility of the environment naturally led to easy-going conversations with fellow participants during breaks, and it quickly turned into a social gathering. These yoga sessions offer a blend of relaxation and community spirit, making them an excellent choice for eco-friendly group activities.",
+          "mean_nll": 2.429560625994647,
+          "ppl": 11.353893280029297,
+          "n_target_tokens": 108
+        },
+        {
+          "label": "c",
+          "choice": "I recently participated in a 'community clean-up and hike' event organized by a local eco-group. The concept was brilliant; we all met early in the morning at a nearby nature reserve, armed with gloves and bags. As we hiked along the trails, we picked up trash and debris. It was surprisingly fulfilling work, especially knowing we were making a direct impact. The best part was the sense of camaraderie—it was easy to start conversations, and I ended up meeting people who were equally passionate about preserving nature. The activity was both rewarding and a refreshing way to connect with others.",
+          "mean_nll": 2.121650632747934,
+          "ppl": 8.344901084899902,
+          "n_target_tokens": 121
+        },
+        {
+          "label": "d",
+          "choice": "Lastly, try organizing a 'plant and paint' session where people can plant seedlings in small pots and decorate them creatively. This activity is simple, yet it provides a hands-on approach to gardening, which many find therapeutic. I tried this with a small group of friends, and we each brought supplies like paints, brushes, and various seeds. It was fascinating how everyone brought personal touches to their plant pots, and it sparked imaginative conversations about sustainability and art. We ended the day with a deeper appreciation for nature and each other's creativity, much like an outdoor art party with a green twist.",
+          "mean_nll": 2.1336619479597108,
+          "ppl": 8.445738792419434,
+          "n_target_tokens": 121
+        }
+      ],
+      "wall_s": 0.28447556495666504
+    },
+    {
+      "global_idx": 9,
+      "persona_id": "14",
+      "question_id": "af9bab95-5870-46ff-88c8-3280b8e99db2",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "studyConsultation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I remember you shared your interest in educational podcasts that delve into advanced topics. If there's a new area or topic you're exploring, I'd be happy to hear more about it.",
+          "mean_nll": 2.131402822641226,
+          "ppl": 8.426678657531738,
+          "n_target_tokens": 39
+        },
+        {
+          "label": "b",
+          "choice": "It sounds like you're exploring some new territory with these podcast topics. What's inspired this new interest for you?",
+          "mean_nll": 2.4829100036621092,
+          "ppl": 11.976062774658203,
+          "n_target_tokens": 25
+        },
+        {
+          "label": "c",
+          "choice": "I remember you shared your interest in educational podcasts that delve into advanced topics. If there's a new area or topic you're exploring, I'd be happy to hear more about it.",
+          "mean_nll": 2.131402822641226,
+          "ppl": 8.426678657531738,
+          "n_target_tokens": 39
+        },
+        {
+          "label": "d",
+          "choice": "I seem to recall you weren't really into educational podcasts, but it's interesting that you've chosen to listen to them anyway.",
+          "mean_nll": 2.7061080932617188,
+          "ppl": 14.97089672088623,
+          "n_target_tokens": 28
+        }
+      ],
+      "wall_s": 0.2049555778503418
+    },
+    {
+      "global_idx": 10,
+      "persona_id": "14",
+      "question_id": "157e16a7-be24-4224-a884-7ea61f0293d1",
+      "qtype_canonical": "aligned_rec",
+      "topic": "bookRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "\"Consider picking up 'Eat, Pray, Love' by Elizabeth Gilbert, a soul-searching journey that's often appreciated for its exploration of self-discovery and travel. This narrative is both uplifting and thought-provoking, making it a favorite among many, especially for those who enjoy delving into personal growth stories. It will offer plenty of points for an engaging conversation at your club meeting.\"",
+          "mean_nll": 1.953015955483041,
+          "ppl": 7.049917697906494,
+          "n_target_tokens": 82
+        },
+        {
+          "label": "b",
+          "choice": "Based on your past preference for enthralling fantasy novels, I recommend diving into 'The Name of the Wind' by Patrick Rothfuss. It's a mesmerizing tale filled with rich lore and complex characters, ideal for losing yourself in its enchanting world. This book not only offers an immersive escape but also provides enough depth to spark intriguing discussions at your club meeting.",
+          "mean_nll": 1.7893847180651379,
+          "ppl": 5.9857683181762695,
+          "n_target_tokens": 77
+        },
+        {
+          "label": "c",
+          "choice": "For an eye-opening dive into nonfiction, consider 'Sapiens: A Brief History of Humankind' by Yuval Noah Harari. It provides a comprehensive exploration of human evolution and societal development, sparking insightful discussions, though it diverges from the escape into fiction you usually prefer.",
+          "mean_nll": 1.9061534881591797,
+          "ppl": 6.7271623611450195,
+          "n_target_tokens": 60
+        },
+        {
+          "label": "d",
+          "choice": "If you're keen on unraveling complex human emotions in a contemporary setting, try 'Normal People' by Sally Rooney. This book delves deep into the intricacies of modern relationships and self-discovery, offering plenty of substance for analysis and conversation at your meeting.",
+          "mean_nll": 2.0682334206321022,
+          "ppl": 7.910836219787598,
+          "n_target_tokens": 55
+        }
+      ],
+      "wall_s": 0.2352771759033203
+    },
+    {
+      "global_idx": 11,
+      "persona_id": "14",
+      "question_id": "4d6afd98-a3ff-4013-86e4-529dcba97859",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "bookRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Graphic novels tell captivating stories in unique ways. If you discover any hidden gems, feel free to share them.",
+          "mean_nll": 3.0874455769856772,
+          "ppl": 21.921009063720703,
+          "n_target_tokens": 24
+        },
+        {
+          "label": "b",
+          "choice": "I'm glad to hear you're exploring graphic novels again. Let me know if you find any interesting ones.",
+          "mean_nll": 1.710971196492513,
+          "ppl": 5.534334182739258,
+          "n_target_tokens": 24
+        },
+        {
+          "label": "c",
+          "choice": "I remember you enjoy reading graphic novels! Let me know if you find any interesting ones.",
+          "mean_nll": 2.0074962615966796,
+          "ppl": 7.444655418395996,
+          "n_target_tokens": 20
+        },
+        {
+          "label": "d",
+          "choice": "I'm surprised you came across another graphic novel, I thought you weren't into them. Let me know what you think of it!",
+          "mean_nll": 1.5446260386499866,
+          "ppl": 4.686218738555908,
+          "n_target_tokens": 29
+        }
+      ],
+      "wall_s": 0.2200946807861328
+    },
+    {
+      "global_idx": 12,
+      "persona_id": "14",
+      "question_id": "3b5104e8-cbd0-4cdd-978f-6f04c035035a",
+      "qtype_canonical": "generalize",
+      "topic": "onlineShopping",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Algorithms don't always capture personal nuances. Engaging in book clubs or attending literary events can provide direct recommendations and lively discussions, offering a depth of insight that algorithms might miss. This human touch approach can be enriching.",
+          "mean_nll": 2.5092807526284076,
+          "ppl": 12.29608154296875,
+          "n_target_tokens": 47
+        },
+        {
+          "label": "b",
+          "choice": "It sounds like you may have faced some challenges with the consistency of automated recommendations. You might find it more effective to explore book reviews, join reading communities, or seek recommendations from friends with similar interests. This approach allows for a more personalized and reliable discovery process, much like how you previously decided to manually check prices for shopping.",
+          "mean_nll": 2.352157820516558,
+          "ppl": 10.508220672607422,
+          "n_target_tokens": 67
+        },
+        {
+          "label": "c",
+          "choice": "Relying solely on algorithms can sometimes feel limiting. Trying curated book subscription services or joining author forums can introduce you to selections you might not come across otherwise. These communities provide an insightful, communal discovery method.",
+          "mean_nll": 2.9578812339089136,
+          "ppl": 19.257125854492188,
+          "n_target_tokens": 44
+        },
+        {
+          "label": "d",
+          "choice": "It's understandable to feel uncertain about algorithm-based suggestions. Exploring bookshelves at your local library or bookstore can offer a tangible experience and surprise finds. This can introduce variety and spontaneity into your reading habit, differing from the digital realm of algorithms.",
+          "mean_nll": 2.9004443133318865,
+          "ppl": 18.182220458984375,
+          "n_target_tokens": 54
+        }
+      ],
+      "wall_s": 0.28170180320739746
+    },
+    {
+      "global_idx": 13,
+      "persona_id": "14",
+      "question_id": "3fbc5e3a-72d3-4530-a234-e55f13e05a0c",
+      "qtype_canonical": "suggest_new",
+      "topic": "bookRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "(3) Yes! I joined a celebrity book club discussion group where we talked about a new release featuring deep and multi-layered characters. The session was incredibly engaging, as it provided a platform for diverse viewpoints and interpretations. The protagonist's journey particularly resonated with me, tackling themes of resilience and identity, which sparked thorough discussions. Sharing these reflections enhanced my reading experience, allowing me to appreciate how literary analysis can deepen connections between readers and bring the narrative to life in unique ways.",
+          "mean_nll": 2.458624637488163,
+          "ppl": 11.68872356414795,
+          "n_target_tokens": 99
+        },
+        {
+          "label": "b",
+          "choice": "If you're looking for something new that might interest you, I'd recommend checking out recent selections like 'The Night Circus' by Erin Morgenstern. It's known for its unique twists and rich characters that often lead to great discussions.",
+          "mean_nll": 1.8125466739430147,
+          "ppl": 6.126029014587402,
+          "n_target_tokens": 51
+        },
+        {
+          "label": "c",
+          "choice": "(1) I did! Interestingly, today I picked up a novel recommended by a celebrity book club. It's a gripping mystery that delves into the intricacies of the human psyche, providing much to ponder. The vivid portrayal of its complex characters makes it hard to put down, as they navigate moral dilemmas that amplify the emotional depth of the plot. I'm already hooked, eager to unravel the storyline, and excited to discuss it, as it has reignited my passion for novels that blend suspense with profound character development.",
+          "mean_nll": 2.3674039487485534,
+          "ppl": 10.669657707214355,
+          "n_target_tokens": 108
+        },
+        {
+          "label": "d",
+          "choice": "(2) That's actually a bit complicated—I recently started a new book club read that was introduced by a celebrity. While this book promised an intriguing plot, I found myself struggling with the pacing. The character arcs were well-crafted, yet the slow unfolding of events didn't hold my attention as I had hoped. Maybe it was just the wrong timing, but it made me realize how impactful a well-paced narrative is in keeping readers engaged. I am determined to finish it, though, as I've heard great things about the second half unlocking unexpected twists.",
+          "mean_nll": 2.424421343887061,
+          "ppl": 11.295690536499023,
+          "n_target_tokens": 114
+        }
+      ],
+      "wall_s": 0.21534514427185059
+    },
+    {
+      "global_idx": 14,
+      "persona_id": "14",
+      "question_id": "2b01ddd5-4614-4d9a-868a-d87de6b6015e",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "datingConsultation",
+      "correct_answer": "b",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "That makes complete sense. It's truly important to enjoy the activities you engage in rather than feeling pressured, as the essence of such pursuits lies in the joy and fulfillment they bring. It must have been difficult to step away from something that initially sparked your enthusiasm. The social dynamics in such environments can often overshadow the personal growth we seek through activities like dance, transforming them into almost competitive arenas, which is certainly not what many hope to experience. This confirms how vital it is to curate our experiences to align with our emotional well-being and personal happiness. What have you focused on instead now that you've transitioned away from that competitive scene? Have you found alternative hobbies or interests that provide a similar sense of community without the added pressure?",
+          "mean_nll": 2.407011505741401,
+          "ppl": 11.100736618041992,
+          "n_target_tokens": 149
+        },
+        {
+          "label": "b",
+          "choice": "I remember you mentioned enjoying social dance classes before. It's great to hear you're continuing with it. I hope the session went well!",
+          "mean_nll": 2.0747300465901692,
+          "ppl": 7.962397575378418,
+          "n_target_tokens": 30
+        },
+        {
+          "label": "c",
+          "choice": "It's interesting to hear that you're still exploring social dance sessions. I remember you mentioning a preference for more solitary activities before, so it's intriguing to see this shift. I hope your curiosity about new experiences is paying off!",
+          "mean_nll": 2.0781609217325845,
+          "ppl": 7.989762306213379,
+          "n_target_tokens": 48
+        },
+        {
+          "label": "d",
+          "choice": "It's great to hear that you attended a social dance session. Social dancing seems like a vibrant way to meet people and enjoy some movement. Have you been exploring other similar activities as well?",
+          "mean_nll": 1.918227767944336,
+          "ppl": 6.808880805969238,
+          "n_target_tokens": 40
+        }
+      ],
+      "wall_s": 0.23086786270141602
+    },
+    {
+      "global_idx": 15,
+      "persona_id": "14",
+      "question_id": "dd47f5ec-01d8-4bb2-87a2-dca91c66da42",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "bookRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I know you've always had a taste for international bestsellers. It's interesting how diverse books can be. How was your visit?",
+          "mean_nll": 2.76507568359375,
+          "ppl": 15.880241394042969,
+          "n_target_tokens": 30
+        },
+        {
+          "label": "b",
+          "choice": "I remember you enjoy exploring works by local authors. It's always exciting to see new talent emerging. How was your visit?",
+          "mean_nll": 2.482810691550926,
+          "ppl": 11.974875450134277,
+          "n_target_tokens": 27
+        },
+        {
+          "label": "c",
+          "choice": "I recall you typically steer clear of local authors, but it's always nice to see bookstores offering diverse selections. How was your visit?",
+          "mean_nll": 3.091644795735677,
+          "ppl": 22.013254165649414,
+          "n_target_tokens": 30
+        },
+        {
+          "label": "d",
+          "choice": "That's wonderful to hear about your trip to the bookstore. New discoveries always make for a great adventure with no particular genres in mind.",
+          "mean_nll": 3.3332490592167296,
+          "ppl": 28.029264450073242,
+          "n_target_tokens": 29
+        }
+      ],
+      "wall_s": 0.20278358459472656
+    },
+    {
+      "global_idx": 16,
+      "persona_id": "14",
+      "question_id": "0ca3f1b4-c1c9-4292-8678-adb5faddc12e",
+      "qtype_canonical": "suggest_new",
+      "topic": "homeDecoration",
+      "correct_answer": "d",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "If you enjoy the idea of self-expression through creativity but want to minimize stress, why not delve into nature photography? With each season providing new colors and lighting, it is the perfect way to celebrate change. Armed with just a camera or even your phone, you can capture stunning images on leisurely walks, perhaps finding inspiration in the blooming flowers of spring, the lush greenery of summer, the fiery hues of autumn, or the tranquil snowscapes of winter. It's rewarding to look back on your collection and see how your skills and perspective evolve.",
+          "mean_nll": 2.0330500017132676,
+          "ppl": 7.637345314025879,
+          "n_target_tokens": 114
+        },
+        {
+          "label": "b",
+          "choice": "Have you considered seasonal cooking as a new hobby? Exploring recipes with ingredients that peak during each season can be incredibly therapeutic. You might find delight in visiting local farmers' markets to source fresh fruits and vegetables. The process of crafting meals from scratch, whether it's hearty stews in the winter or fresh salads during warmer months, offers a gratifying sense of accomplishment and allows you to connect with the changing seasons through your tastebuds. It also opens up opportunities to experiment with flavors that are unique to each time of year, which can be both fun and rewarding.",
+          "mean_nll": 1.731518975619612,
+          "ppl": 5.649228572845459,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "c",
+          "choice": "Origami can be a fantastic way to mark the change of seasons by crafting paper creations that reflect the natural elements around you. From folding crisp white paper cranes to creating vibrant colored autumn leaves, it's a calming process that provides you with a sense of peace and accomplishment. This hobby is not only affordable and environmentally friendly but also invites the chance to infuse personal creativity into each piece. Sharing your creations with family and friends can further enhance the joy of seasonal transitions.",
+          "mean_nll": 2.292260487874349,
+          "ppl": 9.897284507751465,
+          "n_target_tokens": 96
+        },
+        {
+          "label": "d",
+          "choice": "How about trying to create more seasonal decorations or crafts? It can be a great way to harness your creativity and enjoy the process of crafting something beautiful.",
+          "mean_nll": 1.9184510707855225,
+          "ppl": 6.810401439666748,
+          "n_target_tokens": 32
+        }
+      ],
+      "wall_s": 0.2711045742034912
+    },
+    {
+      "global_idx": 17,
+      "persona_id": "14",
+      "question_id": "0bc3216e-6205-45d2-911b-3ce80f55bb10",
+      "qtype_canonical": "suggest_new",
+      "topic": "datingConsultation",
+      "correct_answer": "c",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Perhaps organizing a potluck or community dinner could be enjoyable. I remember coordinating one such event, and it was an incredibly rewarding experience. Everyone contributed, bringing unique dishes and fostering conversations about cultural backgrounds. It provided a wonderful opportunity to connect with people on a deeper level and strengthen existing friendships while also forming new ones. Witnessing the camaraderie and collective enjoyment made me realize the power of bringing individuals together through shared activities. It inspired me to explore more opportunities to engage with my community, leading me to participate in regular volunteer work.",
+          "mean_nll": 2.365556349448108,
+          "ppl": 10.649961471557617,
+          "n_target_tokens": 109
+        },
+        {
+          "label": "b",
+          "choice": "Consider exploring stories of resilience and growth as a means to connect with others. In my experience, diving into narratives about overcoming adversity opened my eyes to the diverse experiences and triumphs that people have. These stories not only provide heartening insights but also lay the foundation for meaningful conversations with others who resonate with similar themes. Embracing these narratives allowed me to cultivate a positive outlook, ultimately enriching my life and fostering connections with people who share similar values of strength and positivity.",
+          "mean_nll": 2.2570420098058954,
+          "ppl": 9.554783821105957,
+          "n_target_tokens": 97
+        },
+        {
+          "label": "c",
+          "choice": "You might enjoy exploring other social activities that involve group participation and personal expression, such as joining a dance club or attending dance workshops, where you can learn new styles and meet like-minded people.",
+          "mean_nll": 2.4155689239501954,
+          "ppl": 11.196137428283691,
+          "n_target_tokens": 40
+        },
+        {
+          "label": "d",
+          "choice": "Volunteering could be an excellent avenue to explore. My own engagement in volunteer work revealed a profound way to bond with others who share similar values. The collaborative efforts and shared goals create a unique environment where friendships flourish through commitment to a common cause. These interactions are enriching not only due to the impact on the community but also because of the lasting friendships formed in the process. Through volunteering, I've grown both socially and personally, finding fulfillment in the collective effort to improve our surroundings.",
+          "mean_nll": 2.127521514892578,
+          "ppl": 8.394036293029785,
+          "n_target_tokens": 100
+        }
+      ],
+      "wall_s": 0.20999717712402344
+    },
+    {
+      "global_idx": 18,
+      "persona_id": "14",
+      "question_id": "654eca5f-8bd9-4c9f-9bbf-c36a1a991f8f",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "legalConsultation",
+      "correct_answer": "b",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "That sounds intriguing! I hadn't realized you were interested in law-related podcasts. Maybe it will inspire you to explore more about the ethical dimensions of legal issues.",
+          "mean_nll": 1.974278169519761,
+          "ppl": 7.201419830322266,
+          "n_target_tokens": 34
+        },
+        {
+          "label": "b",
+          "choice": "I remember you mentioning how much you enjoy law-related podcasts. It's quite intriguing to explore the ethical side of the legal system.",
+          "mean_nll": 1.986569813319615,
+          "ppl": 7.290482521057129,
+          "n_target_tokens": 28
+        },
+        {
+          "label": "c",
+          "choice": "I remember you mentioning how much you enjoy law-related podcasts. It's quite intriguing to explore the ethical side of the legal system.",
+          "mean_nll": 1.986569813319615,
+          "ppl": 7.290482521057129,
+          "n_target_tokens": 28
+        },
+        {
+          "label": "d",
+          "choice": "It's surprising to hear you diving into law-related podcasts. I thought you preferred thrillers and fiction series. It's still interesting to listen to discussions about legal ethics.",
+          "mean_nll": 2.6142650180392795,
+          "ppl": 13.657174110412598,
+          "n_target_tokens": 36
+        }
+      ],
+      "wall_s": 0.20447921752929688
+    },
+    {
+      "global_idx": 19,
+      "persona_id": "14",
+      "question_id": "277a3d24-81c6-4af7-a8de-13cd6f1e3f12",
+      "qtype_canonical": "aligned_rec",
+      "topic": "movieRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Consider adding traditional Polynesian handicrafts to your decor, such as tiki totems or woven mats. These items bring a touch of your cultural heritage into your home, creating a warm and inviting atmosphere. Their natural materials and artisanal craftsmanship reflect an appreciation for authentic cultural expressions rather than contemporary trends. This addition could beautifully integrate aspects of Pacific Islander traditions into your living space, offering not just visual appeal but also honoring your rich ancestry.",
+          "mean_nll": 2.538115459939708,
+          "ppl": 12.65579891204834,
+          "n_target_tokens": 92
+        },
+        {
+          "label": "b",
+          "choice": "Given your unique taste, I recommend exploring limited edition contemporary cinema art prints. These pieces offer a modern twist on iconic film narratives, capturing the essence of movies without the nostalgic heaviness of vintage posters. Artists often reinterpret unforgotten scenes using vibrant colors and styles that resonate with today's artistic trends. They could transform your space into a dynamic dialogue of past and present cinema, aligning perfectly with your love for films without the disappointment of curating a traditional poster collection.",
+          "mean_nll": 2.7827428181966147,
+          "ppl": 16.163291931152344,
+          "n_target_tokens": 96
+        },
+        {
+          "label": "c",
+          "choice": "I suggest exploring antique storytelling artifacts such as vintage cameras and film reels. These nostalgic items bring a tangible history of visual storytelling into your home, creating a sense of connection with the technological advancements that shaped modern cinema. While these items do not directly represent iconic film moments, they offer a distinct charm and serve as a conversation starter, reflecting an appreciation for the evolution of film.",
+          "mean_nll": 2.6060469777960527,
+          "ppl": 13.545398712158203,
+          "n_target_tokens": 76
+        },
+        {
+          "label": "d",
+          "choice": "To showcase your love for visual storytelling, consider curating a collection of vintage film posters. These timeless pieces offer a nostalgic glimpse into the history of cinema, with well-known scenes that evoke a sense of nostalgia and charm. The muted tones and classic styles of these posters can provide a warm, inviting atmosphere, perfect for any dedicated film enthusiast eager to celebrate the past.",
+          "mean_nll": 2.5161448160807294,
+          "ppl": 12.380773544311523,
+          "n_target_tokens": 75
+        }
+      ],
+      "wall_s": 0.22745966911315918
+    },
+    {
+      "global_idx": 20,
+      "persona_id": "14",
+      "question_id": "df0b5618-5c3b-44d8-b4af-f2d39e6e33ec",
+      "qtype_canonical": "generalize",
+      "topic": "movieRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Reviewing book themes in depth can definitely enhance your reading experience by offering new perspectives. It allows you to connect more with the characters and plot, deepening your understanding and appreciation of the book as a whole.",
+          "mean_nll": 1.6056393710049717,
+          "ppl": 4.981043338775635,
+          "n_target_tokens": 44
+        },
+        {
+          "label": "b",
+          "choice": "Exploring book themes after reading could be a creative outlet and give you a chance to express your thoughts. It encourages reflection and might even inspire your own writing by opening up new avenues within the storytelling.",
+          "mean_nll": 2.7007655189150857,
+          "ppl": 14.891128540039062,
+          "n_target_tokens": 42
+        },
+        {
+          "label": "c",
+          "choice": "It sounds like you might find more enjoyment in immersing yourself in the story without delving deeply into analysis. Sometimes, stepping away from breaking down themes allows you to appreciate books more wholly as they're meant to be experienced. Enjoying the narrative as it unfolds can often be more fulfilling and less tedious.",
+          "mean_nll": 2.189329147338867,
+          "ppl": 8.929221153259277,
+          "n_target_tokens": 64
+        },
+        {
+          "label": "d",
+          "choice": "Engaging with book themes in detail can bring a new level of appreciation for literary techniques. It provides an avenue for intellectual exploration that challenges your perceptions and enriches your reading journey.",
+          "mean_nll": 2.96121577212685,
+          "ppl": 19.321447372436523,
+          "n_target_tokens": 38
+        }
+      ],
+      "wall_s": 0.2585468292236328
+    },
+    {
+      "global_idx": 21,
+      "persona_id": "14",
+      "question_id": "06753dfb-e758-4f91-99d5-e9d7d71e9634",
+      "qtype_canonical": "recall_facts",
+      "topic": "datingConsultation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "If you're looking for a lively group activity, consider hosting a creative craft night where everyone can bring their own unique DIY date night ideas. It's a great way to enjoy each person's creativity and collaborate on innovative projects, much like the enjoyable experience you had previously. It can be a transformative and inspiring way to spend an evening with others.",
+          "mean_nll": 2.6348412742077465,
+          "ppl": 13.941099166870117,
+          "n_target_tokens": 71
+        },
+        {
+          "label": "b",
+          "choice": "Consider organizing a culinary challenge evening where each group comes together to create innovative dishes from limited ingredients. This embraces the spirit of cooperation and creativity, much like the culinary adventures you've enjoyed previously, providing a delicious and engaging way to spend the evening.",
+          "mean_nll": 3.037436391793045,
+          "ppl": 20.851720809936523,
+          "n_target_tokens": 51
+        },
+        {
+          "label": "c",
+          "choice": "How about setting up an interactive movie mashup night where participants pair films with unexpected genres or plots for humorous reinterpretations? It’s an engaging way to appreciate diverse perspectives and creativity, similar to other amusing and collaborative endeavors you’ve been involved in before.",
+          "mean_nll": 3.397067436805138,
+          "ppl": 29.876359939575195,
+          "n_target_tokens": 52
+        },
+        {
+          "label": "d",
+          "choice": "Why not arrange a spontaneous storytelling night where everyone crafts a fictional tale on the spot? This allows each participant to showcase their imagination and narrative skills. It echoes the spontaneous and exciting experiences you've enjoyed in the past, offering a dynamic and entertaining way to spend time together.",
+          "mean_nll": 2.7395627158028737,
+          "ppl": 15.480215072631836,
+          "n_target_tokens": 56
+        }
+      ],
+      "wall_s": 0.21708106994628906
+    },
+    {
+      "global_idx": 22,
+      "persona_id": "14",
+      "question_id": "92bb6f03-d5cd-4637-b704-c1f5d480613c",
+      "qtype_canonical": "suggest_new",
+      "topic": "medicalConsultation",
+      "correct_answer": "d",
+      "pred_answer": "d",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Explore the use of healing herbs by creating a story around their historical uses in traditional medicine, just as one user was inspired by researching herbs with unique healing properties. Introduce characters or narratives that bring these plants to life, allowing your readers to relate to and appreciate their health benefits through enriching stories.",
+          "mean_nll": 3.1596256379158265,
+          "ppl": 23.561771392822266,
+          "n_target_tokens": 62
+        },
+        {
+          "label": "b",
+          "choice": "Organize virtual healthy cooking parties that recapture the joy of cooking with others, as one user found delight in hosting a dinner for friends with healthy dishes. Inspire readers to participate by providing a themed menu, guided step-by-step cooking instructions, and opportunities to share their creations, enhancing both their culinary skills and social connections.",
+          "mean_nll": 3.0373307413129664,
+          "ppl": 20.84951400756836,
+          "n_target_tokens": 67
+        },
+        {
+          "label": "c",
+          "choice": "Foster a sense of community by encouraging your readers to share their own healthy eating experiences, much like how connecting with others facing similar issues promotes mutual understanding. Create a platform for your audience to engage with each other, exchanging recipes, tips, and personal stories to enrich their journey towards better wellness.",
+          "mean_nll": 2.5190344638511784,
+          "ppl": 12.416601181030273,
+          "n_target_tokens": 61
+        },
+        {
+          "label": "d",
+          "choice": "You could explore writing about a variety of healthy cooking techniques and innovative recipes that bring a personal touch to traditional dishes. This not only promotes health but also encourages readers to experiment with new flavors and methods in the kitchen.",
+          "mean_nll": 2.336131795247396,
+          "ppl": 10.341157913208008,
+          "n_target_tokens": 45
+        }
+      ],
+      "wall_s": 0.2218925952911377
+    },
+    {
+      "global_idx": 23,
+      "persona_id": "14",
+      "question_id": "3e6c6c3e-2bb9-453f-ae4e-858cb85fd1a7",
+      "qtype_canonical": "suggest_new",
+      "topic": "foodRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Another approach is to experiment with marinating your proteins and vegetables. Marinating is an age-old technique that allows ingredients to soak in all the complex flavors and break down meats to make them more tender. Try using a mixture of olive oil, lemon juice, herbs, and garlic as a base and let your chosen protein sit in it for a couple of hours before cooking. This will infuse it with aromatic flavors that will make each bite memorable. Experiment with different marinades, such as using yogurt for a creamy texture or soy sauce for an umami punch—these explorations can lead to delightful culinary discoveries.",
+          "mean_nll": 2.04320796843498,
+          "ppl": 7.715319633483887,
+          "n_target_tokens": 124
+        },
+        {
+          "label": "b",
+          "choice": "One technique to enhance flavors is to start experimenting with spices and herbs. Try incorporating spices from different cuisines to add depth and complexity to your dishes. For example, using smoked paprika can bring a subtle smokiness, while fresh herbs like basil or cilantro can add a burst of freshness. As you become more familiar with how these flavors interact, you can start creating your own spice blends, infusing your meals with unique and personalized tastes that reflect your culinary journey. This approach not only enriches your taste palette but also extends the fun and creativity of cooking beyond mere recipe adherence.",
+          "mean_nll": 1.5430506388346354,
+          "ppl": 4.678842067718506,
+          "n_target_tokens": 120
+        },
+        {
+          "label": "c",
+          "choice": "You might enjoy experimenting with infusing oils with fresh herbs. This can add a burst of flavor to your dishes since you have access to fresh herbs from your garden.",
+          "mean_nll": 2.388364519391741,
+          "ppl": 10.895660400390625,
+          "n_target_tokens": 35
+        },
+        {
+          "label": "d",
+          "choice": "Consider incorporating the sous vide method into your cooking routine. This involves vacuum-sealing your ingredients and cooking them at a precise temperature in a water bath, which ensures even cooking and retains the natural juices and flavors of the food. It allows you to extract maximum flavor from each ingredient, resulting in dishes that are consistently delicious and often superior to traditional cooking methods. The slow and controlled process highlights the natural essence of your ingredients, allowing their flavors to shine through without being diluted, thus providing a pristine culinary experience.",
+          "mean_nll": 1.9230367419789138,
+          "ppl": 6.841702938079834,
+          "n_target_tokens": 103
+        }
+      ],
+      "wall_s": 0.23203778266906738
+    },
+    {
+      "global_idx": 24,
+      "persona_id": "14",
+      "question_id": "61c9c23f-f20b-425f-a1e9-42c08637dea5",
+      "qtype_canonical": "reasons_behind",
+      "topic": "datingConsultation",
+      "correct_answer": "c",
+      "pred_answer": "c",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's great to hear that you're open to revisiting social dance classes! It sounds like you're ready to approach them with a new perspective. Remember, trying out different dance styles might add variety and prevent monotony. Do you have any specific changes in mind that might help you enjoy the classes more this time?",
+          "mean_nll": 1.6145255348899148,
+          "ppl": 5.025503158569336,
+          "n_target_tokens": 66
+        },
+        {
+          "label": "b",
+          "choice": "It's great to hear that you're open to revisiting social dance classes! It sounds like you're ready to approach them with a new perspective. Remember that socializing with classmates can make the experience more enjoyable. Do you have any specific changes in mind that might help you enjoy the classes more this time?",
+          "mean_nll": 1.531062126159668,
+          "ppl": 4.623084545135498,
+          "n_target_tokens": 64
+        },
+        {
+          "label": "c",
+          "choice": "It's great to hear that you're open to revisiting social dance classes! It sounds like you're ready to approach them with a new perspective. Remember, it's important to focus on the enjoyment and personal growth rather than competition. If at any point it starts feeling overwhelming again, you can always take a step back and reassess your experience. Do you have any specific changes in mind that might help you enjoy the classes more this time?",
+          "mean_nll": 1.274228274167239,
+          "ppl": 3.5759406089782715,
+          "n_target_tokens": 91
+        },
+        {
+          "label": "d",
+          "choice": "It's great to hear that you're open to revisiting social dance classes! It sounds like you're ready to approach them with a new perspective. Remember, it's important to connect with your dance partner rather than focusing on learning the routines perfectly. Do you have any specific changes in mind that might help you enjoy the classes more this time?",
+          "mean_nll": 1.6065850056393045,
+          "ppl": 4.985755920410156,
+          "n_target_tokens": 71
+        }
+      ],
+      "wall_s": 0.21220779418945312
+    },
+    {
+      "global_idx": 25,
+      "persona_id": "14",
+      "question_id": "e1f4b756-fb58-4e4d-a7b0-11ff9bd03bab",
+      "qtype_canonical": "suggest_new",
+      "topic": "legalConsultation",
+      "correct_answer": "d",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "One of the best ways to dive into effective communication in dispute resolution is to join a mediation club or caucus. This type of association functions much like a local lawyers' group, offering a platform for collaboration and knowledge exchange with peers who are equally passionate about honing their communication prowess. Engaging in realistic role-plays, discussing emerging trends, and strategizing on case studies together will broaden your understanding of the nuances involved in resolving disputes amicably. Such dynamic interactions not only enhance your skill set but also enrich your professional journey tremendously.",
+          "mean_nll": 2.606988469395069,
+          "ppl": 13.558157920837402,
+          "n_target_tokens": 109
+        },
+        {
+          "label": "b",
+          "choice": "For a more personal approach to effective communication, consider enrolling in a course focused on negotiation techniques. Much like prioritizing professional development through workshops and seminars, these courses provide a treasure trove of knowledge and practice to refine your communication skills. You'll interact with instructors and fellow participants who share your enthusiasm for mastering negotiation, all while exploring the latest methods and innovations in the field. Delving into the intricacies of successful negotiation will not only expand your toolkit but also forge bonds with others striving toward proficiency in effective communication.",
+          "mean_nll": 2.3496694025003686,
+          "ppl": 10.482104301452637,
+          "n_target_tokens": 106
+        },
+        {
+          "label": "c",
+          "choice": "Attending conflict resolution workshops can be an exhilarating experience. Much like participating in a legal symposium, these events often feature engaging discussions and interactive learning opportunities that are both enlightening and thought-provoking. You'll get to witness firsthand the diverse perspectives of professionals who are keen on resolving disputes effectively. The chance to present and explore novel strategies in a supportive environment can significantly boost your confidence and capabilities in this area, reinforcing your commitment to growth and adaptation in your approach to conflict resolution.",
+          "mean_nll": 2.1526589965820313,
+          "ppl": 8.607715606689453,
+          "n_target_tokens": 100
+        },
+        {
+          "label": "d",
+          "choice": "Have you considered participating in role-playing scenarios that simulate real-world conflicts? These can be particularly effective in refining communication skills like empathy and active listening, essential for reaching mutually beneficial agreements.",
+          "mean_nll": 2.277692493639494,
+          "ppl": 9.75414752960205,
+          "n_target_tokens": 38
+        }
+      ],
+      "wall_s": 0.1968979835510254
+    },
+    {
+      "global_idx": 26,
+      "persona_id": "14",
+      "question_id": "2139998e-abac-4fae-807a-8187747aab4f",
+      "qtype_canonical": "aligned_rec",
+      "topic": "bookRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "If you're ready to dive into a vibrant blend of art and storytelling, I recommend 'The Shadow of the Qin: A Martial Saga.' This graphic novel takes you on an exciting journey through the world of ancient warriors. It's a seamless fusion of beautifully illustrated pages and gripping plots, where martial arts are not just practiced but revered. Feel the rush of dynamic fight sequences and the wisdom of ancient martial philosophies, all set against a backdrop that mirrors your passion for intricate cultural storytelling. Get ready to be drawn into a realm where characters' techniques are as enthralling as their personal journeys.",
+          "mean_nll": 2.4981744939630683,
+          "ppl": 12.160274505615234,
+          "n_target_tokens": 121
+        },
+        {
+          "label": "b",
+          "choice": "If you're ready to bask in the serenity of lyrical prose and heartfelt narrative, I recommend 'Whisper of the Pines: A Solitude Journey.' This novel invites you into a world where introspective characters find solace among enchanting landscapes. It's a seamless amalgamation of poetic descriptions and emotionally resonant plots. Experience the gentle cadence of life in remote settings, where the beauty of nature is celebrated and characters' inner reflections are as absorbing as their outer voyages.",
+          "mean_nll": 2.8263090530244432,
+          "ppl": 16.88302993774414,
+          "n_target_tokens": 101
+        },
+        {
+          "label": "c",
+          "choice": "\"Why not dive into 'Tropical Love: The Ocean's Whisper'? It's a romance novel that explores the enchanting life on an island paradise, where love blossoms against the backdrop of beautiful sandy beaches. Immerse yourself in a world where the sea's melody and gentle breezes set the stage for heartwarming encounters and enduring bonds. Feel the warmth of island culture and traditions as they shape the love story's twists and turns, providing both a comforting escape and a celebration of vibrant, idyllic life. Get ready to explore relationships as dynamic and inviting as the breathtaking vistas that frame this sun-kissed tale.\"",
+          "mean_nll": 2.566754008448401,
+          "ppl": 13.023483276367188,
+          "n_target_tokens": 129
+        },
+        {
+          "label": "d",
+          "choice": "If you're ready to uncover the intricacies of historical intrigue and suspense, I recommend 'The Echoes of Byzantium: A Time-honored Tale.' This historical fiction novel leads you through a labyrinth of political maneuvers in the court of emperors and empresses. It's a riveting combination of vividly described pages and suspenseful narratives. Feel the tension of courtly conspiracies and the allure of ancient societies, all crafted to engross those who appreciate compelling historical dramas.",
+          "mean_nll": 2.918581518796411,
+          "ppl": 18.515005111694336,
+          "n_target_tokens": 101
+        }
+      ],
+      "wall_s": 0.2209789752960205
+    },
+    {
+      "global_idx": 27,
+      "persona_id": "14",
+      "question_id": "d4c7f5f9-abf1-4273-98ce-1c9beb3d7cc9",
+      "qtype_canonical": "aligned_rec",
+      "topic": "sportsRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Consider indulging in the mystical realm of 'Eldoria: Chronicles of Fantasy'. This game offers rich lore and an expansive universe to explore, filled with mythical creatures and powerful magic. As you embark on quests, you'll unravel ancient secrets and build alliances with other adventurers. It's a narrative-driven experience that rewards creativity and critical thinking. With a strong focus on solo exploration and puzzle-solving, you'll find yourself getting lost in this fantastical world for hours on end. Whether you're scaling dragon-infested mountains or deciphering ancient runes, this game is perfect for those who enjoy deep storytelling and fantasy adventures.",
+          "mean_nll": 2.006645751953125,
+          "ppl": 7.438324928283691,
+          "n_target_tokens": 125
+        },
+        {
+          "label": "b",
+          "choice": "Dive into the whimsical world of 'Critter Crossing: Island Retreat'. This delightful simulation game allows you to manage your very own island paradise, cultivating the land and befriending a cast of charming critters. With endless opportunities for creativity, you can design your island just the way you like it, while also engaging in various activities such as fishing, bug-catching, and crafting. The game emphasizes relaxation and encourages you to unwind with its charming and colorful art style. It's an ideal escape for those looking to enjoy a laid-back, yet fulfilling gaming experience filled with warmth and friendliness.",
+          "mean_nll": 2.0432626692975155,
+          "ppl": 7.715742588043213,
+          "n_target_tokens": 122
+        },
+        {
+          "label": "c",
+          "choice": "Sure! Given your passion for sports games and the joy you find in strategic multiplayer experiences, I'd recommend diving into 'FIFA 23: Ultimate Friends League'. This game takes everything you love about sports, camaraderie, and strategy to a whole new level. Not only can you manage your favorite team and develop unique gameplay strategies, but you can also join an exclusive online league where every match offers new challenges and opportunities to learn. Plus, the vibrant online community is all about collaboration and forming bonds that can lead to lifetime gaming friendships. It's an exhilarating way to unwind and connect with others who share the same enthusiasm for competition and strategy!",
+          "mean_nll": 2.0519349966476215,
+          "ppl": 7.7829461097717285,
+          "n_target_tokens": 134
+        },
+        {
+          "label": "d",
+          "choice": "Sure! Considering the vibrant cultures and community aspects you naturally connect with, I'd suggest diving into 'Tropical Island Dance Party Adventure'. This game celebrates the rhythm and spirit of island life, offering a vibrant experience steeped in tradition and joy. You can dance your way through lush landscapes, collect unique outfits, and participate in festive virtual gatherings. The welcoming online community fosters a sense of belonging and cultural exchange, allowing you to engage with players who appreciate the warmth and diversity of island traditions. It's an engaging and celebratory way to unwind and connect with others who value community and cultural richness!",
+          "mean_nll": 2.4242168489049694,
+          "ppl": 11.293380737304688,
+          "n_target_tokens": 122
+        }
+      ],
+      "wall_s": 0.2220907211303711
+    },
+    {
+      "global_idx": 28,
+      "persona_id": "14",
+      "question_id": "f15c1ce4-7968-48bc-b521-70185ae75808",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "studyConsultation",
+      "correct_answer": "a",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I remember you mentioned that you like creating flashcards for study purposes. It's always fulfilling to organize study materials. How did it go?",
+          "mean_nll": 1.9515936533610025,
+          "ppl": 7.039897441864014,
+          "n_target_tokens": 30
+        },
+        {
+          "label": "b",
+          "choice": "It's understandable; sticking to one method can sometimes lead to stagnation. Exploring new study techniques like discussion groups or visual aids might add variation and renew interest, ensuring a comprehensive understanding beyond just memorization. Engaging in group discussions can sharpen your analytical skills and open you to diverse perspectives, reinforcing knowledge through active participation. Balancing between different methods can sustain interest over time, making the learning process more rewarding. Ultimately, diversifying these approaches can reignite enthusiasm for your studies, ensuring long-term engagement and growth.",
+          "mean_nll": 2.6298511433151535,
+          "ppl": 13.8717041015625,
+          "n_target_tokens": 106
+        },
+        {
+          "label": "c",
+          "choice": "I recall you mentioning that you prefer using digital apps for your study materials. It's interesting that you chose to organize flashcards instead. How did it feel?",
+          "mean_nll": 1.8663529788746553,
+          "ppl": 6.464676856994629,
+          "n_target_tokens": 34
+        },
+        {
+          "label": "d",
+          "choice": "That sounds productive, organizing study materials can be quite satisfying. Is this a new approach for your learning?",
+          "mean_nll": 2.6852874755859375,
+          "ppl": 14.662415504455566,
+          "n_target_tokens": 23
+        }
+      ],
+      "wall_s": 0.22682905197143555
+    },
+    {
+      "global_idx": 29,
+      "persona_id": "14",
+      "question_id": "4d211f85-0046-4cc4-98e1-24fbdfa658ac",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "onlineShopping",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's great to hear you're staying active with the fashion challenges. Since you've mentioned before how much you enjoy following fashion trends online, I imagine this would have been another exciting experience for you. It sounds like a dynamic way to engage with the community, doesn't it?",
+          "mean_nll": 1.8739268861967942,
+          "ppl": 6.513825416564941,
+          "n_target_tokens": 58
+        },
+        {
+          "label": "b",
+          "choice": "It's nice to know you're enjoying painting and exploring different art techniques. Since you've mentioned before how much you enjoy creativity, I imagine this fashion challenge was a great break from that routine.",
+          "mean_nll": 3.1355360077648626,
+          "ppl": 23.000959396362305,
+          "n_target_tokens": 41
+        },
+        {
+          "label": "c",
+          "choice": "It's interesting to hear you're participating in these challenges. I recall you mentioning before how you don't typically follow fashion trends online. I hope you enjoyed this particular experience.",
+          "mean_nll": 2.354590338629645,
+          "ppl": 10.5338134765625,
+          "n_target_tokens": 37
+        },
+        {
+          "label": "d",
+          "choice": "It's intriguing that you've been taking part in fashion challenges. I wonder how you found this activity and whether you connected with anyone new through it.",
+          "mean_nll": 2.2063872814178467,
+          "ppl": 9.082842826843262,
+          "n_target_tokens": 32
+        }
+      ],
+      "wall_s": 0.1978154182434082
+    },
+    {
+      "global_idx": 30,
+      "persona_id": "14",
+      "question_id": "ca286130-a961-4f5d-8712-4d9c692d6c86",
+      "qtype_canonical": "recall_facts",
+      "topic": "medicalConsultation",
+      "correct_answer": "d",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Shifting focus from the demanding task of keeping up with numerous medical journals could allow space for more leisure pursuits such as exploring nature trails or journaling for mindfulness.",
+          "mean_nll": 3.6796984953038834,
+          "ppl": 39.63444137573242,
+          "n_target_tokens": 34
+        },
+        {
+          "label": "b",
+          "choice": "Instead of focusing on overwhelming tasks like keeping up with numerous medical journals, it might help to cut down on those and perhaps take up new hobbies like gardening or cooking as calming activities.",
+          "mean_nll": 2.8638147052965666,
+          "ppl": 17.528263092041016,
+          "n_target_tokens": 38
+        },
+        {
+          "label": "c",
+          "choice": "While managing a busy schedule with numerous medical journals, it may be worthwhile to allocate time for relaxation through engaging in activities like painting or listening to music rather than those readings.",
+          "mean_nll": 3.9008581373426647,
+          "ppl": 49.444862365722656,
+          "n_target_tokens": 36
+        },
+        {
+          "label": "d",
+          "choice": "Considering how overwhelming you've found keeping up with numerous medical journals, it might be beneficial to reduce those subscriptions to make room for more calming activities like yoga and meditation.",
+          "mean_nll": 3.1982142857142857,
+          "ppl": 24.48876190185547,
+          "n_target_tokens": 35
+        }
+      ],
+      "wall_s": 0.21289849281311035
+    },
+    {
+      "global_idx": 31,
+      "persona_id": "14",
+      "question_id": "4bcd9f41-abd0-4ba0-a478-bce2b760ced2",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "movieRecommendation",
+      "correct_answer": "d",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It sounds like you've enjoyed musical concerts in the past. Let me know if there's anything specific you'd like to explore or discuss about them!",
+          "mean_nll": 1.8827714920043945,
+          "ppl": 6.571692943572998,
+          "n_target_tokens": 32
+        },
+        {
+          "label": "b",
+          "choice": "I know you haven't been a fan of film festivals in the past. Let me know if there's anything specific you'd like to explore or discuss about them!",
+          "mean_nll": 1.5517756870814732,
+          "ppl": 4.719843864440918,
+          "n_target_tokens": 35
+        },
+        {
+          "label": "c",
+          "choice": "Film festivals are a great way to discover indie movies. Let me know if there's anything specific you'd like to explore or discuss about them!",
+          "mean_nll": 1.502625003937752,
+          "ppl": 4.493468761444092,
+          "n_target_tokens": 31
+        },
+        {
+          "label": "d",
+          "choice": "It sounds like you've enjoyed film festivals in the past. Let me know if there's anything specific you'd like to explore or discuss about them!",
+          "mean_nll": 1.584254503250122,
+          "ppl": 4.875655174255371,
+          "n_target_tokens": 32
+        }
+      ],
+      "wall_s": 0.2107093334197998
+    },
+    {
+      "global_idx": 32,
+      "persona_id": "14",
+      "question_id": "a83ed2a8-43e0-4877-be13-097e0e2f5b40",
+      "qtype_canonical": "suggest_new",
+      "topic": "onlineShopping",
+      "correct_answer": "d",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "After switching over to a rotating meal plan, I've found a new way to maintain an efficient shopping routine for household essentials. Essentially, I developed a two-week rotational menu that includes a variety of my family's favorite meals. Based on this plan, I built a master list of ingredients and household goods that I can use repeatedly. By knowing exactly what I need every week or two, I avoid the stress of decision-making each time I go shopping. This system not only saves time but also cuts down on wasted food, as I buy only what I plan to use. It’s been a wonderful method for streamlining both meal preparation and the shopping process, enhancing my overall organization.",
+          "mean_nll": 2.1001856707144473,
+          "ppl": 8.167685508728027,
+          "n_target_tokens": 138
+        },
+        {
+          "label": "b",
+          "choice": "I've taken to making a detailed shopping list on my phone organized by the layout of my usual grocery store. This may sound a bit meticulous, but having the list arranged in the order that I’ll find the items in the aisles actually saves a surprising amount of time. Rather than zigzagging back and forth across the store, I can move systematically from one section to the next, checking things off as I go. Not only does this streamline the process, but it also minimizes impulse purchases since I'm less likely to wander aimlessly through the store. The organization of my list is like having a custom map, making the entire experience much more efficient.",
+          "mean_nll": 1.9369875307436342,
+          "ppl": 6.937819480895996,
+          "n_target_tokens": 135
+        },
+        {
+          "label": "c",
+          "choice": "I recently started using a grocery delivery service that has been a game-changer for managing my time when shopping for essentials. With just a few clicks, I can have all my necessary items brought right to my doorstep, saving me the hassle of navigating crowded aisles and waiting in long checkout lines. The app also allows me to create a favorites list, which speeds up the ordering process and ensures I never forget the staples I rely on. Plus, browsing the digital shelves lets me easily compare prices and find the best deals available, helping me stick to my budget. Overall, it's been a real boost to my efficiency and convenience, giving me more time to focus on other tasks.",
+          "mean_nll": 1.446384374646173,
+          "ppl": 4.2477288246154785,
+          "n_target_tokens": 138
+        },
+        {
+          "label": "d",
+          "choice": "You might want to consider setting up regular online grocery shopping, which can be a convenient way to browse a wide variety of products from home, compare prices easily, and discover new items, all while freeing up some of your precious time.",
+          "mean_nll": 2.5269747364277744,
+          "ppl": 12.515584945678711,
+          "n_target_tokens": 49
+        }
+      ],
+      "wall_s": 0.22362399101257324
+    },
+    {
+      "global_idx": 33,
+      "persona_id": "14",
+      "question_id": "e8664306-c991-417b-ac6c-cbc36e07fff9",
+      "qtype_canonical": "reasons_behind",
+      "topic": "studyConsultation",
+      "correct_answer": "b",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Thanks for sharing your updated preferences regarding academic conferences. It sounds like the initial excitement about the topics being covered may have waned, and you're now focusing on activities outside the conference as more beneficial. Your feedback is invaluable for tailoring future engagements.",
+          "mean_nll": 3.227101839505709,
+          "ppl": 25.206497192382812,
+          "n_target_tokens": 52
+        },
+        {
+          "label": "b",
+          "choice": "I see you've shifted your preference once more regarding academic conferences. Previously, you found them energizing and full of networking opportunities. How do you feel about these aspects now? Understanding the reasons behind these changes can help us further refine your preferences.",
+          "mean_nll": 2.969591926125919,
+          "ppl": 19.483966827392578,
+          "n_target_tokens": 51
+        },
+        {
+          "label": "c",
+          "choice": "I appreciate your updated view on academic conferences. It seems you've found a shift in how much value you get from the sessions themselves, perhaps finding them more informative than before. It would be helpful to understand if this change reflects your current priorities in terms of learning and professional development.",
+          "mean_nll": 2.814915361075566,
+          "ppl": 16.69176483154297,
+          "n_target_tokens": 58
+        },
+        {
+          "label": "d",
+          "choice": "It's great to hear more about your evolving stance on academic conferences. Perhaps you've started to see them as a bit too demanding in terms of time and energy, and now prefer more intimate gatherings for professional growth. Let us know how this aligns with your present goals or interests.",
+          "mean_nll": 2.92857231528072,
+          "ppl": 18.70091438293457,
+          "n_target_tokens": 59
+        }
+      ],
+      "wall_s": 0.21126008033752441
+    },
+    {
+      "global_idx": 34,
+      "persona_id": "14",
+      "question_id": "54d7f853-64d3-440b-868b-6f9c9eb36d82",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "homeDecoration",
+      "correct_answer": "b",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "That's great! I remember you were more interested in landscape photography. Engaging with fellow photographers must be an enriching experience.",
+          "mean_nll": 1.9221647807529993,
+          "ppl": 6.835740566253662,
+          "n_target_tokens": 28
+        },
+        {
+          "label": "b",
+          "choice": "That's great! I remember you were focusing on capturing home decor aesthetics. Engaging with fellow photographers must be an enriching experience.",
+          "mean_nll": 2.051489862902411,
+          "ppl": 7.779482364654541,
+          "n_target_tokens": 29
+        },
+        {
+          "label": "c",
+          "choice": "That's great! It's wonderful that you're exploring new hobbies. Engaging with fellow photographers must be an enriching experience.",
+          "mean_nll": 1.7288777487618583,
+          "ppl": 5.634327411651611,
+          "n_target_tokens": 28
+        },
+        {
+          "label": "d",
+          "choice": "That's great! I remember you were focusing on capturing home decor aesthetics during your recent travel adventures. Engaging with fellow photographers must be an enriching experience.",
+          "mean_nll": 2.2000660615808822,
+          "ppl": 9.025609970092773,
+          "n_target_tokens": 34
+        }
+      ],
+      "wall_s": 0.20648837089538574
+    },
+    {
+      "global_idx": 35,
+      "persona_id": "14",
+      "question_id": "69a110e6-9aa9-49d4-af05-318e9bbb8c03",
+      "qtype_canonical": "reasons_behind",
+      "topic": "studyConsultation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I see you've decided to change your attitude towards creating flashcards again. Previously, you mentioned they became too repetitive and ineffective, leading to monotony in studying. Is there a new strategy or tool you've found that addresses these issues, or have you discovered a way to make them more engaging?",
+          "mean_nll": 2.4874740108366935,
+          "ppl": 12.030847549438477,
+          "n_target_tokens": 62
+        },
+        {
+          "label": "b",
+          "choice": "It's interesting to see your renewed interest in flashcards. Maybe you've found a new community or group study method that makes flashcard use more fun and interactive, or perhaps there's a particular topic that benefits from this style of learning?",
+          "mean_nll": 2.95225341796875,
+          "ppl": 19.14905548095703,
+          "n_target_tokens": 50
+        },
+        {
+          "label": "c",
+          "choice": "Your shift in attitude towards flashcards is noteworthy! Have you encountered new research that highlights their effectiveness for memory retention, or have you started incorporating technology, like apps, to enhance your learning experience?",
+          "mean_nll": 2.988996552258003,
+          "ppl": 19.865737915039062,
+          "n_target_tokens": 41
+        },
+        {
+          "label": "d",
+          "choice": "You've decided to change your approach to flashcards, which is exciting! Did you discover a new subject that reignited your enthusiasm for this method, or have you set specific goals that make the process more rewarding?",
+          "mean_nll": 2.616192626953125,
+          "ppl": 13.683525085449219,
+          "n_target_tokens": 45
+        }
+      ],
+      "wall_s": 0.22461366653442383
+    },
+    {
+      "global_idx": 36,
+      "persona_id": "14",
+      "question_id": "099db379-b4ca-4d4c-94ef-28e4424f03f1",
+      "qtype_canonical": "suggest_new",
+      "topic": "foodRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Why not explore the art of charcuterie? Crafting your own charcuterie board is both creative and stress-free. You can play with different textures and flavors of meats, cheeses, and accompaniments like fruits, nuts, and honey. It's a feast for the eyes as much as the palate and can be a meditative process as you arrange each component to balance taste and visual appeal. As a bonus, sharing your creation brings joy and conversation, making it perfect for relaxed social gatherings.",
+          "mean_nll": 1.642439000746783,
+          "ppl": 5.167758464813232,
+          "n_target_tokens": 102
+        },
+        {
+          "label": "b",
+          "choice": "How about hosting a casual dinner for friends or family where you can experiment with new recipes in a relaxed setting? This way, you can focus on enjoying the process of creating and sharing delicious meals without the pressure of competition.",
+          "mean_nll": 1.481299690578295,
+          "ppl": 4.398658752441406,
+          "n_target_tokens": 46
+        },
+        {
+          "label": "c",
+          "choice": "One suggestion might be diving into the world of fermentation. It's a fascinating process where you not only preserve food but explore flavors in a unique way. Fermentation allows you to experiment with various ingredients to create complex tastes at your own pace. It’s a relaxed yet creative endeavor where time is on your side, offering a sense of surprise and satisfaction when the process culminates in delicious results. Plus, it builds patience and an understanding of how time and nature interact to enhance food.",
+          "mean_nll": 1.996719514480745,
+          "ppl": 7.364855766296387,
+          "n_target_tokens": 99
+        },
+        {
+          "label": "d",
+          "choice": "Consider trying homemade pasta-making, a rewarding endeavor that embraces creativity without pressure. With just flour, eggs, and a bit of technique, you transform simple ingredients into a canvas for culinary exploration. Experiment with different herbs or fillings to keep the experience innovative and personal. It allows you to immerse yourself in the soothing rhythm of kneading and rolling, offering both a tactile and sensory experience that’s enhanced by the satisfaction of creating something from scratch.",
+          "mean_nll": 2.2254303313873627,
+          "ppl": 9.257465362548828,
+          "n_target_tokens": 91
+        }
+      ],
+      "wall_s": 0.21264219284057617
+    },
+    {
+      "global_idx": 37,
+      "persona_id": "14",
+      "question_id": "829dd3fc-bab7-4b49-bc0f-0c6064e4eed7",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "foodRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's interesting that you came across a cooking contest. From what you've mentioned before, it seems like you might prefer more laid-back cooking activities. It's always great to explore different culinary experiences.",
+          "mean_nll": 2.0346401759556363,
+          "ppl": 7.649498462677002,
+          "n_target_tokens": 42
+        },
+        {
+          "label": "b",
+          "choice": "It's interesting that you came across a cooking contest. From what you've mentioned before, it seems like you might prefer more laid-back cooking activities. It's always great to explore different culinary experiences.",
+          "mean_nll": 2.0346401759556363,
+          "ppl": 7.649498462677002,
+          "n_target_tokens": 42
+        },
+        {
+          "label": "c",
+          "choice": "It's interesting that you came across a cooking contest. Competitions can be incredibly inspiring and exciting, offering a unique culinary thrill. It's always great to explore different culinary experiences.",
+          "mean_nll": 2.803548913252981,
+          "ppl": 16.503108978271484,
+          "n_target_tokens": 38
+        },
+        {
+          "label": "d",
+          "choice": "It's interesting that you came across a cooking contest. From what you've mentioned before, it seems like you might prefer high-energy and competitive cooking events. It's always great to explore different culinary experiences.",
+          "mean_nll": 2.2937400285587755,
+          "ppl": 9.91193962097168,
+          "n_target_tokens": 43
+        }
+      ],
+      "wall_s": 0.20552277565002441
+    },
+    {
+      "global_idx": 38,
+      "persona_id": "14",
+      "question_id": "31192a77-dac4-4bbd-bfaf-f7551240afc0",
+      "qtype_canonical": "aligned_rec",
+      "topic": "datingConsultation",
+      "correct_answer": "a",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "How about organizing a 'Culinary Craft Night'? Bring your friends together for an evening where cooking meets crafting! Each person can come with a food recipe that incorporates a crafting activity. For instance, making edible art from fresh ingredients or designing personalized pizza toppings. This way, you blend creativity with cooking, creating a unique, hands-on experience that’s perfect for fun, laughter, and delicious food. Plus, it’s a great way to see everyone's artistic flair in the kitchen. Let the flavors and creativity flow, and watch your dining table transform into a masterpiece of culinary craftsmanship!",
+          "mean_nll": 2.2585177381499473,
+          "ppl": 9.56889533996582,
+          "n_target_tokens": 119
+        },
+        {
+          "label": "b",
+          "choice": "How about planning a 'Movie Marathon & Gaming Night'? Invite your friends over for a back-to-back screening of classic blockbusters or binge-watch an entire series. Set up a gaming station with popular video games and board games for everyone to enjoy between films. This kind of gathering encourages relaxation and bonding over shared cinematic experiences without the need for any hands-on artistic crafting.",
+          "mean_nll": 2.549216715494792,
+          "ppl": 12.797077178955078,
+          "n_target_tokens": 75
+        },
+        {
+          "label": "c",
+          "choice": "Why not host an 'Outdoor Adventure Day' with your friends? Spend a day exploring nature trails, engaging in outdoor sports, or organizing a friendly scavenger hunt. Each person can bring their favorite outdoor game or activity for everyone to try, maximizing fun and physical activity. It’s a suitable way to discover mutual interests while enjoying the great outdoors and bonding over shared adventures.",
+          "mean_nll": 2.2901601289447986,
+          "ppl": 9.876519203186035,
+          "n_target_tokens": 76
+        },
+        {
+          "label": "d",
+          "choice": "I'm sorry, but I can't assist with that request.",
+          "mean_nll": 1.0173006693522135,
+          "ppl": 2.765719175338745,
+          "n_target_tokens": 15
+        }
+      ],
+      "wall_s": 0.23817706108093262
+    },
+    {
+      "global_idx": 39,
+      "persona_id": "14",
+      "question_id": "f1960e59-4e5f-4944-90b2-7c2bbe21e508",
+      "qtype_canonical": "suggest_new",
+      "topic": "studyConsultation",
+      "correct_answer": "c",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Another effective way to liven up study sessions is by integrating game-based learning tools. Platforms like Kahoot! or Quizlet offer interactive quizzes and flashcards that make reviewing concepts feel like a fun challenge rather than a chore. These tools often feature gamified elements such as points or leaderboards, which can foster a sense of competition and motivation among study groups. By breaking down information into fun, bite-sized activities, you create a dynamic environment that balances education with engagement, enhancing both individual and collaborative learning experiences.",
+          "mean_nll": 1.7233428955078125,
+          "ppl": 5.6032280921936035,
+          "n_target_tokens": 104
+        },
+        {
+          "label": "b",
+          "choice": "To make study sessions more enjoyable, consider incorporating storytelling techniques into your learning. Transform facts and concepts into narratives with characters and plots. This method not only helps in retaining information longer but also makes recall during exams easier. By weaving elements like historical events or scientific processes into compelling stories, you can create a vivid context that energizes the learning atmosphere. Additionally, engaging your imagination in this way helps you develop a personal connection with the material, encouraging deeper exploration and curiosity about the subjects at hand.",
+          "mean_nll": 1.8487208557128907,
+          "ppl": 6.35168981552124,
+          "n_target_tokens": 100
+        },
+        {
+          "label": "c",
+          "choice": "You might enjoy exploring apps that incorporate gamification with interactive features like challenges, achievements, and colorful animations to make studying feel more adventurous.",
+          "mean_nll": 3.3893506280307113,
+          "ppl": 29.64669418334961,
+          "n_target_tokens": 29
+        },
+        {
+          "label": "d",
+          "choice": "Consider using mind mapping techniques to visually organize your thoughts and ideas during study sessions. Creating colorful diagrams that link concepts together can help you see the bigger picture and identify key relationships between topics. This visualization not only aids memory retention but also supports creative problem-solving by making connections that might not be immediately apparent in traditional note-taking formats. Sharing these mind maps with fellow students can spark collaborative discussions, enhancing comprehension and opening up new perspectives on the material.",
+          "mean_nll": 1.930667961968316,
+          "ppl": 6.894114017486572,
+          "n_target_tokens": 90
+        }
+      ],
+      "wall_s": 0.2273118495941162
+    },
+    {
+      "global_idx": 40,
+      "persona_id": "14",
+      "question_id": "5e067afd-994b-4250-88d3-a1294a21baf9",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "sportsRecommendation",
+      "correct_answer": "d",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I recall you mentioning that you find live sports events quite dull. It's always an interesting change of pace from everyday activities.",
+          "mean_nll": 3.310256110297309,
+          "ppl": 27.39213752746582,
+          "n_target_tokens": 27
+        },
+        {
+          "label": "b",
+          "choice": "I remember you expressing your love for musical concerts. It's always an interesting change of pace from everyday activities.",
+          "mean_nll": 3.220674514770508,
+          "ppl": 25.045007705688477,
+          "n_target_tokens": 24
+        },
+        {
+          "label": "c",
+          "choice": "It must have been an exciting experience. I don't think you ever mentioned your views on live sports before.",
+          "mean_nll": 2.471034526824951,
+          "ppl": 11.834684371948242,
+          "n_target_tokens": 24
+        },
+        {
+          "label": "d",
+          "choice": "I remember you mentioned enjoying live sports events before. It's always an interesting change of pace from everyday activities.",
+          "mean_nll": 2.6582981745402017,
+          "ppl": 14.271981239318848,
+          "n_target_tokens": 24
+        }
+      ],
+      "wall_s": 0.19719910621643066
+    },
+    {
+      "global_idx": 41,
+      "persona_id": "14",
+      "question_id": "c88eabe1-3b4b-4c32-8868-8546e178a9ac",
+      "qtype_canonical": "generalize",
+      "topic": "financialConsultation",
+      "correct_answer": "d",
+      "pred_answer": "d",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Your interest in education is commendable. Consider focusing on mentorship or tutoring to help bridge knowledge gaps within your community. Personal connections and guidance can make a big difference for students and inspire them to pursue their own goals.",
+          "mean_nll": 2.3444306746773096,
+          "ppl": 10.427334785461426,
+          "n_target_tokens": 46
+        },
+        {
+          "label": "b",
+          "choice": "It's fantastic that you're thinking about educational improvement. Volunteering with local schools or after-school programs can be a great way to get started. It's important to support the foundations of education through direct action and collaboration in the classroom.",
+          "mean_nll": 2.2688162231445315,
+          "ppl": 9.667949676513672,
+          "n_target_tokens": 50
+        },
+        {
+          "label": "c",
+          "choice": "Improving education is a noble endeavor. Partnering with local businesses to provide workshops on employability and skill development would be a significant way to contribute. Equipping people with practical skills can empower them in the workforce and beyond.",
+          "mean_nll": 2.7093463654213763,
+          "ppl": 15.019454002380371,
+          "n_target_tokens": 47
+        },
+        {
+          "label": "d",
+          "choice": "It's wonderful to hear your commitment to improving education. You could explore joining or forming a group that focuses on educational support and success stories in your area. Seeing the direct impact of such efforts can be incredibly motivating. Additionally, sharing knowledge and resources with others can create a ripple effect of empowerment and success.",
+          "mean_nll": 1.7485896519252233,
+          "ppl": 5.746492385864258,
+          "n_target_tokens": 63
+        }
+      ],
+      "wall_s": 0.20699286460876465
+    },
+    {
+      "global_idx": 42,
+      "persona_id": "14",
+      "question_id": "a94fe78d-7e4f-4878-9f67-2961389c7eb4",
+      "qtype_canonical": "generalize",
+      "topic": "studyConsultation",
+      "correct_answer": "b",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "If you're someone who enjoys learning hands-on, community workshops can be an excellent way to dive into new topics with like-minded individuals. They can help cultivate a sense of camaraderie and support, making them a great choice if you want to explore new interests actively.",
+          "mean_nll": 2.1512268611363004,
+          "ppl": 8.595396041870117,
+          "n_target_tokens": 56
+        },
+        {
+          "label": "b",
+          "choice": "Attending community workshops with interactive and group activities can be invigorating, offering both the chance to learn new perspectives and the possibility of meeting people with similar interests. They often create opportunities for enriching conversations and connections, similar to engaging discussions at academic conferences. It might be a valuable experience if you're looking to expand your network or gain fresh ideas.",
+          "mean_nll": 2.317261578285531,
+          "ppl": 10.147848129272461,
+          "n_target_tokens": 73
+        },
+        {
+          "label": "c",
+          "choice": "Participating in community workshops with group activities can be a refreshing experience, providing a break from your daily routine and a chance to engage practically in various topics. They often lead to personal growth and new friendships, making it worthwhile if you seek to try something different.",
+          "mean_nll": 2.55135498046875,
+          "ppl": 12.824467658996582,
+          "n_target_tokens": 55
+        },
+        {
+          "label": "d",
+          "choice": "Such community workshops are usually filled with interactive elements that can be both fun and educational. You might enjoy the friendly atmosphere and the ability to experiment with new hobbies or skills. This could be a good fit if you're looking for a creative outlet or a way to de-stress.",
+          "mean_nll": 2.3832734206627153,
+          "ppl": 10.84032917022705,
+          "n_target_tokens": 58
+        }
+      ],
+      "wall_s": 0.20533132553100586
+    },
+    {
+      "global_idx": 43,
+      "persona_id": "14",
+      "question_id": "3727a5ab-cbed-42b9-8ddd-bf648b6e84f2",
+      "qtype_canonical": "suggest_new",
+      "topic": "bookRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I recently took the plunge into the world of speculative fiction, exploring themes that intertwine with our reality in thought-provoking ways. The way authors imagine alternate worlds, yet infuse them with recognizable dilemmas truly amazes me. Every chapter presented a new perspective, challenging my understanding of society, technology, and morality. The imaginative narratives are not just entertaining but also serve as a mirror, encouraging introspection about our world and our future. It's an enlightening experience that's expanded my literary horizons.",
+          "mean_nll": 2.1439220610119047,
+          "ppl": 8.532838821411133,
+          "n_target_tokens": 105
+        },
+        {
+          "label": "b",
+          "choice": "You might enjoy trying some classic novels or literary fiction that focus on character development and intricate plots, offering rich layers of meaning to delve into.",
+          "mean_nll": 1.725658925374349,
+          "ppl": 5.616220474243164,
+          "n_target_tokens": 30
+        },
+        {
+          "label": "c",
+          "choice": "I recently revisited some classic existentialist literature, and it was an intellectually invigorating experience. These works can really push you to question the nature of existence, freedom, and choice in profound ways. It felt like a mental workout, where every page demanded deep thought and reflection on philosophical ideas that are both timeless and incredibly relevant in today’s world. It’s always intriguing to see how these narratives can simultaneously pull you into a unique storyline while encouraging you to reflect on your own beliefs and perspectives.",
+          "mean_nll": 2.0054823931525734,
+          "ppl": 7.429677486419678,
+          "n_target_tokens": 102
+        },
+        {
+          "label": "d",
+          "choice": "I found an old collection of philosophical essays my grandfather used to read, and diving into it has been unexpectedly rewarding. The essays cover a range of topics, each one penned by thinkers who shaped intellectual discourse through the ages. As I read, not a page turns without making me pause to ponder over their implications and how these ideas relate to modern existential questions. It’s almost as if engaging with these texts has rekindled a desire within me to ponder life's greater meanings.",
+          "mean_nll": 2.5637538949238885,
+          "ppl": 12.984467506408691,
+          "n_target_tokens": 97
+        }
+      ],
+      "wall_s": 0.2205061912536621
+    },
+    {
+      "global_idx": 44,
+      "persona_id": "14",
+      "question_id": "9417aae1-7b85-467d-ab81-3a6c1b53dbdc",
+      "qtype_canonical": "suggest_new",
+      "topic": "datingConsultation",
+      "correct_answer": "d",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Consider exploring stories of resilience and growth as a means to connect with others. In my experience, diving into narratives about overcoming adversity opened my eyes to the diverse experiences and triumphs that people have. These stories not only provide heartening insights but also lay the foundation for meaningful conversations with others who resonate with similar themes. Embracing these narratives allowed me to cultivate a positive outlook, ultimately enriching my life and fostering connections with people who share similar values of strength and positivity.",
+          "mean_nll": 2.2570420098058954,
+          "ppl": 9.554783821105957,
+          "n_target_tokens": 97
+        },
+        {
+          "label": "b",
+          "choice": "Volunteering could be an excellent avenue to explore. My own engagement in volunteer work revealed a profound way to bond with others who share similar values. The collaborative efforts and shared goals create a unique environment where friendships flourish through commitment to a common cause. These interactions are enriching not only due to the impact on the community but also because of the lasting friendships formed in the process. Through volunteering, I've grown both socially and personally, finding fulfillment in the collective effort to improve our surroundings.",
+          "mean_nll": 2.127521514892578,
+          "ppl": 8.394036293029785,
+          "n_target_tokens": 100
+        },
+        {
+          "label": "c",
+          "choice": "Perhaps organizing a potluck or community dinner could be enjoyable. I remember coordinating one such event, and it was an incredibly rewarding experience. Everyone contributed, bringing unique dishes and fostering conversations about cultural backgrounds. It provided a wonderful opportunity to connect with people on a deeper level and strengthen existing friendships while also forming new ones. Witnessing the camaraderie and collective enjoyment made me realize the power of bringing individuals together through shared activities. It inspired me to explore more opportunities to engage with my community, leading me to participate in regular volunteer work.",
+          "mean_nll": 2.365556349448108,
+          "ppl": 10.649961471557617,
+          "n_target_tokens": 109
+        },
+        {
+          "label": "d",
+          "choice": "You might enjoy exploring other social activities that involve group participation and personal expression, such as joining a dance club or attending dance workshops, where you can learn new styles and meet like-minded people.",
+          "mean_nll": 2.4155689239501954,
+          "ppl": 11.196137428283691,
+          "n_target_tokens": 40
+        }
+      ],
+      "wall_s": 0.20435428619384766
+    },
+    {
+      "global_idx": 45,
+      "persona_id": "14",
+      "question_id": "6174e6ad-01bf-46bc-adf9-b2fb687bcc82",
+      "qtype_canonical": "aligned_rec",
+      "topic": "sportsRecommendation",
+      "correct_answer": "d",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "How about organizing a virtual sports pub quiz with your friends? If you're a trivia buff with a sports flair, you can host or join an online pub quiz focused on sports history and legends. There are apps that let you create custom quiz sessions and challenge your friends in real-time. You’ll be ticking the boxes of social interaction, friendly competition, and testing knowledge on a broader range of sports topics rather than deep-dive analytics. It’s less about data mining and more about recalling those iconic sports moments through the years.",
+          "mean_nll": 2.6329824857622666,
+          "ppl": 13.915210723876953,
+          "n_target_tokens": 107
+        },
+        {
+          "label": "b",
+          "choice": "How about hosting a traditional luau party this weekend? Gather your friends for an immersive cultural experience, complete with traditional Pacific Islander music, dances, and cuisine. Imagine everyone getting involved in preparing a feast with dishes like roasted pig, tropical fruits, and coconut-based desserts. You could also include trying out hula dancing and playing music with ukuleles. The event can create a lively and vibrant atmosphere while allowing you and your friends to celebrate and appreciate your heritage together. It'll be an enriching and delightful way to spend the weekend, even if it's outside the realm of sports!",
+          "mean_nll": 2.3368795095396435,
+          "ppl": 10.348892211914062,
+          "n_target_tokens": 121
+        },
+        {
+          "label": "c",
+          "choice": "Why not try an intense weekend of fantasy sports draft strategy? If you're into the adrenaline rush of fantasy sports, there's a community event where enthusiasts gather online to draft fantasy teams. You'll delve into team formations, analyze past season performances, and explore player chemistry. It's like a fantasy manager's dream boot camp, perfect for those who love constructing the ultimate dream team. Plus, it's a chance to network with fellow fanatics and maybe even organize a league with your friends. It's more about strategic planning and less about the minute statistics, but definitely a great way to test your sports instincts!",
+          "mean_nll": 2.7779349050214215,
+          "ppl": 16.085765838623047,
+          "n_target_tokens": 124
+        },
+        {
+          "label": "d",
+          "choice": "Why not dive into a virtual sports analytics workshop? Given your keen interest in player stats, there's a fascinating online event happening this weekend that focuses on cutting-edge techniques in sports analytics. It's a blend of live analytics demonstrations, interactive sessions, and you even get to try out predicting player performances in upcoming games using real datasets. Plus, it's a great opportunity to bond with your friends, as you can join the sessions together and maybe even challenge each other on whose predictions are more accurate. It'll be like your cozy living room stats sessions, but on a much wider and more interactive platform. Sounds like a perfect way to spend your weekend and indulge your love for sports and stats!",
+          "mean_nll": 2.472162083217076,
+          "ppl": 11.848034858703613,
+          "n_target_tokens": 140
+        }
+      ],
+      "wall_s": 0.4064357280731201
+    },
+    {
+      "global_idx": 46,
+      "persona_id": "14",
+      "question_id": "f2a558ed-8543-4d29-9284-84d070617895",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "foodRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I remember you enjoy cooking and have an interest in culinary skills, especially Italian cuisine. It's always interesting to explore traditional recipes and techniques.",
+          "mean_nll": 2.1250584920247397,
+          "ppl": 8.37338638305664,
+          "n_target_tokens": 30
+        },
+        {
+          "label": "b",
+          "choice": "Attending a cooking class sounds like a delightful experience. It must have been fun to learn more about Italian cuisine over the weekend.",
+          "mean_nll": 1.9548008782523019,
+          "ppl": 7.062512397766113,
+          "n_target_tokens": 28
+        },
+        {
+          "label": "c",
+          "choice": "I recall you mentioned you dislike cooking and have little interest in culinary skills, especially Italian cuisine. It's always interesting to explore traditional recipes and techniques.",
+          "mean_nll": 2.818110466003418,
+          "ppl": 16.745180130004883,
+          "n_target_tokens": 32
+        },
+        {
+          "label": "d",
+          "choice": "I remember you enjoy reading and have an interest in literature, especially Italian authors. It's always interesting to explore traditional stories and narratives.",
+          "mean_nll": 3.2672892603380927,
+          "ppl": 26.240110397338867,
+          "n_target_tokens": 29
+        }
+      ],
+      "wall_s": 0.20992517471313477
+    },
+    {
+      "global_idx": 47,
+      "persona_id": "14",
+      "question_id": "02da09aa-c88a-4c09-b5d0-0da4d474f955",
+      "qtype_canonical": "reasons_behind",
+      "topic": "foodRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's wonderful to hear that another dinner party has rekindled your curiosity about wine. It seems like the shared experiences and the discussions about the stories behind each wine truly enhance your appreciation for pairing wine with meals. This aligns beautifully with your previous reasoning about how nurturing friendships and enjoying curated pairings helped you gain a deeper understanding of wines. It's amazing how such gatherings can create lasting memories while further exploring the art of wine pairing together.",
+          "mean_nll": 2.4157921088920844,
+          "ppl": 11.198638916015625,
+          "n_target_tokens": 91
+        },
+        {
+          "label": "b",
+          "choice": "I'm glad to hear that the dinner party sparked your interest in wine! It's quite remarkable how the flavors and diverse selections can ignite curiosity in individuals. You often find that exploring various wine regions and learning about the different varietals can lead to enjoyment. This shift in focus has certainly opened up new avenues for your palate.",
+          "mean_nll": 2.4445603314568016,
+          "ppl": 11.525480270385742,
+          "n_target_tokens": 68
+        },
+        {
+          "label": "c",
+          "choice": "It's great to learn that the recent dinner party has reignited your passion for wine. The company of friends and good food often creates an enjoyable atmosphere, making the evening memorable. While the impact of the gathering is significant, it's fascinating how individual preferences can evolve based on personal experiences and changes in taste over time.",
+          "mean_nll": 2.2431340073094224,
+          "ppl": 9.422816276550293,
+          "n_target_tokens": 66
+        },
+        {
+          "label": "d",
+          "choice": "It's fantastic to see that your interest in wine has blossomed yet again. The ambiance of the dinner party and the exquisite presentations can certainly make the experience feel more vibrant. It's interesting how the aesthetics and the overall mood can influence your tasting journey, even if you're not focusing on the stories behind the wines. It seems these elements have led you to appreciate wine in new ways.",
+          "mean_nll": 2.405074119567871,
+          "ppl": 11.079251289367676,
+          "n_target_tokens": 80
+        }
+      ],
+      "wall_s": 0.22875595092773438
+    },
+    {
+      "global_idx": 48,
+      "persona_id": "14",
+      "question_id": "02578679-61bb-426d-a982-5a6f4bdd2709",
+      "qtype_canonical": "generalize",
+      "topic": "musicRecommendation",
+      "correct_answer": "d",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's fantastic that you're thinking about stepping into a leadership role in your community. When considering this opportunity, you might evaluate the potential for personal growth and the development of new skills. Think about how the role could enhance your confidence and decision-making abilities. While the stress and time commitments are important to consider, the enriching experience and networking opportunities that come with such roles could also be very rewarding. Let me know if you want to explore strategies on how to manage responsibilities effectively.",
+          "mean_nll": 1.9606067891023597,
+          "ppl": 7.103636264801025,
+          "n_target_tokens": 98
+        },
+        {
+          "label": "b",
+          "choice": "It's wonderful to see you're interested in a leadership role within a community group. Reflect on this opportunity by thinking about your goals for personal growth and the skills you aim to develop. Leadership can sometimes be time-consuming and demanding, but it also can provide substantial personal and professional rewards. You might think about the skills you will gain and the impact you could have. Assessing these benefits and challenges should help you make a more informed decision. Let me know if you want to explore these ideas further.",
+          "mean_nll": 2.133457857019761,
+          "ppl": 8.444014549255371,
+          "n_target_tokens": 102
+        },
+        {
+          "label": "c",
+          "choice": "Taking a leadership role is an admirable pursuit and a great way to give back to the community. As you evaluate this opportunity, it's crucial to weigh the potential impact on your work-life balance and financial resources. Consider how this role might help you build new connections and strengthen your community. Although personal stress isn't mentioned directly here, maintaining a healthy balance will surely be key to enjoying this new experience fully. If you'd like more insights into managing community roles, I'd be happy to help.",
+          "mean_nll": 2.4255833389735457,
+          "ppl": 11.30882453918457,
+          "n_target_tokens": 101
+        },
+        {
+          "label": "d",
+          "choice": "It's great that you're considering ways to contribute to your community. If you've found in the past that activities requiring significant collaborative effort and time commitments were stressful, you may want to reflect on whether this leadership role aligns with your personal working style and how much time and energy you're willing to dedicate. It's important to consider if leading a group may similarly impact your personal time and stress levels. Perhaps assessing the flexibility and independence within the role could help in your decision-making process. If you find independent work more fulfilling, maybe there are other ways to contribute that align better with your preferences. Let me know if you'd like to explore more options or have additional concerns.",
+          "mean_nll": 2.175195224043252,
+          "ppl": 8.803903579711914,
+          "n_target_tokens": 138
+        }
+      ],
+      "wall_s": 0.20682787895202637
+    },
+    {
+      "global_idx": 49,
+      "persona_id": "14",
+      "question_id": "d4212d30-39e0-4789-8e91-d391045de3b8",
+      "qtype_canonical": "track_evolution",
+      "topic": "foodRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I recognize that your journey with foraging for local ingredients has evolved. Initially, you expressed a dislike for foraging due to the challenges and anxieties related to identifying safe plants, which affected your enjoyment. However, this experience gradually shifted as you gained more confidence and understanding, leading to a renewed interest and appreciation for the activity. This progression shows a significant change from your initial hesitation to embracing the adventure of foraging. It's great to see how your relationship with this activity has developed over time.",
+          "mean_nll": 1.972669564041437,
+          "ppl": 7.189845085144043,
+          "n_target_tokens": 102
+        },
+        {
+          "label": "b",
+          "choice": "I recognize that your journey with foraging for local ingredients has evolved. Initially, you expressed a love for foraging because of the challenges and adventures associated with identifying safe plants, which excited you. However, this love slowly turned into apprehension as you faced more difficulties, leading to a reluctance toward the activity. This progression shows a significant change from your initial enthusiasm to becoming more cautious about the adventure of foraging. It's fascinating to see how your relationship with this activity has transformed over time.",
+          "mean_nll": 2.2420729835434714,
+          "ppl": 9.412824630737305,
+          "n_target_tokens": 101
+        },
+        {
+          "label": "c",
+          "choice": "I recognize that your journey with foraging for local ingredients has evolved. Initially, you expressed an enthusiasm for foraging despite the challenges and anxieties related to identifying safe plants, which sparked your interest. However, this excitement gradually dwindled as you encountered more difficulties, leading to a sense of hesitation and cautiousness toward the activity. This progression shows a significant change from your initial excitement to becoming more reserved about the adventure of foraging. It's interesting to see how your relationship with this activity has evolved over time.",
+          "mean_nll": 2.1937697637648808,
+          "ppl": 8.96895980834961,
+          "n_target_tokens": 105
+        },
+        {
+          "label": "d",
+          "choice": "I recognize that your journey with foraging for local ingredients has evolved. Initially, you had no strong feelings about foraging due to the challenges and anxieties related to identifying safe plants, which did not really bother you. However, this neutral stance gradually developed into a keen interest as you gained more confidence and understanding, leading to an appreciation for the activity. This progression shows a significant change from your initial indifference to embracing the adventure of foraging. It's intriguing to see how your relationship with this activity has developed over time.",
+          "mean_nll": 2.3540802001953125,
+          "ppl": 10.528440475463867,
+          "n_target_tokens": 107
+        }
+      ],
+      "wall_s": 0.22572684288024902
+    },
+    {
+      "global_idx": 50,
+      "persona_id": "14",
+      "question_id": "db1e8b85-666f-4039-9b90-2b0590a6ddd9",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "familyRelations",
+      "correct_answer": "d",
+      "pred_answer": "d",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's surprising to hear that you're engaging in volunteering activities. It's always interesting to learn how different communities operate and contribute.",
+          "mean_nll": 2.3081065586635043,
+          "ppl": 10.055368423461914,
+          "n_target_tokens": 28
+        },
+        {
+          "label": "b",
+          "choice": "It's wonderful to hear about your dedication to environmental initiatives. It's always interesting to learn how different communities operate and contribute.",
+          "mean_nll": 2.6688368055555554,
+          "ppl": 14.423182487487793,
+          "n_target_tokens": 27
+        },
+        {
+          "label": "c",
+          "choice": "Meeting community organizers sounds insightful. Learning how different communities operate and contribute can be quite interesting.",
+          "mean_nll": 3.4079010009765627,
+          "ppl": 30.201786041259766,
+          "n_target_tokens": 20
+        },
+        {
+          "label": "d",
+          "choice": "It's great to hear that you're continuing with your family volunteering efforts. It's always interesting to learn how different communities operate and contribute.",
+          "mean_nll": 2.106981404622396,
+          "ppl": 8.223381996154785,
+          "n_target_tokens": 30
+        }
+      ],
+      "wall_s": 0.19164252281188965
+    },
+    {
+      "global_idx": 51,
+      "persona_id": "14",
+      "question_id": "55de1106-1ee1-4b92-bfae-61fe50c4f76b",
+      "qtype_canonical": "suggest_new",
+      "topic": "homeDecoration",
+      "correct_answer": "a",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "How about looking for an old piece with interesting hardware and trying your hand at restoring or updating it? You could experiment with different finishes or incorporate new materials like fabric or glass for a contrasting touch.",
+          "mean_nll": 3.113726360041921,
+          "ppl": 22.504749298095703,
+          "n_target_tokens": 41
+        },
+        {
+          "label": "b",
+          "choice": "Exploring creative ways to revive old furniture can be both fun and fulfilling. I once transformed an outdated side table, initially bought for its interesting silhouette rather than its outdated finish. I began by applying a bright, sunny yellow paint which completely rejuvenated its appearance. For an artistic touch, I decoupaged the drawer front with graphic wallpaper remnants I had from a previous project, which added a playful yet sophisticated element. This revamped piece became the talk of any room it graced, radiating personality and charm. The transformation process rekindled my love for DIY projects, blending past narratives with innovative, personal style.",
+          "mean_nll": 2.72269677734375,
+          "ppl": 15.221315383911133,
+          "n_target_tokens": 125
+        },
+        {
+          "label": "c",
+          "choice": "I've found that giving old furniture a second life can be incredibly rewarding. One of the most enjoyable projects I embarked on was turning an old dresser into a chic, modern piece. I started by sanding it down to its bare bones and applying a fresh coat of paint, choosing a deep navy blue that felt sophisticated yet versatile. To add a unique touch, I replaced the original knobs with vintage-inspired brass handles I discovered in a local thrift store. The transformation was remarkable, and it felt wonderful to create something new and stylish from a piece that was nearly forgotten. There's a certain satisfaction in crafting an inviting home environment with furniture that carries both history and your personal stamp of creativity.",
+          "mean_nll": 1.7857422314101843,
+          "ppl": 5.964005470275879,
+          "n_target_tokens": 139
+        },
+        {
+          "label": "d",
+          "choice": "A while ago, I came across an outdated wooden coffee table at a yard sale that seemed to have glorious potential beneath its well-worn surface. Seeing its possibilities sparked my imagination, inspiring me to breathe new life into it. With a little elbow grease, I sanded it down and applied a weathered wood stain, which really brought out the natural grain of the wood beautifully. The icing on the cake was using stencils to add some geometric designs on the tabletop for a modern twist. The entire process was so fulfilling, and it brought a fresh dynamism into my living room, effortlessly blending the table's history with my love for contemporary design.",
+          "mean_nll": 2.1576937338463344,
+          "ppl": 8.651162147521973,
+          "n_target_tokens": 133
+        }
+      ],
+      "wall_s": 0.21258831024169922
+    },
+    {
+      "global_idx": 52,
+      "persona_id": "14",
+      "question_id": "3bb76fd7-2c3d-492c-b5d8-51220bec8594",
+      "qtype_canonical": "aligned_rec",
+      "topic": "onlineShopping",
+      "correct_answer": "a",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Absolutely! Since you enjoy the convenience of online grocery shopping, why not explore a gourmet brunch experience you can prepare at home? Check out the artisanal selection of cheeses and fresh smoked salmon available from your favorite online grocery store. Pair them with some freshly baked croissants and a variety of organic jams. Don’t forget to include a selection of exotic fruits, like dragon fruit or passion fruit, which can often be found in the 'specialty' section. These touches will help you create a lavish and relaxing weekend brunch in your pajamas, accompanied by your favorite coffee — truly making the most of your precious downtime.",
+          "mean_nll": 2.2852669367714533,
+          "ppl": 9.828309059143066,
+          "n_target_tokens": 126
+        },
+        {
+          "label": "b",
+          "choice": "I'm sorry, I can't assist with that request.",
+          "mean_nll": 1.2246321269444056,
+          "ppl": 3.402914047241211,
+          "n_target_tokens": 14
+        },
+        {
+          "label": "c",
+          "choice": "Why not treat yourself to a day of culinary exploration by dining out at a highly-rated, cozy brunch spot in town? Let someone else do the cooking as you savor a delightful array of dishes, from avocado toast with poached eggs to classic French toast drizzled with maple syrup. Relish in the ambiance of the restaurant while catching up on a good book or people-watching, adding a social element to your relaxing weekend plan.",
+          "mean_nll": 2.289990234375,
+          "ppl": 9.87484073638916,
+          "n_target_tokens": 90
+        },
+        {
+          "label": "d",
+          "choice": "Visit a local farmers market for the freshest seasonal produce and inspiration. Begin your day with a leisurely stroll through the bustling stalls, picking up a colorful assortment of vegetables and herbs. When you return home, get creative in the kitchen by crafting a vibrant, farm-to-table salad or a hearty vegetable soup. Enjoy this culinary journey with a nice glass of chilled white wine, soaking in the calming weekend vibes.",
+          "mean_nll": 2.4652869814918157,
+          "ppl": 11.766858100891113,
+          "n_target_tokens": 84
+        }
+      ],
+      "wall_s": 0.20075345039367676
+    },
+    {
+      "global_idx": 53,
+      "persona_id": "14",
+      "question_id": "fdb9e274-d16e-400c-8551-c3d674823980",
+      "qtype_canonical": "generalize",
+      "topic": "datingConsultation",
+      "correct_answer": "b",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Starting a cooking group with friends can be a great way to share cultural experiences and traditions. Preparing meals from different cultures can be an enriching experience for everyone involved. Consider trying it out and see how it broadens your understanding and enriches your friendships!",
+          "mean_nll": 2.3187018500434027,
+          "ppl": 10.162471771240234,
+          "n_target_tokens": 54
+        },
+        {
+          "label": "b",
+          "choice": "Starting a cooking group with friends can be a great way to build a sense of collaboration and strengthen bonds. Sharing the experience of creating meals together often enhances the sense of intimacy and teamwork among participants. Consider trying it out and see how it enriches your friendships!",
+          "mean_nll": 2.375443635163484,
+          "ppl": 10.755784034729004,
+          "n_target_tokens": 54
+        },
+        {
+          "label": "c",
+          "choice": "Starting a cooking group with friends can be a great way to unwind and relieve stress. Engaging in the creative process of cooking offers a fun escape from everyday pressures. Consider trying it out and see how it offers relaxation and joy to your friendships!",
+          "mean_nll": 2.564577588848039,
+          "ppl": 12.99516773223877,
+          "n_target_tokens": 51
+        },
+        {
+          "label": "d",
+          "choice": "Starting a cooking group with friends can be a great way to explore different cuisines and expand your culinary skills. Sharing the pleasure of cooking together is a wonderful way to learn and try new things in a relaxed setting. Consider trying it out and see how it adds a new dimension to your friendships!",
+          "mean_nll": 2.1738096143378587,
+          "ppl": 8.791712760925293,
+          "n_target_tokens": 61
+        }
+      ],
+      "wall_s": 0.2064061164855957
+    },
+    {
+      "global_idx": 54,
+      "persona_id": "14",
+      "question_id": "b16e1eb9-dbda-4fde-a10c-5c96f01b18e1",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "datingConsultation",
+      "correct_answer": "a",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I remember you mentioning your interest in crafting unique DIY date night ideas. That's a wonderful way to engage with creativity.",
+          "mean_nll": 2.415614201472356,
+          "ppl": 11.196643829345703,
+          "n_target_tokens": 26
+        },
+        {
+          "label": "b",
+          "choice": "I recall you mentioning your preference for unique travel experiences. That's a wonderful way to engage with creativity.",
+          "mean_nll": 3.1554031372070312,
+          "ppl": 23.462493896484375,
+          "n_target_tokens": 23
+        },
+        {
+          "label": "c",
+          "choice": "It's interesting that you attended a creative craft night. I hope you found designing those DIY date night ideas enjoyable.",
+          "mean_nll": 1.9851968383789063,
+          "ppl": 7.28048038482666,
+          "n_target_tokens": 25
+        },
+        {
+          "label": "d",
+          "choice": "I remember you mentioning your disinterest in crafting unique DIY date night ideas. That's an unusual way to engage with creativity.",
+          "mean_nll": 3.2854783799913196,
+          "ppl": 26.721763610839844,
+          "n_target_tokens": 27
+        }
+      ],
+      "wall_s": 0.21419739723205566
+    },
+    {
+      "global_idx": 55,
+      "persona_id": "14",
+      "question_id": "1e51d62a-dbe8-40e6-b578-e68d2a247317",
+      "qtype_canonical": "suggest_new",
+      "topic": "travelPlanning",
+      "correct_answer": "b",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "One avenue is participating in community-based cultural festivals, which often offer immersive experiences celebrating culinary, artistic, and traditional practices. Engaging in festival activities allows you to interact with individuals from various backgrounds, fostering a sense of communal identity and celebrating cultural diversity. Whether you’re making traditional dishes or learning folk dances, these festivals offer a first-hand appreciation of cultural nuances while building lasting connections based on shared experiences. By stepping outside one’s own cultural bubble, you can develop a more nuanced understanding of the histories and stories that shape different communities.",
+          "mean_nll": 2.401141131365741,
+          "ppl": 11.035762786865234,
+          "n_target_tokens": 108
+        },
+        {
+          "label": "b",
+          "choice": "You might enjoy engaging in cultural exchange programs or participating in local community events when traveling, as these can offer immersive experiences and opportunities to connect meaningfully with locals.",
+          "mean_nll": 2.479070775649127,
+          "ppl": 11.930171966552734,
+          "n_target_tokens": 34
+        },
+        {
+          "label": "c",
+          "choice": "Another exciting way is to volunteer for international exchange programs that focus on cultural immersion and community service. By living and working alongside locals in a different country, you gain an intimate perspective on daily life and cultural practices, which can be vastly different from your own. Programs often include collaborative projects that necessitate communication and cooperation, helping form bonds with individuals from other cultures. Such experiences further develop cultural empathy and showcase how collective efforts can lead to meaningful connections and mutual growth. Whether teaching, building, or caretaking, the cross-cultural environment fundamentally reshapes worldviews.",
+          "mean_nll": 2.451707417986034,
+          "ppl": 11.608148574829102,
+          "n_target_tokens": 113
+        },
+        {
+          "label": "d",
+          "choice": "Consider joining a language exchange program either locally or online, which is an excellent approach to learning a new language while simultaneously connecting with people from diverse cultures. Language exchange often involves conversational practices where partners teach each other their native languages, offering a dynamic way to build new friendships across cultural barriers. This setup not only enhances linguistic skills but also provides real-world insights into different customs, perspectives, and traditions. As participants exchange stories and experiences, these interactions can lead to enriched cultural understanding and foster genuine global friendships.",
+          "mean_nll": 2.2037220186400184,
+          "ppl": 9.058667182922363,
+          "n_target_tokens": 103
+        }
+      ],
+      "wall_s": 0.21139168739318848
+    },
+    {
+      "global_idx": 56,
+      "persona_id": "14",
+      "question_id": "2444e7fc-a724-4974-b8de-b631d9e51f20",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "bookRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "You often find inspiration in fantasy novels, which seems to have influenced your recent artwork. It's great that these connections can be so creatively rewarding.",
+          "mean_nll": 3.523259808940272,
+          "ppl": 33.89474105834961,
+          "n_target_tokens": 31
+        },
+        {
+          "label": "b",
+          "choice": "You often find inspiration in sci-fi series, which seems to contradict your story. It's interesting how different genres can yield unexpected results.",
+          "mean_nll": 3.330903678104795,
+          "ppl": 27.963603973388672,
+          "n_target_tokens": 29
+        },
+        {
+          "label": "c",
+          "choice": "You often find inspiration in fantasy novels, which seems to have influenced your story. It's great that these connections can be so creatively rewarding.",
+          "mean_nll": 3.2684504191080728,
+          "ppl": 26.270601272583008,
+          "n_target_tokens": 30
+        },
+        {
+          "label": "d",
+          "choice": "It's impressive that you completed such a project. Exploring themes in storytelling can lead to very engaging narratives.",
+          "mean_nll": 1.4502304395039876,
+          "ppl": 4.264097213745117,
+          "n_target_tokens": 24
+        }
+      ],
+      "wall_s": 0.19140315055847168
+    },
+    {
+      "global_idx": 57,
+      "persona_id": "14",
+      "question_id": "82b211a8-04e0-4809-b708-a6cf83298dba",
+      "qtype_canonical": "track_evolution",
+      "topic": "foodRecommendation",
+      "correct_answer": "d",
+      "pred_answer": "d",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's wonderful to see how your perspective on meal prepping has evolved over time. Initially, you mentioned having always enjoyed meal prepping, but your recent experience at a social-focused class has transformed your view. The shift from seeing it as a communal task to enjoying it as a shared, creative experience highlights the joy and connection you've found. This progression from appreciation to a deeper enjoyment, driven by the engaging and collaborative atmosphere, is both fascinating and rewarding.",
+          "mean_nll": 2.510227771515542,
+          "ppl": 12.307731628417969,
+          "n_target_tokens": 94
+        },
+        {
+          "label": "b",
+          "choice": "It's wonderful to see how your perspective on meal prepping has evolved over time. Initially, you mentioned having no strong feelings about meal prepping, but your recent experience at a social-focused class has transformed your view. The shift from seeing it as an indifferent task to enjoying it as a shared, creative experience highlights the joy and connection you've found. This progression from neutrality to appreciation, driven by the engaging and collaborative atmosphere, is both fascinating and rewarding.",
+          "mean_nll": 2.3898075184923537,
+          "ppl": 10.911393165588379,
+          "n_target_tokens": 94
+        },
+        {
+          "label": "c",
+          "choice": "It's wonderful to see how your perspective on meal prepping has evolved over time. Initially, you mentioned enjoying meal prepping, but your recent experience at a social-focused class has transformed your view. The shift from seeing it as a creative experience to enjoying it as a shared, communal activity highlights the joy and connection you've found. This progression from interest to appreciation, driven by the engaging and collaborative atmosphere, is both fascinating and rewarding.",
+          "mean_nll": 2.5532889472113713,
+          "ppl": 12.849294662475586,
+          "n_target_tokens": 90
+        },
+        {
+          "label": "d",
+          "choice": "It's wonderful to see how your perspective on meal prepping has evolved over time. Initially, you mentioned disliking meal prepping, but your recent experience at a social-focused class has transformed your view. The shift from seeing it as a solitary task to enjoying it as a shared, creative experience highlights the joy and connection you've found. This progression from disinterest to appreciation, driven by the engaging and collaborative atmosphere, is both fascinating and rewarding.",
+          "mean_nll": 2.3211072696152555,
+          "ppl": 10.186948776245117,
+          "n_target_tokens": 93
+        }
+      ],
+      "wall_s": 0.20916414260864258
+    },
+    {
+      "global_idx": 58,
+      "persona_id": "14",
+      "question_id": "294d3650-db6a-4cee-85e8-4f848d9d7311",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "foodRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I remember you didn't enjoy attending food festivals. It's interesting how these events can capture the essence of various cultures in one place.",
+          "mean_nll": 2.4352035522460938,
+          "ppl": 11.418142318725586,
+          "n_target_tokens": 29
+        },
+        {
+          "label": "b",
+          "choice": "I remember you enjoyed attending food festivals. It's interesting how these events can capture the essence of various cultures in one place.",
+          "mean_nll": 1.9375343322753906,
+          "ppl": 6.941614151000977,
+          "n_target_tokens": 27
+        },
+        {
+          "label": "c",
+          "choice": "It's great you went to a food festival. I'm sure there were many flavors to explore there.",
+          "mean_nll": 1.8284255318019702,
+          "ppl": 6.224079132080078,
+          "n_target_tokens": 23
+        },
+        {
+          "label": "d",
+          "choice": "I remember you enjoyed volunteering at animal shelters. It's interesting how these events can capture the essence of various cultures in one place.",
+          "mean_nll": 2.7078781127929688,
+          "ppl": 14.997419357299805,
+          "n_target_tokens": 28
+        }
+      ],
+      "wall_s": 0.21697759628295898
+    },
+    {
+      "global_idx": 59,
+      "persona_id": "14",
+      "question_id": "04ddf23c-bd33-4404-901b-f62de5f2dc6c",
+      "qtype_canonical": "suggest_new",
+      "topic": "studyConsultation",
+      "correct_answer": "c",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Delving into complex subjects with an interdisciplinary approach often reveals the interconnectedness that underlines different fields of study. By understanding how distinct disciplines interplay, you can cultivate a more holistic perspective that bridges gaps in traditional learning pathways. I've encountered enlightening insights by combining, for instance, historical contexts with scientific developments or literary interpretations with psychological theories. This blend not only enriches the learning process but also fosters innovative thinking, as it challenges the conventional boundaries of knowledge and encourages a seamless synthesis of diverse information.",
+          "mean_nll": 2.314411163330078,
+          "ppl": 10.118963241577148,
+          "n_target_tokens": 104
+        },
+        {
+          "label": "b",
+          "choice": "Embarking on a journey to perceive information through novel lenses, visiting interactive museums or attending workshops that focus on experiential learning can be beneficial. By participating actively in such environments, there's an opportunity to engage with knowledge in a tactile way, sparking creativity and a deeper, more personal connection to the subject matter. It’s intriguing how exposing oneself to learning methods that involve doing, rather than just observing, can lead to significant breakthroughs in understanding complex topics. This hands-on approach also encourages the formation of long-lasting memories tied to each lesson, making the knowledge not just learned but felt and remembered.",
+          "mean_nll": 2.0195207439485143,
+          "ppl": 7.534713268280029,
+          "n_target_tokens": 122
+        },
+        {
+          "label": "c",
+          "choice": "You might enjoy exploring podcasts that feature expert guests. They offer diverse perspectives on complex subjects and can present ideas in a more engaging format, which can be a valuable addition to your learning routine.",
+          "mean_nll": 2.0569034576416017,
+          "ppl": 7.82171106338501,
+          "n_target_tokens": 40
+        },
+        {
+          "label": "d",
+          "choice": "Exploring content through multimedia platforms like podcasts, videos, and interactive online courses can introduce fresh perspectives in a fast-evolving knowledge landscape. When you diversify your learning tools, you allow varying modes of information to complement and enhance each other, leading to a more comprehensive understanding. I’ve found it particularly enriching to toggle between auditory, visual, and interactive means, as each divulges nuances of the topic that might be overlooked when relying solely on traditional texts. It's remarkable how the unique attributes of each medium contribute to a more engaging and dynamic learning experience.",
+          "mean_nll": 2.2217391164679277,
+          "ppl": 9.223357200622559,
+          "n_target_tokens": 114
+        }
+      ],
+      "wall_s": 0.20551490783691406
+    },
+    {
+      "global_idx": 60,
+      "persona_id": "14",
+      "question_id": "07042900-f0bc-491c-be1e-b6d0ea390332",
+      "qtype_canonical": "aligned_rec",
+      "topic": "travelPlanning",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Consider signing up for the 'Musical Storytelling: Composing a Soundtrack to Life' online class. This workshop is perfect for music enthusiasts eager to explore how music can tell stories and evoke emotions. Participants will learn about soundscapes, score composition, and the interplay between music and narrative. You'll have the opportunity to collaborate with established composers who can mentor you in blending various musical genres to create dynamic soundtracks. It's an excellent way for music lovers to refine their auditory storytelling abilities and network with other musicians dedicated to the art of musical narration.",
+          "mean_nll": 2.1861985305259966,
+          "ppl": 8.901309967041016,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "b",
+          "choice": "I recommend checking out the 'Visual Narratives: Photography as a Storytelling Medium' online workshop. It offers an immersive experience tailored for creative photographers looking to expand their narrative techniques. This workshop focuses on elevating your storytelling capability through images, perfect for someone like you who has showcased their work in a gallery. You'll have the unique opportunity to work with renowned photographers who can provide insights into blending traditional photography with experimental styles, potentially leading to exciting new projects and exhibitions. It's a fantastic way to finesse your skills and connect with like-minded creatives who share your passion for visual storytelling.",
+          "mean_nll": 1.9795540981605404,
+          "ppl": 7.239513874053955,
+          "n_target_tokens": 122
+        },
+        {
+          "label": "c",
+          "choice": "Certainly! You might enjoy the 'Tropical Weaving: Tales through Textiles' online workshop. It offers deep insights into the traditional Pacific Islander weaving techniques, perfect for women looking to explore cultural heritage in their creative work. This workshop delves into the storytelling aspects of textile art, aligning beautifully with traditional crafting skills. You'll learn from acclaimed cultural artists and perhaps find new ways to incorporate these intricate designs into your storytelling. It’s an enriching way to enhance your creative process and connect with others who appreciate the depth and beauty of heritage arts, potentially inspiring unique projects that honor your cultural legacy.",
+          "mean_nll": 2.580956735918599,
+          "ppl": 13.209770202636719,
+          "n_target_tokens": 124
+        },
+        {
+          "label": "d",
+          "choice": "I recommend exploring the 'Creative Writing: Crafting Compelling Narratives' online workshop. It's designed for aspiring writers who want to develop their ability to weave captivating stories using words. This course delves into character development and plot construction, making it a great fit for individuals who are passionate about strengthening their writing skills. You'll collaborate with celebrated authors who offer guidance on creating unique narrative voices, which could inspire your next best-selling novel or collection of short stories. It's a wonderful chance to hone your literary craft and connect with fellow wordsmiths who share your love for storytelling through writing.",
+          "mean_nll": 2.1442553202311196,
+          "ppl": 8.535683631896973,
+          "n_target_tokens": 120
+        }
+      ],
+      "wall_s": 0.19235539436340332
+    },
+    {
+      "global_idx": 61,
+      "persona_id": "14",
+      "question_id": "4ad7e53e-be4f-4a47-b265-c1a80d6cd9af",
+      "qtype_canonical": "track_evolution",
+      "topic": "foodRecommendation",
+      "correct_answer": "d",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I see that your journey through preferences has evolved quite a bit. Initially, you had a keen interest in wine pairing, which shifted towards a lesser interest in learning about home gardening. However, your recent dinner party experience has rekindled your curiosity about wine pairing. It’s fascinating how such social interactions and sensory experiences have influenced your preferences over time. This progression highlights the dynamic nature of your interests, reflecting how social settings and shared experiences can reignite past passions.",
+          "mean_nll": 2.4011574193050986,
+          "ppl": 11.035942077636719,
+          "n_target_tokens": 95
+        },
+        {
+          "label": "b",
+          "choice": "I see that your journey through preferences has evolved quite a bit. Initially, you had no particular interest in home gardening or wine pairing. However, your recent experiences have sparked a curiosity about wine pairing. It’s fascinating how such social interactions and sensory experiences have influenced your preferences over time. This progression highlights the dynamic nature of your interests, reflecting how social settings and shared experiences can reignite past passions.",
+          "mean_nll": 2.6448189339986663,
+          "ppl": 14.080896377563477,
+          "n_target_tokens": 82
+        },
+        {
+          "label": "c",
+          "choice": "I see that your journey through preferences has evolved quite a bit. Initially, you had a strong interest in home gardening, which blossomed into a passion for wine pairing. However, your recent dinner party experience has rekindled your curiosity about wine pairing. It’s fascinating how such social interactions and sensory experiences have influenced your preferences over time. This progression highlights the dynamic nature of your interests, reflecting how social settings and shared experiences can reignite past passions.",
+          "mean_nll": 2.257219704248572,
+          "ppl": 9.556483268737793,
+          "n_target_tokens": 93
+        },
+        {
+          "label": "d",
+          "choice": "I see that your journey through preferences has evolved quite a bit. Initially, you had a strong interest in home gardening, which shifted towards a lesser interest in learning about wine pairing. However, your recent dinner party experience has rekindled your curiosity about wine pairing. It’s fascinating how such social interactions and sensory experiences have influenced your preferences over time. This progression highlights the dynamic nature of your interests, reflecting how social settings and shared experiences can reignite past passions.",
+          "mean_nll": 2.318665835731908,
+          "ppl": 10.16210651397705,
+          "n_target_tokens": 95
+        }
+      ],
+      "wall_s": 0.23300457000732422
+    },
+    {
+      "global_idx": 62,
+      "persona_id": "14",
+      "question_id": "4c2b9e49-7008-4a41-a47e-affc67aa1c93",
+      "qtype_canonical": "reasons_behind",
+      "topic": "foodRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's wonderful to hear how the social aspect of learning has enriched your experience! Your emphasis on engaging with others while learning truly reflects your previous sentiment about finding a class that felt more like a social gathering. The joy of creation and connection is indeed a crucial part of transforming education into a shared adventure filled with laughter and creativity. It's clear that this approach resonates deeply with you, making the cooking process both enjoyable and fulfilling.",
+          "mean_nll": 1.6590707952325994,
+          "ppl": 5.2544264793396,
+          "n_target_tokens": 88
+        },
+        {
+          "label": "b",
+          "choice": "It's great to see how focused you have become on mastering specific culinary techniques! Your commitment to perfecting your skills aligns perfectly with your previous emphasis on creating detailed recipes and precision in cooking. This dedication to the craft transforms the kitchen into a space of targeted learning and expertise, nurturing your passion for the art of cooking.",
+          "mean_nll": 2.56885448854361,
+          "ppl": 13.050867080688477,
+          "n_target_tokens": 67
+        },
+        {
+          "label": "c",
+          "choice": "It's fantastic to know that you enjoy trying out new and innovative recipes! Your focus on experimenting with various ingredients goes hand in hand with your earlier inclination to diversify your cooking techniques. This adventurous spirit adds excitement and an element of surprise to your culinary journey, enriching your overall learning experience.",
+          "mean_nll": 2.632418272925205,
+          "ppl": 13.907360076904297,
+          "n_target_tokens": 61
+        },
+        {
+          "label": "d",
+          "choice": "It's inspiring to witness how much you appreciate the quiet introspection that cooking provides! Your decision to focus on solitary cooking sessions is a wonderful reflection of your earlier desire for a tranquil environment to explore flavors and ingredients. This personal journey of self-discovery truly enhances your culinary experience with peace and contemplation.",
+          "mean_nll": 3.222191946847098,
+          "ppl": 25.083044052124023,
+          "n_target_tokens": 63
+        }
+      ],
+      "wall_s": 0.22303509712219238
+    },
+    {
+      "global_idx": 63,
+      "persona_id": "14",
+      "question_id": "d96ab1ce-5bed-4a67-9d2f-899d3242e0a4",
+      "qtype_canonical": "suggest_new",
+      "topic": "bookRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "c",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Absolutely! You might enjoy exploring the works of Haruki Murakami. His blend of the surreal with the everyday creates a mesmerizing experience where readers often find themselves lost in a world that feels both familiar and otherworldly. Murakami's narratives are atmospheric and often involve elements of magical realism, inviting his readers into introspective and immersive journeys. Many have praised the depth of his character development and his ability to weave complex themes into engaging tales. His unique storytelling perspective makes him a favorite among those who appreciate richly crafted fiction.",
+          "mean_nll": 1.6013139204545455,
+          "ppl": 4.959544658660889,
+          "n_target_tokens": 110
+        },
+        {
+          "label": "b",
+          "choice": "Absolutely! You might enjoy exploring the works of Haruki Murakami. His blend of the surreal with the everyday creates a mesmerizing experience where readers often find themselves lost in a world that feels both familiar and otherworldly. Though his stories deal with magic realism, they resonate with emotional truths about life and identity. Murakami skillfully incorporates elements of mystery, philosophy, and cultural intricacies which adds depth to his narratives. For those new to his work, books like 'Kafka on the Shore' or 'Norwegian Wood' serve as great starting points.",
+          "mean_nll": 1.6863004244290865,
+          "ppl": 5.399467945098877,
+          "n_target_tokens": 117
+        },
+        {
+          "label": "c",
+          "choice": "You might enjoy exploring fiction authors like Neil Gaiman or Haruki Murakami, who are renowned for their engaging storytelling styles.",
+          "mean_nll": 1.4129262463799839,
+          "ppl": 4.1079583168029785,
+          "n_target_tokens": 29
+        },
+        {
+          "label": "d",
+          "choice": "Absolutely! You might enjoy exploring the works of Haruki Murakami. His blend of the surreal with the everyday creates a mesmerizing experience where readers often find themselves lost in a world that feels both familiar and otherworldly. Murakami's characters are richly drawn, providing profound insights into human nature and the complexity of personal relationships. His storytelling often weaves in elements of mystery, music, and cultural references that add layers of intrigue to his narratives. Many readers find his storytelling to be both thought-provoking and captivating, offering a unique lens on the human experience.",
+          "mean_nll": 1.5086867388556986,
+          "ppl": 4.520790100097656,
+          "n_target_tokens": 119
+        }
+      ],
+      "wall_s": 0.20929980278015137
+    },
+    {
+      "global_idx": 64,
+      "persona_id": "14",
+      "question_id": "57ebff83-de6f-447e-a5a2-6ddc49bcefac",
+      "qtype_canonical": "track_evolution",
+      "topic": "foodRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I understand that your journey with baking has evolved over time. Initially, you didn't enjoy baking as much, perhaps feeling the pressure of achieving perfection right from the start. However, as time passed, you began to find joy in the process, appreciating the artful and creative aspects it had to offer. Now, reflecting on your recent thoughts, it seems you are slightly worried about relapsing into perfectionism and losing the joy you’ve come to find. Your journey shows an appreciation for balance and creativity but with caution about maintaining that perspective. Rest assured, I remember and respect the changes you've experienced in your baking journey.",
+          "mean_nll": 2.290828734405281,
+          "ppl": 9.883124351501465,
+          "n_target_tokens": 129
+        },
+        {
+          "label": "b",
+          "choice": "I understand that your journey with baking has evolved over time. Initially, you had a liking for baking, finding joy and perhaps relaxation in the process. However, it seems that at one point, the pressures and expectations of achieving perfection led you to a state where you began to dislike baking, as every minor imperfection felt like a failure. Now, reflecting on your recent thoughts, I see that you have recognized the need to make baking about joy and creativity again, shifting away from a perfectionist approach. Your journey shows an appreciation for the balance between technique and creativity, aiming to restore the joy baking once brought you. Rest assured, I remember and respect the changes you've experienced in your baking journey.",
+          "mean_nll": 2.2153170925753933,
+          "ppl": 9.164314270019531,
+          "n_target_tokens": 143
+        },
+        {
+          "label": "c",
+          "choice": "I understand that your journey with baking has evolved over time. Initially, you found joy and perhaps relaxation in baking, making the most of every moment spent in the kitchen. However, there was a time when dissatisfaction set in, as the pursuit of perfect results overshadowed the process. Now, it seems you continue to struggle, as fear of imperfections still casts a shadow over baking. Your journey reflects an ongoing battle between striving for technique and the urge to embrace imperfection, indicating a quest to rediscover the joy baking once brought despite challenges. Rest assured, I remember and respect the changes you've experienced in your baking journey.",
+          "mean_nll": 2.509397029876709,
+          "ppl": 12.297513008117676,
+          "n_target_tokens": 128
+        },
+        {
+          "label": "d",
+          "choice": "I understand that your journey with baking has evolved over time. Initially, you felt a strong dislike towards baking, maybe due to the pressure of making everything turn out perfectly. However, it seems that over time, you began to appreciate baking for its soothing and creative qualities. Now, reflecting on your recent thoughts, I see the joy in baking has become about embracing creativity instead of stressing about outcomes. Your journey shows resilience in overcoming challenges and cultivating happiness in baking, aiming to restore the joy that was initially missing. Rest assured, I remember and respect the changes you've experienced in your baking journey.",
+          "mean_nll": 2.5226959985149793,
+          "ppl": 12.462149620056152,
+          "n_target_tokens": 121
+        }
+      ],
+      "wall_s": 0.21653175354003906
+    },
+    {
+      "global_idx": 65,
+      "persona_id": "14",
+      "question_id": "8f6d3355-2811-4d49-bd77-0359e792dfd7",
+      "qtype_canonical": "aligned_rec",
+      "topic": "foodRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "For your dinner party, how about creating a luxurious herb-infused olive oil to drizzle over fresh bread or use as a base for a salad dressing? Since you enjoy the fresh flavors of homegrown herbs, snip some rosemary and basil from your garden to steep in a high-quality oil a few days before your event. This not only elevates your dishes with vibrant, bold flavors but also adds a personal, gourmet touch to your cooking. The aroma and taste will captivate your guests, making your meal unforgettable.",
+          "mean_nll": 2.2229605701482185,
+          "ppl": 9.23462963104248,
+          "n_target_tokens": 107
+        },
+        {
+          "label": "b",
+          "choice": "Consider incorporating exotic spices to create a dramatic rub for your main dish, using blends like Moroccan ras el hanout or Indian garam masala. This will infuse your meal with rich, complex flavors and transport your guests on a culinary journey. Be sure to finish the dish with a touch of citrus zest to brighten the flavors and leave a lasting impression.",
+          "mean_nll": 1.941253662109375,
+          "ppl": 6.967480182647705,
+          "n_target_tokens": 74
+        },
+        {
+          "label": "c",
+          "choice": "How about preparing a lovely tropical fruit platter featuring pineapple, mango, and papaya? These fruits not only represent the vibrant flavors of your heritage but also provide a burst of sweetness that complements nearly any dish. You can also carve these fruits into beautiful, elaborate shapes to add an artistic touch to your presentation. Your guests will appreciate the refreshing taste and creative display, making the dining experience both personal and memorable.",
+          "mean_nll": 2.136866490981158,
+          "ppl": 8.472846984863281,
+          "n_target_tokens": 85
+        },
+        {
+          "label": "d",
+          "choice": "Why not experiment with molecular gastronomy to add a wow factor to your dinner party? Try making spherified caviar from flavored liquids or create foams to top your dishes. These modern culinary techniques can be impressive and surprising, transforming conventional dishes into extraordinary experiences that are bound to fascinate your guests.",
+          "mean_nll": 2.3829891681671143,
+          "ppl": 10.837248802185059,
+          "n_target_tokens": 64
+        }
+      ],
+      "wall_s": 0.3449687957763672
+    },
+    {
+      "global_idx": 66,
+      "persona_id": "14",
+      "question_id": "4060fd14-8192-47d5-b900-91b30c31f305",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "datingConsultation",
+      "correct_answer": "c",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's great to hear that you attended a social dance session. Social dancing seems like a vibrant way to meet people and enjoy some movement. Have you been exploring other similar activities as well?",
+          "mean_nll": 1.918227767944336,
+          "ppl": 6.808880805969238,
+          "n_target_tokens": 40
+        },
+        {
+          "label": "b",
+          "choice": "That makes complete sense. It's truly important to enjoy the activities you engage in rather than feeling pressured, as the essence of such pursuits lies in the joy and fulfillment they bring. It must have been difficult to step away from something that initially sparked your enthusiasm. The social dynamics in such environments can often overshadow the personal growth we seek through activities like dance, transforming them into almost competitive arenas, which is certainly not what many hope to experience. This confirms how vital it is to curate our experiences to align with our emotional well-being and personal happiness. What have you focused on instead now that you've transitioned away from that competitive scene? Have you found alternative hobbies or interests that provide a similar sense of community without the added pressure?",
+          "mean_nll": 2.407011505741401,
+          "ppl": 11.100736618041992,
+          "n_target_tokens": 149
+        },
+        {
+          "label": "c",
+          "choice": "I remember you mentioned enjoying social dance classes before. It's great to hear you're continuing with it. I hope the session went well!",
+          "mean_nll": 2.0747300465901692,
+          "ppl": 7.962397575378418,
+          "n_target_tokens": 30
+        },
+        {
+          "label": "d",
+          "choice": "It's interesting to hear that you're still exploring social dance sessions. I remember you mentioning a preference for more solitary activities before, so it's intriguing to see this shift. I hope your curiosity about new experiences is paying off!",
+          "mean_nll": 2.0781609217325845,
+          "ppl": 7.989762306213379,
+          "n_target_tokens": 48
+        }
+      ],
+      "wall_s": 0.19092202186584473
+    },
+    {
+      "global_idx": 67,
+      "persona_id": "14",
+      "question_id": "352ac0ce-50d6-48b3-a846-8b5214d72a5f",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "financialConsultation",
+      "correct_answer": "d",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I recall you mentioning your dislike for financial webinars, but perhaps this session offered a new perspective.",
+          "mean_nll": 2.6133285869251597,
+          "ppl": 13.644393920898438,
+          "n_target_tokens": 22
+        },
+        {
+          "label": "b",
+          "choice": "I remember your interest in culinary workshops. Continuing to engage in those can enhance your cooking skills.",
+          "mean_nll": 3.1526718139648438,
+          "ppl": 23.39849853515625,
+          "n_target_tokens": 21
+        },
+        {
+          "label": "c",
+          "choice": "It's great that you attended a session on budgeting techniques. Exploring different topics can be enlightening.",
+          "mean_nll": 1.6381327311197917,
+          "ppl": 5.145552158355713,
+          "n_target_tokens": 24
+        },
+        {
+          "label": "d",
+          "choice": "I remember you mentioning your interest in financial webinars. Continuing to engage in these sessions can really help in staying informed about various strategies.",
+          "mean_nll": 2.657557520373114,
+          "ppl": 14.261412620544434,
+          "n_target_tokens": 29
+        }
+      ],
+      "wall_s": 0.2099008560180664
+    },
+    {
+      "global_idx": 68,
+      "persona_id": "14",
+      "question_id": "98f8a665-5488-4051-a1f3-b23a8f98afeb",
+      "qtype_canonical": "aligned_rec",
+      "topic": "bookRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "A great recommendation for your next read is 'The Star-Touched Queen' by Roshani Chokshi. This fantasy novel weaves a mesmerizing tale influenced by Indian mythology, with mystical elements that echo your love for the genre. It follows the journey of Maya, whose path of destiny and self-discovery is entwined with magical realms and a rich tapestry of cultural symbolism. It beautifully blends enchanting storytelling with themes of identity and exploration, mirroring the themes that inspire your creative writing. Prepare to be swept into a world of wonder and introspection!",
+          "mean_nll": 2.156542655749199,
+          "ppl": 8.641209602355957,
+          "n_target_tokens": 117
+        },
+        {
+          "label": "b",
+          "choice": "Consider 'The Kite Runner' by Khaled Hosseini, a compelling narrative that explores themes of guilt, redemption, and the complexities of human relationships. Set against the backdrop of a tumultuous Afghanistan, the novel delves into a poignant tale of friendship, cultural upheaval, and the search for forgiveness. With its vivid portrayal of cultural themes and emotional depth, it offers a reflective journey into personal growth through realistic storytelling, differing from the mystical lands of fantasy yet richly rewarding in exploring the human condition.",
+          "mean_nll": 2.0228085472470236,
+          "ppl": 7.559526443481445,
+          "n_target_tokens": 105
+        },
+        {
+          "label": "c",
+          "choice": "I recommend 'Educated' by Tara Westover, a powerful memoir about a woman's struggle for self-education and understanding herself amidst a strict, isolated upbringing. This non-fiction work eschews the world of magic to bring you a raw and inspiring journey of self-discovery, personal growth, and the pursuit of knowledge, rooted in the stark realities of life rather than the enchanted realms of fantasy. It's an exceptional tale of courage and resilience, perfect for readers seeking grounded narratives of transformation.",
+          "mean_nll": 2.2107365926106772,
+          "ppl": 9.122432708740234,
+          "n_target_tokens": 102
+        },
+        {
+          "label": "d",
+          "choice": "'The Joy Luck Club' by Amy Tan is a perfect fit for your interests. This novel delves into the intricate relationships between Chinese-American mothers and their daughters, exploring themes of cultural identity and personal growth. While it focuses on the Chinese-American experience, the universal struggles of navigating generational expectations and forging one’s path are compellingly portrayed. It may not directly align with Pacific Islander themes, but its rich character development and exploration of heritage make it a valuable read for anyone interested in cultural narratives and personal evolution. Prepare for a journey through a tapestry of familial connections and cultural insights!",
+          "mean_nll": 1.6336828815050362,
+          "ppl": 5.122706413269043,
+          "n_target_tokens": 121
+        }
+      ],
+      "wall_s": 0.193375825881958
+    },
+    {
+      "global_idx": 69,
+      "persona_id": "14",
+      "question_id": "5893c7ce-8001-4444-a617-e6db936a0f35",
+      "qtype_canonical": "aligned_rec",
+      "topic": "studyConsultation",
+      "correct_answer": "c",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Why not escape into nature and plan an adventurous weekend hiking trip with some friends? Embrace the opportunity to disconnect from daily routines, explore new trails, and enjoy the beauty of the wilderness. It's a great way to clear your mind and bond with others over shared experiences and the challenges of the great outdoors. Plus, you get to bask in the joy of reaching new heights, both literally and figuratively. Trust me, this refreshing break from the norm is perfect for recharging and sharing memorable moments!",
+          "mean_nll": 2.029993149840716,
+          "ppl": 7.6140336990356445,
+          "n_target_tokens": 103
+        },
+        {
+          "label": "b",
+          "choice": "I'm sorry, I can't comply with that request.",
+          "mean_nll": 1.674435751778739,
+          "ppl": 5.3357834815979,
+          "n_target_tokens": 14
+        },
+        {
+          "label": "c",
+          "choice": "How about organizing an interdisciplinary study retreat? Gather a small group of intellectually curious friends and dive into explorations of various subjects, from philosophy to physics. You can create themed discussion tables where each participant brings their unique insights. To make it more fun, set up a ‘brainstorming hour’ where you collectively tackle intriguing questions or global puzzles. This way, you'll not only enhance your understanding but also cultivate a lively and collaborative atmosphere. Trust me, it's the perfect way to spend a weekend, intellectually refreshing and socially engaging!",
+          "mean_nll": 2.3779814833894783,
+          "ppl": 10.783114433288574,
+          "n_target_tokens": 109
+        },
+        {
+          "label": "d",
+          "choice": "Consider hosting a culinary weekend where you bring together some food enthusiasts to explore exotic cuisines. You can take turns showcasing unique recipes from different cultures, cooking together in a relaxed and fun atmosphere. Introduce a 'recipe swap' session where everyone gets to share their favorite dishes and cooking secrets. It will not only deepen your appreciation for diverse flavors but also strengthen social bonds as you savor delightful meals together. Trust me, it's a delicious way to connect with others and expand your palate!",
+          "mean_nll": 2.2803585815429686,
+          "ppl": 9.780186653137207,
+          "n_target_tokens": 100
+        }
+      ],
+      "wall_s": 0.3449132442474365
+    },
+    {
+      "global_idx": 70,
+      "persona_id": "14",
+      "question_id": "3784da45-c7bc-43f3-a1d5-859a8bc93dee",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "bookRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's great you revisited the bestseller lists! Given your love for lighthearted and whimsical stories, perhaps light reads like cozy mysteries or heartwarming romances would suit your mood.",
+          "mean_nll": 2.39705397865989,
+          "ppl": 10.99074935913086,
+          "n_target_tokens": 44
+        },
+        {
+          "label": "b",
+          "choice": "You checked the bestseller lists again, which is always a good way to find new reads. It's nice to explore different genres and see if something interesting catches your eye.",
+          "mean_nll": 2.068107811180321,
+          "ppl": 7.909842491149902,
+          "n_target_tokens": 37
+        },
+        {
+          "label": "c",
+          "choice": "Considering your past preferences for deeper narratives and complex themes, you might enjoy exploring works by authors known for their traditional storytelling styles.",
+          "mean_nll": 2.993823016131366,
+          "ppl": 19.96185302734375,
+          "n_target_tokens": 27
+        },
+        {
+          "label": "d",
+          "choice": "That's wonderful to hear! Performing at a poetry slam is an incredible experience, as it allows you to connect with an audience in a very personal way. The way you've managed to intertwine martial arts with poetry is genuinely impressive, as both forms require immense discipline, focus, and creativity.",
+          "mean_nll": 2.23095703125,
+          "ppl": 9.308770179748535,
+          "n_target_tokens": 61
+        }
+      ],
+      "wall_s": 0.20792579650878906
+    },
+    {
+      "global_idx": 71,
+      "persona_id": "14",
+      "question_id": "87129929-a44d-4cf9-996f-a6f547b1dfeb",
+      "qtype_canonical": "suggest_new",
+      "topic": "movieRecommendation",
+      "correct_answer": "d",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "In your pursuit of understanding how filmmakers manipulate visual styles to evoke emotion, I recommend checking out 'Film Art: An Introduction' by David Bordwell and Kristin Thompson. It’s a comprehensive guide that explores the intricacies of film techniques and storytelling. Sharing your insights about a film after absorbing such detailed information can really enhance community discourse. You might find it deeply rewarding to see how elements learned from the book align with your own interpretations and spark engaging discussions.",
+          "mean_nll": 2.1068236648395495,
+          "ppl": 8.222084045410156,
+          "n_target_tokens": 93
+        },
+        {
+          "label": "b",
+          "choice": "A fascinating book to consider is 'The Technique of Film and Video Editing: History, Theory, and Practice' by Ken Dancyger. It explores how editing shapes the narrative and evokes emotional responses, often reflecting cultural elements of the time. Just as classic films merge narrative with historical context, understanding editing techniques offers deeper insights into how films capture and reflect societal values, enriching both historical and cultural appreciation.",
+          "mean_nll": 2.6943688165573847,
+          "ppl": 14.79617691040039,
+          "n_target_tokens": 84
+        },
+        {
+          "label": "c",
+          "choice": "You might find 'The Visual Story: Creating the Visual Structure of Film, TV and Digital Media' by Bruce Block exceptionally insightful. It dives deep into visual techniques and the emotions they evoke. As you explore cinematography, this book can be a great asset in understanding how different elements like lighting and camera angles contribute to storytelling. Collaborating on film projects incorporating these techniques can expand your creative horizons and help translate those visuals into compelling narratives.",
+          "mean_nll": 2.307836235894097,
+          "ppl": 10.052650451660156,
+          "n_target_tokens": 90
+        },
+        {
+          "label": "d",
+          "choice": "You might enjoy further exploring film theory through books that analyze how storytelling techniques and visual styles contribute to the emotional impact of films. Consider looking into similar works that bridge the technical aspects of filmmaking with the emotional experiences they aim to evoke.",
+          "mean_nll": 2.2300975566007653,
+          "ppl": 9.300773620605469,
+          "n_target_tokens": 49
+        }
+      ],
+      "wall_s": 0.21388030052185059
+    },
+    {
+      "global_idx": 72,
+      "persona_id": "14",
+      "question_id": "d3747124-2788-4c49-8e22-35398007b517",
+      "qtype_canonical": "aligned_rec",
+      "topic": "homeDecoration",
+      "correct_answer": "a",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Given your enthusiasm for arranging furniture and accessories, how about transforming your living room into a vibrant, multifunctional space that sparks conversation and creativity? Consider experimenting with a modular seating arrangement that allows for easy reconfiguration. Add a splash of color with statement cushions and unique wall art that reflects your personal style. You could also incorporate a few versatile accessories, such as a stylish room divider or an innovative shelving unit, to redefine the space and make it both functional and visually appealing. This setup will not only impress your guests but also create a dynamic atmosphere that highlights your knack for blending aesthetics with functionality.",
+          "mean_nll": 1.9581536465003841,
+          "ppl": 7.086231231689453,
+          "n_target_tokens": 122
+        },
+        {
+          "label": "b",
+          "choice": "To add a cozy touch to your living room, why not go for a rustic transformation? Introduce warm, earthy tones with weathered wood furniture and vintage decor elements. Layer different textures by using woven throws and plush area rugs. Adding a few antique finds or repurposed items can help create a nostalgic yet inviting atmosphere, focusing on character and historic charm rather than a contemporary, design-heavy approach.",
+          "mean_nll": 2.530822202383754,
+          "ppl": 12.563833236694336,
+          "n_target_tokens": 83
+        },
+        {
+          "label": "c",
+          "choice": "I'm sorry, I can't assist with that request.",
+          "mean_nll": 1.21844482421875,
+          "ppl": 3.3819241523742676,
+          "n_target_tokens": 14
+        },
+        {
+          "label": "d",
+          "choice": "If you're looking to refresh your living room for your get-together, consider minimizing your furniture to create an open and airy space. Opt for a minimalist approach by using neutral tones and eliminating most accessories for a sleek look. A large, monochromatic rug and a few strategically placed plants can add elegance while keeping the room uncluttered. This minimalist style not only gives a modern feel but also emphasizes simplicity, contrary to traditional or eclectic decor preferences.",
+          "mean_nll": 2.334476389783494,
+          "ppl": 10.324053764343262,
+          "n_target_tokens": 94
+        }
+      ],
+      "wall_s": 0.19319725036621094
+    },
+    {
+      "global_idx": 73,
+      "persona_id": "14",
+      "question_id": "f0b1b659-296f-4f61-895c-7d5c613fa804",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "foodRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I remember you mentioning your interest in home gardening and how having fresh herbs enhances your cooking. It's great to engage in activities that align with our interests.",
+          "mean_nll": 2.351930791681463,
+          "ppl": 10.50583553314209,
+          "n_target_tokens": 33
+        },
+        {
+          "label": "b",
+          "choice": "Sounds intriguing! Clubs are wonderful places to discover and perhaps develop a new interest in gardening. Are there other hobbies you’ve discovered recently?",
+          "mean_nll": 3.435073063291352,
+          "ppl": 31.033681869506836,
+          "n_target_tokens": 29
+        },
+        {
+          "label": "c",
+          "choice": "It's surprising since I remember you showing no interest in home gardening. However, engaging in activities that align with others' interests can still be beneficial.",
+          "mean_nll": 2.9446165561676025,
+          "ppl": 19.003374099731445,
+          "n_target_tokens": 32
+        },
+        {
+          "label": "d",
+          "choice": "I remember you mentioning your interest in home gardening and how having fresh herbs enhances your cooking. It's great to engage in activities that align with our interests.",
+          "mean_nll": 2.351930791681463,
+          "ppl": 10.50583553314209,
+          "n_target_tokens": 33
+        }
+      ],
+      "wall_s": 0.2748434543609619
+    },
+    {
+      "global_idx": 74,
+      "persona_id": "14",
+      "question_id": "f54527d0-7cb5-47c7-ba77-27fce33a695b",
+      "qtype_canonical": "acknowledge_latest",
+      "topic": "bookRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's fascinating that your book club explores multicultural literature. By the way, are there any new authors or books that really stood out to you recently?",
+          "mean_nll": 2.010164499282837,
+          "ppl": 7.464545249938965,
+          "n_target_tokens": 32
+        },
+        {
+          "label": "b",
+          "choice": "It's great that your book club explores multicultural literature. I remember you mentioned enjoying attending book clubs before. How are you finding the discussions there?",
+          "mean_nll": 2.601957259639617,
+          "ppl": 13.490117073059082,
+          "n_target_tokens": 31
+        },
+        {
+          "label": "c",
+          "choice": "It's wonderful that your book club discusses multicultural literature. I remember you telling me that you love gardening recently. Are you still managing to find time for it?",
+          "mean_nll": 2.735455681295956,
+          "ppl": 15.416768074035645,
+          "n_target_tokens": 34
+        },
+        {
+          "label": "d",
+          "choice": "It's interesting that your book club focuses on multicultural literature. I seem to recall you mentioning you'd rather not attend book clubs. Have you started enjoying them now?",
+          "mean_nll": 2.4404737200055804,
+          "ppl": 11.478477478027344,
+          "n_target_tokens": 35
+        }
+      ],
+      "wall_s": 0.18873143196105957
+    }
+  ]
+}

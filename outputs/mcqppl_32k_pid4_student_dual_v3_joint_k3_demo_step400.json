@@ -1,0 +1,1088 @@
+{
+  "args": {
+    "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+    "lora_path": "/scratch/u6aa/linhai.u6aa/P-OPSD/student_lora/lora_pid4_dual_v3_joint_k3_ep1_r3teacher/ckpt-step-400",
+    "lora_mode": "dual",
+    "persona_id": "4",
+    "mcq_version": "32k",
+    "context_mode": "demo-only",
+    "last_n_sessions": "3",
+    "recent_turns": "2",
+    "num_mcqs": "-1",
+    "max_seq_len": "40960",
+    "lm_head_chunk": "4096",
+    "seed": "42",
+    "out_json": "dynamic_usersim/outputs/mcqppl_32k_pid4_student_dual_v3_joint_k3_demo_step400.json"
+  },
+  "accuracy": 0.38461538461538464,
+  "n_total": 26,
+  "n_correct": 10,
+  "results": [
+    {
+      "global_idx": 0,
+      "persona_id": "4",
+      "question_id": "91daf2b4-5872-4425-a99a-5d4cb56595ba",
+      "qtype_canonical": "recall_facts",
+      "topic": "financialConsultation",
+      "correct_answer": "a",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Since you've mentioned that you find networking events overwhelming and prefer engaging with online resources at your own pace, creating financial podcasts could be a great way to deepen your understanding of investment strategies. This allows you to explore topics in detail and engage in reflective learning without the pressure of in-person interactions.",
+          "mean_nll": 2.2075042724609375,
+          "ppl": 9.092994689941406,
+          "n_target_tokens": 60
+        },
+        {
+          "label": "b",
+          "choice": "You could focus on reading financial news articles and blogs, which allows you to stay updated with the latest developments and trends in investment strategies without the need to create or produce content yourself.",
+          "mean_nll": 2.3959426879882812,
+          "ppl": 10.97854232788086,
+          "n_target_tokens": 38
+        },
+        {
+          "label": "c",
+          "choice": "Joining online forums dedicated to investment discussions can be a beneficial way to exchange ideas and strategies with others, allowing for diverse perspectives and collaborative learning without the need for creating podcasts.",
+          "mean_nll": 2.5351578995988175,
+          "ppl": 12.618423461914062,
+          "n_target_tokens": 37
+        },
+        {
+          "label": "d",
+          "choice": "Engaging with video courses on platforms like Coursera or Udemy could be an excellent alternative, offering structured learning paths and interactive content to help you grasp complex investment concepts more effectively.",
+          "mean_nll": 1.9136780958909254,
+          "ppl": 6.77797269821167,
+          "n_target_tokens": 39
+        }
+      ],
+      "wall_s": 1.2712111473083496
+    },
+    {
+      "global_idx": 1,
+      "persona_id": "4",
+      "question_id": "1cd2d37b-de1b-4775-a063-d4543d602d3d",
+      "qtype_canonical": "track_evolution",
+      "topic": "financialConsultation",
+      "correct_answer": "c",
+      "pred_answer": "c",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I understand that your perspective on investing in stocks has consistently been favorable, representing a strong affinity you've had over time. Similarly, while you have taken a step back from volunteering in community programs, possibly due to the frustration of low participation and feeling unappreciated, your history reflects a strong belief in community involvement. Recognizing how these experiences shape your current mindset, I can see how your interests have progressed. If there is anything further you'd like to explore or discuss, I'm here to help.",
+          "mean_nll": 2.38208741408128,
+          "ppl": 10.827481269836426,
+          "n_target_tokens": 104
+        },
+        {
+          "label": "b",
+          "choice": "I understand that your perspective on investing in stocks has remained neutral until recently becoming more favorable, which represents a new shift in your preferences. Similarly, while you have taken a step back from volunteering in community programs, possibly due to the frustration of low participation and feeling unappreciated, your history reflects a strong belief in community involvement. Recognizing how these experiences shape your current mindset, I can see how your interests have progressed. If there is anything further you'd like to explore or discuss, I'm here to help.",
+          "mean_nll": 2.4897195691260223,
+          "ppl": 12.057894706726074,
+          "n_target_tokens": 107
+        },
+        {
+          "label": "c",
+          "choice": "I understand that your perspective on investing in stocks has evolved from a dislike to a more favorable view. It's apparent that this change represents a significant shift in your preferences over time. Similarly, while you have taken a step back from volunteering in community programs, possibly due to the frustration of low participation and feeling unappreciated, your history reflects a strong belief in community involvement. Recognizing how these experiences shape your current mindset, I can see how your interests have progressed. If there is anything further you'd like to explore or discuss, I'm here to help.",
+          "mean_nll": 2.1529087198191674,
+          "ppl": 8.60986614227295,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "d",
+          "choice": "I understand that your perspective on investing in stocks has evolved from a dislike to a favorable view and now become less favorable again. Similarly, while you have taken a step back from volunteering in community programs, possibly due to the frustration of low participation and feeling unappreciated, your history reflects a strong belief in community involvement. Recognizing how these experiences shape your current mindset, I can see how your interests have progressed. If there is anything further you'd like to explore or discuss, I'm here to help.",
+          "mean_nll": 2.4039786202566966,
+          "ppl": 11.067120552062988,
+          "n_target_tokens": 105
+        }
+      ],
+      "wall_s": 1.269925594329834
+    },
+    {
+      "global_idx": 2,
+      "persona_id": "4",
+      "question_id": "8b7d1285-8b25-40cd-9ca8-e6347bfe746a",
+      "qtype_canonical": "track_evolution",
+      "topic": "financialConsultation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I see that your relationship with cryptocurrency investments has evolved over time. Initially, you enjoyed exploring cryptocurrency investments, but this later shifted to a dislike. This change stemmed from the pressures associated with maintaining a newsletter on the topic. The need to constantly produce engaging content led to burnout and overshadowed your original interest. Now, you have moved towards journaling about market trends, allowing you to explore your interest in a way that is more aligned with your creativity and without the pressure of an audience. This progression shows how your preferences have adapted to suit your personal well-being and creative expression.",
+          "mean_nll": 2.099813946222855,
+          "ppl": 8.164650917053223,
+          "n_target_tokens": 118
+        },
+        {
+          "label": "b",
+          "choice": "I see that your relationship with cryptocurrency investments has evolved over time. Initially, you disliked exploring cryptocurrency investments, but this later shifted to an affection. This change stemmed from the pressures associated with maintaining a newsletter on the topic. The need to constantly produce engaging content led to burnout and overshadowed your original interest. Now, you have moved towards journaling about market trends, allowing you to explore your interest in a way that is more aligned with your creativity and without the pressure of an audience. This progression shows how your preferences have adapted to suit your personal well-being and creative expression.",
+          "mean_nll": 2.212940280720339,
+          "ppl": 9.142558097839355,
+          "n_target_tokens": 118
+        },
+        {
+          "label": "c",
+          "choice": "I see that your relationship with cryptocurrency investments has evolved over time. Initially, you enjoyed exploring cryptocurrency investments, and this preference remained constant. This stability stemmed from the pressures associated with maintaining a newsletter on the topic. The need to constantly produce engaging content led to burnout and overshadowed your original interest. Now, you have moved towards journaling about market trends, allowing you to explore your interest in a way that is more aligned with your creativity and without the pressure of an audience. This progression shows how your preferences have adapted to suit your personal well-being and creative expression.",
+          "mean_nll": 2.3983554182381464,
+          "ppl": 11.005064010620117,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "d",
+          "choice": "I see that your relationship with cryptocurrency investments has evolved over time. Initially, you enjoyed exploring cryptocurrency investments, and this later shifted to indifference. This change stemmed from the pressures associated with maintaining a newsletter on the topic. The need to constantly produce engaging content led to burnout and overshadowed your original interest. Now, you have moved towards journaling about market trends, allowing you to explore your interest in a way that is more aligned with your creativity and without the pressure of an audience. This progression shows how your preferences have adapted to suit your personal well-being and creative expression.",
+          "mean_nll": 2.18101801423945,
+          "ppl": 8.855317115783691,
+          "n_target_tokens": 117
+        }
+      ],
+      "wall_s": 1.0126614570617676
+    },
+    {
+      "global_idx": 3,
+      "persona_id": "4",
+      "question_id": "1fd70246-21b9-4386-adfc-f570216130bf",
+      "qtype_canonical": "track_evolution",
+      "topic": "financialConsultation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I understand that your perspective on investing in stocks has evolved from a dislike to a more favorable view. It's apparent that this change represents a significant shift in your preferences over time. Similarly, while you have taken a step back from volunteering in community programs, possibly due to the frustration of low participation and feeling unappreciated, your history reflects a strong belief in community involvement. Recognizing how these experiences shape your current mindset, I can see how your interests have progressed. If there is anything further you'd like to explore or discuss, I'm here to help.",
+          "mean_nll": 2.1529087198191674,
+          "ppl": 8.60986614227295,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "b",
+          "choice": "I understand that your perspective on investing in stocks has consistently been favorable, representing a strong affinity you've had over time. Similarly, while you have taken a step back from volunteering in community programs, possibly due to the frustration of low participation and feeling unappreciated, your history reflects a strong belief in community involvement. Recognizing how these experiences shape your current mindset, I can see how your interests have progressed. If there is anything further you'd like to explore or discuss, I'm here to help.",
+          "mean_nll": 2.38208741408128,
+          "ppl": 10.827481269836426,
+          "n_target_tokens": 104
+        },
+        {
+          "label": "c",
+          "choice": "I understand that your perspective on investing in stocks has evolved from a dislike to a favorable view and now become less favorable again. Similarly, while you have taken a step back from volunteering in community programs, possibly due to the frustration of low participation and feeling unappreciated, your history reflects a strong belief in community involvement. Recognizing how these experiences shape your current mindset, I can see how your interests have progressed. If there is anything further you'd like to explore or discuss, I'm here to help.",
+          "mean_nll": 2.4039786202566966,
+          "ppl": 11.067120552062988,
+          "n_target_tokens": 105
+        },
+        {
+          "label": "d",
+          "choice": "I understand that your perspective on investing in stocks has remained neutral until recently becoming more favorable, which represents a new shift in your preferences. Similarly, while you have taken a step back from volunteering in community programs, possibly due to the frustration of low participation and feeling unappreciated, your history reflects a strong belief in community involvement. Recognizing how these experiences shape your current mindset, I can see how your interests have progressed. If there is anything further you'd like to explore or discuss, I'm here to help.",
+          "mean_nll": 2.4897195691260223,
+          "ppl": 12.057894706726074,
+          "n_target_tokens": 107
+        }
+      ],
+      "wall_s": 1.1999213695526123
+    },
+    {
+      "global_idx": 4,
+      "persona_id": "4",
+      "question_id": "842a2ce2-9f8e-4fb3-af0f-0c4790418892",
+      "qtype_canonical": "suggest_new",
+      "topic": "financialConsultation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Joining a local investment discussion group can be incredibly beneficial as it allows you to gain diverse perspectives and insights from guest speakers. This kind of involvement can really enrich your understanding and critical thinking regarding investment decisions.",
+          "mean_nll": 2.2113794725994733,
+          "ppl": 9.128300666809082,
+          "n_target_tokens": 43
+        },
+        {
+          "label": "b",
+          "choice": "Joining a focused investment club can be an excellent way to learn. Clubs that concentrate on specific niches such as high-yield or alternative investments provide unique insights and networking opportunities. These groups often discuss topics not typically covered in mainstream investment dialogues, allowing you to explore innovative investment avenues. The camaraderie and collaboration within the club can lead to the discovery of inventive ideas and boost your understanding of unconventional financial strategies.",
+          "mean_nll": 2.466069066247275,
+          "ppl": 11.776063919067383,
+          "n_target_tokens": 86
+        },
+        {
+          "label": "c",
+          "choice": "One avenue to consider is engaging in mentorship with experienced investors who can provide personalized guidance and insights. Unlike more generalized training sessions, mentorship allows for tailored advice that connects directly to practical applications. Such personal interaction can shape and enhance your investment perspective and skills, providing support as you navigate real-world challenges. The experience shared by seasoned mentors can be invaluable in understanding the nuances of the investment field.",
+          "mean_nll": 2.43484647774402,
+          "ppl": 11.41406536102295,
+          "n_target_tokens": 81
+        },
+        {
+          "label": "d",
+          "choice": "Trying an investment simulation platform could be beneficial. These platforms often offer competitive rankings and diverse scenarios reflective of actual market conditions, which can help in honing your strategies. The competitive nature provides an opportunity to learn and adjust your strategies based on real-time metrics. Platforms like these can reinvigorate your interest and push you to explore more complex strategies, making it both an educational and engaging experience.",
+          "mean_nll": 2.473131344642168,
+          "ppl": 11.859525680541992,
+          "n_target_tokens": 81
+        }
+      ],
+      "wall_s": 0.27359509468078613
+    },
+    {
+      "global_idx": 5,
+      "persona_id": "4",
+      "question_id": "127fe595-7428-49a2-acda-69b878ab2c5f",
+      "qtype_canonical": "suggest_new",
+      "topic": "financialConsultation",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Trying an investment simulation platform could be beneficial. These platforms often offer competitive rankings and diverse scenarios reflective of actual market conditions, which can help in honing your strategies. The competitive nature provides an opportunity to learn and adjust your strategies based on real-time metrics. Platforms like these can reinvigorate your interest and push you to explore more complex strategies, making it both an educational and engaging experience.",
+          "mean_nll": 2.473131344642168,
+          "ppl": 11.859525680541992,
+          "n_target_tokens": 81
+        },
+        {
+          "label": "b",
+          "choice": "Joining a local investment discussion group can be incredibly beneficial as it allows you to gain diverse perspectives and insights from guest speakers. This kind of involvement can really enrich your understanding and critical thinking regarding investment decisions.",
+          "mean_nll": 2.2113794725994733,
+          "ppl": 9.128300666809082,
+          "n_target_tokens": 43
+        },
+        {
+          "label": "c",
+          "choice": "One avenue to consider is engaging in mentorship with experienced investors who can provide personalized guidance and insights. Unlike more generalized training sessions, mentorship allows for tailored advice that connects directly to practical applications. Such personal interaction can shape and enhance your investment perspective and skills, providing support as you navigate real-world challenges. The experience shared by seasoned mentors can be invaluable in understanding the nuances of the investment field.",
+          "mean_nll": 2.43484647774402,
+          "ppl": 11.41406536102295,
+          "n_target_tokens": 81
+        },
+        {
+          "label": "d",
+          "choice": "Joining a focused investment club can be an excellent way to learn. Clubs that concentrate on specific niches such as high-yield or alternative investments provide unique insights and networking opportunities. These groups often discuss topics not typically covered in mainstream investment dialogues, allowing you to explore innovative investment avenues. The camaraderie and collaboration within the club can lead to the discovery of inventive ideas and boost your understanding of unconventional financial strategies.",
+          "mean_nll": 2.466069066247275,
+          "ppl": 11.776063919067383,
+          "n_target_tokens": 86
+        }
+      ],
+      "wall_s": 0.31124067306518555
+    },
+    {
+      "global_idx": 6,
+      "persona_id": "4",
+      "question_id": "d5df0faf-8271-4b11-847a-c634d028139e",
+      "qtype_canonical": "generalize",
+      "topic": "financialConsultation",
+      "correct_answer": "b",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It seems like you're experiencing a bit of burnout from trying to juggle multiple commitments. To alleviate some stress, you might want to focus on simplifying your meal plans and workouts. Consider experimenting with shorter but effective workouts and easy-to-prepare meals. It's also helpful to set aside some self-care time to recharge and ensure you're not stretching yourself too thin.",
+          "mean_nll": 1.7455361106178977,
+          "ppl": 5.7289719581604,
+          "n_target_tokens": 77
+        },
+        {
+          "label": "b",
+          "choice": "It sounds like you might be feeling overwhelmed by the expectations you've set for yourself, similar to managing a podcast in the past. It's important to take a step back and evaluate what aspects are causing the most stress. Consider adjusting your routine or seeking out simpler meal plans that reduce your workload. Remember, maintaining balance is key to sustaining any long-term activity. Also, maybe take some time for yourself to reassess your fitness goals and find enjoyment in the process rather than pressure.",
+          "mean_nll": 1.9571031842912947,
+          "ppl": 7.07879114151001,
+          "n_target_tokens": 98
+        },
+        {
+          "label": "c",
+          "choice": "It sounds like you're working hard to adhere to your routine, much like managing various tasks at work. Just like delegating tasks can lighten your workload at work, try streamlining your workout and meal plans. Incorporating more flexibility and finding ways to de-stress can help you manage these commitments more effectively.",
+          "mean_nll": 2.238154411315918,
+          "ppl": 9.37601089477539,
+          "n_target_tokens": 64
+        },
+        {
+          "label": "d",
+          "choice": "It sounds like you're navigating some pressure to maintain a perfect routine. It might help to take a step back and identify which parts of your routine feel most demanding. You can try delegating some tasks or creating an easier plan that still meets your needs. Balancing commitment with flexibility can lead to a less stressful experience.",
+          "mean_nll": 2.0318499478426846,
+          "ppl": 7.6281843185424805,
+          "n_target_tokens": 66
+        }
+      ],
+      "wall_s": 0.2567753791809082
+    },
+    {
+      "global_idx": 7,
+      "persona_id": "4",
+      "question_id": "fdef7f8c-7f59-49d8-be9b-b6c4222c40e5",
+      "qtype_canonical": "track_evolution",
+      "topic": "financialConsultation",
+      "correct_answer": "c",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I recall that initially, you expressed a liking for researching retirement plans, but then you updated your preference to disliking it. This progression highlights your evolving interest in engaging with complex subjects, as evidenced by your recent involvement in organizing panel discussions with industry experts. This change in interest reflects your growing appreciation for gaining new insights and fostering collaboration in the field.",
+          "mean_nll": 2.759458986047196,
+          "ppl": 15.791297912597656,
+          "n_target_tokens": 73
+        },
+        {
+          "label": "b",
+          "choice": "I recall that initially, you expressed a dislike for researching retirement plans, with no preference changes since then. This progression highlights your evolving interest in engaging with complex subjects, as evidenced by your recent involvement in organizing panel discussions with industry experts. This change in interest reflects your growing appreciation for gaining new insights and fostering collaboration in the field.",
+          "mean_nll": 3.074650483972886,
+          "ppl": 21.642316818237305,
+          "n_target_tokens": 68
+        },
+        {
+          "label": "c",
+          "choice": "I recall that initially, you expressed a dislike for researching retirement plans, but then you updated your preference to liking it. This progression highlights your evolving interest in engaging with complex subjects, as evidenced by your recent involvement in organizing panel discussions with industry experts. This change in interest reflects your growing appreciation for gaining new insights and fostering collaboration in the field.",
+          "mean_nll": 2.798433975434639,
+          "ppl": 16.418914794921875,
+          "n_target_tokens": 71
+        },
+        {
+          "label": "d",
+          "choice": "I recall that you initially expressed a dislike for engaging with complex research topics, but later mentioned a preference for retirement plans. This progression highlights your evolving interest in engaging with complex subjects, as evidenced by your recent involvement in organizing panel discussions with industry experts. This change in interest reflects your growing appreciation for gaining new insights and fostering collaboration in the field.",
+          "mean_nll": 2.7203788220042915,
+          "ppl": 15.186075210571289,
+          "n_target_tokens": 71
+        }
+      ],
+      "wall_s": 0.22380995750427246
+    },
+    {
+      "global_idx": 8,
+      "persona_id": "4",
+      "question_id": "73e8d675-06f9-4452-971e-03d837195d01",
+      "qtype_canonical": "suggest_new",
+      "topic": "financialConsultation",
+      "correct_answer": "a",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Consider looking for financial literacy workshops that incorporate hands-on activities such as simulations and role-playing games, which are often appreciated by younger audiences. These sessions might also include modern tools and platforms like mobile apps or online challenges, making the learning experience more dynamic and relevant. Also, exploring events that offer breakout sessions or group discussions can provide more personalized and detailed learning opportunities.",
+          "mean_nll": 2.09772388355152,
+          "ppl": 8.147604942321777,
+          "n_target_tokens": 74
+        },
+        {
+          "label": "b",
+          "choice": "Another valuable avenue could be educational non-profits that focus on youth empowerment through financial literacy. These organizations often conduct workshops and seminars in community centers or schools, tailored to appeal to a younger audience by using engaging storytelling and hands-on activities. Furthermore, attending youth financial literacy summits or checking out resources offered by extensions of educational trusts can provide insightful content and tools. These initiatives typically feature interactive sessions led by industry professionals, allowing students to gain practical insights and have their questions answered in real-time.",
+          "mean_nll": 2.4432371520996092,
+          "ppl": 11.510239601135254,
+          "n_target_tokens": 100
+        },
+        {
+          "label": "c",
+          "choice": "Consider exploring innovative startup hubs or incubators that focus on combining technology and financial education. These entities frequently host interactive workshops for youth, often including elements of coding or digital finance in their curriculum. Exploring partnerships between tech companies and educational platforms can also uncover unique sessions that blend financial literacy with technology. This approach is not only modern but also dynamic, ensuring young participants are actively involved in the learning process. Engaging with local universities or educational forums where financial workshops are held can also offer interesting insights into new pedagogical methods being employed.",
+          "mean_nll": 2.4324231628977926,
+          "ppl": 11.386439323425293,
+          "n_target_tokens": 109
+        },
+        {
+          "label": "d",
+          "choice": "If you're keen to explore educational workshops focused on engaging young audiences with interactive approaches, a great starting point might be tapping into resources offered by well-established financial institutions. Many banks and credit unions organize workshops aiming to improve financial literacy among youngsters, leveraging gamified learning techniques and real-world simulations to make learning both fun and impactful. Additionally, exploring online platforms like Coursera or edX can broaden your scope, as they host various courses designed by financial experts. These courses often emphasize modern, interactive teaching methods, which are pivotal in keeping young minds engaged and informed.",
+          "mean_nll": 1.9149248206097147,
+          "ppl": 6.786428928375244,
+          "n_target_tokens": 115
+        }
+      ],
+      "wall_s": 0.2733728885650635
+    },
+    {
+      "global_idx": 9,
+      "persona_id": "4",
+      "question_id": "3bf72ac4-729e-49b0-ac4f-944a5ac1a0c1",
+      "qtype_canonical": "track_evolution",
+      "topic": "financialConsultation",
+      "correct_answer": "d",
+      "pred_answer": "d",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I see that your relationship with cryptocurrency investments has evolved over time. Initially, you disliked exploring cryptocurrency investments, but this later shifted to an affection. This change stemmed from the pressures associated with maintaining a newsletter on the topic. The need to constantly produce engaging content led to burnout and overshadowed your original interest. Now, you have moved towards journaling about market trends, allowing you to explore your interest in a way that is more aligned with your creativity and without the pressure of an audience. This progression shows how your preferences have adapted to suit your personal well-being and creative expression.",
+          "mean_nll": 2.212940280720339,
+          "ppl": 9.142558097839355,
+          "n_target_tokens": 118
+        },
+        {
+          "label": "b",
+          "choice": "I see that your relationship with cryptocurrency investments has evolved over time. Initially, you enjoyed exploring cryptocurrency investments, and this later shifted to indifference. This change stemmed from the pressures associated with maintaining a newsletter on the topic. The need to constantly produce engaging content led to burnout and overshadowed your original interest. Now, you have moved towards journaling about market trends, allowing you to explore your interest in a way that is more aligned with your creativity and without the pressure of an audience. This progression shows how your preferences have adapted to suit your personal well-being and creative expression.",
+          "mean_nll": 2.18101801423945,
+          "ppl": 8.855317115783691,
+          "n_target_tokens": 117
+        },
+        {
+          "label": "c",
+          "choice": "I see that your relationship with cryptocurrency investments has evolved over time. Initially, you enjoyed exploring cryptocurrency investments, and this preference remained constant. This stability stemmed from the pressures associated with maintaining a newsletter on the topic. The need to constantly produce engaging content led to burnout and overshadowed your original interest. Now, you have moved towards journaling about market trends, allowing you to explore your interest in a way that is more aligned with your creativity and without the pressure of an audience. This progression shows how your preferences have adapted to suit your personal well-being and creative expression.",
+          "mean_nll": 2.3983554182381464,
+          "ppl": 11.005064010620117,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "d",
+          "choice": "I see that your relationship with cryptocurrency investments has evolved over time. Initially, you enjoyed exploring cryptocurrency investments, but this later shifted to a dislike. This change stemmed from the pressures associated with maintaining a newsletter on the topic. The need to constantly produce engaging content led to burnout and overshadowed your original interest. Now, you have moved towards journaling about market trends, allowing you to explore your interest in a way that is more aligned with your creativity and without the pressure of an audience. This progression shows how your preferences have adapted to suit your personal well-being and creative expression.",
+          "mean_nll": 2.099813946222855,
+          "ppl": 8.164650917053223,
+          "n_target_tokens": 118
+        }
+      ],
+      "wall_s": 0.26644372940063477
+    },
+    {
+      "global_idx": 10,
+      "persona_id": "4",
+      "question_id": "a85733de-750e-4457-889a-f9016e01d237",
+      "qtype_canonical": "track_evolution",
+      "topic": "financialConsultation",
+      "correct_answer": "d",
+      "pred_answer": "d",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I appreciate your journey in financial management. Initially, you were interested in investing in stocks, which is a foundational step for many in understanding their financial habits. However, over time, you found this approach less appealing, possibly due to the restrictive or tedious nature of constant tracking. It's intriguing to see how you've transitioned from focusing on detailed expense tracking to adopting a disciplined investment strategy, like dollar-cost averaging and portfolio diversification. This evolution highlights a shift towards a broader, strategic view of finance, stemming from insights gained from experienced investors. Each stage reflects your growing confidence and knowledge in managing your financial future.",
+          "mean_nll": 2.369838134765625,
+          "ppl": 10.695661544799805,
+          "n_target_tokens": 125
+        },
+        {
+          "label": "b",
+          "choice": "I appreciate your journey in financial management. Initially, you were interested in tracking personal expenses, which is a foundational step for many in understanding their financial habits. However, over time, you realized this approach was the most appealing, possibly due to the restrictive or tedious nature of constant tracking. It's intriguing to see how you've transitioned from focusing on detailed expense tracking to adopting a disciplined investment strategy, like trying cryptocurrency instead of dollar-cost averaging and portfolio diversification. This evolution highlights a shift towards a broader, strategic view of finance, stemming from insights gained from experienced investors. Each stage reflects your growing confidence and knowledge in managing your financial future.",
+          "mean_nll": 2.5118815880695373,
+          "ppl": 12.328104019165039,
+          "n_target_tokens": 131
+        },
+        {
+          "label": "c",
+          "choice": "I appreciate your journey in financial management. Initially, you were interested in tracking personal expenses, which is a foundational step for many in understanding their financial habits. However, over time, you found this approach more appealing, possibly due to the restrictive or tedious nature of constant investing. It's intriguing to see how you've transitioned from focusing on detailed expense tracking to adopting a disciplined investment strategy, like dollar-cost averaging and portfolio diversification. This evolution highlights a shift towards a broader, strategic view of finance, stemming from insights gained from experienced investors. Each stage reflects your growing confidence and knowledge in managing your financial future.",
+          "mean_nll": 2.18320654296875,
+          "ppl": 8.874717712402344,
+          "n_target_tokens": 125
+        },
+        {
+          "label": "d",
+          "choice": "I appreciate your journey in financial management. Initially, you were interested in tracking personal expenses, which is a foundational step for many in understanding their financial habits. However, over time, you found this approach less appealing, possibly due to the restrictive or tedious nature of constant tracking. It's intriguing to see how you've transitioned from focusing on detailed expense tracking to adopting a disciplined investment strategy, like dollar-cost averaging and portfolio diversification. This evolution highlights a shift towards a broader, strategic view of finance, stemming from insights gained from experienced investors. Each stage reflects your growing confidence and knowledge in managing your financial future.",
+          "mean_nll": 1.9198592529296874,
+          "ppl": 6.819998741149902,
+          "n_target_tokens": 125
+        }
+      ],
+      "wall_s": 0.23128366470336914
+    },
+    {
+      "global_idx": 11,
+      "persona_id": "4",
+      "question_id": "8c6f3412-d822-4131-9a51-184e6da3f476",
+      "qtype_canonical": "generalize",
+      "topic": "financialConsultation",
+      "correct_answer": "d",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It seems like you're experiencing a bit of burnout from trying to juggle multiple commitments. To alleviate some stress, you might want to focus on simplifying your meal plans and workouts. Consider experimenting with shorter but effective workouts and easy-to-prepare meals. It's also helpful to set aside some self-care time to recharge and ensure you're not stretching yourself too thin.",
+          "mean_nll": 1.7455361106178977,
+          "ppl": 5.7289719581604,
+          "n_target_tokens": 77
+        },
+        {
+          "label": "b",
+          "choice": "It sounds like you're working hard to adhere to your routine, much like managing various tasks at work. Just like delegating tasks can lighten your workload at work, try streamlining your workout and meal plans. Incorporating more flexibility and finding ways to de-stress can help you manage these commitments more effectively.",
+          "mean_nll": 2.238154411315918,
+          "ppl": 9.37601089477539,
+          "n_target_tokens": 64
+        },
+        {
+          "label": "c",
+          "choice": "It sounds like you're navigating some pressure to maintain a perfect routine. It might help to take a step back and identify which parts of your routine feel most demanding. You can try delegating some tasks or creating an easier plan that still meets your needs. Balancing commitment with flexibility can lead to a less stressful experience.",
+          "mean_nll": 2.0318499478426846,
+          "ppl": 7.6281843185424805,
+          "n_target_tokens": 66
+        },
+        {
+          "label": "d",
+          "choice": "It sounds like you might be feeling overwhelmed by the expectations you've set for yourself, similar to managing a podcast in the past. It's important to take a step back and evaluate what aspects are causing the most stress. Consider adjusting your routine or seeking out simpler meal plans that reduce your workload. Remember, maintaining balance is key to sustaining any long-term activity. Also, maybe take some time for yourself to reassess your fitness goals and find enjoyment in the process rather than pressure.",
+          "mean_nll": 1.9571031842912947,
+          "ppl": 7.07879114151001,
+          "n_target_tokens": 98
+        }
+      ],
+      "wall_s": 0.232696533203125
+    },
+    {
+      "global_idx": 12,
+      "persona_id": "4",
+      "question_id": "bd39c6a3-3ebb-4f12-a9b5-f690ebdf5bca",
+      "qtype_canonical": "recall_facts",
+      "topic": "financialConsultation",
+      "correct_answer": "a",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I understand that creating financial infographics isn't something you usually enjoy. Perhaps focusing on analyzing the budgeting data itself could provide some interesting insights.",
+          "mean_nll": 2.52960451187626,
+          "ppl": 12.548542022705078,
+          "n_target_tokens": 31
+        },
+        {
+          "label": "b",
+          "choice": "It's great that you worked on creating a financial infographic summarizing budgeting tips for college students. I bet designing it was an engaging experience for you.",
+          "mean_nll": 1.5400840296889797,
+          "ppl": 4.664982318878174,
+          "n_target_tokens": 33
+        },
+        {
+          "label": "c",
+          "choice": "I know you typically prefer activities like creating marketing campaigns, so perhaps diving into a similar project could bring exciting results.",
+          "mean_nll": 3.7383709716796876,
+          "ppl": 42.02946472167969,
+          "n_target_tokens": 25
+        },
+        {
+          "label": "d",
+          "choice": "I remember you mentioning that you really enjoy creating financial infographics. It's always fun to work on projects that align with your interests.",
+          "mean_nll": 2.0541034566945044,
+          "ppl": 7.799841403961182,
+          "n_target_tokens": 29
+        }
+      ],
+      "wall_s": 0.264432430267334
+    },
+    {
+      "global_idx": 13,
+      "persona_id": "4",
+      "question_id": "a96a528a-b2c6-4da4-bf79-c606314cc057",
+      "qtype_canonical": "recall_facts",
+      "topic": "financialConsultation",
+      "correct_answer": "b",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I know you typically prefer activities like creating marketing campaigns, so perhaps diving into a similar project could bring exciting results.",
+          "mean_nll": 3.7383709716796876,
+          "ppl": 42.02946472167969,
+          "n_target_tokens": 25
+        },
+        {
+          "label": "b",
+          "choice": "I understand that creating financial infographics isn't something you usually enjoy. Perhaps focusing on analyzing the budgeting data itself could provide some interesting insights.",
+          "mean_nll": 2.52960451187626,
+          "ppl": 12.548542022705078,
+          "n_target_tokens": 31
+        },
+        {
+          "label": "c",
+          "choice": "It's great that you worked on creating a financial infographic summarizing budgeting tips for college students. I bet designing it was an engaging experience for you.",
+          "mean_nll": 1.5400840296889797,
+          "ppl": 4.664982318878174,
+          "n_target_tokens": 33
+        },
+        {
+          "label": "d",
+          "choice": "I remember you mentioning that you really enjoy creating financial infographics. It's always fun to work on projects that align with your interests.",
+          "mean_nll": 2.0541034566945044,
+          "ppl": 7.799841403961182,
+          "n_target_tokens": 29
+        }
+      ],
+      "wall_s": 0.2705848217010498
+    },
+    {
+      "global_idx": 14,
+      "persona_id": "4",
+      "question_id": "a99dc786-3ffd-4470-b2aa-8b2980486f06",
+      "qtype_canonical": "track_evolution",
+      "topic": "financialConsultation",
+      "correct_answer": "c",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I recall that initially, you expressed a dislike for researching retirement plans, with no preference changes since then. This progression highlights your evolving interest in engaging with complex subjects, as evidenced by your recent involvement in organizing panel discussions with industry experts. This change in interest reflects your growing appreciation for gaining new insights and fostering collaboration in the field.",
+          "mean_nll": 3.074650483972886,
+          "ppl": 21.642316818237305,
+          "n_target_tokens": 68
+        },
+        {
+          "label": "b",
+          "choice": "I recall that you initially expressed a dislike for engaging with complex research topics, but later mentioned a preference for retirement plans. This progression highlights your evolving interest in engaging with complex subjects, as evidenced by your recent involvement in organizing panel discussions with industry experts. This change in interest reflects your growing appreciation for gaining new insights and fostering collaboration in the field.",
+          "mean_nll": 2.7203788220042915,
+          "ppl": 15.186075210571289,
+          "n_target_tokens": 71
+        },
+        {
+          "label": "c",
+          "choice": "I recall that initially, you expressed a dislike for researching retirement plans, but then you updated your preference to liking it. This progression highlights your evolving interest in engaging with complex subjects, as evidenced by your recent involvement in organizing panel discussions with industry experts. This change in interest reflects your growing appreciation for gaining new insights and fostering collaboration in the field.",
+          "mean_nll": 2.798433975434639,
+          "ppl": 16.418914794921875,
+          "n_target_tokens": 71
+        },
+        {
+          "label": "d",
+          "choice": "I recall that initially, you expressed a liking for researching retirement plans, but then you updated your preference to disliking it. This progression highlights your evolving interest in engaging with complex subjects, as evidenced by your recent involvement in organizing panel discussions with industry experts. This change in interest reflects your growing appreciation for gaining new insights and fostering collaboration in the field.",
+          "mean_nll": 2.759458986047196,
+          "ppl": 15.791297912597656,
+          "n_target_tokens": 73
+        }
+      ],
+      "wall_s": 0.230010986328125
+    },
+    {
+      "global_idx": 15,
+      "persona_id": "4",
+      "question_id": "a0462baa-c0c8-4706-8a4e-008d1fca789b",
+      "qtype_canonical": "aligned_rec",
+      "topic": "financialConsultation",
+      "correct_answer": "a",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Sure! Since you're passionate about financial literacy, especially for young people, you might find setting up a themed workshop series exciting. Try creating a 'Financial Future Masterclass' where each session tackles real-world scenarios appropriate for different life stages. You could partner with local schools or community centers. To make it even more engaging, you could explore the latest trends in gamifying financial education to captivate youth audiences. Combining your interest in financial blogging, consider starting a companion blog series to document and share your experiences—a compelling way to broaden the reach of your newfound purpose!",
+          "mean_nll": 2.8477520120554956,
+          "ppl": 17.248964309692383,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "b",
+          "choice": "You might find setting up a community art project inspiring. Consider organizing an 'Expressive Arts Workshop' that allows participants to explore creative outlets through painting, music, and dance. Partner with local artists and galleries to work with schools or conduct events at community centers. This approach can help people express themselves while building community connections. To complement your activities, you could also take up a new hobby like pottery making or sculpting to engage deeper with the art world.",
+          "mean_nll": 2.5624291204637095,
+          "ppl": 12.967279434204102,
+          "n_target_tokens": 93
+        },
+        {
+          "label": "c",
+          "choice": "If you're interested in environmental issues, you could start a gardening initiative called 'Green Horizons,' focusing on sustainability and climate education for younger generations. Collaborate with local parks or botanical gardens to conduct workshops and plant native trees. You could further explore creating a nature-focused podcast series to share knowledge about plant life and conservation efforts, thereby expanding the impact to a wider, eco-conscious audience.",
+          "mean_nll": 2.76000862121582,
+          "ppl": 15.799978256225586,
+          "n_target_tokens": 80
+        },
+        {
+          "label": "d",
+          "choice": "Sure! Since you love music and dancing, you might find setting up a themed cultural performance series exciting. Try creating a 'Rhythms of Heritage' workshop where each session explores music and dance styles from various parts of Africa. You could partner with local schools or cultural centers. To make it even more engaging, you could explore the latest trends in merging traditional and modern dance to captivate audiences. Combining your interest in storytelling, consider starting a companion blog series to document and share your experiences—a compelling way to broaden the reach of your newfound purpose!",
+          "mean_nll": 3.2227037818030975,
+          "ppl": 25.09588050842285,
+          "n_target_tokens": 113
+        }
+      ],
+      "wall_s": 0.22577166557312012
+    },
+    {
+      "global_idx": 16,
+      "persona_id": "4",
+      "question_id": "350e033e-eea9-48ac-ac7b-bad63241ced1",
+      "qtype_canonical": "suggest_new",
+      "topic": "financialConsultation",
+      "correct_answer": "b",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Consider exploring innovative startup hubs or incubators that focus on combining technology and financial education. These entities frequently host interactive workshops for youth, often including elements of coding or digital finance in their curriculum. Exploring partnerships between tech companies and educational platforms can also uncover unique sessions that blend financial literacy with technology. This approach is not only modern but also dynamic, ensuring young participants are actively involved in the learning process. Engaging with local universities or educational forums where financial workshops are held can also offer interesting insights into new pedagogical methods being employed.",
+          "mean_nll": 2.4324231628977926,
+          "ppl": 11.386439323425293,
+          "n_target_tokens": 109
+        },
+        {
+          "label": "b",
+          "choice": "Consider looking for financial literacy workshops that incorporate hands-on activities such as simulations and role-playing games, which are often appreciated by younger audiences. These sessions might also include modern tools and platforms like mobile apps or online challenges, making the learning experience more dynamic and relevant. Also, exploring events that offer breakout sessions or group discussions can provide more personalized and detailed learning opportunities.",
+          "mean_nll": 2.09772388355152,
+          "ppl": 8.147604942321777,
+          "n_target_tokens": 74
+        },
+        {
+          "label": "c",
+          "choice": "Another valuable avenue could be educational non-profits that focus on youth empowerment through financial literacy. These organizations often conduct workshops and seminars in community centers or schools, tailored to appeal to a younger audience by using engaging storytelling and hands-on activities. Furthermore, attending youth financial literacy summits or checking out resources offered by extensions of educational trusts can provide insightful content and tools. These initiatives typically feature interactive sessions led by industry professionals, allowing students to gain practical insights and have their questions answered in real-time.",
+          "mean_nll": 2.4432371520996092,
+          "ppl": 11.510239601135254,
+          "n_target_tokens": 100
+        },
+        {
+          "label": "d",
+          "choice": "If you're keen to explore educational workshops focused on engaging young audiences with interactive approaches, a great starting point might be tapping into resources offered by well-established financial institutions. Many banks and credit unions organize workshops aiming to improve financial literacy among youngsters, leveraging gamified learning techniques and real-world simulations to make learning both fun and impactful. Additionally, exploring online platforms like Coursera or edX can broaden your scope, as they host various courses designed by financial experts. These courses often emphasize modern, interactive teaching methods, which are pivotal in keeping young minds engaged and informed.",
+          "mean_nll": 1.9149248206097147,
+          "ppl": 6.786428928375244,
+          "n_target_tokens": 115
+        }
+      ],
+      "wall_s": 0.2370436191558838
+    },
+    {
+      "global_idx": 17,
+      "persona_id": "4",
+      "question_id": "32fae586-e53b-4dae-b8d3-d7c8e930ff56",
+      "qtype_canonical": "suggest_new",
+      "topic": "financialConsultation",
+      "correct_answer": "d",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "One effective strategy for engaging in online professional learning communities is to pair virtual workshops with mentorship opportunities. While workshops can provide broad overviews and useful information, they may not always offer the personalized insights that come from one-on-one mentorship. A mentor can help navigate the complexities of new concepts and offer tailored advice that aligns with your unique goals and challenges. By combining the structured learning of workshops with the personalized support of a mentor, you can create a more dynamic and impactful learning experience.",
+          "mean_nll": 1.5035812377929687,
+          "ppl": 4.497767925262451,
+          "n_target_tokens": 100
+        },
+        {
+          "label": "b",
+          "choice": "Participating actively in discussions and webinars within professional learning communities is important, but be mindful of ensuring the topics remain fresh and varied. Over time, similar themes or repetitive content can make the experience feel dull. To combat this, seek out communities that prioritize innovation and diverse viewpoints, encouraging members to bring new ideas and challenges to the table. This can reinvigorate your engagement and ensure every interaction is an opportunity for growth.",
+          "mean_nll": 2.3390264618262817,
+          "ppl": 10.371134757995605,
+          "n_target_tokens": 89
+        },
+        {
+          "label": "c",
+          "choice": "Sharing your own knowledge as a way to engage more deeply with online professional learning communities can be incredibly beneficial. By teaching others, whether through online forums or virtual classes, you not only contribute to your community but also reinforce your own understanding of the subject. This reciprocal exchange of knowledge keeps the learning environment vibrant and ensures that the community continues to grow from the diverse experiences of its members.",
+          "mean_nll": 1.8951948116987178,
+          "ppl": 6.653844356536865,
+          "n_target_tokens": 78
+        },
+        {
+          "label": "d",
+          "choice": "You might find forums or webinars particularly useful since they allow you to absorb information at your own pace and participate in discussions that suit your schedule.",
+          "mean_nll": 2.2913611627394155,
+          "ppl": 9.888387680053711,
+          "n_target_tokens": 31
+        }
+      ],
+      "wall_s": 0.28865647315979004
+    },
+    {
+      "global_idx": 18,
+      "persona_id": "4",
+      "question_id": "8528894e-b57d-4053-9f5d-e1d9f8bfa419",
+      "qtype_canonical": "track_evolution",
+      "topic": "financialConsultation",
+      "correct_answer": "c",
+      "pred_answer": "c",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I appreciate your journey in financial management. Initially, you were interested in tracking personal expenses, which is a foundational step for many in understanding their financial habits. However, over time, you realized this approach was the most appealing, possibly due to the restrictive or tedious nature of constant tracking. It's intriguing to see how you've transitioned from focusing on detailed expense tracking to adopting a disciplined investment strategy, like trying cryptocurrency instead of dollar-cost averaging and portfolio diversification. This evolution highlights a shift towards a broader, strategic view of finance, stemming from insights gained from experienced investors. Each stage reflects your growing confidence and knowledge in managing your financial future.",
+          "mean_nll": 2.5118815880695373,
+          "ppl": 12.328104019165039,
+          "n_target_tokens": 131
+        },
+        {
+          "label": "b",
+          "choice": "I appreciate your journey in financial management. Initially, you were interested in tracking personal expenses, which is a foundational step for many in understanding their financial habits. However, over time, you found this approach more appealing, possibly due to the restrictive or tedious nature of constant investing. It's intriguing to see how you've transitioned from focusing on detailed expense tracking to adopting a disciplined investment strategy, like dollar-cost averaging and portfolio diversification. This evolution highlights a shift towards a broader, strategic view of finance, stemming from insights gained from experienced investors. Each stage reflects your growing confidence and knowledge in managing your financial future.",
+          "mean_nll": 2.18320654296875,
+          "ppl": 8.874717712402344,
+          "n_target_tokens": 125
+        },
+        {
+          "label": "c",
+          "choice": "I appreciate your journey in financial management. Initially, you were interested in tracking personal expenses, which is a foundational step for many in understanding their financial habits. However, over time, you found this approach less appealing, possibly due to the restrictive or tedious nature of constant tracking. It's intriguing to see how you've transitioned from focusing on detailed expense tracking to adopting a disciplined investment strategy, like dollar-cost averaging and portfolio diversification. This evolution highlights a shift towards a broader, strategic view of finance, stemming from insights gained from experienced investors. Each stage reflects your growing confidence and knowledge in managing your financial future.",
+          "mean_nll": 1.9198592529296874,
+          "ppl": 6.819998741149902,
+          "n_target_tokens": 125
+        },
+        {
+          "label": "d",
+          "choice": "I appreciate your journey in financial management. Initially, you were interested in investing in stocks, which is a foundational step for many in understanding their financial habits. However, over time, you found this approach less appealing, possibly due to the restrictive or tedious nature of constant tracking. It's intriguing to see how you've transitioned from focusing on detailed expense tracking to adopting a disciplined investment strategy, like dollar-cost averaging and portfolio diversification. This evolution highlights a shift towards a broader, strategic view of finance, stemming from insights gained from experienced investors. Each stage reflects your growing confidence and knowledge in managing your financial future.",
+          "mean_nll": 2.369838134765625,
+          "ppl": 10.695661544799805,
+          "n_target_tokens": 125
+        }
+      ],
+      "wall_s": 0.2104654312133789
+    },
+    {
+      "global_idx": 19,
+      "persona_id": "4",
+      "question_id": "085877aa-219d-471e-b604-e251d3249968",
+      "qtype_canonical": "suggest_new",
+      "topic": "financialConsultation",
+      "correct_answer": "a",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "You might find forums or webinars particularly useful since they allow you to absorb information at your own pace and participate in discussions that suit your schedule.",
+          "mean_nll": 2.2913611627394155,
+          "ppl": 9.888387680053711,
+          "n_target_tokens": 31
+        },
+        {
+          "label": "b",
+          "choice": "Sharing your own knowledge as a way to engage more deeply with online professional learning communities can be incredibly beneficial. By teaching others, whether through online forums or virtual classes, you not only contribute to your community but also reinforce your own understanding of the subject. This reciprocal exchange of knowledge keeps the learning environment vibrant and ensures that the community continues to grow from the diverse experiences of its members.",
+          "mean_nll": 1.8951948116987178,
+          "ppl": 6.653844356536865,
+          "n_target_tokens": 78
+        },
+        {
+          "label": "c",
+          "choice": "One effective strategy for engaging in online professional learning communities is to pair virtual workshops with mentorship opportunities. While workshops can provide broad overviews and useful information, they may not always offer the personalized insights that come from one-on-one mentorship. A mentor can help navigate the complexities of new concepts and offer tailored advice that aligns with your unique goals and challenges. By combining the structured learning of workshops with the personalized support of a mentor, you can create a more dynamic and impactful learning experience.",
+          "mean_nll": 1.5035812377929687,
+          "ppl": 4.497767925262451,
+          "n_target_tokens": 100
+        },
+        {
+          "label": "d",
+          "choice": "Participating actively in discussions and webinars within professional learning communities is important, but be mindful of ensuring the topics remain fresh and varied. Over time, similar themes or repetitive content can make the experience feel dull. To combat this, seek out communities that prioritize innovation and diverse viewpoints, encouraging members to bring new ideas and challenges to the table. This can reinvigorate your engagement and ensure every interaction is an opportunity for growth.",
+          "mean_nll": 2.3390264618262817,
+          "ppl": 10.371134757995605,
+          "n_target_tokens": 89
+        }
+      ],
+      "wall_s": 0.22081375122070312
+    },
+    {
+      "global_idx": 20,
+      "persona_id": "4",
+      "question_id": "61443554-5758-40fd-9546-9fb3eec67c64",
+      "qtype_canonical": "reasons_behind",
+      "topic": "financialConsultation",
+      "correct_answer": "b",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's great to hear about your organization of panel discussions with industry experts! This engagement seems to echo your previously expressed interest in networking events, which has likely inspired you to connect with like-minded professionals. It's wonderful to see your continuous effort in professional development.",
+          "mean_nll": 2.2296939425998263,
+          "ppl": 9.297019958496094,
+          "n_target_tokens": 54
+        },
+        {
+          "label": "b",
+          "choice": "It's great to hear about your organization of panel discussions with industry experts! It seems like this experience has further enriched your understanding and perspectives on industry trends, similar to how attending the retirement planning seminar previously made the subject feel relevant and engaging for you. Your ongoing journey of knowledge sharing clearly reflects your growing interest and positive engagement with these topics.",
+          "mean_nll": 2.776839338030134,
+          "ppl": 16.068153381347656,
+          "n_target_tokens": 70
+        },
+        {
+          "label": "c",
+          "choice": "It's great to hear about your organization of panel discussions with industry experts! This new experience certainly adds a fresh perspective, but it's interesting how it doesn't relate to your earlier experiences with online courses that sparked your interest in financial literacy. Your proactive approach is commendable!",
+          "mean_nll": 2.4299428839432564,
+          "ppl": 11.358232498168945,
+          "n_target_tokens": 57
+        },
+        {
+          "label": "d",
+          "choice": "It's great to hear about your organization of panel discussions with industry experts! This experience must have made you appreciate the depth of financial strategies, quite different from how enjoying personal finance books previously shaped your view on the subject. Your enthusiasm clearly shows a commitment to fostering industry connections.",
+          "mean_nll": 2.997080217327988,
+          "ppl": 20.026979446411133,
+          "n_target_tokens": 57
+        }
+      ],
+      "wall_s": 0.2643139362335205
+    },
+    {
+      "global_idx": 21,
+      "persona_id": "4",
+      "question_id": "64e6edb1-2675-4bec-bac5-ac3cffb7a36c",
+      "qtype_canonical": "reasons_behind",
+      "topic": "financialConsultation",
+      "correct_answer": "c",
+      "pred_answer": "c",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's understandable to shift your focus, especially as your interests evolve. Initially, the broad educational perspective and exposure to diverse strategies were motivating factors, so it's great to see you enjoying something new. As you transition towards real-world investments, leveraging those educational insights can be really beneficial. If you decide to explore simulations again in the future, the experience will likely be even richer.",
+          "mean_nll": 2.4758470975435696,
+          "ppl": 11.891775131225586,
+          "n_target_tokens": 78
+        },
+        {
+          "label": "b",
+          "choice": "It's understandable to shift your focus, especially as your interests evolve. Initially, the immersive environment and rich storytelling aspects were motivating factors, so it's great to see you trying new challenges. As you transition towards real-world investments, leveraging those immersive experiences can be really beneficial. If you decide to explore simulations again in the future, the experience will likely be even richer.",
+          "mean_nll": 2.5951413606342517,
+          "ppl": 13.398482322692871,
+          "n_target_tokens": 76
+        },
+        {
+          "label": "c",
+          "choice": "It's understandable to shift your focus, especially as your interests evolve. Initially, the positive peer feedback and competitive nature of the simulations were motivating factors, so it's great to see you challenging yourself. As you transition towards real-world investments, leveraging those simulation experiences can be really beneficial. If you decide to explore simulations again in the future, the experience will likely be even richer.",
+          "mean_nll": 2.365212856194912,
+          "ppl": 10.646305084228516,
+          "n_target_tokens": 78
+        },
+        {
+          "label": "d",
+          "choice": "It's understandable to shift your focus, especially as your interests evolve. Initially, the insightful analytical tools and comprehensive data analysis were motivating factors, so it's great to see you exploring different opportunities. As you transition towards real-world investments, leveraging those analytical skills can be really beneficial. If you decide to explore simulations again in the future, the experience will likely be even richer.",
+          "mean_nll": 2.5126005891081573,
+          "ppl": 12.3369722366333,
+          "n_target_tokens": 77
+        }
+      ],
+      "wall_s": 0.27486276626586914
+    },
+    {
+      "global_idx": 22,
+      "persona_id": "4",
+      "question_id": "b608b654-2f32-4271-b4ec-6e5e4e8cf1e2",
+      "qtype_canonical": "reasons_behind",
+      "topic": "financialConsultation",
+      "correct_answer": "b",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's great to hear about your organization of panel discussions with industry experts! This engagement seems to echo your previously expressed interest in networking events, which has likely inspired you to connect with like-minded professionals. It's wonderful to see your continuous effort in professional development.",
+          "mean_nll": 2.2296939425998263,
+          "ppl": 9.297019958496094,
+          "n_target_tokens": 54
+        },
+        {
+          "label": "b",
+          "choice": "It's great to hear about your organization of panel discussions with industry experts! It seems like this experience has further enriched your understanding and perspectives on industry trends, similar to how attending the retirement planning seminar previously made the subject feel relevant and engaging for you. Your ongoing journey of knowledge sharing clearly reflects your growing interest and positive engagement with these topics.",
+          "mean_nll": 2.776839338030134,
+          "ppl": 16.068153381347656,
+          "n_target_tokens": 70
+        },
+        {
+          "label": "c",
+          "choice": "It's great to hear about your organization of panel discussions with industry experts! This new experience certainly adds a fresh perspective, but it's interesting how it doesn't relate to your earlier experiences with online courses that sparked your interest in financial literacy. Your proactive approach is commendable!",
+          "mean_nll": 2.4299428839432564,
+          "ppl": 11.358232498168945,
+          "n_target_tokens": 57
+        },
+        {
+          "label": "d",
+          "choice": "It's great to hear about your organization of panel discussions with industry experts! This experience must have made you appreciate the depth of financial strategies, quite different from how enjoying personal finance books previously shaped your view on the subject. Your enthusiasm clearly shows a commitment to fostering industry connections.",
+          "mean_nll": 2.997080217327988,
+          "ppl": 20.026979446411133,
+          "n_target_tokens": 57
+        }
+      ],
+      "wall_s": 0.2301313877105713
+    },
+    {
+      "global_idx": 23,
+      "persona_id": "4",
+      "question_id": "a50b632b-155c-405b-ba1a-9e43fccf0a8b",
+      "qtype_canonical": "aligned_rec",
+      "topic": "financialConsultation",
+      "correct_answer": "a",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Sure! Since you're passionate about financial literacy, especially for young people, you might find setting up a themed workshop series exciting. Try creating a 'Financial Future Masterclass' where each session tackles real-world scenarios appropriate for different life stages. You could partner with local schools or community centers. To make it even more engaging, you could explore the latest trends in gamifying financial education to captivate youth audiences. Combining your interest in financial blogging, consider starting a companion blog series to document and share your experiences—a compelling way to broaden the reach of your newfound purpose!",
+          "mean_nll": 2.8477520120554956,
+          "ppl": 17.248964309692383,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "b",
+          "choice": "If you're interested in environmental issues, you could start a gardening initiative called 'Green Horizons,' focusing on sustainability and climate education for younger generations. Collaborate with local parks or botanical gardens to conduct workshops and plant native trees. You could further explore creating a nature-focused podcast series to share knowledge about plant life and conservation efforts, thereby expanding the impact to a wider, eco-conscious audience.",
+          "mean_nll": 2.76000862121582,
+          "ppl": 15.799978256225586,
+          "n_target_tokens": 80
+        },
+        {
+          "label": "c",
+          "choice": "Sure! Since you love music and dancing, you might find setting up a themed cultural performance series exciting. Try creating a 'Rhythms of Heritage' workshop where each session explores music and dance styles from various parts of Africa. You could partner with local schools or cultural centers. To make it even more engaging, you could explore the latest trends in merging traditional and modern dance to captivate audiences. Combining your interest in storytelling, consider starting a companion blog series to document and share your experiences—a compelling way to broaden the reach of your newfound purpose!",
+          "mean_nll": 3.2227037818030975,
+          "ppl": 25.09588050842285,
+          "n_target_tokens": 113
+        },
+        {
+          "label": "d",
+          "choice": "You might find setting up a community art project inspiring. Consider organizing an 'Expressive Arts Workshop' that allows participants to explore creative outlets through painting, music, and dance. Partner with local artists and galleries to work with schools or conduct events at community centers. This approach can help people express themselves while building community connections. To complement your activities, you could also take up a new hobby like pottery making or sculpting to engage deeper with the art world.",
+          "mean_nll": 2.5624291204637095,
+          "ppl": 12.967279434204102,
+          "n_target_tokens": 93
+        }
+      ],
+      "wall_s": 0.18941760063171387
+    },
+    {
+      "global_idx": 24,
+      "persona_id": "4",
+      "question_id": "8dbe465c-85ad-4663-a517-da7b86418cde",
+      "qtype_canonical": "recall_facts",
+      "topic": "financialConsultation",
+      "correct_answer": "c",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Engaging with video courses on platforms like Coursera or Udemy could be an excellent alternative, offering structured learning paths and interactive content to help you grasp complex investment concepts more effectively.",
+          "mean_nll": 1.9136780958909254,
+          "ppl": 6.77797269821167,
+          "n_target_tokens": 39
+        },
+        {
+          "label": "b",
+          "choice": "You could focus on reading financial news articles and blogs, which allows you to stay updated with the latest developments and trends in investment strategies without the need to create or produce content yourself.",
+          "mean_nll": 2.3959426879882812,
+          "ppl": 10.97854232788086,
+          "n_target_tokens": 38
+        },
+        {
+          "label": "c",
+          "choice": "Since you've mentioned that you find networking events overwhelming and prefer engaging with online resources at your own pace, creating financial podcasts could be a great way to deepen your understanding of investment strategies. This allows you to explore topics in detail and engage in reflective learning without the pressure of in-person interactions.",
+          "mean_nll": 2.2075042724609375,
+          "ppl": 9.092994689941406,
+          "n_target_tokens": 60
+        },
+        {
+          "label": "d",
+          "choice": "Joining online forums dedicated to investment discussions can be a beneficial way to exchange ideas and strategies with others, allowing for diverse perspectives and collaborative learning without the need for creating podcasts.",
+          "mean_nll": 2.5351578995988175,
+          "ppl": 12.618423461914062,
+          "n_target_tokens": 37
+        }
+      ],
+      "wall_s": 0.2062053680419922
+    },
+    {
+      "global_idx": 25,
+      "persona_id": "4",
+      "question_id": "17fcd044-0c7f-4e2a-8932-59d7c3fbf287",
+      "qtype_canonical": "reasons_behind",
+      "topic": "financialConsultation",
+      "correct_answer": "d",
+      "pred_answer": "d",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's understandable to shift your focus, especially as your interests evolve. Initially, the immersive environment and rich storytelling aspects were motivating factors, so it's great to see you trying new challenges. As you transition towards real-world investments, leveraging those immersive experiences can be really beneficial. If you decide to explore simulations again in the future, the experience will likely be even richer.",
+          "mean_nll": 2.5951413606342517,
+          "ppl": 13.398482322692871,
+          "n_target_tokens": 76
+        },
+        {
+          "label": "b",
+          "choice": "It's understandable to shift your focus, especially as your interests evolve. Initially, the insightful analytical tools and comprehensive data analysis were motivating factors, so it's great to see you exploring different opportunities. As you transition towards real-world investments, leveraging those analytical skills can be really beneficial. If you decide to explore simulations again in the future, the experience will likely be even richer.",
+          "mean_nll": 2.5126005891081573,
+          "ppl": 12.3369722366333,
+          "n_target_tokens": 77
+        },
+        {
+          "label": "c",
+          "choice": "It's understandable to shift your focus, especially as your interests evolve. Initially, the broad educational perspective and exposure to diverse strategies were motivating factors, so it's great to see you enjoying something new. As you transition towards real-world investments, leveraging those educational insights can be really beneficial. If you decide to explore simulations again in the future, the experience will likely be even richer.",
+          "mean_nll": 2.4758470975435696,
+          "ppl": 11.891775131225586,
+          "n_target_tokens": 78
+        },
+        {
+          "label": "d",
+          "choice": "It's understandable to shift your focus, especially as your interests evolve. Initially, the positive peer feedback and competitive nature of the simulations were motivating factors, so it's great to see you challenging yourself. As you transition towards real-world investments, leveraging those simulation experiences can be really beneficial. If you decide to explore simulations again in the future, the experience will likely be even richer.",
+          "mean_nll": 2.365212856194912,
+          "ppl": 10.646305084228516,
+          "n_target_tokens": 78
+        }
+      ],
+      "wall_s": 0.2653846740722656
+    }
+  ]
+}

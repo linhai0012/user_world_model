@@ -1,0 +1,1785 @@
+{
+  "args": {
+    "base_model": "Qwen/Qwen3-4B-Instruct-2507",
+    "lora_path": "None",
+    "lora_mode": "single",
+    "persona_id": "12",
+    "mcq_version": "32k",
+    "context_mode": "demo-only",
+    "last_n_sessions": "3",
+    "recent_turns": "2",
+    "num_mcqs": "-1",
+    "max_seq_len": "40960",
+    "lm_head_chunk": "4096",
+    "seed": "42",
+    "out_json": "dynamic_usersim/outputs/mcqppl_32k_pid12_base_demo.json"
+  },
+  "accuracy": 0.4418604651162791,
+  "n_total": 43,
+  "n_correct": 19,
+  "results": [
+    {
+      "global_idx": 0,
+      "persona_id": "12",
+      "question_id": "ceaba7cf-7f7d-4bbb-9927-fdb1af713fc4",
+      "qtype_canonical": "recall_facts",
+      "topic": "movieRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I remember you mentioning that you enjoy participating in film discussions. It's interesting how these discussions can offer various insights into movies.",
+          "mean_nll": 6.359253494827835,
+          "ppl": 577.8148193359375,
+          "n_target_tokens": 27
+        },
+        {
+          "label": "b",
+          "choice": "That's interesting! It sounds like sharing thoughts on recent releases must have offered some new perspectives.",
+          "mean_nll": 6.769635881696429,
+          "ppl": 870.9945068359375,
+          "n_target_tokens": 21
+        },
+        {
+          "label": "c",
+          "choice": "I remember you mentioning that you enjoy attending music festivals. It's interesting how these discussions can offer various insights into movies.",
+          "mean_nll": 5.919656019944411,
+          "ppl": 372.2835693359375,
+          "n_target_tokens": 26
+        },
+        {
+          "label": "d",
+          "choice": "I remember you mentioning that you're not really into film discussions. It's interesting how these discussions can offer various insights into movies.",
+          "mean_nll": 5.297894614083426,
+          "ppl": 199.91543579101562,
+          "n_target_tokens": 28
+        }
+      ],
+      "wall_s": 0.9594719409942627
+    },
+    {
+      "global_idx": 1,
+      "persona_id": "12",
+      "question_id": "9479c28f-611b-4da1-beb5-a2d8f496f85d",
+      "qtype_canonical": "recall_facts",
+      "topic": "legalConsultation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I remember you mentioning that you didn't find legal-themed board games particularly engaging. Perhaps we could explore some other genres or activities that might interest you more.",
+          "mean_nll": 3.6510795824455493,
+          "ppl": 38.51622772216797,
+          "n_target_tokens": 33
+        },
+        {
+          "label": "b",
+          "choice": "I remember you mentioning that you were particularly fond of legal-themed board games because of the engaging debates they foster. It sounds like a unique hobby!",
+          "mean_nll": 5.297399705456149,
+          "ppl": 199.81651306152344,
+          "n_target_tokens": 31
+        },
+        {
+          "label": "c",
+          "choice": "It's great to hear you reminiscing about that night. What stood out to you during those games that you found memorable?",
+          "mean_nll": 4.563861140498409,
+          "ppl": 95.95327758789062,
+          "n_target_tokens": 27
+        },
+        {
+          "label": "d",
+          "choice": "I remember you mentioning that you didn't find legal-themed board games particularly engaging. Perhaps we could explore some other genres or activities that might interest you more.",
+          "mean_nll": 3.6510795824455493,
+          "ppl": 38.51622772216797,
+          "n_target_tokens": 33
+        }
+      ],
+      "wall_s": 0.9727404117584229
+    },
+    {
+      "global_idx": 2,
+      "persona_id": "12",
+      "question_id": "431e1c24-b09a-4bc4-b6d0-32e7c0631353",
+      "qtype_canonical": "suggest_new",
+      "topic": "movieRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Consider creating a collaborative blog or digital journal where attendees can contribute their reflections and reviews of the featured films before and after the gathering. This not only extends the conversation beyond the actual event but also allows participants to express their thoughts in writing, which can deepen their engagement with the actor's body of work. Encouraging dialogue through dynamic, written interaction can make the experience lasting and more interactive for guests both during and after the event.",
+          "mean_nll": 3.387777155095881,
+          "ppl": 29.600080490112305,
+          "n_target_tokens": 88
+        },
+        {
+          "label": "b",
+          "choice": "For a unique twist on your gathering, consider creating a series of discussions or activities that connect the actor's films with the cultural and historical contexts in which they were made. This can deepen appreciation among your guests and provoke intriguing conversations that not only focus on the films themselves but also their societal impact per era. Much like how a film history podcast might draw you into the stories behind the productions, organizing an event like this can offer a richer viewing experience.",
+          "mean_nll": 4.383079197095788,
+          "ppl": 80.08423614501953,
+          "n_target_tokens": 92
+        },
+        {
+          "label": "c",
+          "choice": "How about conducting a 'Guess the Scene' game where participants act out scenes from various films, and others guess the movie? You could also organize a trivia session centered on lesser-known facts about the actor’s career and behind-the-scenes insights.",
+          "mean_nll": 3.708695373535156,
+          "ppl": 40.80054473876953,
+          "n_target_tokens": 50
+        },
+        {
+          "label": "d",
+          "choice": "To shake things up for your themed gathering, you might introduce a new format or activity, like organizing a friendly debate about the different interpretations of the actor's roles over the years. By structuring the event in a way that encourages thoughtful discussion and analysis, you'll give your guests a fresh perspective and insight into the evolution of the actor's artistry. It can be a rewarding change from the usual format if past gatherings have started to feel a bit predictable or repetitive.",
+          "mean_nll": 3.763583183288574,
+          "ppl": 43.10259246826172,
+          "n_target_tokens": 96
+        }
+      ],
+      "wall_s": 0.9617998600006104
+    },
+    {
+      "global_idx": 3,
+      "persona_id": "12",
+      "question_id": "194ce23e-d6d7-46f9-99b0-a0eba223a0ee",
+      "qtype_canonical": "suggest_new",
+      "topic": "legalConsultation",
+      "correct_answer": "d",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Engaging in role-playing scenarios can deeply enhance one's understanding of conflict resolution. By simulating various conflicts, participants can embody different perspectives and practice empathy and strategic thinking in real-time. It’s akin to a live theater experience where each role offers unique insights into human interaction and resolution processes. Such dynamic learning environments challenge participants to think on their feet and adapt, making the learning process both educational and captivating.",
+          "mean_nll": 3.1936494758330194,
+          "ppl": 24.37723159790039,
+          "n_target_tokens": 83
+        },
+        {
+          "label": "b",
+          "choice": "Another method is to utilize diverse collaborative tools and technologies that facilitate group problem-solving activities. Virtual reality environments, for instance, can simulate complex scenarios where individuals must work together to find solutions. This method not only makes learning more interactive but also introduces realism to the conflict resolution process. Engaging with technology-driven simulations allows for experimentation with different approaches in a safe space, providing profound insights into team dynamics and resolution strategies.",
+          "mean_nll": 2.916746048700242,
+          "ppl": 18.481054306030273,
+          "n_target_tokens": 84
+        },
+        {
+          "label": "c",
+          "choice": "Incorporating storytelling workshops into conflict resolution education can also offer significant benefits. Sharing and analyzing stories of past conflicts, both historical and contemporary, allows learners to draw parallels and learn from past mistakes and successes. This method promotes a deeper understanding of the root causes of conflicts and the various methods of resolution. The engaging narrative form captivates learners’ attention, making the exploration of conflict resolution compelling and memorable.",
+          "mean_nll": 3.1399612426757812,
+          "ppl": 23.102970123291016,
+          "n_target_tokens": 84
+        },
+        {
+          "label": "d",
+          "choice": "You might find interactive workshops or role-playing activities in conflict resolution exciting, as they often involve real-world scenarios and case studies that make the learning process more vivid and engaging.",
+          "mean_nll": 4.304089864095052,
+          "ppl": 74.00184631347656,
+          "n_target_tokens": 36
+        }
+      ],
+      "wall_s": 1.0303866863250732
+    },
+    {
+      "global_idx": 4,
+      "persona_id": "12",
+      "question_id": "83e7b851-a9c3-4391-9c37-b9942ccfacd4",
+      "qtype_canonical": "track_evolution",
+      "topic": "movieRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "c",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Your journey with film festivals seems to have evolved considerably over time. Initially, you didn't have any strong feelings about attending them, but were eventually drawn in by the cinematic allure and premieres. However, as time went on, the chaotic environment grew on you, turning into something you enjoyed, before it ultimately became overwhelming, steering you towards disliking them.",
+          "mean_nll": 4.379658610026041,
+          "ppl": 79.810791015625,
+          "n_target_tokens": 75
+        },
+        {
+          "label": "b",
+          "choice": "Your journey with film festivals seems to have evolved considerably over time. Initially, you were indifferent about attending them, but curiosity got the better of you and you started enjoying the cinematic allure. However, over time, the chaotic nature dampened your enjoyment, and despite some fun moments, your preference evolved into a firm dislike for attending film festivals.",
+          "mean_nll": 5.005884660993304,
+          "ppl": 149.28909301757812,
+          "n_target_tokens": 70
+        },
+        {
+          "label": "c",
+          "choice": "Your journey with film festivals seems to have evolved considerably over time. Initially, you enjoyed attending them, likely drawn in by the cinematic allure and the chance to see premieres firsthand. However, over time, the crowded and chaotic nature of these events shifted your perspective, as you found the environment became more overwhelming than enjoyable. It's clear that while your initial attraction was strong, the evolving nature of your experiences has led you to reassess your preference, now expressing a dislike for attending film festivals.",
+          "mean_nll": 4.142972134127476,
+          "ppl": 62.989749908447266,
+          "n_target_tokens": 101
+        },
+        {
+          "label": "d",
+          "choice": "Your journey with film festivals seems to have evolved considerably over time. Initially, you disliked attending them due to their chaotic nature, but over time, you started enjoying the cinematic allure and premieres. However, recently, the crowded atmosphere became overwhelming again, leading you to reassess your preference, now expressing a dislike for attending film festivals.",
+          "mean_nll": 4.64659229223279,
+          "ppl": 104.22917938232422,
+          "n_target_tokens": 69
+        }
+      ],
+      "wall_s": 0.23006868362426758
+    },
+    {
+      "global_idx": 5,
+      "persona_id": "12",
+      "question_id": "0e4d1863-8616-4536-90f6-e5abc8d35fd8",
+      "qtype_canonical": "reasons_behind",
+      "topic": "legalConsultation",
+      "correct_answer": "d",
+      "pred_answer": "d",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's great to hear that you found the mediation experience enlightening and rewarding. Your skills in navigating discussions and creating an atmosphere of trust are commendable. This develops the idea that persistence in legal strategies can lead to successful outcomes, which seemed to resonate with you last time regarding compliance in negotiations. It's fascinating to see how your journey reflects a deeper understanding of conflict resolution techniques that minimize escalations.",
+          "mean_nll": 4.423947217987805,
+          "ppl": 83.42494201660156,
+          "n_target_tokens": 82
+        },
+        {
+          "label": "b",
+          "choice": "I'm thrilled to learn that your mediation experience was positive and transformative! Your adeptness at fostering collaboration and encouraging open dialogue is truly admirable. This seems to connect well with your previous thoughts about the importance of developing personal relationships in professional settings, suggesting that strong interpersonal skills are vital in achieving harmony. Your evolving perspective showcases the significance of emotional intelligence in mediation.",
+          "mean_nll": 5.956193897822132,
+          "ppl": 386.1376647949219,
+          "n_target_tokens": 73
+        },
+        {
+          "label": "c",
+          "choice": "I’m glad you found the mediation experience rewarding and enlightening! Your skill in creating a constructive environment for dialogue is truly inspiring. This aligns with your earlier reflections on the power of historical narratives in shaping current negotiations, which highlighted your interest in understanding context and background. It’s encouraging to see how you are committed to enhancing collaborative solutions that bridge divides.",
+          "mean_nll": 5.99243623916417,
+          "ppl": 400.388916015625,
+          "n_target_tokens": 73
+        },
+        {
+          "label": "d",
+          "choice": "I'm glad to hear that you found the mediation experience enlightening and rewarding. It's wonderful to see how effective communication can transform conflict into cooperation. Your ability to navigate discussions with skill and create an atmosphere of trust is truly commendable. This aligns well with your earlier realization about the value of negotiation skills and mediation processes during practical applications, which sparked your interest in alternative dispute resolution. It's great to see how your perspective has evolved, reinforcing your belief in the power of dialogue to heal divisions and foster understanding.",
+          "mean_nll": 3.6019174827719636,
+          "ppl": 36.668479919433594,
+          "n_target_tokens": 106
+        }
+      ],
+      "wall_s": 0.23086333274841309
+    },
+    {
+      "global_idx": 6,
+      "persona_id": "12",
+      "question_id": "d766ed84-99de-42b4-9458-2c8fc449b1f6",
+      "qtype_canonical": "track_evolution",
+      "topic": "movieRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's wonderful to hear about your renewed interest in film history! I recall that you initially weren't fond of learning about film history, describing it as stereotypical. However, it seems this is the first time you mentioned this interest, and it was spurred by the great podcast series you discovered. Your journey from disliking to appreciating the depth of film history is fascinating. This newfound enthusiasm not only enhances your movie-watching experience but also invigorates your discussions with friends. It's impressive to see how your interests have evolved over time to embrace the historical contexts and storytelling techniques in cinema.",
+          "mean_nll": 3.431299178326716,
+          "ppl": 30.916784286499023,
+          "n_target_tokens": 122
+        },
+        {
+          "label": "b",
+          "choice": "It's wonderful to hear about your renewed interest in film history! I recall that you initially weren't fond of learning about film history, describing it as stereotypical. However, it seems your perspective has transformed recently, spurred by the great podcast series you discovered. Your journey from disliking to appreciating the depth of film history is fascinating. This newfound enthusiasm not only enhances your movie-watching experience but also invigorates your discussions with friends. It's impressive to see how your interests have evolved over time to embrace the historical contexts and storytelling techniques in cinema.",
+          "mean_nll": 3.576180897588315,
+          "ppl": 35.73679733276367,
+          "n_target_tokens": 115
+        },
+        {
+          "label": "c",
+          "choice": "It's wonderful to hear about your renewed interest in film history! I recall that you initially were always fond of learning about film history and never described it as stereotypical. However, it seems your perspective has transformed recently, spurred by the great podcast series you discovered. Your journey from disliking to appreciating the depth of film history is fascinating. This newfound enthusiasm not only enhances your movie-watching experience but also invigorates your discussions with friends. It's impressive to see how your interests have evolved over time to embrace the historical contexts and storytelling techniques in cinema.",
+          "mean_nll": 3.655265545022899,
+          "ppl": 38.677791595458984,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "d",
+          "choice": "It's wonderful to hear about your renewed interest in film history! I recall that you initially weren't particularly interested in learning about film history, but you never described it as stereotypical. However, it seems your perspective has transformed recently, spurred by the great podcast series you discovered. Your journey from disliking to appreciating the depth of film history is fascinating. This newfound enthusiasm not only enhances your movie-watching experience but also invigorates your discussions with friends. It's impressive to see how your interests have evolved over time to embrace the historical contexts and storytelling techniques in cinema.",
+          "mean_nll": 3.6527943330652572,
+          "ppl": 38.58232879638672,
+          "n_target_tokens": 119
+        }
+      ],
+      "wall_s": 0.23578357696533203
+    },
+    {
+      "global_idx": 7,
+      "persona_id": "12",
+      "question_id": "32fb0781-a149-4a83-b346-467e88f81710",
+      "qtype_canonical": "recall_facts",
+      "topic": "legalConsultation",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Since you have mentioned a preference for structured and predictable presentations, you might find it effective to incorporate clear guidelines and frameworks to ensure clarity and precision in your delivery.",
+          "mean_nll": 4.864452586454504,
+          "ppl": 129.59994506835938,
+          "n_target_tokens": 34
+        },
+        {
+          "label": "b",
+          "choice": "Since you prefer engaging in debates and enjoy the dynamic aspect of them, perhaps you can incorporate some aspects of debate into your presentation style to make it more engaging and spontaneous.",
+          "mean_nll": 4.700025770399305,
+          "ppl": 109.94998168945312,
+          "n_target_tokens": 36
+        },
+        {
+          "label": "c",
+          "choice": "Since you prefer engaging in debates and enjoy the dynamic aspect of them, perhaps you can incorporate some aspects of debate into your presentation style to make it more engaging and spontaneous.",
+          "mean_nll": 4.700025770399305,
+          "ppl": 109.94998168945312,
+          "n_target_tokens": 36
+        },
+        {
+          "label": "d",
+          "choice": "It's interesting to learn about your recent experience in the workshop for public speaking in law contexts. Maybe focusing on traditional legal presentation methods and detailed case study analyses could enhance your skills even further.",
+          "mean_nll": 5.414939880371094,
+          "ppl": 224.73902893066406,
+          "n_target_tokens": 40
+        }
+      ],
+      "wall_s": 0.2218339443206787
+    },
+    {
+      "global_idx": 8,
+      "persona_id": "12",
+      "question_id": "a2543130-a95f-4bb4-877f-0d82314abfa3",
+      "qtype_canonical": "generalize",
+      "topic": "legalConsultation",
+      "correct_answer": "c",
+      "pred_answer": "c",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's wonderful that you're considering trying out history-themed puzzle games once more! Delving into these intricate puzzles might ignite a newfound appreciation for the subject matter, providing both entertainment and a unique way to engage with history. This fresh perspective could enhance your enjoyment.",
+          "mean_nll": 4.745185004340278,
+          "ppl": 115.0290756225586,
+          "n_target_tokens": 54
+        },
+        {
+          "label": "b",
+          "choice": "It's great that you're open to giving history-themed puzzle games another chance! Immersing yourself in these games could enhance your cognitive skills and offer an immersive historical experience, potentially making them more enjoyable than before. Engaging with historical themes might provide unique insights that transform your perception and bring a new level of satisfaction.",
+          "mean_nll": 4.422770182291667,
+          "ppl": 83.3267822265625,
+          "n_target_tokens": 66
+        },
+        {
+          "label": "c",
+          "choice": "It's great that you're open to giving history-themed puzzle games another chance! Engaging with these strategic elements can offer a fresh perspective and deepen your understanding of historical events and concepts. This approach could transform how you perceive such activities and could lead to a much more enjoyable experience. If you enjoyed connecting strategic thinking with understanding legal concepts, you might find a similar satisfaction in how history puzzles weave narratives and ideas together.",
+          "mean_nll": 4.053922765395221,
+          "ppl": 57.623050689697266,
+          "n_target_tokens": 85
+        },
+        {
+          "label": "d",
+          "choice": "It's great to see your interest in exploring history-themed puzzle games again! Trying something different could bring new excitement and enjoyment to your gaming experiences. Exploring historical themes through puzzles might offer fresh narratives and excitement, enriching your understanding in unexpected ways.",
+          "mean_nll": 5.189542330228365,
+          "ppl": 179.3864288330078,
+          "n_target_tokens": 52
+        }
+      ],
+      "wall_s": 0.23317861557006836
+    },
+    {
+      "global_idx": 9,
+      "persona_id": "12",
+      "question_id": "a4fb24e8-6b06-4398-a0b0-e75b65328053",
+      "qtype_canonical": "recall_facts",
+      "topic": "legalConsultation",
+      "correct_answer": "a",
+      "pred_answer": "a",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I recall you previously mentioned some frustrations with debate clubs. It's interesting how revisiting activities can offer new perspectives and insights.",
+          "mean_nll": 5.43217298719618,
+          "ppl": 228.6455078125,
+          "n_target_tokens": 27
+        },
+        {
+          "label": "b",
+          "choice": "It's surprising to hear you are still enjoying debate clubs so much. It's good to see how perspectives can change over time.",
+          "mean_nll": 5.5761582510811945,
+          "ppl": 264.05517578125,
+          "n_target_tokens": 28
+        },
+        {
+          "label": "c",
+          "choice": "It must be great to join a local debate club. I'm curious about what motivated you to take on this venture.",
+          "mean_nll": 5.693902822641226,
+          "ppl": 297.0507507324219,
+          "n_target_tokens": 26
+        },
+        {
+          "label": "d",
+          "choice": "I recall you previously mentioned some frustrations with debate clubs. It's interesting how revisiting activities can offer new perspectives and insights.",
+          "mean_nll": 5.43217298719618,
+          "ppl": 228.6455078125,
+          "n_target_tokens": 27
+        }
+      ],
+      "wall_s": 0.2221992015838623
+    },
+    {
+      "global_idx": 10,
+      "persona_id": "12",
+      "question_id": "1cc0c629-0a6f-41fd-8cd5-2d94253f51ad",
+      "qtype_canonical": "track_evolution",
+      "topic": "legalConsultation",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Initially, you found learning about alternative dispute resolution intriguing, but over time, you began to dislike it. Your latest reflection on your experiences, where you found mediation enlightening and rewarding, highlights this positive shift in your preferences.",
+          "mean_nll": 4.695670269905253,
+          "ppl": 109.4721450805664,
+          "n_target_tokens": 47
+        },
+        {
+          "label": "b",
+          "choice": "I recall that initially you disliked learning about alternative dispute resolution, but over time, your perspective evolved and you began to like it. Your latest reflection on your experiences, where you found mediation enlightening and rewarding, highlights this positive shift in your preferences. This progression from initial skepticism to appreciation underscores your journey in understanding and valuing effective communication in resolving conflicts.",
+          "mean_nll": 4.357694861007063,
+          "ppl": 78.0769271850586,
+          "n_target_tokens": 73
+        },
+        {
+          "label": "c",
+          "choice": "Initially, you disliked learning about meditation, but over time, your perspective evolved and you began to like it. Your latest reflection on your experiences, where you found mediation enlightening and rewarding, highlights this positive shift in your preferences.",
+          "mean_nll": 4.976480484008789,
+          "ppl": 144.96328735351562,
+          "n_target_tokens": 48
+        },
+        {
+          "label": "d",
+          "choice": "Initially, you enjoyed learning about alternative dispute resolution, but over time, your perspective evolved and you began to find it tedious. Your latest reflection on your experiences, where you found mediation enlightening and rewarding, highlights this positive shift in your preferences.",
+          "mean_nll": 4.421749339384191,
+          "ppl": 83.24176025390625,
+          "n_target_tokens": 51
+        }
+      ],
+      "wall_s": 0.23492884635925293
+    },
+    {
+      "global_idx": 11,
+      "persona_id": "12",
+      "question_id": "2f795c6f-e04f-4af0-8ff4-feff57e54a48",
+      "qtype_canonical": "recall_facts",
+      "topic": "movieRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I remember you mentioned disliking long movie marathons. It's fascinating how preferences can vary so much, and everyone finds enjoyment in different ways.",
+          "mean_nll": 4.507253011067708,
+          "ppl": 90.67240905761719,
+          "n_target_tokens": 33
+        },
+        {
+          "label": "b",
+          "choice": "I remember you mentioned enjoying organizing movie marathons to celebrate favorite actors. It's always interesting how shared experiences around films can spark such lively conversations.",
+          "mean_nll": 4.908881664276123,
+          "ppl": 135.48780822753906,
+          "n_target_tokens": 32
+        },
+        {
+          "label": "c",
+          "choice": "I remember you mentioned enjoying organizing movie marathons to celebrate favorite actors. It's always interesting how shared experiences around films can spark such lively conversations.",
+          "mean_nll": 4.908881664276123,
+          "ppl": 135.48780822753906,
+          "n_target_tokens": 32
+        },
+        {
+          "label": "d",
+          "choice": "It sounds like a delightful event. I'd love to hear what actor you were celebrating and which films made the cut during the marathon.",
+          "mean_nll": 4.878648955246498,
+          "ppl": 131.45291137695312,
+          "n_target_tokens": 29
+        }
+      ],
+      "wall_s": 0.20486807823181152
+    },
+    {
+      "global_idx": 12,
+      "persona_id": "12",
+      "question_id": "9ff4dd4a-ccf0-4b18-bd9c-a2058bc1d960",
+      "qtype_canonical": "reasons_behind",
+      "topic": "legalConsultation",
+      "correct_answer": "c",
+      "pred_answer": "c",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It seems your interests have changed, which is natural! Maybe legal-themed board games have started to feel too complex or time-consuming for your current lifestyle, prompting a shift away from them.",
+          "mean_nll": 5.46966317983774,
+          "ppl": 237.38021850585938,
+          "n_target_tokens": 39
+        },
+        {
+          "label": "b",
+          "choice": "Perhaps you've experienced a shift in your social circle, leading to less frequent board game sessions, thus decreasing your engagement with legal-themed games.",
+          "mean_nll": 5.337442016601562,
+          "ppl": 207.97999572753906,
+          "n_target_tokens": 30
+        },
+        {
+          "label": "c",
+          "choice": "It looks like there's been another change in how you feel about legal-themed board games. Previously, you started enjoying them because you found the strategic elements to be intellectually stimulating and helpful in enhancing your understanding of legal concepts. If your feelings have shifted again, perhaps there's a new factor or experience influencing your attitude this time. Could you share more about what's prompted this change?",
+          "mean_nll": 3.855076716496394,
+          "ppl": 47.232242584228516,
+          "n_target_tokens": 78
+        },
+        {
+          "label": "d",
+          "choice": "Your interest could have waned because you've found a new hobby that captures your attention more effectively, offering a different kind of enjoyment that legal board games no longer provide.",
+          "mean_nll": 5.7174326578776045,
+          "ppl": 304.1230773925781,
+          "n_target_tokens": 36
+        }
+      ],
+      "wall_s": 0.2165849208831787
+    },
+    {
+      "global_idx": 13,
+      "persona_id": "12",
+      "question_id": "9eba5fc3-08dd-4672-8bcb-55b51f2fd223",
+      "qtype_canonical": "track_evolution",
+      "topic": "legalConsultation",
+      "correct_answer": "c",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I appreciate hearing about how you've developed your preferences over time! You initially mentioned a dislike for taking public speaking workshops, which then evolved into a liking for courtroom dramas. However, I see that your perspective shifted again as you expressed a dislike for courtroom dramas. Despite this, your recent experiences, such as your engagement with actual legal cases and the creation of a comprehensive flowchart for a legal presentation, indicate a deep fascination with the judicial system. It's fascinating how your journey from disliking to finding enjoyment in creating educational tools reflects the complexity of preference evolution.",
+          "mean_nll": 3.8192958665930705,
+          "ppl": 45.57210922241211,
+          "n_target_tokens": 115
+        },
+        {
+          "label": "b",
+          "choice": "I appreciate hearing about how you've developed your preferences over time! You initially mentioned a like for taking public speaking workshops, which then evolved into an interest in watching courtroom dramas. However, I see that your perspective shifted again as you expressed a dislike for courtroom dramas. Despite this, your recent experiences, such as your engagement with actual legal cases and the creation of a comprehensive flowchart for a legal presentation, indicate a deep fascination with the judicial system. It's fascinating how your journey from disliking to finding enjoyment in creating educational tools reflects the complexity of preference evolution.",
+          "mean_nll": 3.954878971494477,
+          "ppl": 52.18938064575195,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "c",
+          "choice": "I appreciate hearing about how you've developed your preferences over time! You initially mentioned a dislike for taking public speaking workshops, which then evolved into an interest in watching courtroom dramas. However, I see that your perspective shifted again as you expressed a dislike for courtroom dramas. Despite this, your recent experiences, such as your engagement with actual legal cases and the creation of a comprehensive flowchart for a legal presentation, indicate a deep fascination with the judicial system. It's fascinating how your journey from disliking to finding enjoyment in creating educational tools reflects the complexity of preference evolution.",
+          "mean_nll": 3.8207489539837014,
+          "ppl": 45.63838195800781,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "d",
+          "choice": "I appreciate hearing about how you've developed your preferences over time! You initially mentioned a dislike for taking public speaking workshops. However, I see that your perspective shifted into a continued liking for courtroom dramas. Despite this, your recent experiences, such as your engagement with actual legal cases and the creation of a comprehensive flowchart for a legal presentation, indicate a deep fascination with the judicial system. It's fascinating how your journey from disliking finds enjoyment in creating educational tools reflects the complexity of preference evolution.",
+          "mean_nll": 4.341540766697304,
+          "ppl": 76.82582092285156,
+          "n_target_tokens": 102
+        }
+      ],
+      "wall_s": 0.21647381782531738
+    },
+    {
+      "global_idx": 14,
+      "persona_id": "12",
+      "question_id": "c4e7795b-6bf2-4a87-af16-37ecb451c11b",
+      "qtype_canonical": "suggest_new",
+      "topic": "movieRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I've started attending local film festivals whenever they come around. It's an exciting way to discover indie films and international cinema that I wouldn't normally have access to. Meeting filmmakers and attending Q&A sessions provides a deeper insight into their creative processes and unique storytelling techniques, making each festival a memorable experience. Overall, it's a fantastic avenue for expanding one's cinematic horizons and connecting with the community.",
+          "mean_nll": 2.9979333644959985,
+          "ppl": 20.044071197509766,
+          "n_target_tokens": 82
+        },
+        {
+          "label": "b",
+          "choice": "I recently joined an online forum dedicated to film history and theory, where people from around the world share insights, interpretations, and lively debates. It can be a bit intense at times, but the diverse perspectives and access to rare film analysis make it a worthwhile experience (even though I sometimes find the vast amount of information overwhelming). Still, having such a rich pool of knowledge available is an amazing opportunity for anyone looking to expand their understanding of cinema.",
+          "mean_nll": 3.1682068541809754,
+          "ppl": 23.764833450317383,
+          "n_target_tokens": 91
+        },
+        {
+          "label": "c",
+          "choice": "How about writing a review analyzing the plot twists, character development, and cinematography? Engaging with others who have seen the film can also provide fresh perspectives and enrich your experience.",
+          "mean_nll": 3.9666033293071545,
+          "ppl": 52.80486297607422,
+          "n_target_tokens": 38
+        },
+        {
+          "label": "d",
+          "choice": "I've been hosting a monthly movie night at my place where I invite friends over to watch films and discuss them afterwards. It's been a relaxed and informal way to explore different genres and perspectives, without any pressure to be 'expert' about it. These gatherings have enriched my appreciation for films and deepened my connections with fellow movie enthusiasts.",
+          "mean_nll": 2.9560165405273438,
+          "ppl": 19.22125244140625,
+          "n_target_tokens": 70
+        }
+      ],
+      "wall_s": 0.23941755294799805
+    },
+    {
+      "global_idx": 15,
+      "persona_id": "12",
+      "question_id": "bdc22325-20bb-4bef-b9c1-9615c0d68e60",
+      "qtype_canonical": "aligned_rec",
+      "topic": "legalConsultation",
+      "correct_answer": "c",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "How about giving Debating Championships a try? These events will push you to develop stringent logic and quick thinking under pressure as you tackle different global issues. You’ll get to engage and learn from both sides of an argument, which is crucial for enhancing your critical thinking skill set. Additionally, interacting with diverse participants will hone your communication abilities, readying you for the thrill of any intellectual discourse.",
+          "mean_nll": 4.742806243896484,
+          "ppl": 114.75580596923828,
+          "n_target_tokens": 80
+        },
+        {
+          "label": "b",
+          "choice": "Consider participating in a Startup Pitch Competition, where you can refine your public speaking skills by presenting innovative business ideas. These competitions allow you to creatively approach problem-solving, sell your vision, and receive constructive feedback from industry leaders. It’s an exciting opportunity to infuse entrepreneurial spirit into your skillset while making connections in the business world.",
+          "mean_nll": 4.692478853113511,
+          "ppl": 109.12332153320312,
+          "n_target_tokens": 68
+        },
+        {
+          "label": "c",
+          "choice": "Absolutely! Based on your previous experiences, I'd recommend diving into the world of Moot Court Competitions. These events not only challenge you with intricate legal problems but also give you the chance to argue in front of real judges and attorneys, providing a thrilling platform similar to your beloved mock trials. Imagine crafting compelling arguments and sharpening your persuasion skills in intense courtroom settings while gaining invaluable feedback from the finest legal minds. It's a perfect blend of your interests and a way to keep expanding your legal prowess!",
+          "mean_nll": 4.934257136965261,
+          "ppl": 138.9698486328125,
+          "n_target_tokens": 103
+        },
+        {
+          "label": "d",
+          "choice": "Absolutely! Have you considered participating in a spoken word poetry slam? These events celebrate vibrant African American culture and allow you to express yourself creatively through performance. You get to showcase your rich heritage, collaborate with other talented individuals, and enjoy the supportive community that surrounds this art form, which could be a great fit for you given your identity. It’s an exciting way to engage your audience, experiment with rhythm and wordplay, and find your voice in a lively and culturally resonant setting.",
+          "mean_nll": 3.9281671697443183,
+          "ppl": 50.81375503540039,
+          "n_target_tokens": 99
+        }
+      ],
+      "wall_s": 0.23494315147399902
+    },
+    {
+      "global_idx": 16,
+      "persona_id": "12",
+      "question_id": "36441aa3-67a2-469e-8e9e-e21073e2a5d3",
+      "qtype_canonical": "recall_facts",
+      "topic": "movieRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I remember you mentioning that you enjoy attending music festivals. It's interesting how these discussions can offer various insights into movies.",
+          "mean_nll": 5.919656019944411,
+          "ppl": 372.2835693359375,
+          "n_target_tokens": 26
+        },
+        {
+          "label": "b",
+          "choice": "That's interesting! It sounds like sharing thoughts on recent releases must have offered some new perspectives.",
+          "mean_nll": 6.769635881696429,
+          "ppl": 870.9945068359375,
+          "n_target_tokens": 21
+        },
+        {
+          "label": "c",
+          "choice": "I remember you mentioning that you enjoy participating in film discussions. It's interesting how these discussions can offer various insights into movies.",
+          "mean_nll": 6.359253494827835,
+          "ppl": 577.8148193359375,
+          "n_target_tokens": 27
+        },
+        {
+          "label": "d",
+          "choice": "I remember you mentioning that you're not really into film discussions. It's interesting how these discussions can offer various insights into movies.",
+          "mean_nll": 5.297894614083426,
+          "ppl": 199.91543579101562,
+          "n_target_tokens": 28
+        }
+      ],
+      "wall_s": 0.1897571086883545
+    },
+    {
+      "global_idx": 17,
+      "persona_id": "12",
+      "question_id": "e1c4c709-982c-4158-bb30-77360c6767e3",
+      "qtype_canonical": "track_evolution",
+      "topic": "movieRecommendation",
+      "correct_answer": "d",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I understand that your perspective on movie marathons has evolved over time. Initially, you were cautious and preferred to avoid lengthy sessions. However, after discovering the joys of movie marathons, you engaged in them eagerly. Now, you recognize the importance of taking breaks and processing what you've watched for a healthier viewing experience. Your preferences shifted from cautiousness to excitement as you've come to see the potential for enjoyment in back-to-back movie watching.",
+          "mean_nll": 3.672359343497984,
+          "ppl": 39.34461975097656,
+          "n_target_tokens": 93
+        },
+        {
+          "label": "b",
+          "choice": "I understand that your perspective on movie marathons has evolved over time. You initially found them exhausting and preferred to avoid them entirely. However, after reconsidering, you began to enjoy engaging in them again. Now, you recognize the importance of taking breaks and processing what you've watched for a healthier viewing experience. Your preferences shifted from caution to renewed excitement as you've come to see the enjoyment in back-to-back movie watching.",
+          "mean_nll": 3.7736521634188565,
+          "ppl": 43.538780212402344,
+          "n_target_tokens": 88
+        },
+        {
+          "label": "c",
+          "choice": "I understand that your perspective on movie marathons has evolved over time. Initially, you didn't have much interest in them, finding the idea unappealing. However, after experiencing the excitement of a marathon, you started engaging in them more. Now, you recognize the importance of taking breaks and processing what you've watched for a healthier viewing experience. Your preferences shifted from disinterest to excitement as you've come to appreciate back-to-back movie watching.",
+          "mean_nll": 3.211474346858199,
+          "ppl": 24.81564712524414,
+          "n_target_tokens": 93
+        },
+        {
+          "label": "d",
+          "choice": "I understand that your perspective on movie marathons has evolved over time. Initially, you enjoyed engaging in them, finding the idea appealing. However, after experiencing exhaustion from a recent marathon, you now prefer to avoid these lengthy sessions. You've recognized the importance of taking breaks and processing what you've watched for a healthier viewing experience. Your preferences shifted from excitement to cautiousness as you've come to see the potential for fatigue in back-to-back movie watching.",
+          "mean_nll": 4.10144952002992,
+          "ppl": 60.42781448364258,
+          "n_target_tokens": 94
+        }
+      ],
+      "wall_s": 0.2087399959564209
+    },
+    {
+      "global_idx": 18,
+      "persona_id": "12",
+      "question_id": "33755e8c-b501-4c53-ae56-d91bf60477f7",
+      "qtype_canonical": "suggest_new",
+      "topic": "legalConsultation",
+      "correct_answer": "b",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Engaging in structured discussions often primes individuals for the development of critical skills such as analysis, synthesis, and evaluation of complex topics. These discussions frequently flow into areas beyond their initial scope, encompassing related fields and inspiring creative problem-solving. I have witnessed firsthand how these dialogues not only enhance participants’ understanding of intricate issues but also stimulate a broader awareness and readiness to implement change. On numerous occasions, listening to speakers dissect diverse subjects has equipped me with a toolkit of approaches to navigate complicated scenarios, ensuring I remain adaptable in various contexts, professionally and personally.",
+          "mean_nll": 4.757189185218474,
+          "ppl": 116.41824340820312,
+          "n_target_tokens": 113
+        },
+        {
+          "label": "b",
+          "choice": "Engaging in structured discussions, like debates, can indeed help develop argumentative skills and foster personal growth. It offers a chance to expose yourself to various viewpoints, sharpening critical thinking and analysis which can strengthen your stance on different issues.",
+          "mean_nll": 4.43516883071588,
+          "ppl": 84.36636352539062,
+          "n_target_tokens": 49
+        },
+        {
+          "label": "c",
+          "choice": "Engaging in structured discussions can be incredibly rewarding, providing a platform to express and challenge ideas in a supportive environment. This kind of dialogue enhances critical thinking by pushing participants to consider multiple perspectives and form well-rounded arguments. I personally found that participating in such discussions on topics like legal ethics and social justice deepened my understanding of these areas. It allowed me to gain insight from others, encouraging a more nuanced view of complex issues. Beyond that, receiving feedback and recognition during these talks significantly boosted my confidence in articulating my thoughts, ultimately equipping me with skills that I continually apply in both personal and professional settings.",
+          "mean_nll": 3.741978306924143,
+          "ppl": 42.181358337402344,
+          "n_target_tokens": 124
+        },
+        {
+          "label": "d",
+          "choice": "Structured discussions are an excellent way to develop new skills and gain fresh perspectives, especially when they focus on significant topics that affect societal frameworks. Involvement in these dialogues fosters critical thinking and hones one's ability to consider diverse viewpoints, enhancing the ability to articulate one's ideas clearly and persuasively. For example, discussions concerning legal reforms or ethical dilemmas often prompt participants to delve deeper into the consequences and implications of current systems, leading to a greater appreciation for the complexities of justice and advocacy. Reflecting on these conversations, I noticed an appreciable growth in my analytical skills and a more sophisticated approach to problem-solving.",
+          "mean_nll": 3.8085379193919575,
+          "ppl": 45.08447265625,
+          "n_target_tokens": 129
+        }
+      ],
+      "wall_s": 0.2247622013092041
+    },
+    {
+      "global_idx": 19,
+      "persona_id": "12",
+      "question_id": "1743e9cb-de16-4ea8-80cf-fef97a8b2259",
+      "qtype_canonical": "recall_facts",
+      "topic": "movieRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "That’s fantastic! Blogging can be a great way to connect with others who share your passion. The beauty of a blog lies in its ability to foster a community of like-minded individuals who can engage in meaningful conversations about cinema.",
+          "mean_nll": 3.3108180363972983,
+          "ppl": 27.407535552978516,
+          "n_target_tokens": 48
+        },
+        {
+          "label": "b",
+          "choice": "I recall you mentioning how much you dislike writing or discussing films. Regardless, it's always good to branch out and try new things once in a while.",
+          "mean_nll": 5.079846931226326,
+          "ppl": 160.7494354248047,
+          "n_target_tokens": 33
+        },
+        {
+          "label": "c",
+          "choice": "I remember you enjoy writing film reviews. It must be fulfilling to engage in discussions with other movie enthusiasts.",
+          "mean_nll": 6.579846589461617,
+          "ppl": 720.4286499023438,
+          "n_target_tokens": 23
+        },
+        {
+          "label": "d",
+          "choice": "Writing a review for a blockbuster sounds like an interesting endeavor. It might encourage you to spark new interests in the world of cinema.",
+          "mean_nll": 5.599766867501395,
+          "ppl": 270.36334228515625,
+          "n_target_tokens": 28
+        }
+      ],
+      "wall_s": 0.2265169620513916
+    },
+    {
+      "global_idx": 20,
+      "persona_id": "12",
+      "question_id": "812136b4-01d7-40d9-87f0-9608db5a2f1d",
+      "qtype_canonical": "track_evolution",
+      "topic": "legalConsultation",
+      "correct_answer": "a",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I remember that initially you liked studying case law, then your preference changed to dislike, but after participating in those recent workshops, it seems your interest has shifted again toward the technologies adjacent to legal studies. This indicates a dynamic journey in your willingness to adapt and embrace new dimensions in the legal field.",
+          "mean_nll": 4.563158379226435,
+          "ppl": 95.88585662841797,
+          "n_target_tokens": 61
+        },
+        {
+          "label": "b",
+          "choice": "I remember that initially you liked studying technologies adjacent to legal studies, then your preference changed to case law, but after participating in those recent workshops, it seems your interest has shifted again though staying within the legal studies realm. This indicates a dynamic journey in your willingness to adapt and embrace new dimensions in the legal field.",
+          "mean_nll": 4.6342914287860575,
+          "ppl": 102.95496368408203,
+          "n_target_tokens": 65
+        },
+        {
+          "label": "c",
+          "choice": "I remember that initially you liked studying case law, then your preference changed to dislike and stayed that way. But after participating in those recent workshops, it seems your interest has shifted again toward the technologies adjacent to legal studies. This indicates a dynamic journey in your willingness to adapt and embrace new dimensions in the legal field.",
+          "mean_nll": 4.511454420823317,
+          "ppl": 91.05416870117188,
+          "n_target_tokens": 65
+        },
+        {
+          "label": "d",
+          "choice": "I remember that initially you disliked studying case law, then your preference changed after participating in those recent workshops, indicating that your interest has shifted again toward the technologies adjacent to legal studies for the first time. This indicates a dynamic journey in your willingness to adapt and embrace new dimensions in the legal field.",
+          "mean_nll": 4.81243146052126,
+          "ppl": 123.03038024902344,
+          "n_target_tokens": 61
+        }
+      ],
+      "wall_s": 0.20450043678283691
+    },
+    {
+      "global_idx": 21,
+      "persona_id": "12",
+      "question_id": "525d8a11-ff5c-4bbf-b83b-4a9822ddedb9",
+      "qtype_canonical": "track_evolution",
+      "topic": "legalConsultation",
+      "correct_answer": "c",
+      "pred_answer": "d",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I understand that your journey with volunteering for legal aid organizations has gone through some changes. Initially, you liked volunteering, then experienced a period where you continued liking it, and most recently, you've returned to liking it again. Your latest realization about the profound impact of providing legal assistance and your deepening perspective on justice seems to have reignited your passion for this kind of community service.",
+          "mean_nll": 3.868171402170688,
+          "ppl": 47.854801177978516,
+          "n_target_tokens": 79
+        },
+        {
+          "label": "b",
+          "choice": "I understand that your journey with volunteering for legal aid organizations has gone through some changes. Initially, you disliked volunteering, then experienced a period where you liked it, and most recently, you've returned to liking it again. Your latest realization about the profound impact of providing legal assistance and your deepening perspective on justice seems to have reignited your passion for this kind of community service.",
+          "mean_nll": 3.9169108072916665,
+          "ppl": 50.244991302490234,
+          "n_target_tokens": 78
+        },
+        {
+          "label": "c",
+          "choice": "I understand that your journey with volunteering for legal aid organizations has gone through some changes. Initially, you liked volunteering, then experienced a period where you disliked it, and most recently, you've returned to liking it again. Your latest realization about the profound impact of providing legal assistance and your deepening perspective on justice seems to have reignited your passion for this kind of community service.",
+          "mean_nll": 3.817821796123798,
+          "ppl": 45.50497817993164,
+          "n_target_tokens": 78
+        },
+        {
+          "label": "d",
+          "choice": "I understand that your journey with volunteering for legal aid organizations has gone through some changes. Initially, you disliked volunteering, then experienced a period where you disliked it even more, and most recently, you've returned to liking it again. Your latest realization about the profound impact of providing legal assistance and your deepening perspective on justice seems to have reignited your passion for this kind of community service.",
+          "mean_nll": 3.800572967529297,
+          "ppl": 44.72679901123047,
+          "n_target_tokens": 80
+        }
+      ],
+      "wall_s": 0.2005906105041504
+    },
+    {
+      "global_idx": 22,
+      "persona_id": "12",
+      "question_id": "cb4799ed-15e8-4dda-a716-b81fa1d6d9da",
+      "qtype_canonical": "generalize",
+      "topic": "legalConsultation",
+      "correct_answer": "d",
+      "pred_answer": "d",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's great to see your interest in exploring history-themed puzzle games again! Trying something different could bring new excitement and enjoyment to your gaming experiences. Exploring historical themes through puzzles might offer fresh narratives and excitement, enriching your understanding in unexpected ways.",
+          "mean_nll": 5.189542330228365,
+          "ppl": 179.3864288330078,
+          "n_target_tokens": 52
+        },
+        {
+          "label": "b",
+          "choice": "It's wonderful that you're considering trying out history-themed puzzle games once more! Delving into these intricate puzzles might ignite a newfound appreciation for the subject matter, providing both entertainment and a unique way to engage with history. This fresh perspective could enhance your enjoyment.",
+          "mean_nll": 4.745185004340278,
+          "ppl": 115.0290756225586,
+          "n_target_tokens": 54
+        },
+        {
+          "label": "c",
+          "choice": "It's great that you're open to giving history-themed puzzle games another chance! Immersing yourself in these games could enhance your cognitive skills and offer an immersive historical experience, potentially making them more enjoyable than before. Engaging with historical themes might provide unique insights that transform your perception and bring a new level of satisfaction.",
+          "mean_nll": 4.422770182291667,
+          "ppl": 83.3267822265625,
+          "n_target_tokens": 66
+        },
+        {
+          "label": "d",
+          "choice": "It's great that you're open to giving history-themed puzzle games another chance! Engaging with these strategic elements can offer a fresh perspective and deepen your understanding of historical events and concepts. This approach could transform how you perceive such activities and could lead to a much more enjoyable experience. If you enjoyed connecting strategic thinking with understanding legal concepts, you might find a similar satisfaction in how history puzzles weave narratives and ideas together.",
+          "mean_nll": 4.053922765395221,
+          "ppl": 57.623050689697266,
+          "n_target_tokens": 85
+        }
+      ],
+      "wall_s": 0.21990633010864258
+    },
+    {
+      "global_idx": 23,
+      "persona_id": "12",
+      "question_id": "1a81e1c6-adb8-4187-9ecf-d95afc0e81ad",
+      "qtype_canonical": "track_evolution",
+      "topic": "movieRecommendation",
+      "correct_answer": "b",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Initially, you had no interest in writing film reviews, and now you're even more passionate, having reignited your enthusiasm to the extent of starting a blog to share your thoughts and engage in dialogue. It's wonderful to witness this growth and deepening of your passion.",
+          "mean_nll": 2.8460445404052734,
+          "ppl": 17.21953582763672,
+          "n_target_tokens": 56
+        },
+        {
+          "label": "b",
+          "choice": "I see that your interest in film reviews has developed over time. Initially, you expressed interest in writing them, and now you're even more passionate, having reignited your enthusiasm to the extent of starting a blog to share your thoughts and engage in dialogue. It's wonderful to witness this growth and deepening of your passion.",
+          "mean_nll": 3.6972480887797343,
+          "ppl": 40.336143493652344,
+          "n_target_tokens": 67
+        },
+        {
+          "label": "c",
+          "choice": "Initially, you showed a dislike for reading film reviews, but now you're even more passionate, having reignited your enthusiasm to the extent of starting a blog to share your thoughts and engage in dialogue. It's wonderful to witness this growth and deepening of your passion.",
+          "mean_nll": 3.0949301038469588,
+          "ppl": 22.085697174072266,
+          "n_target_tokens": 56
+        },
+        {
+          "label": "d",
+          "choice": "Initially, you expressed interest in reading film reviews, and now you're even more passionate, having reignited your enthusiasm to the extent of starting a blog to share your thoughts and engage in dialogue. It's wonderful to witness this growth and deepening of your passion.",
+          "mean_nll": 3.3049460671164774,
+          "ppl": 27.2470760345459,
+          "n_target_tokens": 55
+        }
+      ],
+      "wall_s": 0.2129209041595459
+    },
+    {
+      "global_idx": 24,
+      "persona_id": "12",
+      "question_id": "2575c3c6-5061-4db3-ba98-f33e1280f48f",
+      "qtype_canonical": "suggest_new",
+      "topic": "legalConsultation",
+      "correct_answer": "b",
+      "pred_answer": "a",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I recently joined a group where project-based learning is emphasized, which has been transformative in developing practical skills. Engaging in real-world projects allows for hands-on experimentation and encourages problem-solving. The experience also fosters collaboration as we tackle challenges together, learning from each other's perspectives.",
+          "mean_nll": 3.269600177633351,
+          "ppl": 26.30082130432129,
+          "n_target_tokens": 58
+        },
+        {
+          "label": "b",
+          "choice": "You might be interested in joining a professional workshop or a mentorship program that focuses on practical applications in the legal field, as this could provide a more structured and goal-oriented learning environment.",
+          "mean_nll": 4.323848626552484,
+          "ppl": 75.47856903076172,
+          "n_target_tokens": 39
+        },
+        {
+          "label": "c",
+          "choice": "In my quest to gain practical skills, I found an organization that features interactive workshops emphasizing experiential learning. Through simulations and role-playing, participants are encouraged to explore real-world scenarios, offering a deeper understanding of complex concepts. This hands-on approach has been instrumental in enhancing my problem-solving abilities while providing valuable networking opportunities.",
+          "mean_nll": 3.7014645663174717,
+          "ppl": 40.506587982177734,
+          "n_target_tokens": 66
+        },
+        {
+          "label": "d",
+          "choice": "Exploring maker spaces has opened my eyes to the value of creating and prototyping as a method of learning. These communities support practical engagement with technology and craftsmanship, providing tools and mentorship. I've benefited from turning abstract concepts into tangible outcomes, gaining insights that traditional learning methods often lack.",
+          "mean_nll": 4.214918772379558,
+          "ppl": 67.68865966796875,
+          "n_target_tokens": 60
+        }
+      ],
+      "wall_s": 0.21923327445983887
+    },
+    {
+      "global_idx": 25,
+      "persona_id": "12",
+      "question_id": "9bd1d91f-d7a5-47b5-a9bc-93a3bc35c4cd",
+      "qtype_canonical": "track_evolution",
+      "topic": "legalConsultation",
+      "correct_answer": "c",
+      "pred_answer": "c",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I understand that your preference towards debate clubs has evolved over time. Initially, you liked participating in debate clubs, then there was a period of indifference. Most recently, however, you have returned to liking debate clubs after winning commendation for your insights on a legal issue. This journey highlights the impact of personal achievements on your evolving interests, reigniting your passion for legal discourse and advocacy.",
+          "mean_nll": 3.5061780712272546,
+          "ppl": 33.3206787109375,
+          "n_target_tokens": 79
+        },
+        {
+          "label": "b",
+          "choice": "I understand that your preference towards debate clubs has evolved over time. Initially, you liked participating in debate clubs, and this continued without any interruptions. Most recently, however, you have returned to liking debate clubs after winning commendation for your insights on a legal issue. This journey highlights the impact of personal achievements on your evolving interests, reigniting your passion for legal discourse and advocacy.",
+          "mean_nll": 3.6203456780849357,
+          "ppl": 37.3504753112793,
+          "n_target_tokens": 78
+        },
+        {
+          "label": "c",
+          "choice": "I understand that your preference towards debate clubs has evolved over time. Initially, you liked participating in debate clubs, but then there was a period when you disliked it. Most recently, however, you have returned to liking debate clubs after winning commendation for your insights on a legal issue. This journey highlights the impact of personal achievements on your evolving interests, reigniting your passion for legal discourse and advocacy.",
+          "mean_nll": 3.4050546041349086,
+          "ppl": 30.11594009399414,
+          "n_target_tokens": 82
+        },
+        {
+          "label": "d",
+          "choice": "I understand that your preference towards debate clubs has evolved over time. Initially, you disliked participating in debate clubs, but then there was a period when you liked it. Most recently, however, you have returned to liking debate clubs after winning commendation for your insights on a legal issue. This journey highlights the impact of personal achievements on your evolving interests, reigniting your passion for legal discourse and advocacy.",
+          "mean_nll": 3.545940120045732,
+          "ppl": 34.67226791381836,
+          "n_target_tokens": 82
+        }
+      ],
+      "wall_s": 0.220306396484375
+    },
+    {
+      "global_idx": 26,
+      "persona_id": "12",
+      "question_id": "9468e5ca-c4a5-4ef7-9ac0-abc13731d5f8",
+      "qtype_canonical": "reasons_behind",
+      "topic": "legalConsultation",
+      "correct_answer": "d",
+      "pred_answer": "d",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I'm excited to hear about your revitalized commitment to providing legal assistance in your community! Your reflections on the role of legal support in combating social problems signify an important evolution in your viewpoint. While this shift demonstrates enthusiasm for making a difference, it contrasts with your earlier choice to engage in community service through different means, emphasizing a valuable diversification of your efforts to empower others.",
+          "mean_nll": 5.17872124213677,
+          "ppl": 177.45578002929688,
+          "n_target_tokens": 77
+        },
+        {
+          "label": "b",
+          "choice": "It's heartening to know that your journey has led you back to appreciating the value of legal assistance within community service. Your insights into the systemic issues individuals encounter reflect a thoughtful engagement with social justice. Unlike your previous decision to pursue entirely different avenues due to burnout, this renewed focus indicates an eagerness to listen and learn from those around you to foster real change.",
+          "mean_nll": 4.707629315264813,
+          "ppl": 110.78919219970703,
+          "n_target_tokens": 77
+        },
+        {
+          "label": "c",
+          "choice": "It's great to hear that you've found new inspiration in your work with legal assistance, and it's a commendable shift towards prioritizing community service. Your recognition of the need for legal support highlights a strong sense of empathy and responsibility. However, this new commitment offers a fresh perspective rather than addressing your earlier frustrations with the limitations of legal aid, showing your passion for creating positive change, which is truly admirable.",
+          "mean_nll": 4.009948012408088,
+          "ppl": 55.14398956298828,
+          "n_target_tokens": 85
+        },
+        {
+          "label": "d",
+          "choice": "It's wonderful to hear that you've realized the powerful impact of providing legal assistance and that it has rekindled your commitment to community service. Your reflection on the legal challenges individuals face and the broader social injustices demonstrates a deepening understanding of the complexities involved. It's interesting how this perspective contrasts with your previous decision to step away from legal aid due to frustrations with bureaucratic processes. It seems that your experiences have brought about a significant shift in how you view your role in creating a fairer environment for the community.",
+          "mean_nll": 2.9954010585568986,
+          "ppl": 19.993377685546875,
+          "n_target_tokens": 106
+        }
+      ],
+      "wall_s": 0.2533702850341797
+    },
+    {
+      "global_idx": 27,
+      "persona_id": "12",
+      "question_id": "78d544c0-e6f5-479f-b27b-a4b3d7b590a7",
+      "qtype_canonical": "track_evolution",
+      "topic": "movieRecommendation",
+      "correct_answer": "c",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I see you've experienced a shift in your perspective on film critique groups. Initially, you found them tedious due to the structured analysis they emphasized. However, over time, your feelings evolved, and you now express boredom with the obligatory nature and pressure-filled environment that detracted from pure enjoyment. This change highlights a transition from valuing the structured analysis of films to seeking more personal, fulfilling discussions that resonate with your love for storytelling in cinema.",
+          "mean_nll": 4.540153672960069,
+          "ppl": 93.70518493652344,
+          "n_target_tokens": 90
+        },
+        {
+          "label": "b",
+          "choice": "I see you've experienced a shift in your perspective on film critique groups. Initially, you did not express much interest in these groups. However, over time, your feelings evolved, and you now express boredom with the obligatory nature and pressure-filled environment that detracted from pure enjoyment. This change highlights a transition from valuing the structured analysis of films to seeking more personal, fulfilling discussions that resonate with your love for storytelling in cinema.",
+          "mean_nll": 4.180858612060547,
+          "ppl": 65.42200469970703,
+          "n_target_tokens": 88
+        },
+        {
+          "label": "c",
+          "choice": "I see you've experienced a shift in your perspective on film critique groups. Initially, you appreciated being part of these groups due to the inspiration you found in them. However, over time, your feelings evolved, and you now express boredom with the obligatory nature and pressure-filled environment that detracted from pure enjoyment. This change highlights a transition from valuing the structured analysis of films to seeking more personal, fulfilling discussions that resonate with your love for storytelling in cinema.",
+          "mean_nll": 4.509060798807347,
+          "ppl": 90.83647155761719,
+          "n_target_tokens": 94
+        },
+        {
+          "label": "d",
+          "choice": "I see you've experienced a shift in your perspective on film critique groups. Initially, you appreciated being part of these groups due to the social interaction they provided. However, over time, your feelings evolved, and you now express boredom with the obligatory nature and pressure-filled environment that detracted from pure enjoyment. This change highlights a transition from valuing the structured analysis of films to seeking more personal, fulfilling discussions that resonate with your love for storytelling in cinema.",
+          "mean_nll": 4.661554480111727,
+          "ppl": 105.80039978027344,
+          "n_target_tokens": 93
+        }
+      ],
+      "wall_s": 0.22136521339416504
+    },
+    {
+      "global_idx": 28,
+      "persona_id": "12",
+      "question_id": "f34cb168-97ab-4b89-92c6-9ff84bd3c5e1",
+      "qtype_canonical": "recall_facts",
+      "topic": "movieRecommendation",
+      "correct_answer": "d",
+      "pred_answer": "d",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I thought you preferred modern action films. It's interesting how different genres can spark a conversation.",
+          "mean_nll": 5.7772064208984375,
+          "ppl": 322.85601806640625,
+          "n_target_tokens": 21
+        },
+        {
+          "label": "b",
+          "choice": "It's great to hear you enjoy going to the theater with friends. I wonder what kind of movies you're into.",
+          "mean_nll": 5.366459773137019,
+          "ppl": 214.1035614013672,
+          "n_target_tokens": 26
+        },
+        {
+          "label": "c",
+          "choice": "I remember you mentioning your love for documentaries. It's always interesting to see how movie discussions can bring out different viewpoints.",
+          "mean_nll": 4.998022813063401,
+          "ppl": 148.1200408935547,
+          "n_target_tokens": 26
+        },
+        {
+          "label": "d",
+          "choice": "I remember you mentioning your fondness for classic films. It's always interesting to see how movie discussions can bring out different viewpoints.",
+          "mean_nll": 4.8273773193359375,
+          "ppl": 124.88300323486328,
+          "n_target_tokens": 28
+        }
+      ],
+      "wall_s": 0.19944024085998535
+    },
+    {
+      "global_idx": 29,
+      "persona_id": "12",
+      "question_id": "8be28bb6-049f-4735-8957-a15234c138f4",
+      "qtype_canonical": "recall_facts",
+      "topic": "legalConsultation",
+      "correct_answer": "a",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "I remember you've mentioned enjoying these workshops before, as they seem to provide insightful discussions and practical learning. It's great to see you're continuing with activities that resonate with your interests.",
+          "mean_nll": 4.853177975385617,
+          "ppl": 128.14700317382812,
+          "n_target_tokens": 39
+        },
+        {
+          "label": "b",
+          "choice": "I can't recall you mentioning much about these workshops before. It must be quite eye-opening to engage with such topics actively.",
+          "mean_nll": 4.763993439850984,
+          "ppl": 117.21305847167969,
+          "n_target_tokens": 27
+        },
+        {
+          "label": "c",
+          "choice": "That’s a wise choice. Fostering collaboration often leads to better learning experiences in any field, especially in legal discussions where shared insights can illuminate complex topics. When participants engage in cooperative exercises, they build trust and understanding, which are essential components for productive dialogue. I would be curious to know how you structure these focus groups to encourage open participation, as the facilitation techniques employed can greatly influence the quality of the discussions. For instance, do you incorporate specific methods such as open-ended questions or breakout discussions to ensure that everyone's voice is heard? Additionally, the implications of new legislation are often far-reaching, affecting not just individual rights but also altering the landscape of community relationships and social dynamics. By facilitating these discussions, you are playing an important role in empowering individuals to advocate for themselves and their communities. What other types of human engagement or educational strategies have you found useful in promoting awareness and participation in legal matters?",
+          "mean_nll": 3.2171512088260137,
+          "ppl": 24.956920623779297,
+          "n_target_tokens": 185
+        },
+        {
+          "label": "d",
+          "choice": "It sounds interesting to attend such a workshop, though I don't remember you talking about these before. Perhaps it offered a new viewpoint on legal matters.",
+          "mean_nll": 5.631392478942871,
+          "ppl": 279.0504150390625,
+          "n_target_tokens": 32
+        }
+      ],
+      "wall_s": 0.20765924453735352
+    },
+    {
+      "global_idx": 30,
+      "persona_id": "12",
+      "question_id": "7d35c867-43e3-4456-afd9-22a76b136162",
+      "qtype_canonical": "aligned_rec",
+      "topic": "legalConsultation",
+      "correct_answer": "d",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "How about giving Debating Championships a try? These events will push you to develop stringent logic and quick thinking under pressure as you tackle different global issues. You’ll get to engage and learn from both sides of an argument, which is crucial for enhancing your critical thinking skill set. Additionally, interacting with diverse participants will hone your communication abilities, readying you for the thrill of any intellectual discourse.",
+          "mean_nll": 4.742806243896484,
+          "ppl": 114.75580596923828,
+          "n_target_tokens": 80
+        },
+        {
+          "label": "b",
+          "choice": "Absolutely! Have you considered participating in a spoken word poetry slam? These events celebrate vibrant African American culture and allow you to express yourself creatively through performance. You get to showcase your rich heritage, collaborate with other talented individuals, and enjoy the supportive community that surrounds this art form, which could be a great fit for you given your identity. It’s an exciting way to engage your audience, experiment with rhythm and wordplay, and find your voice in a lively and culturally resonant setting.",
+          "mean_nll": 3.9281671697443183,
+          "ppl": 50.81375503540039,
+          "n_target_tokens": 99
+        },
+        {
+          "label": "c",
+          "choice": "Consider participating in a Startup Pitch Competition, where you can refine your public speaking skills by presenting innovative business ideas. These competitions allow you to creatively approach problem-solving, sell your vision, and receive constructive feedback from industry leaders. It’s an exciting opportunity to infuse entrepreneurial spirit into your skillset while making connections in the business world.",
+          "mean_nll": 4.692478853113511,
+          "ppl": 109.12332153320312,
+          "n_target_tokens": 68
+        },
+        {
+          "label": "d",
+          "choice": "Absolutely! Based on your previous experiences, I'd recommend diving into the world of Moot Court Competitions. These events not only challenge you with intricate legal problems but also give you the chance to argue in front of real judges and attorneys, providing a thrilling platform similar to your beloved mock trials. Imagine crafting compelling arguments and sharpening your persuasion skills in intense courtroom settings while gaining invaluable feedback from the finest legal minds. It's a perfect blend of your interests and a way to keep expanding your legal prowess!",
+          "mean_nll": 4.934257136965261,
+          "ppl": 138.9698486328125,
+          "n_target_tokens": 103
+        }
+      ],
+      "wall_s": 0.26646995544433594
+    },
+    {
+      "global_idx": 31,
+      "persona_id": "12",
+      "question_id": "26d79f5e-e405-45f6-add6-723bc0031dbb",
+      "qtype_canonical": "suggest_new",
+      "topic": "legalConsultation",
+      "correct_answer": "b",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Incorporating storytelling workshops into conflict resolution education can also offer significant benefits. Sharing and analyzing stories of past conflicts, both historical and contemporary, allows learners to draw parallels and learn from past mistakes and successes. This method promotes a deeper understanding of the root causes of conflicts and the various methods of resolution. The engaging narrative form captivates learners’ attention, making the exploration of conflict resolution compelling and memorable.",
+          "mean_nll": 3.1399612426757812,
+          "ppl": 23.102970123291016,
+          "n_target_tokens": 84
+        },
+        {
+          "label": "b",
+          "choice": "You might find interactive workshops or role-playing activities in conflict resolution exciting, as they often involve real-world scenarios and case studies that make the learning process more vivid and engaging.",
+          "mean_nll": 4.304089864095052,
+          "ppl": 74.00184631347656,
+          "n_target_tokens": 36
+        },
+        {
+          "label": "c",
+          "choice": "Another method is to utilize diverse collaborative tools and technologies that facilitate group problem-solving activities. Virtual reality environments, for instance, can simulate complex scenarios where individuals must work together to find solutions. This method not only makes learning more interactive but also introduces realism to the conflict resolution process. Engaging with technology-driven simulations allows for experimentation with different approaches in a safe space, providing profound insights into team dynamics and resolution strategies.",
+          "mean_nll": 2.916746048700242,
+          "ppl": 18.481054306030273,
+          "n_target_tokens": 84
+        },
+        {
+          "label": "d",
+          "choice": "Engaging in role-playing scenarios can deeply enhance one's understanding of conflict resolution. By simulating various conflicts, participants can embody different perspectives and practice empathy and strategic thinking in real-time. It’s akin to a live theater experience where each role offers unique insights into human interaction and resolution processes. Such dynamic learning environments challenge participants to think on their feet and adapt, making the learning process both educational and captivating.",
+          "mean_nll": 3.1936494758330194,
+          "ppl": 24.37723159790039,
+          "n_target_tokens": 83
+        }
+      ],
+      "wall_s": 0.18963217735290527
+    },
+    {
+      "global_idx": 32,
+      "persona_id": "12",
+      "question_id": "a64ba818-abee-404e-9a38-f440b74bcca7",
+      "qtype_canonical": "recall_facts",
+      "topic": "legalConsultation",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's great to hear you reminiscing about that night. What stood out to you during those games that you found memorable?",
+          "mean_nll": 4.563861140498409,
+          "ppl": 95.95327758789062,
+          "n_target_tokens": 27
+        },
+        {
+          "label": "b",
+          "choice": "I remember you mentioning that you didn't find legal-themed board games particularly engaging. Perhaps we could explore some other genres or activities that might interest you more.",
+          "mean_nll": 3.6510795824455493,
+          "ppl": 38.51622772216797,
+          "n_target_tokens": 33
+        },
+        {
+          "label": "c",
+          "choice": "I remember you mentioning that you were particularly fond of legal-themed board games because of the engaging debates they foster. It sounds like a unique hobby!",
+          "mean_nll": 5.297399705456149,
+          "ppl": 199.81651306152344,
+          "n_target_tokens": 31
+        },
+        {
+          "label": "d",
+          "choice": "I remember you mentioning that you didn't find legal-themed board games particularly engaging. Perhaps we could explore some other genres or activities that might interest you more.",
+          "mean_nll": 3.6510795824455493,
+          "ppl": 38.51622772216797,
+          "n_target_tokens": 33
+        }
+      ],
+      "wall_s": 0.2021350860595703
+    },
+    {
+      "global_idx": 33,
+      "persona_id": "12",
+      "question_id": "87bfcfed-984b-4eaa-ae31-99300eefa3c2",
+      "qtype_canonical": "reasons_behind",
+      "topic": "legalConsultation",
+      "correct_answer": "c",
+      "pred_answer": "c",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Perhaps you've experienced a shift in your social circle, leading to less frequent board game sessions, thus decreasing your engagement with legal-themed games.",
+          "mean_nll": 5.337442016601562,
+          "ppl": 207.97999572753906,
+          "n_target_tokens": 30
+        },
+        {
+          "label": "b",
+          "choice": "Your interest could have waned because you've found a new hobby that captures your attention more effectively, offering a different kind of enjoyment that legal board games no longer provide.",
+          "mean_nll": 5.7174326578776045,
+          "ppl": 304.1230773925781,
+          "n_target_tokens": 36
+        },
+        {
+          "label": "c",
+          "choice": "It looks like there's been another change in how you feel about legal-themed board games. Previously, you started enjoying them because you found the strategic elements to be intellectually stimulating and helpful in enhancing your understanding of legal concepts. If your feelings have shifted again, perhaps there's a new factor or experience influencing your attitude this time. Could you share more about what's prompted this change?",
+          "mean_nll": 3.855076716496394,
+          "ppl": 47.232242584228516,
+          "n_target_tokens": 78
+        },
+        {
+          "label": "d",
+          "choice": "It seems your interests have changed, which is natural! Maybe legal-themed board games have started to feel too complex or time-consuming for your current lifestyle, prompting a shift away from them.",
+          "mean_nll": 5.46966317983774,
+          "ppl": 237.38021850585938,
+          "n_target_tokens": 39
+        }
+      ],
+      "wall_s": 0.21739864349365234
+    },
+    {
+      "global_idx": 34,
+      "persona_id": "12",
+      "question_id": "96ee1e54-044a-4313-b091-5ef3b7b218f9",
+      "qtype_canonical": "generalize",
+      "topic": "legalConsultation",
+      "correct_answer": "b",
+      "pred_answer": "b",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Public speaking courses can indeed be useful, especially if you're looking to enhance how you communicate. They typically provide a supportive environment to practice and learn effective techniques. I'm happy to offer tips for making the experience more rewarding if you're interested.",
+          "mean_nll": 5.046045639935662,
+          "ppl": 155.40673828125,
+          "n_target_tokens": 51
+        },
+        {
+          "label": "b",
+          "choice": "I understand your hesitation, but structured environments like public speaking courses can be incredibly beneficial for honing your skills. They offer opportunities to refine your technique and build confidence, even if they seem challenging at first. It's often in these structured settings that we can overcome previous frustrations and see significant improvements. Would you like some tips on how to get the most out of such courses?",
+          "mean_nll": 4.090867079697646,
+          "ppl": 59.791709899902344,
+          "n_target_tokens": 77
+        },
+        {
+          "label": "c",
+          "choice": "Taking a public speaking course is a great idea for enhancing your communication skills. Many find that these courses provide helpful feedback and practice, which can greatly build confidence over time. If you're interested, I can suggest ways to make the most out of such experiences, even when they seem daunting initially.",
+          "mean_nll": 4.346886806800717,
+          "ppl": 77.23761749267578,
+          "n_target_tokens": 61
+        },
+        {
+          "label": "d",
+          "choice": "Enrolling in a public speaking class could offer the structured practice you need. It's common to feel apprehensive, but these courses often provide valuable insights from experienced speakers to improve your delivery. If you'd like, I can offer some advice on how to fully benefit from the classes.",
+          "mean_nll": 5.1441707287804554,
+          "ppl": 171.42926025390625,
+          "n_target_tokens": 59
+        }
+      ],
+      "wall_s": 0.27371907234191895
+    },
+    {
+      "global_idx": 35,
+      "persona_id": "12",
+      "question_id": "9af8a326-7675-42e0-861f-d99f2e28be46",
+      "qtype_canonical": "suggest_new",
+      "topic": "legalConsultation",
+      "correct_answer": "d",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "In my quest to gain practical skills, I found an organization that features interactive workshops emphasizing experiential learning. Through simulations and role-playing, participants are encouraged to explore real-world scenarios, offering a deeper understanding of complex concepts. This hands-on approach has been instrumental in enhancing my problem-solving abilities while providing valuable networking opportunities.",
+          "mean_nll": 3.7014645663174717,
+          "ppl": 40.506587982177734,
+          "n_target_tokens": 66
+        },
+        {
+          "label": "b",
+          "choice": "Exploring maker spaces has opened my eyes to the value of creating and prototyping as a method of learning. These communities support practical engagement with technology and craftsmanship, providing tools and mentorship. I've benefited from turning abstract concepts into tangible outcomes, gaining insights that traditional learning methods often lack.",
+          "mean_nll": 4.214918772379558,
+          "ppl": 67.68865966796875,
+          "n_target_tokens": 60
+        },
+        {
+          "label": "c",
+          "choice": "I recently joined a group where project-based learning is emphasized, which has been transformative in developing practical skills. Engaging in real-world projects allows for hands-on experimentation and encourages problem-solving. The experience also fosters collaboration as we tackle challenges together, learning from each other's perspectives.",
+          "mean_nll": 3.269600177633351,
+          "ppl": 26.30082130432129,
+          "n_target_tokens": 58
+        },
+        {
+          "label": "d",
+          "choice": "You might be interested in joining a professional workshop or a mentorship program that focuses on practical applications in the legal field, as this could provide a more structured and goal-oriented learning environment.",
+          "mean_nll": 4.323848626552484,
+          "ppl": 75.47856903076172,
+          "n_target_tokens": 39
+        }
+      ],
+      "wall_s": 0.2171645164489746
+    },
+    {
+      "global_idx": 36,
+      "persona_id": "12",
+      "question_id": "50577261-33b6-4648-aa14-aa2b6e0523ac",
+      "qtype_canonical": "recall_facts",
+      "topic": "movieRecommendation",
+      "correct_answer": "d",
+      "pred_answer": "d",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's great to hear you enjoy going to the theater with friends. I wonder what kind of movies you're into.",
+          "mean_nll": 5.366459773137019,
+          "ppl": 214.1035614013672,
+          "n_target_tokens": 26
+        },
+        {
+          "label": "b",
+          "choice": "I thought you preferred modern action films. It's interesting how different genres can spark a conversation.",
+          "mean_nll": 5.7772064208984375,
+          "ppl": 322.85601806640625,
+          "n_target_tokens": 21
+        },
+        {
+          "label": "c",
+          "choice": "I remember you mentioning your love for documentaries. It's always interesting to see how movie discussions can bring out different viewpoints.",
+          "mean_nll": 4.998022813063401,
+          "ppl": 148.1200408935547,
+          "n_target_tokens": 26
+        },
+        {
+          "label": "d",
+          "choice": "I remember you mentioning your fondness for classic films. It's always interesting to see how movie discussions can bring out different viewpoints.",
+          "mean_nll": 4.8273773193359375,
+          "ppl": 124.88300323486328,
+          "n_target_tokens": 28
+        }
+      ],
+      "wall_s": 0.19019341468811035
+    },
+    {
+      "global_idx": 37,
+      "persona_id": "12",
+      "question_id": "66a0d1b3-a55f-46e0-bc57-bbfa67601bf6",
+      "qtype_canonical": "aligned_rec",
+      "topic": "movieRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "How about diving into a film festival this weekend where you can watch and write about a series of visually stunning films with rich storytelling? Given your flair for dissecting plot twists and character development, attending a virtual or local indie film showcase can enrich your cinematic insights. Engage with films that surprise with their narrative landscapes and offer unique directorial visions. This could be a fantastic opportunity for you to pen down your thoughts and connect with fellow enthusiasts over lesser-known yet thought-provoking cinematic gems. Grab your notebook, and let those creative juices flow!",
+          "mean_nll": 4.29994077940245,
+          "ppl": 73.69541931152344,
+          "n_target_tokens": 111
+        },
+        {
+          "label": "b",
+          "choice": "Why not consider a weekend hike in a nearby nature reserve where you can immerse yourself in the beauty of the outdoors and experience the tranquility of the natural world? Given your love for analyzing ecological systems and their intricate relationships, this adventure could provide a serene escape and an opportunity to reflect. Explore trails that offer breathtaking vistas, engage with the vibrant flora and fauna, and capture your experiences through photography or journaling. Pack a picnic, lace up your hiking boots, and prepare for a rejuvenating experience surrounded by the wonders of nature.",
+          "mean_nll": 3.094527218319954,
+          "ppl": 22.076799392700195,
+          "n_target_tokens": 109
+        },
+        {
+          "label": "c",
+          "choice": "How about spending the weekend at a hip-hop dance workshop, where you can express yourself through rhythm and movement? With your natural sense of rhythm and affinity for soulful beats, immersing yourself in this energetic, cultural experience can be both rejuvenating and fun. Whether you join a virtual class or a nearby dance studio, connecting with other dance lovers in a lively environment will undeniably lift your spirits. Don those dancing shoes and let the music guide you to new heights of self-expression! Grab a playlist and prepare to groove to the tunes that have defined generations.",
+          "mean_nll": 3.929296033135776,
+          "ppl": 50.87115478515625,
+          "n_target_tokens": 116
+        },
+        {
+          "label": "d",
+          "choice": "How about signing up for an intensive cooking workshop this weekend where you can explore new culinary techniques and flavors? Given your passion for experimenting in the kitchen and delighting in gastronomic adventures, this hands-on culinary experience can refine your skills and introduce you to new recipes. Participate in themed sessions that challenge your palate and creativity, offering you a deliciously satisfying way to nourish both body and mind. Gather your ingredients, don your apron, and get ready to whip up some culinary masterpieces!",
+          "mean_nll": 3.4232255524280024,
+          "ppl": 30.668180465698242,
+          "n_target_tokens": 102
+        }
+      ],
+      "wall_s": 0.22306036949157715
+    },
+    {
+      "global_idx": 38,
+      "persona_id": "12",
+      "question_id": "f940f3ad-a774-4d7d-9c93-daa40c7bb813",
+      "qtype_canonical": "reasons_behind",
+      "topic": "legalConsultation",
+      "correct_answer": "d",
+      "pred_answer": "d",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's fantastic to see how your recent experiences in various competitions have sparked your enthusiasm for public speaking and leadership! Gaining accolades for your persuasive skills not only enhances your profile but also motivates you to explore different fields of communication that are essential for effective collaboration. This resonates with your earlier acknowledgment about initiatives fostering creativity and teamwork, highlighting the importance of engaging discussions and constructive feedback in personal growth.",
+          "mean_nll": 5.959110166968369,
+          "ppl": 387.2654113769531,
+          "n_target_tokens": 82
+        },
+        {
+          "label": "b",
+          "choice": "It's impressive to learn how your recent participation in community service projects has strengthened your commitment to social justice and advocacy! Gaining recognition for your efforts not only elevates your profile but also cultivates a deeper appreciation for the diverse perspectives that inform our understanding of societal issues. This connects to your previous insight about volunteering being a crucial avenue for personal development and meaningful change in our communities.",
+          "mean_nll": 4.626253176958133,
+          "ppl": 102.13067626953125,
+          "n_target_tokens": 78
+        },
+        {
+          "label": "c",
+          "choice": "It's delightful to discover that your recent travels have ignited your curiosity about global cultures and human rights! Achieving recognition for your intercultural communication skills not only enriches your experiences but also broadens your perspective on the vital issues that shape our world today. This aligns with your former realizations about the role of cross-cultural dialogue in enhancing empathy and understanding, encouraging thoughtful engagement with diverse communities.",
+          "mean_nll": 4.4863735292016,
+          "ppl": 88.798828125,
+          "n_target_tokens": 82
+        },
+        {
+          "label": "d",
+          "choice": "It's wonderful to hear how your recent experience in the debate competition has reinforced your passion for legal discourse and advocacy! Winning commendation for your insights not only boosts your confidence but also deepens your understanding of complex legal issues that are crucial for society. This aligns beautifully with your previous realization about debates serving as a valuable platform for sharing critical perspectives and sharpening your argumentative skills. It's inspiring to see how moments like this can act as catalysts for pursuing your interests with renewed vigor, contributing to significant discussions about justice and equity.",
+          "mean_nll": 3.828558349609375,
+          "ppl": 45.996185302734375,
+          "n_target_tokens": 110
+        }
+      ],
+      "wall_s": 0.25697922706604004
+    },
+    {
+      "global_idx": 39,
+      "persona_id": "12",
+      "question_id": "76784e79-f9b7-4b10-bce6-aea041887ac8",
+      "qtype_canonical": "reasons_behind",
+      "topic": "legalConsultation",
+      "correct_answer": "d",
+      "pred_answer": "d",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's wonderful to see that you've discovered courtroom dramas that highlight sensationalized cases! Your excitement for dramatic storytelling shows how much you enjoy entertainment value, especially after finding certain portrayals intriguing. Designing a flowchart to map out case timelines sounds like an engaging way to enhance your understanding while making the content enjoyable for others. It's amazing how you've expanded your interests into an educational endeavor!",
+          "mean_nll": 5.194753011067708,
+          "ppl": 180.32362365722656,
+          "n_target_tokens": 81
+        },
+        {
+          "label": "b",
+          "choice": "It's great to hear that you've found courtroom dramas that focus on the emotional journeys of the characters! Your interest in character development highlights your appreciation for human stories, especially after previously enjoying shows with rich narratives. Designing a flowchart to illustrate character arcs sounds like a fantastic way to analyze storytelling techniques and share insights with others. It's fascinating how you've translated your interest in legal dramas into a creative project!",
+          "mean_nll": 4.549853156594669,
+          "ppl": 94.6185302734375,
+          "n_target_tokens": 85
+        },
+        {
+          "label": "c",
+          "choice": "I'm glad to hear you've come across courtroom dramas that feature strong friendships among the characters! Your focus on the dynamics of relationships showcases your love for interpersonal connections, especially after previously enjoying shows with deep emotional ties. Creating a flowchart to represent these connections could serve as a fun way to illustrate character interactions and share with others. It's impressive how you've cultivated your passion for legal dramas into a meaningful project!",
+          "mean_nll": 4.5963228113511025,
+          "ppl": 99.11918640136719,
+          "n_target_tokens": 85
+        },
+        {
+          "label": "d",
+          "choice": "It's great to hear that you've found courtroom dramas that delve deep into actual legal cases! Your interest in a more accurate portrayal of the judicial system shows how much you value realism, especially after previously experiencing frustration with exaggerated depictions. Designing a flowchart to illustrate the litigation process sounds like a rewarding project that not only solidifies your knowledge but also helps make complex legal concepts more accessible to others. It's fascinating how you've turned your renewed interest in legal dramas into a creative educational tool!",
+          "mean_nll": 3.674172794117647,
+          "ppl": 39.41604232788086,
+          "n_target_tokens": 102
+        }
+      ],
+      "wall_s": 0.21040558815002441
+    },
+    {
+      "global_idx": 40,
+      "persona_id": "12",
+      "question_id": "8a432a27-3c39-426f-a853-fe8f8b3c5c41",
+      "qtype_canonical": "recall_facts",
+      "topic": "legalConsultation",
+      "correct_answer": "c",
+      "pred_answer": "c",
+      "is_correct": true,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "Since you have mentioned a preference for structured and predictable presentations, you might find it effective to incorporate clear guidelines and frameworks to ensure clarity and precision in your delivery.",
+          "mean_nll": 4.864452586454504,
+          "ppl": 129.59994506835938,
+          "n_target_tokens": 34
+        },
+        {
+          "label": "b",
+          "choice": "It's interesting to learn about your recent experience in the workshop for public speaking in law contexts. Maybe focusing on traditional legal presentation methods and detailed case study analyses could enhance your skills even further.",
+          "mean_nll": 5.414939880371094,
+          "ppl": 224.73902893066406,
+          "n_target_tokens": 40
+        },
+        {
+          "label": "c",
+          "choice": "Since you prefer engaging in debates and enjoy the dynamic aspect of them, perhaps you can incorporate some aspects of debate into your presentation style to make it more engaging and spontaneous.",
+          "mean_nll": 4.700025770399305,
+          "ppl": 109.94998168945312,
+          "n_target_tokens": 36
+        },
+        {
+          "label": "d",
+          "choice": "Since you prefer engaging in debates and enjoy the dynamic aspect of them, perhaps you can incorporate some aspects of debate into your presentation style to make it more engaging and spontaneous.",
+          "mean_nll": 4.700025770399305,
+          "ppl": 109.94998168945312,
+          "n_target_tokens": 36
+        }
+      ],
+      "wall_s": 0.1958765983581543
+    },
+    {
+      "global_idx": 41,
+      "persona_id": "12",
+      "question_id": "78ebcdd3-c419-4777-be35-ab836f645b9e",
+      "qtype_canonical": "recall_facts",
+      "topic": "legalConsultation",
+      "correct_answer": "b",
+      "pred_answer": "c",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It sounds interesting to attend such a workshop, though I don't remember you talking about these before. Perhaps it offered a new viewpoint on legal matters.",
+          "mean_nll": 5.631392478942871,
+          "ppl": 279.0504150390625,
+          "n_target_tokens": 32
+        },
+        {
+          "label": "b",
+          "choice": "I remember you've mentioned enjoying these workshops before, as they seem to provide insightful discussions and practical learning. It's great to see you're continuing with activities that resonate with your interests.",
+          "mean_nll": 4.853177975385617,
+          "ppl": 128.14700317382812,
+          "n_target_tokens": 39
+        },
+        {
+          "label": "c",
+          "choice": "That’s a wise choice. Fostering collaboration often leads to better learning experiences in any field, especially in legal discussions where shared insights can illuminate complex topics. When participants engage in cooperative exercises, they build trust and understanding, which are essential components for productive dialogue. I would be curious to know how you structure these focus groups to encourage open participation, as the facilitation techniques employed can greatly influence the quality of the discussions. For instance, do you incorporate specific methods such as open-ended questions or breakout discussions to ensure that everyone's voice is heard? Additionally, the implications of new legislation are often far-reaching, affecting not just individual rights but also altering the landscape of community relationships and social dynamics. By facilitating these discussions, you are playing an important role in empowering individuals to advocate for themselves and their communities. What other types of human engagement or educational strategies have you found useful in promoting awareness and participation in legal matters?",
+          "mean_nll": 3.2171512088260137,
+          "ppl": 24.956920623779297,
+          "n_target_tokens": 185
+        },
+        {
+          "label": "d",
+          "choice": "I can't recall you mentioning much about these workshops before. It must be quite eye-opening to engage with such topics actively.",
+          "mean_nll": 4.763993439850984,
+          "ppl": 117.21305847167969,
+          "n_target_tokens": 27
+        }
+      ],
+      "wall_s": 0.18990802764892578
+    },
+    {
+      "global_idx": 42,
+      "persona_id": "12",
+      "question_id": "ad56eb3c-d190-4974-830a-d4e91d395402",
+      "qtype_canonical": "track_evolution",
+      "topic": "movieRecommendation",
+      "correct_answer": "a",
+      "pred_answer": "b",
+      "is_correct": false,
+      "scores": [
+        {
+          "label": "a",
+          "choice": "It's wonderful to hear that you thoroughly enjoyed a foreign film recently! I remember initially, you expressed a dislike for foreign films, mainly due to the challenges with pacing and cultural nuances that didn't resonate with you. Over time, however, your preference evolved, and you decided to give foreign films another chance. Your recent positive experience seems to be a rewarding one, showcasing a captivating blend of storytelling and cinematography that truly engaged you. This transformation in your preferences highlights your openness to exploring and rediscovering diverse cinematic experiences.",
+          "mean_nll": 3.742150072781545,
+          "ppl": 42.1885986328125,
+          "n_target_tokens": 106
+        },
+        {
+          "label": "b",
+          "choice": "It's wonderful to hear that you thoroughly enjoyed a foreign film recently! I remember initially, you expressed a dislike for horror films, mainly due to the challenges with pacing and cultural nuances that didn't resonate with you. Over time, however, your preference evolved, and you decided to give foreign films another chance. Your recent positive experience seems to be a rewarding one, showcasing a captivating blend of storytelling and cinematography that truly engaged you. This transformation in your preferences highlights your openness to exploring and rediscovering diverse cinematic experiences.",
+          "mean_nll": 3.6085947864460497,
+          "ppl": 36.914146423339844,
+          "n_target_tokens": 106
+        },
+        {
+          "label": "c",
+          "choice": "It's wonderful to hear that you thoroughly enjoyed a foreign film recently! I remember this is the first time you mentioned your fondness for foreign films; you have often shared your experiences with challenges regarding pacing and cultural nuances. Over time, however, your preference evolved, and you decided to give foreign films another chance. Your recent positive experience seems to be a rewarding one, showcasing a captivating blend of storytelling and cinematography that truly engaged you. This transformation in your preferences highlights your openness to exploring and rediscovering diverse cinematic experiences.",
+          "mean_nll": 4.242311852000584,
+          "ppl": 69.5685043334961,
+          "n_target_tokens": 107
+        },
+        {
+          "label": "d",
+          "choice": "It's wonderful to hear that you thoroughly enjoyed a foreign film recently! I remember initially, you expressed a fondness for foreign films, but you found challenges with pacing and cultural nuances. Over time, however, your preference shifted, and you decided to give foreign films another chance. Your recent positive experience seems to be a rewarding one, showcasing a captivating blend of storytelling and cinematography that truly engaged you. This transformation in your preferences highlights your openness to exploring and rediscovering diverse cinematic experiences.",
+          "mean_nll": 4.001323852539063,
+          "ppl": 54.67047119140625,
+          "n_target_tokens": 100
+        }
+      ],
+      "wall_s": 0.2532675266265869
+    }
+  ]
+}
