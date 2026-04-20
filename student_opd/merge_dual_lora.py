@@ -72,9 +72,24 @@ def main() -> None:
     print("[merge] merge_and_unload (this is the compute-heavy step)...")
     model = model.merge_and_unload()
 
+    # Move merged model to CPU BEFORE save_pretrained. Without this, HF
+    # calls state_dict() which copies the full ~8GB from GPU to CPU in one
+    # shot as a fresh allocation; under KCL cgroup CPU-RAM limits that
+    # spike is the SIGKILL trigger. Moving to CPU first streams the
+    # transfer parameter-by-parameter, and save_pretrained then writes
+    # from existing CPU tensors without re-allocating.
+    print("[merge] moving merged model to CPU for safe save...")
+    model = model.to("cpu")
+    gc.collect()
+    torch.cuda.empty_cache()
+
     args.out_dir.mkdir(parents=True, exist_ok=True)
-    print(f"[merge] saving merged weights to {args.out_dir}...")
-    model.save_pretrained(str(args.out_dir), safe_serialization=True)
+    print(f"[merge] saving sharded weights (2GB/shard) to {args.out_dir}...")
+    model.save_pretrained(
+        str(args.out_dir),
+        safe_serialization=True,
+        max_shard_size="2GB",
+    )
 
     tok = AutoTokenizer.from_pretrained(str(args.base_model),
                                           trust_remote_code=True)
