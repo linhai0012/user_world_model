@@ -28,17 +28,18 @@ from openpyxl.utils import get_column_letter
 
 
 COLS = [
-    ("qid_short",     12),
-    ("qtype",         22),
-    ("topic",         22),
-    ("user_question", 40),
-    ("label",          5),
-    ("correct",        7),
-    ("choice_text",   60),
-    ("reaction_base", 55),
-    ("reaction_r1b",  55),
-    ("gt_asst",       45),
-    ("gt_user",       45),
+    ("qid_short",        12),
+    ("qtype",            22),
+    ("topic",            22),
+    ("user_question",    40),
+    ("label",             5),
+    ("correct",           7),
+    ("choice_text",      60),
+    ("reaction_base",    55),
+    ("reaction_r1b",     55),
+    ("reaction_phase2",  55),
+    ("gt_asst",          45),
+    ("gt_user",          45),
 ]
 
 
@@ -63,14 +64,20 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--base", type=Path, required=True)
     ap.add_argument("--r1b",  type=Path, required=True)
+    ap.add_argument("--phase2", type=Path, default=None,
+                    help="optional phase2 single-LoRA output for 3-way compare")
     ap.add_argument("--out",  type=Path, required=True)
     args = ap.parse_args()
 
     base = load_jsonl(args.base)
     r1b  = load_jsonl(args.r1b)
+    p2   = load_jsonl(args.phase2) if args.phase2 else {}
 
     qids = [q for q in base.keys() if q in r1b]
-    print(f"common MCQs: {len(qids)}  (base={len(base)}, r1b={len(r1b)})")
+    if p2:
+        qids = [q for q in qids if q in p2]
+    print(f"common MCQs: {len(qids)}  "
+          f"(base={len(base)}, r1b={len(r1b)}, phase2={len(p2)})")
 
     # Sort by qtype then qid so same types group together
     qids.sort(key=lambda q: (base[q]["qtype_canonical"], q))
@@ -107,6 +114,8 @@ def main() -> None:
         # map label → base and r1b reaction
         br_react = {c["label"]: _first(c["reactions"]) for c in br["choices"]}
         rr_react = {c["label"]: _first(c["reactions"]) for c in rr["choices"]}
+        p2_react = ({c["label"]: _first(c["reactions"]) for c in p2[qid]["choices"]}
+                    if p2 else {})
         label_choice = {c["label"]: c for c in br["choices"]}
 
         for label in ("a", "b", "c", "d"):
@@ -114,17 +123,18 @@ def main() -> None:
                 continue
             c = label_choice[label]
             vals = {
-                "qid_short":     qid[:8],
-                "qtype":         br["qtype_canonical"],
-                "topic":         br["topic"],
-                "user_question": br["user_question"],
-                "label":         label,
-                "correct":       "✓" if c["is_correct"] else "",
-                "choice_text":   c["choice_text"],
-                "reaction_base": br_react.get(label, ""),
-                "reaction_r1b":  rr_react.get(label, ""),
-                "gt_asst":       gt_asst,
-                "gt_user":       gt_user,
+                "qid_short":       qid[:8],
+                "qtype":           br["qtype_canonical"],
+                "topic":           br["topic"],
+                "user_question":   br["user_question"],
+                "label":           label,
+                "correct":         "✓" if c["is_correct"] else "",
+                "choice_text":     c["choice_text"],
+                "reaction_base":   br_react.get(label, ""),
+                "reaction_r1b":    rr_react.get(label, ""),
+                "reaction_phase2": p2_react.get(label, ""),
+                "gt_asst":         gt_asst,
+                "gt_user":         gt_user,
             }
             for ci, (name, _) in enumerate(COLS, start=1):
                 cell = ws.cell(row=row, column=ci, value=vals[name])
