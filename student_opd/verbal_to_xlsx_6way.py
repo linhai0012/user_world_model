@@ -26,12 +26,10 @@ COLS = [
     ("label",                 5),
     ("correct",               7),
     ("choice_text",          55),
-    ("reaction_base_hf",     40),
-    ("reaction_r1b_hf",      40),
-    ("reaction_phase2_hf",   40),
     ("reaction_base_vllm",   40),
     ("reaction_phase2_vllm", 40),
     ("reaction_r1b_vllm",    40),
+    ("reaction_opsd",        40),
     ("gt_asst",              35),
     ("gt_user",              35),
 ]
@@ -66,14 +64,14 @@ def main() -> None:
     args = ap.parse_args()
 
     files = {
-        "base_hf":       args.in_dir / "verbal_pid4_base.jsonl",
-        "r1b_hf":        args.in_dir / "verbal_pid4_r1b.jsonl",
-        "phase2_hf":     args.in_dir / "verbal_pid4_phase2_hf.jsonl",
         "base_vllm":     args.in_dir / "verbal_pid4_base_vllm.jsonl",
         "phase2_vllm":   args.in_dir / "verbal_pid4_phase2_vllm.jsonl",
         "r1b_vllm":      args.in_dir / "verbal_pid4_r1b_vllm.jsonl",
+        "opsd":          args.in_dir / "verbal_pid4_opsd.jsonl",
     }
-    data = {k: load_jsonl(p) for k, p in files.items()}
+    data = {k: load_jsonl(p) for k, p in files.items() if p.exists()}
+    if not data:
+        raise SystemExit("no input jsonls found")
 
     qids_all = sorted(set.intersection(*(set(d.keys()) for d in data.values())))
 
@@ -119,12 +117,10 @@ def main() -> None:
                     "label":                label,
                     "correct":              "✓" if is_correct else "",
                     "choice_text":          c["choice_text"],
-                    "reaction_base_hf":     first_reaction(data["base_hf"].get(qid, {}), label),
-                    "reaction_r1b_hf":      first_reaction(data["r1b_hf"].get(qid, {}), label),
-                    "reaction_phase2_hf":   first_reaction(data["phase2_hf"].get(qid, {}), label),
-                    "reaction_base_vllm":   first_reaction(data["base_vllm"].get(qid, {}), label),
-                    "reaction_phase2_vllm": first_reaction(data["phase2_vllm"].get(qid, {}), label),
-                    "reaction_r1b_vllm":    first_reaction(data["r1b_vllm"].get(qid, {}), label),
+                    "reaction_base_vllm":   first_reaction(data.get("base_vllm", {}).get(qid, {}), label),
+                    "reaction_phase2_vllm": first_reaction(data.get("phase2_vllm", {}).get(qid, {}), label),
+                    "reaction_r1b_vllm":    first_reaction(data.get("r1b_vllm", {}).get(qid, {}), label),
+                    "reaction_opsd":        first_reaction(data.get("opsd", {}).get(qid, {}), label),
                     "gt_asst":              gt_asst,
                     "gt_user":              gt_user,
                 }
