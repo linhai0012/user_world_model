@@ -106,6 +106,13 @@ def parse_args() -> argparse.Namespace:
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", type=str, required=True,
                     help="HF model dir (base or pre-merged R1b); loaded by vLLM")
+    ap.add_argument("--lora-path", type=str, default=None,
+                    help="Optional: vLLM native LoRA (single adapter). "
+                         "If given, --model is the base and this adapter is "
+                         "applied via LoRARequest — NO pre-merge needed. "
+                         "For dual LoRA you still need the merged path in --model.")
+    ap.add_argument("--max-lora-rank", type=int, default=64,
+                    help="vLLM preallocates this rank; Phase 2 single=32, R1b slow=32")
     ap.add_argument("--persona-id", type=str, required=True)
     ap.add_argument("--mcq-version", choices=["32k", "128k", "1M"],
                     default="128k")
@@ -173,8 +180,9 @@ def main() -> None:
           f"(= {len(mcqs)} MCQs × 4 choices)")
 
     # --- vLLM load + generate ---
-    print(f"[gen] loading model into vLLM: {args.model}")
-    llm = LLM(
+    print(f"[gen] loading model into vLLM: {args.model}"
+          f"{' (+ LoRA adapter)' if args.lora_path else ''}")
+    llm_kwargs = dict(
         model=args.model,
         dtype="bfloat16",
         max_model_len=args.max_model_len,
@@ -182,6 +190,15 @@ def main() -> None:
         gpu_memory_utilization=args.gpu_memory_utilization,
         enable_prefix_caching=True,
     )
+    lora_req = None
+    if args.lora_path:
+        from vllm.lora.request import LoRARequest
+        llm_kwargs["enable_lora"] = True
+        llm_kwargs["max_lora_rank"] = args.max_lora_rank
+        lora_req = LoRARequest("student", 1, str(args.lora_path))
+        print(f"[gen] LoRA via LoRARequest: {args.lora_path}  "
+              f"max_rank={args.max_lora_rank}")
+    llm = LLM(**llm_kwargs)
     sp = SamplingParams(
         temperature=args.temperature,
         top_p=args.top_p,
@@ -192,7 +209,8 @@ def main() -> None:
     )
 
     t0 = time.time()
-    outs = llm.generate(prompts, sp)
+    gen_kwargs = {"lora_request": lora_req} if lora_req else {}
+    outs = llm.generate(prompts, sp, **gen_kwargs)
     dt = time.time() - t0
     print(f"[gen] generated in {dt:.1f}s "
           f"({len(prompts)/dt:.1f} prompts/s)")
