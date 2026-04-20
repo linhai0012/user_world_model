@@ -176,13 +176,24 @@ def main() -> None:
     print(f"[sanity] {len(samples)} samples from {args.data}")
 
     # Per-condition running buffers
-    ranks = {"A": [], "B": [], "C": []}
-    probs = {"A": [], "B": [], "C": []}
-    ents  = {"A": [], "B": [], "C": []}
+    # A/B/C as before. D: mismatched-GT in C's slot. E: mismatched-GT in B's slot.
+    # D and E test whether teacher is using GT SEMANTICALLY (correct GT helps,
+    # mismatched GT doesn't) or just PATTERN-MATCHING (any GT-shaped thing helps).
+    CONDS = ["A", "B", "C", "D", "E"]
+    ranks = {c: [] for c in CONDS}
+    probs = {c: [] for c in CONDS}
+    ents  = {c: [] for c in CONDS}
+
+    # Stable shuffle so sample i's "mismatched GT" always comes from a
+    # deterministic other sample (not the same one). Offset of N/2.
+    n = len(samples)
+    mismatch_idx = [(i + n // 2) % n for i in range(n)]
 
     for si, sample in enumerate(samples):
         gt = sample["user_response"]
         history = sample["history_messages"]
+        gt_mismatch = samples[mismatch_idx[si]]["user_response"]
+
         target_ids = tok.encode(gt, add_special_tokens=False)
         if args.max_target_tokens > 0:
             target_ids = target_ids[: args.max_target_tokens]
@@ -192,33 +203,37 @@ def main() -> None:
         # ---- A: natural ----
         prefix_A = build_prefix_ids(tok, history, trailing_role="user")
 
-        # ---- B: system-augmented ----
+        # ---- B: system-augmented with correct GT ----
         history_B = augment_system_with_gt(history, gt)
         prefix_B = build_prefix_ids(tok, history_B, trailing_role="user")
 
-        # ---- C: prior-turn injection ----
-        # history ends with assistant (chatbot_prev). Insert a full user turn
-        # with GT, then open a new user turn.
-        prefix_C = (
-            build_prefix_ids(tok, history, trailing_role="user")[:-1]  # strip trailing '\n' from user\n? no — prefix ends with tokens of "<|im_start|>user\n"
-        )
-        # Cleaner: rebuild prefix_C explicitly
+        # ---- E: system-augmented with MISMATCHED GT (control for B) ----
+        history_E = augment_system_with_gt(history, gt_mismatch)
+        prefix_E = build_prefix_ids(tok, history_E, trailing_role="user")
+
+        # ---- C: prior-turn injection with correct GT ----
         prefix_C = []
         for m in history:
             prefix_C.extend(encode_msg(tok, m["role"], m["content"]))
-        # Completed GT user turn
         prefix_C.extend(encode_msg(tok, "user", gt))
-        # New user turn trailing role
         prefix_C.extend(tok.encode("<|im_start|>user\n", add_special_tokens=False))
 
+        # ---- D: prior-turn injection with MISMATCHED GT (control for C) ----
+        prefix_D = []
+        for m in history:
+            prefix_D.extend(encode_msg(tok, m["role"], m["content"]))
+        prefix_D.extend(encode_msg(tok, "user", gt_mismatch))
+        prefix_D.extend(tok.encode("<|im_start|>user\n", add_special_tokens=False))
+
         # Safety: cap total length
-        for prefix in (prefix_A, prefix_B, prefix_C):
+        for prefix in (prefix_A, prefix_B, prefix_C, prefix_D, prefix_E):
             if len(prefix) + len(target_ids) > args.max_seq_len:
                 overflow = len(prefix) + len(target_ids) - args.max_seq_len
-                # drop oldest tokens (left-side truncation)
                 del prefix[:overflow]
 
-        for cond, prefix in [("A", prefix_A), ("B", prefix_B), ("C", prefix_C)]:
+        for cond, prefix in [("A", prefix_A), ("B", prefix_B),
+                              ("C", prefix_C), ("D", prefix_D),
+                              ("E", prefix_E)]:
             out = score_target_positions(model, prefix, target_ids, device)
             ranks[cond].extend(out["rank"])
             probs[cond].extend(out["p"])
@@ -231,42 +246,44 @@ def main() -> None:
                   flush=True)
 
     # -----------------------------------------------------------------
-    # Print comparison table
+    # Print comparison table — 5 conditions
     # -----------------------------------------------------------------
-    print("\n" + "=" * 78)
-    print(f"{'metric':<22} {'A natural':>15} {'B sys-aug':>15} {'C prior-turn':>15}")
-    print("=" * 78)
-
-    def line(label: str, fmt: str, a, b, c):
-        print(f"{label:<22} {fmt.format(a):>15} {fmt.format(b):>15} {fmt.format(c):>15}")
-
-    # rank@1 rate
+    COND_NAMES = {
+        "A": "A natural", "B": "B sys-aug", "C": "C prior-turn",
+        "D": "D C+mismatchGT", "E": "E B+mismatchGT",
+    }
     rank1 = {c: sum(1 for r in ranks[c] if r == 0) / max(len(ranks[c]), 1)
-             for c in ranks}
+             for c in CONDS}
     rank5 = {c: sum(1 for r in ranks[c] if r < 5) / max(len(ranks[c]), 1)
-             for c in ranks}
+             for c in CONDS}
     rank50 = {c: sum(1 for r in ranks[c] if r < 50) / max(len(ranks[c]), 1)
-              for c in ranks}
+              for c in CONDS}
     mean_p = {c: statistics.mean(probs[c]) if probs[c] else float("nan")
-              for c in probs}
+              for c in CONDS}
     median_rank = {c: sorted(ranks[c])[len(ranks[c]) // 2] if ranks[c] else -1
-                   for c in ranks}
+                   for c in CONDS}
     mean_ent = {c: statistics.mean(ents[c]) if ents[c] else float("nan")
-                for c in ents}
-    # Mean NLL = -mean(log p)
+                for c in CONDS}
     def _nll(ps):
         ls = [-math.log(max(p, 1e-20)) for p in ps]
         return statistics.mean(ls) if ls else float("nan")
-    mean_nll = {c: _nll(probs[c]) for c in probs}
+    mean_nll = {c: _nll(probs[c]) for c in CONDS}
 
-    line("rank@1 (↑ better)", "{:.3f}", rank1["A"], rank1["B"], rank1["C"])
-    line("rank@5",            "{:.3f}", rank5["A"], rank5["B"], rank5["C"])
-    line("rank@50",           "{:.3f}", rank50["A"], rank50["B"], rank50["C"])
-    line("median rank (↓)",   "{}",     median_rank["A"], median_rank["B"], median_rank["C"])
-    line("mean P(GT) (↑)",    "{:.4f}", mean_p["A"], mean_p["B"], mean_p["C"])
-    line("mean NLL (↓)",      "{:.3f}", mean_nll["A"], mean_nll["B"], mean_nll["C"])
-    line("mean entropy (↓)",  "{:.3f}", mean_ent["A"], mean_ent["B"], mean_ent["C"])
-    print("=" * 78)
+    header_cells = [f"{COND_NAMES[c]:>16}" for c in CONDS]
+    print("\n" + "=" * (22 + 16 * len(CONDS)))
+    print(f"{'metric':<22}" + "".join(header_cells))
+    print("=" * (22 + 16 * len(CONDS)))
+    def line(label, fmt, vals):
+        cells = [f"{fmt.format(vals[c]):>16}" for c in CONDS]
+        print(f"{label:<22}" + "".join(cells))
+    line("rank@1 (↑)",       "{:.3f}", rank1)
+    line("rank@5",           "{:.3f}", rank5)
+    line("rank@50",          "{:.3f}", rank50)
+    line("median rank (↓)",  "{}",     median_rank)
+    line("mean P(GT) (↑)",   "{:.4f}", mean_p)
+    line("mean NLL (↓)",     "{:.3f}", mean_nll)
+    line("mean entropy (↓)", "{:.3f}", mean_ent)
+    print("=" * (22 + 16 * len(CONDS)))
 
     # Save raw
     out_path = Path(args.out_json)
@@ -283,12 +300,14 @@ def main() -> None:
     }, indent=2, ensure_ascii=False))
     print(f"\n[sanity] wrote {out_path}")
 
-    # Interpretation hints
-    print("\n--- expected pattern if OPSD-B is viable ---")
-    print("  P(GT) :   A (baseline) <  B (sys-aug)  — teacher uses GT hint")
-    print("  P(GT) :   B  vs  C     — if B > C, system channel is cleaner")
-    print("  rank@1:   A < B         — teacher frequently argmaxes GT with hint")
-    print("  entropy:  B < A         — distribution sharpens with GT hint")
+    # Interpretation hints (with mismatch controls)
+    print("\n--- reading the robustness controls ---")
+    print("  D vs A:  D ≈ A  → C is semantic (correct-GT-specific)")
+    print("           D > A  → C is shallow-copy (any GT-shaped prior boosts P)")
+    print("  E vs A:  E ≈ A  → B is semantic")
+    print("           E > A  → B is pattern-matching via system slot")
+    print("  Best:    C - D  (or B - E) large  → that placement has")
+    print("           maximal semantic-specific signal (correct-minus-mismatched).")
 
 
 if __name__ == "__main__":
