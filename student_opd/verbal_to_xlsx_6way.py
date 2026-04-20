@@ -75,70 +75,79 @@ def main() -> None:
     }
     data = {k: load_jsonl(p) for k, p in files.items()}
 
-    qids = sorted(set.intersection(*(set(d.keys()) for d in data.values())),
-                  key=lambda q: (data["base_vllm"][q]["qtype_canonical"], q))
+    qids_all = sorted(set.intersection(*(set(d.keys()) for d in data.values())))
+
+    # group by qtype
+    by_qtype: dict[str, list[str]] = {}
+    for qid in qids_all:
+        qt = data["base_vllm"][qid]["qtype_canonical"]
+        by_qtype.setdefault(qt, []).append(qid)
+    for qt in by_qtype:
+        by_qtype[qt].sort()
 
     wb = Workbook()
-    ws = wb.active
-    ws.title = "6way"
+    wb.remove(wb.active)
+    total_rows = 0
 
-    for ci, (name, width) in enumerate(COLS, 1):
-        c = ws.cell(row=1, column=ci, value=name)
-        c.font = Font(bold=True)
-        if name.endswith("_vllm"):
-            c.fill = VLLM_FILL
-        ws.column_dimensions[get_column_letter(ci)].width = width
+    for qtype in sorted(by_qtype):
+        ws = wb.create_sheet(qtype[:31])  # xlsx sheet name max 31 chars
+        for ci, (name, width) in enumerate(COLS, 1):
+            c = ws.cell(row=1, column=ci, value=name)
+            c.font = Font(bold=True)
+            if name.endswith("_vllm"):
+                c.fill = VLLM_FILL
+            ws.column_dimensions[get_column_letter(ci)].width = width
 
-    row = 2
-    prev_qt = None
-    for qid in qids:
-        ref = data["base_vllm"][qid]
-        if prev_qt is not None and ref["qtype_canonical"] != prev_qt:
+        row = 2
+        for qid in by_qtype[qtype]:
+            ref = data["base_vllm"][qid]
+            gt = ref.get("gt_followup", [])
+            gt_asst = gt[0].get("content", "") if gt else ""
+            gt_user = gt[1].get("content", "") if len(gt) > 1 else ""
+            label_to_choice = {c["label"]: c for c in ref["choices"]}
+            correct_label = ref["correct_answer"]
+
+            for label in ("a", "b", "c", "d"):
+                if label not in label_to_choice:
+                    continue
+                c = label_to_choice[label]
+                is_correct = (label == correct_label)
+                vals = {
+                    "qid_short":            qid[:8],
+                    "qtype":                ref["qtype_canonical"],
+                    "user_question":        ref["user_question"],
+                    "label":                label,
+                    "correct":              "✓" if is_correct else "",
+                    "choice_text":          c["choice_text"],
+                    "reaction_base_hf":     first_reaction(data["base_hf"].get(qid, {}), label),
+                    "reaction_r1b_hf":      first_reaction(data["r1b_hf"].get(qid, {}), label),
+                    "reaction_phase2_hf":   first_reaction(data["phase2_hf"].get(qid, {}), label),
+                    "reaction_base_vllm":   first_reaction(data["base_vllm"].get(qid, {}), label),
+                    "reaction_phase2_vllm": first_reaction(data["phase2_vllm"].get(qid, {}), label),
+                    "reaction_r1b_vllm":    first_reaction(data["r1b_vllm"].get(qid, {}), label),
+                    "gt_asst":              gt_asst,
+                    "gt_user":              gt_user,
+                }
+                for ci, (name, _) in enumerate(COLS, 1):
+                    cell = ws.cell(row=row, column=ci, value=vals[name])
+                    cell.alignment = Alignment(wrap_text=True, vertical="top")
+                    if is_correct:
+                        cell.fill = CORRECT_FILL
+                    elif name.endswith("_vllm"):
+                        cell.fill = VLLM_FILL
+                row += 1
+            # blank row between MCQs inside a qtype sheet
             ws.row_dimensions[row].height = 6
             row += 1
-        prev_qt = ref["qtype_canonical"]
 
-        gt = ref.get("gt_followup", [])
-        gt_asst = gt[0].get("content", "") if gt else ""
-        gt_user = gt[1].get("content", "") if len(gt) > 1 else ""
+        ws.freeze_panes = "D2"
+        print(f"  sheet {qtype:<22} {len(by_qtype[qtype]):3d} MCQs  {row-2} rows")
+        total_rows += row - 2
 
-        label_to_choice = {c["label"]: c for c in ref["choices"]}
-        correct_label = ref["correct_answer"]
-
-        for label in ("a", "b", "c", "d"):
-            if label not in label_to_choice:
-                continue
-            c = label_to_choice[label]
-            is_correct = (label == correct_label)
-            vals = {
-                "qid_short":            qid[:8],
-                "qtype":                ref["qtype_canonical"],
-                "user_question":        ref["user_question"],
-                "label":                label,
-                "correct":              "✓" if is_correct else "",
-                "choice_text":          c["choice_text"],
-                "reaction_base_hf":     first_reaction(data["base_hf"].get(qid, {}), label),
-                "reaction_r1b_hf":      first_reaction(data["r1b_hf"].get(qid, {}), label),
-                "reaction_phase2_hf":   first_reaction(data["phase2_hf"].get(qid, {}), label),
-                "reaction_base_vllm":   first_reaction(data["base_vllm"].get(qid, {}), label),
-                "reaction_phase2_vllm": first_reaction(data["phase2_vllm"].get(qid, {}), label),
-                "reaction_r1b_vllm":    first_reaction(data["r1b_vllm"].get(qid, {}), label),
-                "gt_asst":              gt_asst,
-                "gt_user":              gt_user,
-            }
-            for ci, (name, _) in enumerate(COLS, 1):
-                cell = ws.cell(row=row, column=ci, value=vals[name])
-                cell.alignment = Alignment(wrap_text=True, vertical="top")
-                if is_correct:
-                    cell.fill = CORRECT_FILL
-                elif name.endswith("_vllm"):
-                    cell.fill = VLLM_FILL
-            row += 1
-
-    ws.freeze_panes = "D2"
     args.out.parent.mkdir(parents=True, exist_ok=True)
     wb.save(args.out)
-    print(f"wrote {args.out}  ({row-1} rows, {len(qids)} MCQs)")
+    print(f"wrote {args.out}  ({total_rows} total rows, "
+          f"{len(qids_all)} MCQs across {len(by_qtype)} qtypes)")
 
 
 if __name__ == "__main__":
