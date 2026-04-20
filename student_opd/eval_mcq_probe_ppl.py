@@ -180,6 +180,12 @@ def parse_args() -> argparse.Namespace:
     ap.add_argument("--seed", type=int, default=42)
     ap.add_argument("--probe-affirm", type=str, default=PROBES["affirm"])
     ap.add_argument("--probe-correct", type=str, default=PROBES["correct"])
+    ap.add_argument("--attn-impl",
+                    choices=["flash_attention_2", "sdpa", "eager"],
+                    default="flash_attention_2",
+                    help="use 'sdpa' on Blackwell (B200) if flash-attn < 2.7")
+    ap.add_argument("--no-liger", action="store_true",
+                    help="skip liger kernel (B200 / old triton fallback)")
     ap.add_argument("--out-json", type=Path, required=True)
     return ap.parse_args()
 
@@ -210,12 +216,17 @@ def main() -> None:
         print(f"[probe] correct: {args.probe_correct!r}")
 
     sft_tok = SFTTokenizer(model_name=args.base_model, max_len=args.max_seq_len)
-    apply_liger()
+    if not args.no_liger:
+        apply_liger()
+    elif rank == 0:
+        print("[probe] liger skipped (--no-liger)")
     if rank == 0:
         print(f"[probe] loading base: {args.base_model}"
-              f"{' + LoRA' if args.lora_path else ' (no LoRA)'}")
+              f"{' + LoRA' if args.lora_path else ' (no LoRA)'}  "
+              f"attn={args.attn_impl}")
     model = load_model_with_lora(
         args.base_model, args.lora_path, args.lora_mode,
+        attn_impl=args.attn_impl,
     )
 
     my_mcqs = mcqs[rank::world_size]

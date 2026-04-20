@@ -98,7 +98,8 @@ def parse_args() -> argparse.Namespace:
 
 def load_model_with_lora(base_path: str | Path,
                          lora_path: Path | None,
-                         lora_mode: str = "single") -> torch.nn.Module:
+                         lora_mode: str = "single",
+                         attn_impl: str = "flash_attention_2") -> torch.nn.Module:
     """Load base; optionally wrap with PEFT and merge_and_unload.
 
     lora_mode='single': lora_path is a single adapter dir (Phase 2 layout).
@@ -107,11 +108,14 @@ def load_model_with_lora(base_path: str | Path,
                         are loaded, activated together, then merged into
                         base weights so the downstream PPL scorer sees a
                         plain HF model.
+
+    attn_impl: passed to from_pretrained. Use "sdpa" on Blackwell (B200)
+               if flash-attn 2 version predates sm_100 support.
     """
     model = AutoModelForCausalLM.from_pretrained(
         str(base_path),
         torch_dtype=torch.bfloat16,
-        attn_implementation="flash_attention_2",
+        attn_implementation=attn_impl,
         trust_remote_code=True,
     )
     if lora_path is not None:
