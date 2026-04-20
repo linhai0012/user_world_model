@@ -118,6 +118,11 @@ def load_model_with_lora(base_path: str | Path,
         attn_implementation=attn_impl,
         trust_remote_code=True,
     )
+    # Move base to GPU BEFORE LoRA wrapping so merge_and_unload happens on
+    # GPU (not CPU). Merging on CPU spikes host RAM to ~2x base weights
+    # which gets SIGKILL'd under tight cgroup limits on some clusters
+    # (e.g. KCL CREATE). GPU side has the headroom.
+    model.to(torch.cuda.current_device())
     if lora_path is not None:
         from peft import PeftModel
         is_rank0 = int(os.environ.get("RANK", 0)) == 0
@@ -147,7 +152,6 @@ def load_model_with_lora(base_path: str | Path,
             raise ValueError(f"unknown lora_mode: {lora_mode}")
     model.config.use_cache = False
     model.eval()
-    model.to(torch.cuda.current_device())
     return model
 
 
