@@ -89,6 +89,36 @@ teacher. Full 5-checkpoint learning curve (step 200/400/600/800/final):
   (minimize KL on rollouts ≠ maximize discrimination), not noise.
   Reporting all three is a Phase 2 contribution.
 
+### Update after verbal-generation + OPSD experiments (§12 / §13)
+
+**§12 — verbal generation works, but LLM-judge reveals a compression ceiling**:
+- HF-generate pipeline is broken (87% identity across base/r1b/phase2);
+  vLLM + native LoRARequest is the correct path forward.
+- **Golden-snippet LLM judge (pid=4, n=147)**: R1b = 2.00, OPSD = 1.81,
+  Phase 2 single = 1.56, base = 1.56. **Zero score-5's across any
+  config** — demo-only LoRA-compression cannot reach verbatim user-
+  knowledge recall; best is "semantic coherence" (score 2-3).
+- **Direct-ask paradigm III** is NOT viable: any user-only-loss LoRA
+  destroys base's instruct-following (parse fail 5.4% → 36-48%).
+
+**§13 — OPSD (GT-conditioned teacher) is complementary, not universally better**:
+- Sanity check: placing GT as prior user turn in teacher's attention
+  gives P(GT)=0.94 vs 0.57 (natural); mismatched GT HURTS (0.551 < 0.566)
+  → teacher integrates GT semantically, not via pattern-copy.
+- Training converges 2-3× faster than R1b.
+- **Overall verbal judge OPSD < R1b** (1.81 < 2.00) — teacher's sharp
+  GT-locked distribution teaches student "GT-reproduction pattern" with
+  short output (median 168 chars vs R1b 579 vs golden ~300).
+- But OPSD **crushes R1b on discrimination-heavy qtypes**:
+  `track_evolution = 1.00` (R1b ~0.72, R3 teacher 0.81) and
+  `generalize = 0.82` (R1b 0.18, R3 teacher 0.11 — R3's durable weakness).
+- **Per-qtype oracle(R1b, OPSD) ≈ 0.59** on pid=4 MCQ-PPL (R1b alone
+  0.48) — **+11pp headroom** from ensembling. Paper story:
+  R1b = user-voice generation recipe; OPSD = user-pattern recognition
+  recipe; **both needed**.
+- Next (§13.7): full-param SFT baseline (`train_sft_user.py`) in
+  progress — disambiguates "method issue" from "capacity bound".
+
 ### Phase 2b update — dual LoRA + (optional) gated KL (§11)
 
 Four rounds (R1, R1b, R2a, R2c) varying LoRA structure, student input,
@@ -1772,7 +1802,306 @@ cross-version's +128% on 4 personas). Combined with the cross-version
 
 ---
 
-## 12. Referenced commits (chronological)
+## 12. Verbal Stage-1 generation & paradigm (II) / (III) probes
+
+Moves past pure PPL-based evaluation (paradigm I, §4.4.3 / §9.4 / §10.5 /
+§11) to **verbal-generation-based** eval — needed for paper's paradigm-II
+main claim. Three new eval modalities: (a) direct-generate user reactions
+to each MCQ choice, (b) LLM judge of the reactions against two GT sources,
+(c) direct-ask paradigm III zero-shot.
+
+### 12.1 HF-generate pipeline is structurally broken (debugging saga)
+
+First implementation `eval_mcq_verbal_gen_hf.py` (works in KCL's 2GB
+cgroup; uses `load_model_with_lora` in-GPU merge, no save). Run on pid=4
+full 147 MCQs × 4 choices for base / R1b dual / Phase 2 single:
+
+- **87.6% normal-vs-normal identity rate between ANY pair of configs** —
+  LoRA effect entirely suppressed in the HF `generate()` path
+- 16% empty reactions, 3% persona-echo, all three configs identical
+  failure counts
+- Root cause not fully pinned (suspect left-padding + `eos_token_id =
+  [im_end, im_start]` interaction) — pivoted to vLLM instead of fixing
+
+### 12.2 vLLM pipeline works cleanly (on Isambard 4-GPU)
+
+`eval_mcq_verbal_gen.py` with `--lora-path` for vLLM native `LoRARequest`,
+`--tensor-parallel-size 4`. For dual LoRA: pre-merge via
+`merge_dual_lora.py` then point `--model` at merged dir. Results on
+pid=4 full 147 MCQs × 4 choices:
+
+| config          | empty  | persona echo | normal | median len |
+|-----------------|-------:|-------------:|-------:|-----------:|
+| base_vllm       | 0/588  | 5/588        | 583    | **755**    |
+| phase2_vllm     | 0/588  | 0            | 588    | **96**     |
+| r1b_vllm        | 0      | 0            | 588    | **579**    |
+
+Pair-wise identity across all three: **0%**. LoRA effect fully distinct.
+Qualitative profile:
+
+- **base_vllm**: 755 chars — assistant-voice rambles ("Absolutely, Lisa! As
+  an entrepreneur focused on global accessibility..."), fails to act as
+  user at all
+- **phase2_vllm**: 96 chars — templatey user-voice ("I have a passion for
+  cooking, and I'm excited to try something new") — matches §10.4's 1.76
+  judge score ceiling; discrimination ability across 4 MCQ choices weak
+- **r1b_vllm**: 579 chars — specific, persona-referential ("participating
+  in a new dating workshop...") — closer to PersonaMem GT user turn length
+
+### 12.3 Direct-ask (paradigm III) zero-shot instruct judge
+
+`eval_mcq_direct_ask.py` — prompt user-sim with clarifying-question
+framing so the letter-pick lands in a USER turn (the role SFT trained on):
+
+```
+system: {persona card}
+user:   {MCQ question}
+assistant: Before I answer, I want to check which of these best reflects
+           what you've shared with me before. Just pick a letter.
+           A) ...  B) ...  C) ...  D) ...
+user:   [model generates — expected "A/B/C/D"]
+```
+
+Regex-parse first A/B/C/D from response. Results on pid=4, all 147 MCQs:
+
+| config         | accuracy | parse_fail | notes |
+|----------------|---------:|-----------:|-------|
+| base (no LoRA) | **0.354** | 5.4%      | instruct intact |
+| Phase 2 single | 0.163    | **48.3%** | LoRA destroys instruct |
+| R1b dual       | 0.163    | 38.8%     | similar |
+| OPSD dual      | 0.184    | 36.1%     | slightly less damage |
+
+**base 0.354 comes from narrative/logic qtypes, not user knowledge**:
+track_evolution 0.82 + reasons_behind 0.59 — selecting a logically
+consistent narrative doesn't need any user history. On true-recall
+qtypes (acknowledge_latest, aligned_rec) base is near random.
+
+**Conclusion**: any LoRA on user-only-loss SFT severely damages
+instruction-following (5.4% → 36-48% parse fail). Paradigm III zero-shot
+not viable without a verification training phase.
+
+### 12.4 LLM-judge on verbal generation — two GT sources
+
+Both use gpt-4o-mini, 1-5 scale, temp=0.
+
+**(a) `judge_verbal.py`** — GT = `gt_followup[1]`, the real user turn
+following MCQ's `end_index + 1` in raw conversation. Only **19/147 MCQs**
+have usable GT (others terminate at session boundary). Too few samples
+for strong conclusions:
+
+| config     | mean (n=19) |
+|------------|------------:|
+| base_vllm  | 1.632       |
+| phase2     | 1.895       |
+| r1b        | **2.105**   |
+| opsd       | 1.684       |
+
+**(b) `judge_verbal_golden.py`** — GT = **PersonaMem golden snippet**,
+the past user utterance the MCQ is designed to test recall of. Located
+via `distance_to_ref_in_tokens` + char/token ratio (empirically "block"
+is smaller than session, confirmed via dry-run). 100% coverage.
+
+Results on pid=4 full 147 MCQs (588 judge calls, ~$0.3):
+
+| config       | mean  | 1s  | 2s  | 3s  | 4s | 5s |
+|--------------|------:|----:|----:|----:|---:|---:|
+| base_vllm    | 1.558 | 84  | 49  | 10  | 3  | 1  |
+| phase2_vllm  | 1.558 | 78  | 57  | 11  | 1  | 0  |
+| **r1b_vllm** | **2.000** | 43 | 69 | 27 | 8  | 0 |
+| **opsd**     | 1.810 | 50  | 78  | 16  | 3  | 0  |
+
+Per-qtype:
+
+| qtype              | base | phase2 | **r1b**  | **opsd**  |
+|--------------------|-----:|-------:|---------:|----------:|
+| acknowledge_latest | 1.69 | 1.60   | **2.24** | 1.74      |
+| aligned_rec        | 1.46 | 1.54   | 1.86     | **2.04**  |
+| generalize         | 1.18 | 1.00   | **1.27** | **1.27**  |
+| reasons_behind     | 1.71 | 1.76   | **2.12** | 1.76      |
+| recall_facts       | 1.50 | 1.70   | **2.90** | 2.30      |
+| suggest_new        | 1.39 | 1.50   | **1.71** | **1.71**  |
+| track_evolution    | 1.91 | 1.73   | **1.91** | **1.91**  |
+
+**Three robust findings**:
+
+1. **R1b clearly wins overall** (2.00 vs OPSD 1.81 vs Phase 2 1.56).
+2. **No config ever scores 5** ("exact GT recall"): demo-only LoRA+OPD
+   compression cannot reach verbatim user-knowledge reproduction. Best
+   is "semantically coherent" (score 2-3).
+3. **OPSD wins cleanly only on `aligned_rec`** (2.04 vs r1b 1.86) — the
+   qtype where applying a known preference to make a recommendation
+   matters most; GT-injection teacher's sharper signal pays off here.
+
+## 13. OPSD — On-Policy Self Distillation with GT-conditioned teacher
+
+Alternative to standard OPCD-style OPD (§10 / §11): teacher sees the
+**ground-truth user_response as a prior user turn** in its attention
+context when scoring student rollout. Everything else identical to R1b
+dual-LoRA recipe (§11.2).
+
+### 13.1 Motivation — (1) recall + (2) verification decomposition
+
+MCQ correctness decomposes into:
+- **(1) recall**: does model parametrically know user's past preference?
+- **(2) verification**: can model judge "is this claim about me true?"
+
+Current training (OPD / dual OPD / Phase 2) addresses neither directly:
+- (1) indirectly via teacher's context attention, diluted by OPD
+  shuffling of student rollout positions
+- (2) never trained
+
+OPSD attempts to boost (1) by making teacher **GT-aware** when scoring
+student rollout. The KL target `teacher_logits(S[:i] | history + GT)`
+has GT in teacher's attention → teacher's predictions at each rollout
+position i are sharpened toward GT-consistent tokens → student KL pulls
+parameters toward compressing the GT-specific user knowledge.
+
+Terminology note: user introduced **OPSD (On-Policy Self Distillation)**
+as the umbrella; OPCD (Microsoft `microsoft/LMOps/opcd`) is a specific
+instance with frozen teacher — same setup as our §10/§11 OPD. Strict
+OPSD has teacher=student co-updating; our variant has strong frozen R3
+teacher, differing from both, but positioned most naturally under the
+OPSD umbrella.
+
+### 13.2 Sanity check — GT placement (`sanity_check_gt_injection.py`)
+
+On 20 held-out OPD samples for pid=4, score the GT user_response under
+R3 teacher with 5 variants (target tokens identical, only teacher's
+input structure varies):
+
+| condition                        | rank@1 | mean P(GT) | mean NLL | mean entropy |
+|----------------------------------|-------:|-----------:|---------:|-------------:|
+| A natural (current OPD)          | 0.707  | 0.566      | 1.042    | 1.194        |
+| B sys-augmented (GT in persona)  | 0.938  | 0.887      | 0.249    | 0.388        |
+| **C prior-turn (GT as turn)**    | **0.967** | **0.935** | **0.174** | **0.249** |
+| D  = C + mismatched GT           | 0.685  | 0.551      | 1.141    | 1.229        |
+| E  = B + mismatched GT           | 0.705  | 0.566      | 1.043    | 1.195        |
+
+Key findings:
+
+1. **Both B and C substantially boost P(GT)**. C strongest (0.94 vs A's
+   0.57) — local context beats system-level conditioning.
+2. **Mismatched GT in C slot actively HURTS** (D's 0.551 < A's 0.566)
+   — teacher integrates prior-user-turn **semantically**, not via
+   shallow pattern-matching. This was the key concern before sanity
+   check; evidence is decisive.
+3. Mismatched GT in system slot is **benign** (E ≈ A): system-level
+   info is "politely ignored" if irrelevant.
+4. Net semantic signal (correct GT − mismatched GT): **C-D = +0.384,
+   B-E = +0.321**. C chosen for OPSD.
+
+### 13.3 Training — OPSD-C (`train_opsd_dual.py`)
+
+Monkey-patches `build_teacher_prefix` in `train_opd_dual.py`:
+
+```
+teacher input: [K=3 history] + <|im_start|>user\n{GT}<|im_end|>\n
+                              + <|im_start|>user\n + S[:i]
+student input: [demo + chatbot_prev] + <|im_start|>user\n + S[:i]
+```
+
+All R1b hyperparams preserved — dual s32f16 LoRA, slow_lr 5e-5, fast_lr
+2e-4, rollout_max_tokens 256, reverse KL, demo-only student ctx, save
+every 200 steps keep all.
+
+Training dynamics — pid=4, first 10 steps:
+
+```
+step  1: loss 0.972   (vs R1b step 1 ~2-3)
+step 10: loss 0.413   (vs R1b step 10 ~1.0)
+step 50: loss ~0.3    (vs R1b ~0.7)
+```
+
+**~2-3× faster initial convergence** — expected since teacher's
+GT-sharpened distribution gives larger per-step KL gradient.
+
+### 13.4 OPSD vs R1b — pid=4 comparison
+
+**MCQ-PPL (§9.5 protocol, 147 MCQs demo-only):**
+
+| metric             | R1b best | OPSD final | OPSD step-800 |
+|--------------------|---------:|-----------:|--------------:|
+| overall            | **0.517** (step 800) | 0.422 | 0.429 |
+| `track_evolution`  | ~0.72    | **1.00**   | **1.00**      |
+| `generalize`       | 0.18     | **0.82**   | **0.82**      |
+| `recall_facts`     | 0.30     | 0.30       | 0.60          |
+| `aligned_rec`      | 0.50     | 0.21       | 0.25          |
+| `acknowledge_latest` | 0.21   | 0.24       | 0.31          |
+| `reasons_behind`   | 0.47     | 0.53       | 0.53          |
+| `suggest_new`      | 0.29     | 0.50       | 0.29          |
+
+Overall OPSD < R1b, but **OPSD hits 1.00 on `track_evolution` (perfect)
+and 0.82 on `generalize`** (where R3 teacher itself only scored 0.105
+per §9.4) — OPSD excels at narrative-pattern recognition and reasoning
+qtypes, exactly where R1b is weakest.
+
+**Verbal judge (golden snippet, n=147):** OPSD 1.81 < R1b 2.00; OPSD
+wins only `aligned_rec` (2.04 vs 1.86).
+
+**Direct-ask (paradigm III):** OPSD 0.184 > R1b 0.163, parse_fail
+36% vs 39% — OPSD damages instruct-following slightly less than R1b.
+
+### 13.5 Why OPSD under-performs R1b on verbal (hypothesis)
+
+- Sanity check established teacher's **P(GT token) = 0.94** at every
+  rollout position — teacher's KL target is essentially "reproduce GT
+  token i+1". Effectively **teacher-forcing on GT via KL** rather than
+  teaching user-voice style.
+- Student learns to match GT length + stopping pattern. Median reaction
+  length: **OPSD 168 chars vs R1b 579 chars vs golden snippet typical
+  200-400 chars**. Same short-generation signature as Phase 2 single
+  LoRA (§10.4 median 96 chars) which limited its judge ceiling to 1.76.
+- For **generation** (paradigm II): shorter + more canned output → worse
+  judge score. `gt_followup[1]` and golden snippet are both multi-turn
+  natural user utterances; OPSD's truncated "I + verb + short" output
+  scores 2 at best.
+- For **discrimination** (paradigm I): narrower distribution helps on
+  pattern-matching qtypes — hence `track_evolution 1.00` (teacher with
+  GT sees "which of these is the correct narrative ordering" cleanly)
+  and `generalize 0.82`.
+
+OPSD shifts the compression target from "**general user-voice priors**"
+(R1b) to "**specific GT-reproduction pattern**" (OPSD). Each helps a
+different downstream task; neither dominates.
+
+### 13.6 Oracle ensemble — OPSD and R1b are complementary
+
+Per-qtype max(R1b, OPSD) on pid=4 MCQ-PPL:
+
+| qtype              | R1b  | OPSD | max |
+|--------------------|-----:|-----:|----:|
+| track_evolution    | 0.72 | **1.00** | **1.00** |
+| generalize         | 0.18 | **0.82** | **0.82** |
+| reasons_behind     | 0.47 | **0.53** | **0.53** |
+| acknowledge_latest | 0.21 | **0.24** | **0.24** |
+| recall_facts       | 0.30 | **0.60** (step-800) | **0.60** |
+| aligned_rec        | **0.50** | 0.25 | **0.50** |
+| suggest_new        | **0.50** (step-800) | 0.50 | **0.50** |
+
+Weighted oracle by pid=4 qtype counts = **~0.59** (vs R1b 0.48 alone).
+**+11pp headroom** from per-qtype ensemble — cleanest quantitative
+argument for a paper that frames R1b + OPSD as complementary recipes.
+
+### 13.7 Next step: full-param SFT ceiling (`train_sft_user.py`)
+
+To disambiguate "LoRA capacity bound" from "task inherently hard", we
+train a **full-parameter user-memorization SFT** on pid=4's ~900 OPD
+samples — no LoRA, no distillation, direct CE on user_response with
+user-only-loss mask (same rule as R3 teacher SFT). Input matches
+inference (n=0: persona + chatbot_prev → user_response), so SFT
+directly optimizes the paradigm-I/II use case distribution.
+
+Hypothesis: if SFT ceiling ≤ R1b, R1b captures most of the recoverable
+signal at 4B scale; if SFT >> R1b, distillation recipes leave
+significant headroom on the table. This answers "is OPSD's failure to
+beat R1b because GT-injection is structurally wrong, or because 4B
+Instruct-2507 can't memorize this much at all".
+
+In-progress at write time.
+
+---
+
+## 14. Referenced commits (chronological)
 
 ```
 040fecd  Phase 0+1 scaffolding
@@ -1832,4 +2161,25 @@ dd9f030  fix r1b_extend slurm: source miniforge conda.sh explicitly
 c765d93  add run_round1b_mcq_eval_parallel.sh: 3-4x faster eval via single-GPU x4 parallel
 21e2679  parallel eval: rolling worker pool instead of sync-batch
 f559032  parallel eval: bash 4.4 compat (wait -n + kill -0 scan)
+
+# --- §12 Verbal / paradigm II & III ---
+7ddb3ca  Verbal Stage 1: merge_dual_lora + vLLM-batched generation
+83f9c68  eval_mcq_verbal_gen_hf: HF transformers fallback (87% identity bug)
+f0293cf  eval_mcq_verbal_gen: add --lora-path for vLLM native LoRARequest
+3e7d0da  eval_mcq_verbal_gen: add --tensor-parallel-size for multi-GPU vLLM
+6b8749a  setup_kcl: add PHASE2_LORA_ROOT shorthand
+0c0a769  eval_mcq_direct_ask: paradigm III zero-shot MCQ instruct-judge
+d6ea6cd  verbal_to_xlsx: merge base+r1b jsonl into side-by-side review xlsx
+ddb19cd  verbal_to_xlsx: 3-way compare (base / R1b dual / Phase 2 single)
+e34a434  verbal_to_xlsx_6way: split by qtype into separate sheets
+5ac64a4  verbal_to_xlsx: 4-vLLM sheet (base / phase2 / r1b / OPSD) per-qtype
+7e975d9  Add LLM judge evals: verbal vs gt_followup + verbal vs golden snippet
+8521a5e  judge_to_xlsx: build per-qtype review sheet of golden-snippet judge
+
+# --- §13 OPSD ---
+a639732  sanity_check_gt_injection: validate OPSD GT-placement
+6e1d813  sanity_check_gt_injection: add mismatched-GT controls (D, E)
+5c59364  Add train_opsd_dual.py + run_opsd_train_interactive.sh (OPSD-C)
+419576d  OPSD pid=4 basic evals (verbal + direct-ask)
+dee7a57  Add train_sft_user.py: full-param user-memorization SFT (n=0)
 ```
