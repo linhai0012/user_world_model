@@ -197,6 +197,67 @@ K=3 was chosen to keep nearly all samples within Qwen3-4B's
 `max_position_embeddings=40960`, eliminating RoPE extrapolation.
 (`b62c063`)
 
+### 1.3 MCQ choice structure — rationale + answer
+
+**Every choice in PersonaMem MCQs has two parts**: a *rationale* (the
+chatbot's claim about recalling some past user preference/experience)
+followed by an *answer* (the concrete recommendation, acknowledgment, or
+description derived from that rationale). The **correctness judgment
+hinges on the rationale, not the answer** — PersonaMem effectively
+assumes that if the chatbot correctly recalls the user, the answer it
+derives is correct.
+
+Concrete example (pid=4 Lisa, qtype=`aligned_rec`, correct = (c)):
+
+> User query: "I'm thinking of hosting a small gathering with some
+> friends who love reading as much as I do. Do you have any
+> recommendations for a book-themed event or activity we could all
+> enjoy together?"
+>
+> **Correct (c)**: "Considering **your passion for organizing book
+> swaps and engaging in literature-focused social gatherings** [=rationale,
+> referencing a specific history], how about hosting a 'Mystery and
+> Memoirs' swap night? [=answer]"
+>
+> **Wrong**: "Why not host a 'Soulful Storytelling Session' featuring
+> **books by African American authors** [=rationale, but leveraging
+> demographics from persona card, NOT user-stated preference] and
+> enjoy a rich blend of vibrant narratives..."
+
+The wrong choice's answer (soul-food storytelling session) is perfectly
+plausible **if** Lisa had expressed interest in AA-author fiction — but
+she hasn't. The wrong choice fails on its rationale (demographic
+stereotype, not conversation-recalled preference), and the MCQ is
+designed such that any rationale failure invalidates the whole choice.
+
+**Two implications this structure drives in later chapters**:
+
+1. **§12.4 golden-snippet judge**: to measure "does our user-sim carry
+   the past preference that a correct rationale would reference", we
+   locate the reference user turn in raw conversation via
+   `distance_to_ref_in_tokens` and judge our reactions against THAT
+   — the rationale target, not the whole choice or the follow-up user
+   turn. Every MCQ has this reference (100% coverage), unlike
+   `gt_followup` which is often missing.
+
+2. **§13 OPSD's recall-vs-verification decomposition**: splits MCQ
+   answering into (1) recall the relevant past preference (the
+   rationale content) + (2) verify that a candidate rationale is in
+   fact a correct recall. Current OPD/OPSD training addresses only (1)
+   — OPSD strengthens it by giving teacher the GT in attention at
+   training time so student's parameters absorb sharper preference
+   patterns.
+
+Implementation-level tools for this structure:
+- `load_personamem.py` / `mcq_examples.md` (one MCQ per persona × qtype)
+  preserve raw choice text with rationale + answer interleaved.
+- `judge_verbal_golden.py` extracts the rationale *source* (past user
+  utterance referenced by `distance_to_ref_in_tokens`) — not the
+  rationale *string* in the choice itself, which would leak the answer.
+  The raw user utterance at that offset is what the chatbot was meant
+  to recall; if our user-sim generates reactions consistent with it,
+  we've verifiably compressed the relevant memory into parameters.
+
 ---
 
 ## 2. Phase 0: Data Preparation (all commits on `dynamic_usersim/data_prep/`)
@@ -1897,9 +1958,11 @@ for strong conclusions:
 | opsd       | 1.684       |
 
 **(b) `judge_verbal_golden.py`** — GT = **PersonaMem golden snippet**,
-the past user utterance the MCQ is designed to test recall of. Located
-via `distance_to_ref_in_tokens` + char/token ratio (empirically "block"
-is smaller than session, confirmed via dry-run). 100% coverage.
+the past user utterance the MCQ is designed to test recall of (see §1.3
+for the rationale+answer structure that motivates using rationale-source
+as GT). Located via `distance_to_ref_in_tokens` + char/token ratio
+(empirically "block" is smaller than session, confirmed via dry-run).
+100% coverage.
 
 Results on pid=4 full 147 MCQs (588 judge calls, ~$0.3):
 
@@ -1941,7 +2004,9 @@ dual-LoRA recipe (§11.2).
 
 ### 13.1 Motivation — (1) recall + (2) verification decomposition
 
-MCQ correctness decomposes into:
+Each MCQ choice is `rationale + answer` (§1.3). Correctness hinges on the
+rationale — the chatbot's claim about what it recalls of the user.
+Answering an MCQ therefore requires:
 - **(1) recall**: does model parametrically know user's past preference?
 - **(2) verification**: can model judge "is this claim about me true?"
 
