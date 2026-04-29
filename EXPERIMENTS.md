@@ -1,8 +1,10 @@
 # Dynamic UserSim — Experiment Log
 
-Subproject implementing the plan in
-[`../dynamic_usersim_complete_plan.md`](../dynamic_usersim_complete_plan.md)
-(Dynamic User Simulator for Personalization).
+Subproject implementing the Dynamic User Simulator for
+Personalization plan (originally drafted as
+`dynamic_usersim_complete_plan.md` in the parent
+[P-OPSD](https://github.com/linhai0012/P-OPSD) repo before this
+track was extracted into its own repository).
 
 **Paradigm**: train a per-user LoRA (Student) via OPD to predict what a specific
 user would say, using a Teacher that sees the full progressive conversation
@@ -642,7 +644,7 @@ default. Observed side effects throughout the run:
 - **No thinking mode**. Clean chat template with no `<think>` wrappers.
 - Same architecture (`Qwen3ForCausalLM`), same tokenizer (vocab 151936).
   Existing JSONL data and eval scripts work unchanged.
-- Consistent with `../grpo_baseline/` which already used this variant.
+- Consistent with the parent P-OPSD repo's `grpo_baseline/` which already used this variant.
 
 Zero-cost switch: made after R2's sbatch hit pitfall #7 and before any real
 K=3 training had accumulated. R3 is the first run on the new model.

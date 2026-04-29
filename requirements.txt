@@ -1,0 +1,33 @@
+# Core ML stack
+# torch installed separately via:
+#   pip install torch --index-url https://download.pytorch.org/whl/cu128
+transformers>=4.45
+peft>=0.13
+accelerate>=0.34
+datasets>=3.0
+huggingface-hub>=0.25
+sentencepiece
+safetensors
+
+# Inference / serving
+vllm>=0.6
+flash-attn>=2.6  # may need: pip install flash-attn --no-build-isolation
+
+# Training utilities
+trl>=0.11        # GRPOTrainer + reference policy helpers
+liger-kernel     # fused CE for long-context teacher SFT
+
+# Data + eval
+pandas
+numpy<2.0        # transformers compat
+pyarrow
+openpyxl         # xlsx review sheets
+tqdm
+
+# OpenAI judge calls (verbal eval, similarity judge)
+openai>=1.40
+tiktoken
+
+# Optional: dev / inspection
+ipython
+ipdb

@@ -1,0 +1,55 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Virtual envs
+venv/
+env/
+.venv/
+.env
+
+# Training / inference artifacts (live on scratch, not in git)
+checkpoints/
+*.safetensors
+*.bin
+*.pt
+*.pth
+adapter_*/
+lora_*/
+
+# Large datasets / caches
+*.parquet
+hf_cache/
+wandb/
+
+# Eval / log noise
+logs/
+*.log
+*.tmp
+
+# Editor / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Secrets
+api_key*.txt
+*.token
+.env.local
+
+# NOTE on outputs/:
+#   outputs/ is intentionally NOT in this gitignore — it holds eval
+#   result JSONs and review xlsx that are committed reference results
+#   (not training artifacts). New eval runs should write to scratch by
+#   default and only commit small JSONs that document headline numbers.
