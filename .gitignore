@@ -53,3 +53,9 @@ api_key*.txt
 #   result JSONs and review xlsx that are committed reference results
 #   (not training artifacts). New eval runs should write to scratch by
 #   default and only commit small JSONs that document headline numbers.
+
+# Claude Code local config
+.claude/
+
+# Local style template / scratch (unrelated to the project)
+sample.html

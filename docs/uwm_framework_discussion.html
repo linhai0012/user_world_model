@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>All-Purpose User World Model · 框架设计讨论稿</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --panel:#ffffff; --ink:#1d2329; --soft:#5b6571;
+    --line:#e3e6ea; --accent:#3a4cb5; --accent-soft:#eef0fb;
+    --good:#1f7a4d; --good-soft:#e7f4ec; --warn:#9a5b00; --warn-soft:#fbf0dd;
+    --code:#f0f2f5;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--bg); color:var(--ink);
+    font-family:"Segoe UI","PingFang SC","Microsoft YaHei",system-ui,sans-serif;
+    line-height:1.75; font-size:16px;
+  }
+  .wrap{display:flex; max-width:1280px; margin:0 auto; gap:32px; padding:0 24px;}
+  /* sidebar */
+  nav{
+    width:240px; flex:none; position:sticky; top:0; align-self:flex-start;
+    height:100vh; overflow-y:auto; padding:32px 0; font-size:13.5px;
+  }
+  nav .navtitle{font-weight:700; color:var(--accent); letter-spacing:.04em; font-size:12px; margin:0 0 12px;}
+  nav a{display:block; color:var(--soft); text-decoration:none; padding:5px 12px;
+    border-left:2px solid transparent; transition:.15s;}
+  nav a:hover{color:var(--accent); background:var(--accent-soft); border-left-color:var(--accent);}
+  /* main */
+  main{flex:1; min-width:0; padding:40px 0 96px;}
+  header.doc{
+    background:linear-gradient(135deg,#3a4cb5,#5b6bd6); color:#fff;
+    border-radius:14px; padding:34px 38px; margin-bottom:8px;
+  }
+  header.doc h1{margin:0 0 8px; font-size:25px; line-height:1.4;}
+  header.doc .sub{opacity:.9; font-size:14.5px;}
+  header.doc .meta{margin-top:16px; font-size:12.5px; opacity:.82;
+    border-top:1px solid rgba(255,255,255,.25); padding-top:12px;}
+  section{
+    background:var(--panel); border:1px solid var(--line); border-radius:14px;
+    padding:26px 32px; margin-top:22px;
+  }
+  h2{font-size:20px; margin:0 0 4px; color:var(--ink);
+     display:flex; align-items:baseline; gap:10px;}
+  h2 .n{font-size:13px; color:#fff; background:var(--accent); border-radius:6px;
+        padding:2px 9px; font-weight:700; flex:none;}
+  h2 + .lead{color:var(--soft); margin:2px 0 18px; font-size:14.5px;}
+  h3{font-size:16px; margin:24px 0 8px; color:var(--accent);}
+  p{margin:10px 0;}
+  ul,ol{margin:10px 0; padding-left:22px;}
+  li{margin:5px 0;}
+  table{width:100%; border-collapse:collapse; margin:14px 0; font-size:14px;}
+  th,td{border:1px solid var(--line); padding:9px 12px; text-align:left; vertical-align:top;}
+  th{background:var(--accent-soft); color:var(--accent); font-weight:700;}
+  tr:nth-child(even) td{background:#fafbfc;}
+  code{background:var(--code); padding:1.5px 6px; border-radius:5px;
+       font-family:"Cascadia Code",Consolas,monospace; font-size:13px; color:#b1318a;}
+  .box{border-radius:10px; padding:14px 18px; margin:16px 0; font-size:14.5px;}
+  .key{background:var(--accent-soft); border-left:4px solid var(--accent);}
+  .good{background:var(--good-soft); border-left:4px solid var(--good);}
+  .warn{background:var(--warn-soft); border-left:4px solid var(--warn);}
+  .box .tag{font-weight:700; font-size:12px; letter-spacing:.05em; text-transform:uppercase;
+            display:block; margin-bottom:4px;}
+  .key .tag{color:var(--accent);} .good .tag{color:var(--good);} .warn .tag{color:var(--warn);}
+  .pill{display:inline-block; background:var(--accent); color:#fff; font-size:11px;
+        font-weight:700; border-radius:20px; padding:2px 10px; margin-left:6px;}
+  .pill.g{background:var(--good);} .pill.w{background:var(--warn);}
+  /* architecture diagram */
+  .arch{display:flex; flex-direction:column; gap:10px; margin:18px 0; font-size:13.5px;}
+  .arch .row{display:flex; gap:10px; flex-wrap:wrap; justify-content:center;}
+  .arch .node{background:#fff; border:1.5px solid var(--accent); color:var(--accent);
+    border-radius:9px; padding:9px 14px; text-align:center; flex:1; min-width:130px; font-weight:600;}
+  .arch .node.fill{background:var(--accent); color:#fff;}
+  .arch .node.soft{border-color:var(--line); color:var(--ink); font-weight:500;}
+  .arch .arrow{text-align:center; color:var(--accent); font-size:18px; line-height:1;}
+  .arch .cap{font-size:11.5px; color:var(--soft); font-weight:400; display:block; margin-top:2px;}
+  .arch .node.fill .cap{color:#dfe3f7;}
+  pre{background:#1d2329; color:#dfe3e8; border-radius:10px; padding:14px 18px;
+      overflow-x:auto; font-family:"Cascadia Code",Consolas,monospace;
+      font-size:12px; line-height:1.65; margin:14px 0;}
+  pre b{color:#8fb4ff; font-weight:600;}
+  pre .c{color:#7f8c99;}
+  .small{font-size:13px; color:var(--soft); margin:6px 0;}
+  .steps{counter-reset:s; list-style:none; padding-left:0;}
+  .steps li{position:relative; padding-left:38px; margin:12px 0;}
+  .steps li::before{counter-increment:s; content:"S" counter(s);
+    position:absolute; left:0; top:1px; background:var(--accent); color:#fff;
+    font-size:11px; font-weight:700; border-radius:6px; padding:2px 7px;}
+  .refs{font-size:13px;}
+  .refs a{color:var(--accent); text-decoration:none;}
+  .refs a:hover{text-decoration:underline;}
+  .refs li{margin:7px 0;}
+  footer{color:var(--soft); font-size:12.5px; text-align:center; padding:30px 0 10px;}
+  .q{counter-reset:q;}
+  .q li{margin:9px 0;}
+  @media(max-width:880px){ nav{display:none;} .wrap{padding:0 14px;} main{padding:20px 0 60px;}
+    section{padding:20px 18px;} header.doc{padding:24px 22px;} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <nav>
+    <p class="navtitle">目录</p>
+    <a href="#bg">0 · 背景与目标</a>
+    <a href="#domains">1 · 三域现状对照</a>
+    <a href="#schema">2 · 统一抽象</a>
+    <a href="#stores">3 · 核心架构:三件套</a>
+    <a href="#init">4 · 初始化:分阶段</a>
+    <a href="#train">5 · 训练目标</a>
+    <a href="#online">6 · 在线学习与 memory 路由</a>
+    <a href="#eval">7 · 两阶段评测</a>
+    <a href="#arch">8 · 整体架构</a>
+    <a href="#risk">9 · 风险与待决策</a>
+    <a href="#refs">10 · 相关工作</a>
+  </nav>
+
+  <main>
+    <header class="doc">
+      <h1>All-Purpose User World Model<br>面向多域个性化 Agent 的统一用户世界模型</h1>
+      <div class="sub">框架设计讨论稿 · 供合作者评审</div>
+      <div class="meta">
+        整理日期 2026-06-03　|　研究方向:个性化 LLM / user simulation / world model　|
+        承接项目:user_world_model(general)、LLM-based-Digital-Twins(health)、PROPER　|　状态:架构已收敛,待讨论定向
+      </div>
+    </header>
+
+    <!-- 0 -->
+    <section id="bg">
+      <h2><span class="n">0</span>背景与目标</h2>
+      <p class="lead">为什么要做"一个"通用的用户世界模型,而不是三个独立模型。</p>
+      <ul>
+        <li><b>目标:</b>一个<b>可扩展</b>的 user world model,服务 <b>general / health / education</b> 三类个性化 agent,并且架构上能<b>容纳新域</b>。核心仍沿用 user_world_model 的思路——<b>per-user LLM</b>,在条件输入下模拟用户的反应。</li>
+        <li><b>现有积累:</b>general 域已有 OPD/OPSD per-persona 模拟器(PersonaMem-v1);health 域已有 digital-twin(Qwen3-4B,文本反馈 + 状态 token);个性化训练有 PROPER(population→group→user 分阶段框架)。</li>
+        <li><b>三个新增设计:</b>在 per-user LLM 之上加 <b>① user profile</b>(结构化用户状态)、<b>② user memory</b>(显式记忆,RAG 检索)、<b>③ structured output</b>(用户反馈文本 + 用户状态描述)。</li>
+        <li><b>两种模式:</b><b>冷启动/快速初始化</b>(由 metadata 直接初始化)与<b>在线学习</b>(随用户数据流式更新)。</li>
+      </ul>
+      <div class="box key">
+        <span class="tag">本稿结论一句话</span>
+        把用户拆成三件套:<b>权重存 disposition(怎么反应)· profile 存可言说的当前状态 · memory 存事件事实</b>;统一 I/O 为 <code>(state, context, agent_action) → 反应文本 + 下一状态</code>;用 PROPER 的 <b>population→group→user 分阶段</b>做初始化;训练以 <b>SFT 打底、蒸馏降级为可选</b>;最后用<b>两阶段评测</b>(内在预测 + agent 联动)度量。跨域统一发生在 <b>profile/memory 表示层</b>,而非权重层。
+      </div>
+    </section>
+
+    <!-- 1 -->
+    <section id="domains">
+      <h2><span class="n">1</span>三域现状对照</h2>
+      <p class="lead">三个域共享同一套 schema,但在三个轴上不同——这决定了统一架构必须"同思想、异实例"。</p>
+      <table>
+        <tr><th>维度</th><th>General(本 repo)</th><th>Health(Digital-Twins)</th><th>Education</th></tr>
+        <tr><td>方法</td><td>OPD/OPSD:teacher SFT → per-persona LoRA 蒸馏</td><td>Omnimodal SFT:文本 + 状态 token(V3 预测次日 wellness)</td><td>待建</td></tr>
+        <tr><td>用户单元</td><td><b>per-persona</b>(20 人,各 ~900 样本,数据足)</td><td>population(16 participants 一个模型)</td><td>私有仅 66 session(KCL AI 课师生对话)</td></tr>
+        <tr><td>反应表示</td><td>自由文本(+ PPL 给候选打分)</td><td>文本 + 有序 state(fatigue/mood… 1–5)</td><td>文本 + 对错 / 考试行为</td></tr>
+        <tr><td>条件信号</td><td>聊天历史</td><td>生理信号 + 活动 context</td><td>师生对话 / 考题</td></tr>
+        <tr><td>成熟度</td><td>R1b 在 20 personas ~95.7% best-step closure</td><td>eval loss 1.87,state 预测可用</td><td>0,需搭数据管线</td></tr>
+      </table>
+      <div class="box good">
+        <span class="tag">关键复用</span>
+        digital-twin 的 V3 方向<b>已经就是"模拟文字反应 + 状态"</b>了——把生理标量合成成第一人称文本 + state token。对纯文本反应 UWM 的可复用度:数据管线 85% · 状态表示 100% · 模型 70% · 评估 60%。只需把 HR token 生成整条删掉。
+      </div>
+    </section>
+
+    <!-- 2 -->
+    <section id="schema">
+      <h2><span class="n">2</span>统一抽象</h2>
+      <p class="lead">三个域收敛到同一个输入-输出 schema;education 还恰好裂成对应另外两域的两半。</p>
+
+      <pre><span class="c"># 统一 I/O</span>
+输入 = ( user_profile , 检索到的 user_memory , context , <b>agent_action</b> )
+输出 = {
+  "reaction_text":  <span class="c"># 用户会说什么(三域共享,= 现在的模拟反应)</span>,
+  "next_state":     <span class="c"># 动作之后的用户状态(可选结构化)</span>
+}</pre>
+
+      <table>
+        <tr><th>域</th><th>next_state 是什么</th><th>例子</th></tr>
+        <tr><td>health</td><td>wellness 状态(fatigue / mood / readiness…)</td><td>agent:"去跑个 5k" → 反应文本 + 预测 fatigue↑</td></tr>
+        <tr><td>education</td><td>mastery / 对错 / 选中的 distractor</td><td>tutor 讲解 → 反应文本 + 预测该题作答</td></tr>
+        <tr><td>general</td><td>(可空)→ 退化为候选打分</td><td>assistant 回复 → 用户反应 + 满意度</td></tr>
+      </table>
+
+      <div class="box key">
+        <span class="tag">为什么 next_state 让它配叫 "world model"</span>
+        输出"动作<b>之后</b>的下一状态"而非当前状态,意味着模型在<b>预测状态转移</b>(不只是模拟一句话);并且<b>闭环</b>:预测出的 next_state 写回 profile.dynamic,就能做<b>多步 rollout 模拟</b>。这也是 §7 Stage-2"agent 用 UWM 做 lookahead 规划"的基础。
+      </div>
+      <p class="small"><b>education 的对称裂解:</b>edu-reaction(学生对 tutor 的文字反应,≈ general)+ edu-exam(预测作答/对错,≈ health 的结构化 state)。于是 health 的 state head 和 edu 的 exam head 是<b>同一机制的两个实例</b>。</p>
+    </section>
+
+    <!-- 3 -->
+    <section id="stores">
+      <h2><span class="n">3</span>核心架构:三件套(profile / memory / weights)</h2>
+      <p class="lead">三者最容易互相重叠——必须先钉死各自管什么、各自怎么"写"。</p>
+
+      <div class="box key">
+        <span class="tag">一条原则解决"更新"难题(避免滑向 agentic memory)</span>
+        <b>没有任何组件靠 LLM 决定"写"。</b>所有"写"都是笨的,所有"智能"都在"读"那一侧——也就是 world model 本身,正好是研究主题。这把"搞复杂就偏题"的风险直接消除。
+      </div>
+
+      <table>
+        <tr><th>组件</th><th>存什么</th><th>写(update)</th><th>读(use)</th></tr>
+        <tr><td><b>per-user 权重</b>(LoRA)</td><td><i>disposition</i>:风格 / 偏好先验 / 体质·知识基线——"<b>倾向于</b>怎么反应"</td><td>周期性 batch 重蒸(慢)</td><td>参数化,隐式</td></tr>
+        <tr><td><b>user profile</b></td><td>结构化当前状态:static(不变量)+ dynamic(身体/学习状态)</td><td><b>确定性重算</b>:<code>extract(data)→profile</code>,脚本/特征抽取</td><td>模型读进 context 自己解释</td></tr>
+        <tr><td><b>user memory</b></td><td><i>episodic</i>:发生过什么、具体事实</td><td><b>append-only</b>:每个 turn/活动/考试直接追加</td><td>RAG 按当前 context 检索</td></tr>
+      </table>
+
+      <h3>3.1 profile / weights 的边界 = 可言说性(verbalizability)</h3>
+      <ul>
+        <li><b>能写成 slot 的 → profile</b>(因此冷启动可注入、可编辑、可做反事实);<b>写不下来的 → 权重</b>(说话风格、品味、persona 的 gestalt)。</li>
+        <li><b>不变量(性别/种族)放 profile 而非权重</b>:① 冷启动要求它可注入而无需训练;② R1b 已证明 demographics 当输入有效;③ 用户模拟器需要它可换("如果这个用户更老会怎样")。</li>
+        <li><b>"存根不存视图"消掉大半更新</b>:存 <code>birth_year</code>,age 在读取时算。凡随时间变的量,存不变的根、时变视图读取时算。</li>
+      </ul>
+
+      <h3>3.2 三件套都不做"写决策"</h3>
+      <ul>
+        <li><b>memory:</b>写=笨(append),读=智能(RAG)。运动/考试等非对话事件也照样追加。</li>
+        <li><b>profile.dynamic:</b>是对近期数据的<b>确定性聚合</b>(health=生理特征;edu=per-skill mastery,即 knowledge tracing)——是 memory 的"物化视图",重算即可,无 CRUD。</li>
+        <li><b>health 的 dynamic profile:</b>倾向放<b>原始生理特征</b>(模型学怎么解读,Health-LLM 式序列化),把自报告(fatigue/mood)留作<b>训练目标</b>,不进输入。</li>
+      </ul>
+    </section>
+
+    <!-- 4 -->
+    <section id="init">
+      <h2><span class="n">4</span>初始化:分阶段(PROPER → population → group → user)</h2>
+      <p class="lead">直接复用 PROPER 的残差 freeze-and-merge:每级合并冻结后,下一级只学残差。先纠一个前提——这套<b>全是 LoRA post-training,没有任何 from-scratch 预训练,很便宜。</b></p>
+
+      <div class="arch">
+        <div class="row"><div class="node fill">population<span class="cap">宽语料共享 user-LM · 全员通用动态</span></div></div>
+        <div class="arrow">▼ merge & freeze · 学残差</div>
+        <div class="row"><div class="node">group<span class="cap">学出来的行为簇(router + diversity loss)</span></div></div>
+        <div class="arrow">▼ merge & freeze · 学残差</div>
+        <div class="row"><div class="node soft">user<span class="cap">frozen group backbone 上的小 LoRA + 软混合 group experts</span></div></div>
+      </div>
+
+      <table>
+        <tr><th>阶段</th><th>设计</th><th>要点 / 与现状的关系</th></tr>
+        <tr><td><b>population</b></td><td>宽语料 full-param/LoRA SFT,只在 user-token 上算 loss</td><td>R3 teacher SFT <b>≈ 已有</b>(对齐 UserLM 配方)。但需补<b>广度</b>:pool WildChat + 跨域数据,而非只用 20 个 persona。开放 ablation:Base vs Instruct(UserLM 主张 Base 以避开"助手人格")。</td></tr>
+        <tr><td><b>group</b></td><td>PROPER:user-aware router(看 text + user embedding)+ diversity loss <b>自动浮现</b>组</td><td><b>别用人口学桶</b>(demographic ≠ 行为簇)。<b>新贡献</b>:有了结构化 profile,新用户可<b>按 profile 距离零数据指派组</b>——补上 PROPER 必须有 user embedding 才能分组的洞。</td></tr>
+        <tr><td><b>user</b></td><td>frozen group backbone 上残差 LoRA + LoRA-aware β 软混合 group experts</td><td>这正是你要的"用最相似 group 初始化",且<b>软混合 > 硬选最近组</b>(处理卡在簇之间的用户)。</td></tr>
+      </table>
+      <div class="box good">
+        <span class="tag">缝合</span>
+        PROPER 是 CE next-token,我们是 SFT/蒸馏。所以不是照搬,而是<b>把 PROPER 的"分阶段 + 组路由"嫁接到我们的训练目标上</b>(见 §5)。冷启动 = profile 硬指派最近组 + 用该组 backbone 初始化 + 空 memory。
+      </div>
+    </section>
+
+    <!-- 5 -->
+    <section id="train">
+      <h2><span class="n">5</span>训练目标:SFT 打底,蒸馏降级为可选</h2>
+      <p class="lead">加了 memory 之后,OPD 当初存在的理由被掏空了——必须重估 SFT vs 蒸馏。</p>
+
+      <div class="box key">
+        <span class="tag">核心论断</span>
+        原 OPD work,是因为 student 推理时<b>完全没有历史</b>(只有 demographics),teacher 的特权 = 全部历史,使命是"把历史压进权重"。<b>新架构里 student 有 profile + memory(RAG),历史不再缺失</b> → teacher 的历史特权大部分已直接给到 student → <b>蒸馏的边际价值下降</b>。digital-twin 直接 SFT work,正因为它有精确标签、不缺 context、不需要 teacher。
+      </div>
+
+      <h3>5.1 OPSD 其实"≈ on-policy 的 SFT"</h3>
+      <p>OPSD 把 GT 软注入 teacher,P(GT) 从 0.57→0.94。这意味着 teacher 分布 ≈ "看过 GT 后与 GT 一致的续写"——<b>信息量上几乎就是 GT</b>,只是软标签 + on-policy。这解释了它<b>收敛快/稳</b>(本质拟合 GT)、却<b>整体不如 R1b</b>(GT-conditioned teacher 没带来超出 GT 的知识)。</p>
+      <p class="small"><b>两种 teacher 要分清:</b>不看 GT 的 teacher(R1b 式)必须真预测 → 才有"teacher 自己生成不好就没法指导"的 ceiling 风险;看 GT 的 teacher(OPSD)ceiling 低但 ≈ SFT。<b>OPSD vs SFT 差的是 on-policy(缓 exposure bias),不是知识。</b></p>
+
+      <h3>5.2 那么 OPSD 的"特权信息"该是什么?</h3>
+      <table>
+        <tr><th>特权信息(teacher 看 / student 不看)</th><th>值得蒸?</th><th>说明</th></tr>
+        <tr><td><b>oracle / 完整 memory</b> vs student 的 bounded top-k RAG</td><td>✅ 最干净</td><td>蒸馏教 student 补上 RAG 召回不到的部分;原 OPD 的自然推广(从"零历史"到"部分历史")</td></tr>
+        <tr><td><b>post-hoc 标签 / 状态</b>(health wellness GT、edu 考试结果)</td><td>✅</td><td>label-conditioned teacher 教 student 产出与隐状态一致的反应</td></tr>
+        <tr><td><b>更大 / 更强的 teacher</b></td><td>✅</td><td>标准能力蒸馏,与 context 无关</td></tr>
+        <tr><td>GT 本身(OPSD)</td><td>⚠️ ≈ SFT</td><td>只剩 on-policy 那点增益</td></tr>
+        <tr><td>原来的"全部历史"</td><td>❌ 已失效</td><td>现在被 memory 直接给 student 了</td></tr>
+      </table>
+
+      <h3>5.3 推荐配方:CE(GT) 打底 + 可选 KL</h3>
+      <pre>Loss = <b>CE(GT)</b>                              <span class="c"># 直接学真实反应,永不被 teacher 上限卡住</span>
+     + λ · <b>KL(student ‖ teacher)</b>          <span class="c"># 可选,仅当 teacher 有真特权时</span></pre>
+      <ul>
+        <li><b>结构化状态输出</b>(fatigue=4 这类精确标签)→ 几乎肯定走<b>纯 SFT</b>(监督回归/分类,无 teacher 必要)。</li>
+        <li><b>自由文本反应</b>→ CE(GT) + 可选 KL(oracle memory / 标签 / 更强模型)。</li>
+        <li>这正是 §11.7 自己列为"尚未尝试"的 <b>CE-on-GT mix</b>,现在有了清楚动机。</li>
+      </ul>
+    </section>
+
+    <!-- 6 -->
+    <section id="online">
+      <h2><span class="n">6</span>在线学习与 memory 路由</h2>
+      <p class="lead">流式数据进来时,新事实进 memory、disposition 进权重;teacher 在这里的真实角色不是"被模仿",而是"防遗忘锚"。</p>
+
+      <div class="box key">
+        <span class="tag">online teacher = trust-region 防漂移锚(非 oracle)</span>
+        Loss = <code>CE(GT)</code>(学新反应)+ <code>λ·KL(student ‖ frozen group teacher)</code>(防遗忘)。KL 项的真实作用是把 user LoRA 拉住别漂走(continual learning 的 LwF 正则),<b>teacher 不需要是好预测器</b>——学习由 CE(GT) 负责。这同时回答了"teacher 生成不好怎么办"和"OPSD 为何能缓解灾难性遗忘"。此处反而<b>不要</b> GT 注入:锚应代表稳定先验,而非追 GT。
+      </div>
+
+      <h3>新事实进 memory、不进权重——三块协同</h3>
+      <ol class="steps">
+        <li><b>存储不是决策。</b>GT 一到就 append 进 memory——"新活动"<b>这一刻已在 memory 里</b>。真正的问题不是"怎么记",是"别塞进权重 + 让模型学会用它"。</li>
+        <li><b>novelty gate 把新事实挡在权重外。</b>门控对象换对:token 级"这段内容能否由 student 现有 context(profile+检索 memory)预测出来"。信号 = teacher <b>跑两遍</b>(新事实在/不在 context 中可检索),两遍在 GT token 上的差异 → 精确定位"必须靠 memory 的 token",在蒸馏 loss 里<b>降权</b>。<br><span class="small"><b>在线恰好解锁了离线做不到的 gate:</b>§11.7 写过"没有 GT 就无法在 token 级区分 teacher 自信对/错";在线时手里就有 GT + memory 这两个原料。</span></li>
+        <li><b>教"用 memory"的技能。</b>训练时:凡 GT 引用过去事实的 turn,就保证检索把它送进 student 的 context,训它"给定检索事实去反应"。于是 t 轮的新事实被挡在权重外、存进 memory;t+k 轮再提及时,memory 检索命中,学到的技能让 student 正确反应——<b>全程没把事实背进权重</b>。</li>
+      </ol>
+      <div class="box good">
+        <span class="tag">净效果一句话</span>
+        <b>权重只学 disposition + "用 memory 的技能";memory 持有事实;novelty gate 当两者之间的路由器。</b>实现上 <code>build_opd_data</code> 已按 turn 组装 context,只需再加一个 "retrieved memory" 字段从更早 turn 填充。
+      </div>
+    </section>
+
+    <!-- 7 -->
+    <section id="eval">
+      <h2><span class="n">7</span>两阶段评测</h2>
+      <p class="lead">先量"模型自己预测得准不准",再量"配合 agent 是否更好"。</p>
+
+      <h3>Stage 1 · 内在预测(recall + extrapolation)</h3>
+      <p>给定条件,UWM 自己能否准确预测用户。两种输出类型:</p>
+      <table>
+        <tr><th>输出</th><th>任务示例</th><th>指标</th></tr>
+        <tr><td>文本反应</td><td>直接预测用户回复(general/edu/health)</td><td>现有 MCQ-PPL / NLL / LLM-judge</td></tr>
+        <tr><td>结构化状态</td><td>health:当前状态+运动 → 预测运动后状态;edu:知识水平 → 预测作答</td><td>per-field 状态误差(仿 <code>compute_state_metrics</code>)/ 作答准确率·distractor 匹配</td></tr>
+      </table>
+      <div class="box key">
+        <span class="tag">recall vs extrapolation 恰好分别探测两个组件</span>
+        <b>recall</b>(已观测历史内)主要考 <b>memory</b> 是否 work;<b>extrapolation</b>(没见过的反应/状态)主要考 <b>disposition 权重</b>是否泛化。所以这个拆分不只是难度分层,而是把"事实靠 memory、风格靠权重"这条设计假设做成<b>可证伪的测量</b>(复用 within-K / beyond-K <code>distance_to_ref</code> 分层)。
+      </div>
+
+      <h3>Stage 2 · agent 联动(下游效用)</h3>
+      <p>把 UWM 配给各域 agent,测 <b>agent + UWM 是否优于单 agent</b>。这是"world model"的真正回报,对应 UserLM(真实用户模拟器改变了对 agent 的测量,74.6→57.4)。</p>
+      <div class="box warn">
+        <span class="tag">"better" 要先定清是哪条通道</span>
+        <b>① UWM 当 planner/个性化信号</b>(agent 推理时查 UWM"用户会怎么反应"来选动作)→ 这才是"更好";<b>② UWM 当 evaluator</b>(真实模拟器考 agent)→ 会让 agent 看起来更差(更诚实)。主线应取 ①。
+      </div>
+      <pre><span class="c"># Stage-2 最 "world model" 的落地:候选 lookahead 规划</span>
+agent 提 N 个候选动作
+  → UWM 预测每个动作下的 用户反应 / next_state
+  → agent 选 <b>预测用户结果最好</b> 的那个      <span class="c"># health=最佳 next-state · edu=最高理解度 · general=最满意</span>
+对比 baseline:agent-alone(无 UWM lookahead)</pre>
+      <p class="small">这正是 repo 现在"按 PPL 给 N 个候选打分"的<b>规划化推广</b>,三域统一。</p>
+    </section>
+
+    <!-- 8 -->
+    <section id="arch">
+      <h2><span class="n">8</span>整体架构(各部分如何咬合)</h2>
+      <p class="lead">从原始数据到两阶段评测,整条链路自洽。</p>
+      <div class="arch">
+        <div class="row"><div class="node fill">原始用户数据<span class="cap">对话 · 运动/生理 · 考试作答(三域)</span></div></div>
+        <div class="arrow">▼</div>
+        <div class="row">
+          <div class="node soft">append-only memory<span class="cap">事件事实 · RAG 检索</span></div>
+          <div class="node soft">确定性抽取 → profile<span class="cap">static 不变量 + dynamic 状态(物化视图)</span></div>
+        </div>
+        <div class="arrow">▼ &nbsp; 分阶段初始化(population→group→user)</div>
+        <div class="row"><div class="node fill">per-user LLM = User World Model<span class="cap">输入 profile+memory+context+action · 权重存 disposition + 用 memory 的技能</span></div></div>
+        <div class="arrow">▼</div>
+        <div class="row">
+          <div class="node">reaction_text<span class="cap">用户会说什么</span></div>
+          <div class="node">next_state<span class="cap">动作后状态 → 写回 profile(闭环 rollout)</span></div>
+        </div>
+        <div class="arrow">▼</div>
+        <div class="row">
+          <div class="node">Stage 1 内在预测<span class="cap">recall + extrapolation</span></div>
+          <div class="node">Stage 2 agent 联动<span class="cap">UWM 当 planner 做 lookahead</span></div>
+        </div>
+      </div>
+      <div class="box key">
+        <span class="tag">一句话</span>
+        memory/profile 在<b>表示层</b>统一三域(体质来自 health、知识来自 edu,都住在同一用户的 profile/memory 里),权重可保持 per-domain;新域 = 加一个 profile namespace + 一个 state-output schema + 给数据,架构不变。
+      </div>
+    </section>
+
+    <!-- 9 -->
+    <section id="risk">
+      <h2><span class="n">9</span>风险与待决策(讨论重点)</h2>
+
+      <h3>9.1 现实风险</h3>
+      <div class="box warn">
+        <ul style="margin:6px 0;">
+          <li><b>低数据域:</b>health 仅 16 用户、edu 私有仅 66 session,撑不起 per-user 权重。对策:这些域更靠 context(profile+memory)+ 共享 base,权重特化作为"挣来的"附加;必要时合成用户。</li>
+          <li><b>competency bias:</b>LLM 扮学生/用户会过度高级、情绪平淡。对策:用真实错误/distractor 分布(EEDI/ASSISTments)校准合成。</li>
+          <li><b>灾难性遗忘:</b>online 增量更权重会漂(Leilani 单调衰减是前车之鉴)。对策:CE(GT)+KL-to-frozen-anchor,且 memory 当 source of truth、权重周期性重编译。</li>
+          <li><b>结构化输出 × per-user LoRA 冲突:</b>§13 实测 LoRA 会破坏格式遵从(parse fail 5.4%→36-48%)。对策:格式/控制留在共享 base 或受限解码,per-user adapter 只移动内容分布。</li>
+        </ul>
+      </div>
+
+      <h3>9.2 待与合作者决策的开放问题</h3>
+      <ol class="q">
+        <li><b>统一程度:</b>确认"在 profile/memory 表示层统一、权重保持 per-domain"这条路线?</li>
+        <li><b>population 广度:</b>用 WildChat + pooled 跨域数据训宽 population(否则冷启动只对 20 个 persona 有效)?</li>
+        <li><b>Base vs Instruct:</b>先保 R3-Instruct + 记 ablation,还是认真试 Base?</li>
+        <li><b>group 复杂度:</b>极简(profile 硬指派 + 残差 init)先做,还是直接上 PROPER 的 β-软混合 MoE?</li>
+        <li><b>训练目标分工:</b>确认"结构化状态走纯 SFT、文本反应走 CE + 可选 KL"?</li>
+        <li><b>novelty gate 实现:</b>用"teacher 跑两遍(有/无 memory)取 token 差"当第一版门控?</li>
+        <li><b>先打通哪个域:</b>general 最熟、评估最全;health 数据管线最现成。建议 general 先打通全链路,health 第二个验证跨域。</li>
+      </ol>
+
+      <h3>9.3 建议的下一步</h3>
+      <ol>
+        <li>选定首个落地域,把 §3–§7 写成<b>形式化方案</b>(profile schema、memory schema、训练/评测协议、baseline、与 PROPER/digital-twin 的对比)。</li>
+        <li>在 general 域做<b>消融骨架</b>:<code>base</code> vs <code>+profile</code> vs <code>+memory</code> vs <code>+per-user 权重</code>——量化"权重在 profile+memory 之上的边际价值"(本身就是一个可发表问题)。</li>
+        <li>health:把 digital-twin V3 删掉 HR 分支、接上 profile/memory,做第二个域的跨域验证。</li>
+      </ol>
+    </section>
+
+    <!-- 10 -->
+    <section id="refs">
+      <h2><span class="n">10</span>相关工作</h2>
+      <p class="lead">设计中参考的项目、方法与数据集,按主题分组。</p>
+      <div class="refs">
+        <h3>方法骨架</h3>
+        <ul>
+          <li><a href="https://arxiv.org/abs/2503.01303">PROPER</a> — 渐进式 population→group→user LoRA 个性化;残差 freeze-and-merge;学习式 group router + diversity loss(本组前作,分阶段 init 蓝图)</li>
+          <li><a href="https://arxiv.org/abs/2510.06552">Flipping the Dialogue: User LMs</a> — full-param SFT 训专用 User LM 预测下一条用户 turn;population 阶段配方;"助手越强、模拟器越烂"</li>
+          <li><a href="https://arxiv.org/abs/1606.09282">Learning without Forgetting (LwF)</a> — KL-to-old-model 防遗忘正则(online 锚的依据)</li>
+        </ul>
+        <h3>health:signal → 文本状态</h3>
+        <ul>
+          <li>LLM-based-Digital-Twins — 本组 health 姊妹项目(Qwen3-4B,文本 + state token,V3 预测次日 wellness)</li>
+          <li><a href="https://arxiv.org/abs/2401.06866">Health-LLM</a> — 把数值穿戴特征序列化成 prompt 预测自报告状态(PMData/LifeSnaps/GLOBEM 基准)</li>
+          <li><a href="https://arxiv.org/abs/2406.06474">PH-LLM</a> — 个人健康 LLM,含"预测自报告睡眠质量"基准</li>
+          <li><a href="https://arxiv.org/abs/2506.09108">SensorLM</a> — 穿戴信号 → 自然语言 caption 的基础模型</li>
+        </ul>
+        <h3>数据集</h3>
+        <ul>
+          <li><b>General:</b> <a href="https://huggingface.co/datasets/bowen-upenn/PersonaMem">PersonaMem-v1</a>(20 personas × 32k/128k/1M),v2</li>
+          <li><b>Health:</b> <a href="https://datasets.simula.no/pmdata/">PMData</a>(16 用户,Fitbit + PMSys wellness 自报告);LifeSnaps / GLOBEM / K-EmoPhone / WESAD</li>
+          <li><b>Education(公开锚):</b> <a href="https://huggingface.co/datasets/wmcnicho/StudyChat">StudyChat</a>(最接近 — 真实大学 AI 课 student↔ChatGPT)、<a href="https://arxiv.org/abs/2305.14536">MathDial</a>(student-as-LLM 方法模板)、Bridge、TSCC</li>
+          <li><b>Education(考试行为):</b> <a href="https://eedi.com/projects/neurips-education-challenge">EEDI/NeurIPS2020</a>(distractor 级误解)、<a href="https://github.com/riiid/ednet">EdNet</a>、ASSISTments-2012(含 affect 标签)</li>
+        </ul>
+      </div>
+    </section>
+
+    <footer>
+      框架设计讨论稿 · 由 Claude 协助整理 · 2026-06-03 · 内容待合作者评审与修订
+    </footer>
+  </main>
+</div>
+</body>
+</html>
