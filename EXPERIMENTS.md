@@ -33,7 +33,8 @@ backend scores them, so arms are comparable (CONVENTIONS §3). Code commit `ae14
   token-memory baselines are evaluated). The lens for the token-memory arms.
 
 **Protocol validation + a bug caught.** profile (demographics-only) PPL = 0.353 ≈ legacy base-32k
-0.345 → protocol anchored. First oracle was mislocated: it sliced ±2 turns around `end_index`
+0.345, and pm128k profile-PPL = **0.304 ≈ legacy base-128k 0.306** (exact anchor) → the MCQ-PPL
+protocol is faithful to `legacy/.../eval_mcq_ppl.py`. First oracle was mislocated: it sliced ±2 turns around `end_index`
 (the *query* position), but `distance_to_ref_in_tokens` shows the reference sits far earlier
 (~2k tokens from the start of a 27k context). Fixed by locating the reference via **token
 distance** walked back from the query (`common/data.py::_ref_index`, uses the Qwen tokenizer).

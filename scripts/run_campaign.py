@@ -64,6 +64,10 @@ def main() -> None:
                     help="override; default auto from the methods (long-ctx needs more)")
     ap.add_argument("--eval", choices=["ppl", "gen"], default="ppl",
                     help="ppl = MCQ choice-perplexity (UserSim protocol); gen = reader answers")
+    ap.add_argument("--persona", default=None, help="restrict to one persona_id (per-user arm)")
+    ap.add_argument("--model-path", default=None,
+                    help="override the served model (e.g. a merged per-user LoRA); run_id gets a tag")
+    ap.add_argument("--run-tag", default=None, help="extra run_id suffix (e.g. 'peruser')")
     args = ap.parse_args()
 
     method_keys = [m.strip() for m in args.methods.split(",") if m.strip()]
@@ -73,17 +77,27 @@ def main() -> None:
 
     data = PersonaMem(args.bench)
     mcqs = data.load_mcqs(limit=args.limit)
-    print(f"[campaign] bench={args.bench} n_mcqs={len(mcqs)} methods={method_keys}", flush=True)
+    if args.persona is not None:
+        mcqs = [m for m in mcqs if m.persona_id == args.persona]
+    print(f"[campaign] bench={args.bench} n_mcqs={len(mcqs)} methods={method_keys} "
+          f"persona={args.persona} model={args.model_path or 'base'}", flush=True)
 
     # long-context methods need a big window; short ones don't — size to the max requested.
     long_ctx = any(SPECS[k][2].get("mode") == "full" for k in method_keys)
     bench_cap = {"pm32k": 33000, "pm128k": 40960, "pm1m": 40960}[args.bench]
     max_len = args.max_model_len or (bench_cap if long_ctx else 4096)
-    backend = make_backend("qwen3-4b", max_model_len=max_len)
+    bk_kw = {"max_model_len": max_len}
+    if args.model_path:
+        bk_kw["model"] = args.model_path
+    backend = make_backend("qwen3-4b", **bk_kw)
 
     for k in method_keys:
         mod_name, subdir, params, _ = SPECS[k]
         run_id = _run_id(k, args.bench, args.eval)
+        if args.persona is not None:
+            run_id += f"__p{args.persona}"
+        if args.run_tag:
+            run_id += f"__{args.run_tag}"
         method = _load_method(mod_name, subdir)
         print(f"\n[campaign] === {run_id}  params={params} eval={args.eval} ===", flush=True)
         t0 = time.time()
