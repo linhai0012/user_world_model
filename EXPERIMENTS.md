@@ -105,39 +105,43 @@ realistic retrieval lifts a frozen reader **+11–17pp** over no-memory, demogra
 and there remains a gap to the focused oracle on pm32k (8pp) that closes on pm128k. This is the
 quantified bar the `+per-user weights` arm must beat.
 
-**`+per-user weights` arm — preliminary, 2 personas (minimal recipe).** Per-persona LoRA via
-direct CE on that persona's own user-turns (no teacher; r32 all-proj, 3 epochs; merged for
-serving — `scripts/train_peruser.py`), evaluated apples-to-apples on that persona's pm128k MCQs:
+**`+per-user weights` arm — 7 personas (naive minimal recipe).** Per-persona LoRA via direct CE
+on that persona's own user-turns (no teacher; r32 all-proj, 3 epochs; merged for serving —
+`scripts/train_peruser.py`), evaluated apples-to-apples on that persona's pm128k MCQs. Δ =
+per-user − base, per persona:
 
-| arm | pid0 PPL | pid0 reader | pid4 PPL | pid4 reader |
-|---|---:|---:|---:|---:|
-| base (no mem) | 0.409 | 0.370 | 0.320 | 0.408 |
-| +profile | 0.331 | 0.370 | 0.360 | 0.299 |
-| +memory (naiverag) | 0.279 | 0.422 | 0.320 | **0.503** |
-| **+per-user weights** | 0.338 | 0.351 | **0.469** | 0.381 |
+| pid | base PPL | PU PPL | ΔPPL | base rdr | PU rdr | Δrdr | naiverag rdr |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| 0 | 0.409 | 0.338 | −0.071 | 0.370 | 0.351 | −0.019 | 0.422 |
+| 4 | 0.320 | 0.469 | **+0.150** | 0.408 | 0.381 | −0.027 | 0.503 |
+| 1 | 0.457 | 0.400 | −0.057 | 0.471 | 0.236 | −0.236 | 0.586 |
+| 3 | 0.255 | 0.483 | **+0.228** | 0.379 | 0.469 | +0.090 | 0.538 |
+| 5 | 0.348 | 0.376 | +0.028 | 0.382 | 0.258 | −0.124 | 0.489 |
+| 12 | 0.434 | 0.469 | +0.035 | 0.443 | 0.336 | −0.106 | 0.575 |
+| 16 | 0.374 | 0.288 | −0.086 | 0.345 | 0.237 | −0.108 | 0.532 |
 
-**The two personas disagree under the PPL (UserSim) lens** — per-user weights *hurt* pid0
-(0.338 < base 0.409) but *clearly help* pid4 (**0.469 vs 0.320 base, +15pp; beats every other
-arm**). This high per-persona variance is precisely the legacy R1b characteristic (per-persona
-dynamics differ qualitatively — some gain, some decay; per-persona best-step selection was
-essential there, 95.7% best-step vs 71.7% final). With a fixed 3-epoch recipe and no per-persona
-early stopping, the per-user arm is a **coin-flip across personas** under PPL — not yet a
-reliable win, but pid4 shows the upside is real.
+**PPL (UserSim) lens — high-variance, slight positive tilt, not a reliable win:** per-user beats
+base on **4/7** personas; **meanΔ = +0.032**, but **range [−0.086, +0.228], sd 0.110** — the
+sign flips persona to persona (pid3 +0.228, pid16 −0.086). This is exactly the legacy R1b
+heterogeneity (per-persona dynamics differ qualitatively; R1b needed **per-persona best-step
+selection** — 95.7% best-step vs 71.7% final — which this fixed-3-epoch recipe does NOT do). So
+naive per-user CE is a near coin-flip with a small mean gain; the upside is real (pid3/pid4
++15–23pp) but unreliable without per-persona stopping or the OPD recipe.
 
-**Under the reader/generation lens, per-user weights consistently lose to retrieval** (pid0
-0.351, pid4 0.381 vs naiverag 0.422/0.503) and even dip below base — the user-turn LoRA degrades
-instruction-following (the legacy "user-only-loss LoRA hurts direct-ask" effect). So the right
-lens for the per-user arm is PPL (it's a UserSim), not the reader lens.
+**Reader/generation lens — per-user consistently loses:** meanΔ = **−0.076** (6/7 negative), and
+per-user reader (0.24–0.47) is far below naiverag reader (**0.42–0.59**). The user-turn LoRA
+degrades instruction-following (legacy "user-only-loss LoRA hurts direct-ask"), so the correct
+lens for the per-user arm is PPL, and **token-memory (retrieval) is the robust winner whenever
+the model must answer**.
 
-**Reads:** (1) token-memory (retrieval) is the robust winner under the reader lens across both
-personas; (2) per-user weights can beat it under PPL but only on some personas with this naive
-recipe — the documented path to a *reliable* win is OPD distillation + dual-rate LoRA +
-per-persona best-step (R1b), and/or fewer epochs; (3) need more personas (n=2 is noisy) +
-per-persona early stopping before any aggregate claim. The token-memory baselines stand as the
-reference bar.
+**Reads:** (1) **token-memory/retrieval is the robust reference** across personas + lenses;
+(2) **naive per-user weights**: small +0.032 mean PPL gain but high variance — *not* a reliable
+win as-is; (3) the documented path to a reliable per-user win is **OPD distillation + dual-rate
+LoRA + per-persona best-step** (R1b), and/or fewer epochs — the clear next experiment. n=7
+personas, 1 bench (pm128k), 1 recipe; aggregate claims need the per-persona-stopping variant.
 
-**Caveats.** The `+per-user weights` arm is preliminary (2 personas, minimal fixed-epoch recipe,
-high variance — above). PersonaMem-v1 is substantially
+**Caveats.** The `+per-user weights` arm is the naive recipe (7 personas, fixed 3-epoch CE, no
+per-persona stopping — high variance, meanΔPPL +0.032; above). PersonaMem-v1 is substantially
 answerable with no persona (trivial reader 0.385–0.435 ≫ 0.25), so headroom is modest.
 `suggest_new` stays low everywhere (open-ended qtype). dense retrieval is CPU-bound (12 min vs
 BM25 12 s on pm32k) so pm128k used BM25 only. Results JSON + per-record preds under

@@ -1,0 +1,40 @@
+{
+  "n": 139,
+  "accuracy": 0.2878,
+  "by_qtype": {
+    "recall_facts": {
+      "n": 8,
+      "accuracy": 0.25
+    },
+    "suggest_new": {
+      "n": 17,
+      "accuracy": 0.1765
+    },
+    "acknowledge_latest": {
+      "n": 50,
+      "accuracy": 0.04
+    },
+    "track_evolution": {
+      "n": 17,
+      "accuracy": 0.7647
+    },
+    "reasons_behind": {
+      "n": 21,
+      "accuracy": 0.6667
+    },
+    "aligned_rec": {
+      "n": 10,
+      "accuracy": 0.0
+    },
+    "generalize": {
+      "n": 16,
+      "accuracy": 0.375
+    }
+  },
+  "run_id": "bl__profile__qwen3-4b__pm128k__p16__peruser",
+  "method": "profile",
+  "params": {},
+  "eval": "ppl",
+  "bench": "pm128k",
+  "wall_s": 10.8
+}

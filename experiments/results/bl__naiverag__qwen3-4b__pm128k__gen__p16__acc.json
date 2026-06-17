@@ -1,0 +1,43 @@
+{
+  "n": 139,
+  "accuracy": 0.5324,
+  "by_qtype": {
+    "recall_facts": {
+      "n": 8,
+      "accuracy": 0.375
+    },
+    "suggest_new": {
+      "n": 17,
+      "accuracy": 0.0588
+    },
+    "acknowledge_latest": {
+      "n": 50,
+      "accuracy": 0.64
+    },
+    "track_evolution": {
+      "n": 17,
+      "accuracy": 0.5294
+    },
+    "reasons_behind": {
+      "n": 21,
+      "accuracy": 0.4762
+    },
+    "aligned_rec": {
+      "n": 10,
+      "accuracy": 0.9
+    },
+    "generalize": {
+      "n": 16,
+      "accuracy": 0.625
+    }
+  },
+  "run_id": "bl__naiverag__qwen3-4b__pm128k__gen__p16",
+  "method": "naiverag",
+  "params": {
+    "top_k": 5,
+    "retriever": "bm25"
+  },
+  "eval": "gen",
+  "bench": "pm128k",
+  "wall_s": 8.1
+}
