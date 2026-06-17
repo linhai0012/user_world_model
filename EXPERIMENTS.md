@@ -105,7 +105,33 @@ realistic retrieval lifts a frozen reader **+11–17pp** over no-memory, demogra
 and there remains a gap to the focused oracle on pm32k (8pp) that closes on pm128k. This is the
 quantified bar the `+per-user weights` arm must beat.
 
-**Caveats.** Frozen base only (no `+per-user weights` arm yet). PersonaMem-v1 is substantially
+**`+per-user weights` arm — first result (PRELIMINARY, minimal recipe).** Per-persona LoRA via
+direct CE on that persona's own user-turns (no teacher; r32 all-proj, 3 epochs; merged for
+serving — `scripts/train_peruser.py`), evaluated apples-to-apples on that persona's pm128k MCQs.
+**Persona 0 (154 MCQs):**
+
+| arm | PPL | reader |
+|---|---:|---:|
+| base (no mem) | 0.409 | 0.370 |
+| +profile | 0.331 | 0.370 |
+| +memory (naiverag) | 0.279 | 0.422 |
+| **+per-user weights** | 0.338 | 0.351 |
+
+The naive per-user LoRA **does NOT beat token-memory**: under PPL it lands ≈ +profile and below
+base; under the reader lens it is the lowest (below base, well below retrieval 0.422). The
+merged LoRA *did* shift PPL (base 0.409→0.338), so training had an effect — just not a
+beneficial one for MCQ discrimination. Consistent with the legacy intuition: the persona-swap
+probe found ~99% of user-SFT gain is generic style, not persona-specific; and R1b's +95.7%
+closure used a **different** recipe (OPD distillation from a context-bearing teacher + dual-rate
+slow/fast LoRA + per-persona best-step selection), **not** direct CE. **Caveats:** single noisy
+persona (n=154); 3-epoch CE may overfit the user's verbose style at the cost of discrimination
+(the reader-lens drop echoes the legacy "user-only-loss LoRA hurts instruction-following");
+persona 4 re-running after a mid-train SIGKILL. **Read:** a per-user-weights win on
+PersonaMem-v1 needs the OPD recipe (or fewer epochs / dual-rate), not naive SFT — that is the
+documented next step; the token-memory baselines stand as the reference bar.
+
+**Caveats.** The `+per-user weights` arm has only a preliminary single-persona, minimal-recipe
+result (above). PersonaMem-v1 is substantially
 answerable with no persona (trivial reader 0.385–0.435 ≫ 0.25), so headroom is modest.
 `suggest_new` stays low everywhere (open-ended qtype). dense retrieval is CPU-bound (12 min vs
 BM25 12 s on pm32k) so pm128k used BM25 only. Results JSON + per-record preds under

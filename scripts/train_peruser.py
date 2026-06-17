@@ -58,8 +58,10 @@ def main() -> None:
         return {"input_ids": torch.tensor(ids), "labels": torch.tensor(lab),
                 "attention_mask": torch.tensor(att)}
 
+    # NB: the standalone flash-attn 2.8.3 wheel has no B200 (sm_100) kernel for the HF training
+    # path ("no kernel image"); SDPA works on Blackwell. (vLLM serving uses its own kernels.)
     model = AutoModelForCausalLM.from_pretrained(
-        BASE, torch_dtype=torch.bfloat16, attn_implementation="flash_attention_2")
+        BASE, dtype=torch.bfloat16, attn_implementation="sdpa")
     model.config.use_cache = False
     lora = LoraConfig(
         r=args.lora_rank, lora_alpha=2 * args.lora_rank, lora_dropout=0.0,
