@@ -126,7 +126,10 @@ closure used a **different** recipe (OPD distillation from a context-bearing tea
 slow/fast LoRA + per-persona best-step selection), **not** direct CE. **Caveats:** single noisy
 persona (n=154); 3-epoch CE may overfit the user's verbose style at the cost of discrimination
 (the reader-lens drop echoes the legacy "user-only-loss LoRA hurts instruction-following");
-persona 4 re-running after a mid-train SIGKILL. **Read:** a per-user-weights win on
+a 2nd persona (pid4) could not be trained this session — 3 attempts died to GPU/infra (one
+mid-train SIGKILL at step 327/390, two import/CUDA-init exit-120s), while pid0 trained cleanly
+on the same recipe — so the per-user result stands as single-persona until re-run. **Read:** a
+per-user-weights win on
 PersonaMem-v1 needs the OPD recipe (or fewer epochs / dual-rate), not naive SFT — that is the
 documented next step; the token-memory baselines stand as the reference bar.
 
