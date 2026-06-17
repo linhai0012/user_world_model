@@ -140,6 +140,16 @@ win as-is; (3) the documented path to a reliable per-user win is **OPD distillat
 LoRA + per-persona best-step** (R1b), and/or fewer epochs — the clear next experiment. n=7
 personas, 1 bench (pm128k), 1 recipe; aggregate claims need the per-persona-stopping variant.
 
+**Cross-version (memorization vs learning).** The pm128k-trained pid0/pid4 LoRAs evaluated on
+those personas' **pm1m** MCQs (different events, PPL lens): pid0 ΔPPL **+0.045** (n=176), pid4
+**+0.037** (n=163) — **both positive on unseen events**. So even naive CE captures a small
+*transferable* persona signal (not just memorized turns), echoing R1b's "LoRA learns the persona
+fingerprint, not the events." Striking: pid0 *hurt* in-version (−0.071) yet *helps* cross-version
+(+0.045), and pid4's +0.150 in-version shrinks to +0.037 cross-version — i.e. part of the
+in-version effect is event-specific, but a small (~+0.04) transferable component survives for
+both. Small but real, and consistent with the persona-swap probe (~99% generic style, a thin
+persona-specific layer).
+
 **Caveats.** The `+per-user weights` arm is the naive recipe (7 personas, fixed 3-epoch CE, no
 per-persona stopping — high variance, meanΔPPL +0.032; above). PersonaMem-v1 is substantially
 answerable with no persona (trivial reader 0.385–0.435 ≫ 0.25), so headroom is modest.
