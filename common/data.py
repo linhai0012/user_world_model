@@ -208,15 +208,26 @@ class PersonaMem:
             cls._tok = AutoTokenizer.from_pretrained("Qwen/Qwen3-4B-Instruct-2507")
         return cls._tok
 
+    _tok_len_cache: dict = {}   # ctx_id -> [per-message token length] (computed once/context)
+
+    def _msg_token_lens(self, ctx_id: str) -> list[int]:
+        if ctx_id not in self._tok_len_cache:
+            tok = self._tokenizer()
+            self._tok_len_cache[ctx_id] = [
+                len(tok(m["content"], add_special_tokens=False)["input_ids"])
+                for m in self.contexts[ctx_id]
+            ]
+        return self._tok_len_cache[ctx_id]
+
     def _ref_index(self, ctx_id: str, end_index: int, dist_ref_tokens: int) -> int:
         """Locate the reference TURN: walk back from the query (end_index) accumulating token
-        counts until we've passed `dist_ref_tokens` (the reference is that far before the
-        query). Returns the message index of the reference turn."""
-        msgs = self.contexts[ctx_id]
-        tok = self._tokenizer()
+        counts until we've passed `dist_ref_tokens`. Per-context token lengths are cached so a
+        shared context is tokenized once (essential for pm128k/pm1m where 1 context backs many
+        MCQs)."""
+        lens = self._msg_token_lens(ctx_id)
         acc, j = 0, end_index
         while j > 0 and acc < dist_ref_tokens:
-            acc += len(tok(msgs[j]["content"], add_special_tokens=False)["input_ids"])
+            acc += lens[j]
             j -= 1
         return max(0, j)
 
