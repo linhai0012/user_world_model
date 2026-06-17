@@ -85,7 +85,22 @@ distance** walked back from the query (`common/data.py::_ref_index`, uses the Qw
   for dispersed 128k references (a wider/adaptive oracle is a TODO), and that retrieval and a
   fixed golden slice are complementary across qtypes.
 
-**Net token-memory-baseline result (the #1 documented gap, now filled for pm32k+pm128k):**
+**Cross-version trend (reader lens, oracle ±2-slice vs BM25 retrieval as context grows):**
+
+| | pm32k | pm128k | pm1m |
+|---|---:|---:|---:|
+| trivial (base) | 0.435 | 0.385 | 0.356 |
+| oracle ±2-slice | 0.683 | 0.487 | 0.379 |
+| naiverag BM25 | 0.601 | 0.494 | 0.438 |
+
+The fixed ±2-turn oracle **degrades as context grows** (0.68→0.49→0.38) — at 1M the window is a
+poor approximation of a dispersed reference — while **retrieval scales** and overtakes it
+(pm32k oracle≫rag → pm128k tie → pm1m rag>oracle by +6pp). Two reads: (a) retrieval is the
+robust token-memory method as context grows; (b) my fixed-window oracle is an imperfect ceiling
+at long context (widen/adapt the window, or trust the token-located slice less at 1M — TODO).
+Base accuracy also falls with version (0.44→0.39→0.36) → more memory headroom at 1M.
+
+**Net token-memory-baseline result (the #1 documented gap, now filled for pm32k+pm128k+pm1m):**
 realistic retrieval lifts a frozen reader **+11–17pp** over no-memory, demographics **hurt**,
 and there remains a gap to the focused oracle on pm32k (8pp) that closes on pm128k. This is the
 quantified bar the `+per-user weights` arm must beat.

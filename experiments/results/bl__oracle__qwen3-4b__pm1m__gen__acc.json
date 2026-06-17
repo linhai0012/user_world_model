@@ -1,0 +1,43 @@
+{
+  "n": 2674,
+  "accuracy": 0.3792,
+  "by_qtype": {
+    "recall_facts": {
+      "n": 144,
+      "accuracy": 0.4306
+    },
+    "suggest_new": {
+      "n": 727,
+      "accuracy": 0.1623
+    },
+    "acknowledge_latest": {
+      "n": 768,
+      "accuracy": 0.3516
+    },
+    "track_evolution": {
+      "n": 225,
+      "accuracy": 0.5378
+    },
+    "reasons_behind": {
+      "n": 235,
+      "accuracy": 0.6511
+    },
+    "aligned_rec": {
+      "n": 280,
+      "accuracy": 0.4821
+    },
+    "generalize": {
+      "n": 295,
+      "accuracy": 0.5254
+    }
+  },
+  "run_id": "bl__oracle__qwen3-4b__pm1m__gen",
+  "method": "oracle",
+  "params": {
+    "mode": "slice",
+    "window": 2
+  },
+  "eval": "gen",
+  "bench": "pm1m",
+  "wall_s": 94.7
+}
