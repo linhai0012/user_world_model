@@ -175,9 +175,11 @@ class OpenAIGptBackend:
             "gpt41 backend not wired yet; qwen3-4b (MCQ-PPL) is the working path.")
 
 
-def make_backend(model: str, **kw):
-    if model == "qwen3-4b":
+def make_backend(kind: str, **kw):
+    """kind selects the backend class; kw (e.g. model=<path>, max_model_len) goes to it —
+    so --model-path can override the served weights (a merged per-user LoRA) cleanly."""
+    if kind == "qwen3-4b":
         return VLLMQwenBackend(**kw)
-    if model == "gpt41":
+    if kind == "gpt41":
         return OpenAIGptBackend(**kw)
-    raise ValueError(f"unknown model backend {model!r}")
+    raise ValueError(f"unknown backend kind {kind!r}")
