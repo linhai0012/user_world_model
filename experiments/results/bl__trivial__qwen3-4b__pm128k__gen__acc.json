@@ -1,0 +1,40 @@
+{
+  "n": 2710,
+  "accuracy": 0.3845,
+  "by_qtype": {
+    "recall_facts": {
+      "n": 171,
+      "accuracy": 0.3626
+    },
+    "suggest_new": {
+      "n": 518,
+      "accuracy": 0.1602
+    },
+    "acknowledge_latest": {
+      "n": 866,
+      "accuracy": 0.388
+    },
+    "track_evolution": {
+      "n": 341,
+      "accuracy": 0.5924
+    },
+    "reasons_behind": {
+      "n": 252,
+      "accuracy": 0.627
+    },
+    "aligned_rec": {
+      "n": 349,
+      "accuracy": 0.3582
+    },
+    "generalize": {
+      "n": 213,
+      "accuracy": 0.3568
+    }
+  },
+  "run_id": "bl__trivial__qwen3-4b__pm128k__gen",
+  "method": "trivial",
+  "params": {},
+  "eval": "gen",
+  "bench": "pm128k",
+  "wall_s": 9.1
+}
