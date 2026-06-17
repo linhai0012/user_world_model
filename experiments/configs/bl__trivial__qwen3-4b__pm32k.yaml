@@ -1,0 +1,16 @@
+run_id: bl__trivial__qwen3-4b__pm32k
+family: bl
+method: trivial
+model: qwen3-4b
+bench: pm32k
+variant: null
+
+backend:
+  qwen3-4b: {served_by: vllm, dtype: bfloat16, temperature: 0.0}
+
+params: {}
+seed: 0
+
+metric: acc
+report_by_qtype: true
+data_dir: ${UWM_DATA}/personamem

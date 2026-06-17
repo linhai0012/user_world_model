@@ -1,0 +1,20 @@
+run_id: bl__oracle__qwen3-4b__pm32k
+family: bl
+method: oracle
+model: qwen3-4b
+bench: pm32k
+variant: null
+
+backend:
+  qwen3-4b: {served_by: vllm, dtype: bfloat16, temperature: 0.0}
+
+params:
+  mode: slice        # slice (±window golden ref) | full (whole context up to ref)
+  window: 2
+  with_profile: false
+
+seed: 0
+
+metric: acc
+report_by_qtype: true
+data_dir: ${UWM_DATA}/personamem
