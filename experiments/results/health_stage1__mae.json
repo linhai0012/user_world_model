@@ -1,0 +1,34 @@
+{
+  "task": "health_stage1_next_state",
+  "n_test": 314,
+  "n_participants": 16,
+  "fields": [
+    "fatigue",
+    "mood",
+    "readiness",
+    "sleep_quality",
+    "soreness",
+    "stress"
+  ],
+  "mae_by_cond": {
+    "persistence": {
+      "fatigue": 0.414,
+      "mood": 0.255,
+      "readiness": 1.271,
+      "sleep_quality": 0.605,
+      "soreness": 0.379,
+      "stress": 0.338,
+      "overall": 0.544
+    },
+    "pop-mean": {
+      "fatigue": 0.338,
+      "mood": 0.306,
+      "readiness": 1.318,
+      "sleep_quality": 0.475,
+      "soreness": 0.395,
+      "stress": 0.395,
+      "overall": 0.538
+    }
+  },
+  "persistence_overall": 0.544
+}
