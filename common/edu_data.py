@@ -16,6 +16,7 @@ of the general-domain memory ablation.
 """
 from __future__ import annotations
 
+import hashlib
 import json
 from pathlib import Path
 
@@ -75,12 +76,14 @@ def build_edu_samples(course: str, cond: str = "memory", data_dir: str | None = 
 
 def build_edu_eval_items(course: str, data_dir: str | None = None, min_chars: int = 1) -> list[dict]:
     """Per student turn: {target, turn, sess, base, memory, foreign} — three aligned contexts.
-      base    = system + the tutor's immediately-preceding turn
-      memory  = system + the real prior dialogue
-      foreign = system + ANOTHER session's dialogue + the real preceding tutor turn
-    The `foreign` control isolates relevance from prompt-length: if real memory helps only because
-    the prompt is longer, foreign should help equally; if it helps via genuine context, memory <
-    foreign. (The education analog of the health shared-LoRA null.)"""
+      base     = system + the tutor's immediately-preceding turn
+      memory   = system + the real prior dialogue
+      foreign  = system + ANOTHER session's dialogue + the real preceding tutor turn
+      shuffled = system + the SAME real prior turns in a deterministically-scrambled order
+    Controls isolate what (if anything) the real ordered history adds beyond in-domain tokens:
+    `foreign` (different content) and `shuffled` (same content+length, wrong order). If
+    memory ≈ shuffled ≈ foreign, the NLL drop is priming/length, not relevance/coherence.
+    (The education analog of the health shared-LoRA null.)"""
     sessions = load_edu_sessions(course, data_dir)
     n = len(sessions)
     items: list[dict] = []
@@ -96,11 +99,15 @@ def build_edu_eval_items(course: str, data_dir: str | None = None, min_chars: in
                 continue
             system = [prior[0]] if prior[0]["role"] == "system" else []
             last = [prior[-1]] if prior[-1]["role"] != "system" else []
+            middle = prior[1:] if system else prior          # real history turns (post-system)
+            # deterministic scramble (hash of content → stable order, no RNG)
+            shuf = sorted(middle, key=lambda t: hashlib.md5(t["content"].encode()).hexdigest())
             items.append({
                 "target": m["content"], "turn": i, "sess": si,
                 "base": system + last,
                 "memory": prior,
                 "foreign": system + foreign_hist + last,
+                "shuffled": system + shuf,
             })
     return items
 

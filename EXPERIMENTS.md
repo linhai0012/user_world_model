@@ -18,7 +18,7 @@ under one eval contract (`CONVENTIONS.md` §3 — accuracy + per-qtype).
 <!-- newest first; one entry per milestone. Mirror headline numbers from
      experiments/results/<run_id>__*.json; full data stays on cluster scratch. -->
 
-### 2026-06-20 — EDUCATION Stage-1 (domain #3): apparent "memory helps" is priming, not relevance (control)
+### 2026-06-20 — EDUCATION Stage-1 (domain #3): in-context memory partially helps (genuine vs priming, via controls)
 
 **Domain #3 (education) Stage-1**, text/reaction head only (predict the student's next turn;
 project_summary.md §2 edu-reaction ≈ general's reply). Data: private KCL Langfuse tutor chats,
@@ -35,31 +35,33 @@ EEDI/EdNet). Student turns are genuine learner text (typos, follow-ups, "WHAT IS
 **Task:** NLL of the student's next turn under frozen Qwen3-4B. `base` = system + the tutor's
 immediately preceding turn; `memory` = system + full prior dialogue. Paired (same targets).
 
-| course | base | memory (real) | foreign (random session) | Δmem−base | Δforeign−base | Δmem−foreign |
-|---|---:|---:|---:|---:|---:|---:|
-| nlp (n=346) | 4.397 | 3.414 | **3.003** | −0.983 | −1.394 | **+0.412** |
-| ai (n=87) | 3.964 | 3.075 | **2.958** | −0.888 | −1.005 | **+0.117** |
+| course | base | memory | shuffled (same turns, scrambled) | foreign (other session) | Δmem−base | Δmem−shuf | Δmem−foreign |
+|---|---:|---:|---:|---:|---:|---:|---:|
+| nlp (n=346) | 4.397 | 3.414 | 3.641 | 3.003 | −0.983 | **−0.227** | +0.412 |
+| ai (n=87) | 3.964 | 3.075 | 3.354 | 2.958 | −0.888 | **−0.279** | +0.117 |
 
-**Finding (with the control, honest):** raw "memory" lowers next-turn NLL a lot (~0.9 nats, ~25%),
-which *looks* like in-context memory helping. **But the foreign-memory control deflates it:**
-injecting a *different* session's dialogue as "memory" helps as much or MORE than the real history
-(memory is +0.4/+0.1 nats WORSE than foreign). So the gain is dominated by **in-domain priming /
-context length**, NOT retrieval of *this* learner's relevant context. Depth analysis agrees: the
-memory−base drop is −1.18 at late turns vs −0.43 early (i.e. scales with added length). Education
-analog of the shared-LoRA null — the naive positive does not survive the control.
+**Finding (two controls, nuanced + honest):** raw "memory" lowers next-turn NLL ~0.9 nats (~25%).
+Two controls decompose it:
+- **shuffled** (the SAME real turns in scrambled order — content+length-matched): memory beats it
+  by ~0.23–0.28 nats. So at equal content/length, the *ordered, coherent* real history GENUINELY
+  helps → education has real in-context-memory value, not pure priming.
+- **foreign** (a different session's dialogue): appears to help *more* than memory (Δmem−foreign
+  +0.1/+0.4), but foreign injects a whole, **longer** session → this is a length confound. The
+  length-matched shuffled control is the clean test, and it confirms relevance/order matters.
+- Decomposition: of the ~0.9-nat raw gain, ~0.25 is genuine ordered-relevance (memory−shuffled)
+  and the rest is in-domain priming/length (shuffled−base ≈ −0.6/−0.7). Depth agrees (late −1.18
+  vs early −0.43: more accumulated context → more priming).
 
-**Unified cross-domain read (the real story):** in ALL three domains the naive "context/memory
-helps" claim collapses under the right control — general (frozen+memory ≈ no help under MCQ-PPL,
-"see≠use"; retrieval < oracle), health (per-user = shared-LoRA, no personalization; +current gain
-is population-level), education (memory ≤ foreign-memory, a priming/length effect). Consistent
-motivation for the project thesis: real personalization needs the *right mechanism*, not stuffed
-context.
+**Unified cross-domain read:** in-context memory's value is real but small and domain-dependent —
+**only education shows a genuine (partial) gain** (memory > shuffled), while general (frozen+memory
+≈ no help under MCQ-PPL, "see≠use"; retrieval < oracle) and health (per-user = shared-LoRA, no
+personalization; +current gain is population-level) show none. The recurring lesson: naive
+context/weights gains mostly evaporate under trivial/shared/foreign/shuffled controls — real
+personalization needs the *right mechanism*, not stuffed context.
 
-**Caveats:** no learner identity → no per-user arm in education (frozen reader only); the foreign
-control is not length-matched (foreign injects a whole other conversation, often longer than a
-short real history), so it conflates relevance with length — but foreign helping AT ALL (≥ real
-memory) already rules out a relevance-only story; a length-matched control + an LLM-judge
-generation lens + public **StudyChat** breadth are TODO.
+**Caveats:** no learner identity → no per-user arm in education (frozen reader only); even the
+genuine memory gain is modest (~0.25 nats); small (66 sessions, NLL only — LLM-judge generation
+lens + public **StudyChat** breadth are TODO).
 
 ### 2026-06-20 — HEALTH Stage-1 cross-domain replication: frozen "see≠use" + per-user weights (state head)
 

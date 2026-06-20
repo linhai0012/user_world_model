@@ -9,11 +9,13 @@
 
 ## The one-line result
 
-**Across all three domains, the naive "context / memory / per-user weights help" claim does NOT
-survive the right control.** Apparent gains from stuffing a frozen model with profile/memory, or
-from per-user LoRAs, repeatedly collapse against trivial baselines, a shared-population model, or
-a foreign-context control. This is the same lesson three times — and it is exactly the motivation
-for the project thesis: real personalization needs the *right mechanism*, not stuffed context.
+**Naive "context / memory / per-user weights help" gains mostly evaporate under the right control
+— and the small part that survives is the signal worth chasing.** Stuffing a frozen model with
+profile/memory, or training per-user LoRAs, repeatedly collapses against trivial baselines, a
+shared-population model, or content/length-matched context controls. The one genuine (if small)
+survivor: in education, ordered relevant dialogue history beats its own scrambled version
+(memory < shuffled by ~0.25 nats). The lesson three times over: real personalization needs the
+*right mechanism* and the *right control*, not stuffed context.
 
 ## The unified ablation, three domains
 
@@ -22,10 +24,10 @@ for the project thesis: real personalization needs the *right mechanism*, not st
 | UWM head | reply / preference (MCQ-PPL, reader acc) | next-state MAE (+ reaction NLL) | next student-turn NLL |
 | target GT | real MCQ answer | **real** wellness self-report | **real** student turn |
 | users | 20 personas | 16 participants (12 data-rich) | none (no learner id) |
-| frozen base + context | **no help** (trivial 0.389 ≥ oracle 0.326, "see≠use") | **no help** (1.12 vs persist 0.54; +current *hurts* 1.26) | "helps" (−0.9 NLL) **but = foreign** |
+| frozen base + context | **no help** (trivial 0.389 ≥ oracle 0.326, "see≠use") | **no help** (1.12 vs persist 0.54; +current *hurts* 1.26) | **partial help** (−0.9 NLL; ~0.25 genuine) |
 | per-user weights | naive unreliable (meanΔ +0.03, sd 0.11); reliable only w/ OPD+dual-LoRA+best-step (R1b +95.7%) | **= shared-LoRA** (0.506 vs 0.499) → no personalization | n/a (no learner identity) |
-| decisive control | reader-vs-PPL; retrieval vs oracle | per-user-mean lookup; **shared-LoRA null** | **foreign-memory** |
-| control verdict | retrieval < oracle (~8pp gap); demographics *hurt* | personalization adds nothing; gain is population-level | gain is priming/length, not relevance |
+| decisive control | reader-vs-PPL; retrieval vs oracle | per-user-mean lookup; **shared-LoRA null** | **shuffled** (content+len-matched) + foreign |
+| control verdict | retrieval < oracle (~8pp gap); demographics *hurt* | personalization adds nothing; gain is population-level | memory > shuffled → real but small; foreign = length-confound |
 
 ## Per-domain, in one paragraph each
 
@@ -49,10 +51,12 @@ little, profile most) — consistent with "context aids text generation, not str
 
 **Education (this session).** Predict the student's next turn (NLL); 66 KCL Langfuse tutor chats,
 433 student turns, **no learner identity** → frozen base/+memory only. Real conversation memory
-lowers NLL a lot (~0.9 nats) — but a **foreign** session's dialogue as "memory" lowers it as much
-or more (memory is +0.4/+0.1 nats *worse* than foreign), and the effect scales with context length
-(late turns −1.18 vs early −0.43). So the apparent "memory helps" is **in-domain priming / length**,
-not retrieval of this learner's relevant history.
+lowers NLL ~0.9 nats. Two controls decompose it: vs **shuffled** (the same turns scrambled —
+content+length-matched) memory still wins by ~0.25 nats → the *ordered, coherent* history
+**genuinely helps**; vs **foreign** (a different, longer session) memory appears worse, but that is
+a length confound. So ~0.25 nats is real ordered-relevance and the rest (~0.6) is in-domain
+priming/length (depth agrees: late −1.18 vs early −0.43). Education is the **one domain with a
+genuine — if small — in-context-memory gain**.
 
 ## What this means for the project (axis A: cross-domain UWM method paper)
 
@@ -73,9 +77,10 @@ not retrieval of this learner's relevant history.
 
 - Health reaction text and the digital-twin event text are GPT-synthesized (grounded in real
   state/HR) → soft signals; the real-GT heads are health next-state (MAE) and the student turn.
-- Education foreign control is **not length-matched** (it conflates relevance with length); a
-  length-matched foreign control + an LLM-judge generation lens are TODO. Foreign helping ≥ real
-  memory already rules out a relevance-only story.
+- Education: the **shuffled** control (same turns, scrambled) is content+length-matched and is the
+  clean test (memory > shuffled → genuine but small relevance); the **foreign** control is *not*
+  length-matched (a whole, longer session), so its "beats memory" is a length artifact. An
+  LLM-judge generation lens + public **StudyChat** breadth remain TODO.
 - Health per-user used a fixed 3-epoch CE (no per-pid best-step — general's R1b showed that
   matters); shared-null makes this moot for *personalization* but a stronger recipe could still
   lift the population model.

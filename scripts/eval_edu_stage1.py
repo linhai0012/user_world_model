@@ -62,7 +62,7 @@ def main() -> None:
         BASE, dtype=torch.bfloat16, attn_implementation="sdpa").to("cuda").eval()
 
     courses = list(COURSES) if args.course == "both" else [args.course]
-    conds = ("base", "memory", "foreign")
+    conds = ("base", "memory", "foreign", "shuffled")
     summary = {}
     for course in courses:
         items = build_edu_eval_items(course)
@@ -82,16 +82,15 @@ def main() -> None:
                for c in conds}
         for c in conds:
             print(f"[edu:{course}] {c:7s} n={res[c]['n']} mean_NLL={res[c]['mean_nll']}", flush=True)
-        # paired deltas
+        # paired deltas (relative to base, and memory vs its controls)
         dmb = [r["memory"] - r["base"] for r in rows]
-        dfb = [r["foreign"] - r["base"] for r in rows]
-        dmf = [r["memory"] - r["foreign"] for r in rows]
         res["deltas"] = {
             "memory_minus_base": round(statistics.mean(dmb), 4),
-            "foreign_minus_base": round(statistics.mean(dfb), 4),
-            "memory_minus_foreign": round(statistics.mean(dmf), 4),
+            "foreign_minus_base": round(statistics.mean(r["foreign"] - r["base"] for r in rows), 4),
+            "shuffled_minus_base": round(statistics.mean(r["shuffled"] - r["base"] for r in rows), 4),
+            "memory_minus_foreign": round(statistics.mean(r["memory"] - r["foreign"] for r in rows), 4),
+            "memory_minus_shuffled": round(statistics.mean(r["memory"] - r["shuffled"] for r in rows), 4),
             "memory_better_than_base_frac": round(sum(d < 0 for d in dmb) / len(dmb), 3),
-            "memory_better_than_foreign_frac": round(sum(d < 0 for d in dmf) / len(dmf), 3),
         }
         # per-turn-depth: does memory help more at deeper turns?
         depth = {}
@@ -101,10 +100,12 @@ def main() -> None:
                 depth[label] = {"n": len(sub),
                                 "memory_minus_base": round(statistics.mean(r["memory"] - r["base"] for r in sub), 4)}
         res["by_depth"] = depth
-        print(f"[edu:{course}] Δmem-base={res['deltas']['memory_minus_base']:+.4f}  "
-              f"Δforeign-base={res['deltas']['foreign_minus_base']:+.4f}  "
-              f"Δmem-foreign={res['deltas']['memory_minus_foreign']:+.4f}  "
-              f"| depth: {depth}", flush=True)
+        dd = res["deltas"]
+        print(f"[edu:{course}] Δmem-base={dd['memory_minus_base']:+.4f}  "
+              f"Δforeign-base={dd['foreign_minus_base']:+.4f}  "
+              f"Δshuf-base={dd['shuffled_minus_base']:+.4f}  "
+              f"Δmem-foreign={dd['memory_minus_foreign']:+.4f}  "
+              f"Δmem-shuf={dd['memory_minus_shuffled']:+.4f}  | depth: {depth}", flush=True)
         summary[course] = res
 
     out = REPO / "experiments" / "results" / "edu_stage1__nll.json"
