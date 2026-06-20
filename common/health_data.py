@@ -140,6 +140,26 @@ def target_json(state: dict[str, int]) -> str:
     return json.dumps({f: int(state[f]) for f in FIELDS})
 
 
+# --- reaction-text head (the second UWM output head, project_summary §2) ---
+
+SYS_REACTION = ("You are a specific user describing, in the first person, how you felt during and "
+                "after a physical activity — consistent with your body and wellness.")
+
+
+def build_reaction_prompt(rec: "HealthRecord", cond: str, baseline: dict) -> str:
+    """User-turn for predicting the first-person reaction. Same conditioning blocks as the state
+    head, so the two heads share the base/+current/+profile ablation."""
+    lines = [f"Activity: {rec.activity} for {rec.duration_min:.0f} min."]
+    if rec.event_text:
+        lines.append(rec.event_text)
+    if cond in ("+profile", "+current+prof"):
+        lines.append(f"Your typical wellness baseline: {render_state(baseline)}.")
+    if cond in ("+current", "+current+prof"):
+        lines.append(f"Today's wellness (before the activity): {render_state(rec.state_n)}.")
+    lines.append("In one short first-person paragraph, describe how you felt during and after it.")
+    return "\n".join(lines)
+
+
 def parse_state(text: str, fallback: dict) -> dict:
     """Parse the first {...} JSON object from a generation into a clamped 6-field state;
     fall back per-field to `fallback` (the current state) on any malformation."""

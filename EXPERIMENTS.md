@@ -119,6 +119,13 @@ model won't anchor on today's state). Conditioning a frozen base by prompting fa
    stress (0.326) are near-constant** and the model does NOT help (slightly *hurts* stress
    0.326→0.405). So the modest overall gain is essentially "predict readiness/sleep change a bit
    better"; the stable fields offer no headroom.
+7. **Reaction-text head (health's 2nd UWM head; frozen NLL of the first-person reaction, n=314):**
+   base 4.193 → +current 4.094 (−0.099) → **+profile 4.009 (−0.184)** → +current+prof 4.084.
+   Unlike the state head (+current HURT), for the free-text reaction head context HELPS modestly
+   (profile most) — consistent with the cross-domain pattern that context aids text generation but
+   not structured-state prediction. ⚠️ The reaction is GPT-synthesized grounded in the real state,
+   so context→reaction NLL gains are partly circular; treat as a soft signal. Code:
+   `scripts/eval_health_reaction.py`; result `health_reaction__nll.json`.
 
 ### 2026-06-17 — baseline harness live; dual-lens token-memory ablation on PersonaMem-v1 (pm32k)
 

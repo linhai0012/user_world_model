@@ -1,0 +1,21 @@
+{
+  "task": "health_stage1_reaction_nll",
+  "by_cond": {
+    "base": {
+      "n": 314,
+      "mean_nll": 4.1927
+    },
+    "+current": {
+      "n": 314,
+      "mean_nll": 4.0935
+    },
+    "+profile": {
+      "n": 314,
+      "mean_nll": 4.0088
+    },
+    "+current+prof": {
+      "n": 314,
+      "mean_nll": 4.0836
+    }
+  }
+}
