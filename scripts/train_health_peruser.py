@@ -33,7 +33,9 @@ BASE = "Qwen/Qwen3-4B-Instruct-2507"
 
 def main() -> None:
     ap = argparse.ArgumentParser()
-    ap.add_argument("--pid", required=True)
+    ap.add_argument("--pid", default=None, help="one participant -> per-user LoRA")
+    ap.add_argument("--pids", default=None,
+                    help="comma list of pids -> ONE pooled SHARED LoRA (the null control)")
     ap.add_argument("--cond", default="base")
     ap.add_argument("--epochs", type=float, default=3.0)
     ap.add_argument("--lr", type=float, default=1e-4)
@@ -47,15 +49,26 @@ def main() -> None:
                               TrainingArguments)
     from peft import LoraConfig, get_peft_model
 
+    if not (args.pid or args.pids):
+        raise SystemExit("pass --pid <p> (per-user) or --pids p1,p2,... (shared null)")
+    if args.pids:
+        pid_list = [p.strip() for p in args.pids.split(",")]
+        label = "shared"
+    else:
+        pid_list = [args.pid]
+        label = args.pid
+
     tok = AutoTokenizer.from_pretrained(BASE)
-    raw = build_health_user_samples(args.pid, "train", args.cond)
+    raw = []
+    for p in pid_list:
+        raw += build_health_user_samples(p, "train", args.cond)
     ds = [s for s in (tokenize_sample(tok, x, args.max_len) for x in raw) if s]
     counts = participant_record_counts("train")
-    print(f"[train] pid={args.pid} cond={args.cond} samples={len(ds)} (raw {len(raw)}) "
-          f"| this pid has {counts.get(args.pid, 0)} train records", flush=True)
+    print(f"[train] label={label} pids={pid_list} cond={args.cond} samples={len(ds)} "
+          f"(raw {len(raw)})", flush=True)
     if len(ds) < args.min_samples:
-        raise SystemExit(f"too few samples ({len(ds)} < {args.min_samples}) for pid {args.pid} — "
-                         f"pick a data-rich participant (counts: {counts})")
+        raise SystemExit(f"too few samples ({len(ds)} < {args.min_samples}) — "
+                         f"pick data-rich participant(s) (counts: {counts})")
 
     def collate(batch):
         maxlen = max(len(b["input_ids"]) for b in batch)
@@ -81,7 +94,7 @@ def main() -> None:
     model.print_trainable_parameters()
 
     out = (Path(args.output_dir or (Path(os.environ["UWM_MODELS"]) / "peruser"))
-           / f"health_{args.pid}_{cond_tag(args.cond)}")
+           / f"health_{label}_{cond_tag(args.cond)}")
     targs = TrainingArguments(
         output_dir=str(out / "_ckpt"), per_device_train_batch_size=8,
         gradient_accumulation_steps=2, num_train_epochs=args.epochs,
@@ -92,11 +105,11 @@ def main() -> None:
     out.mkdir(parents=True, exist_ok=True)
     model.save_pretrained(str(out))        # adapter only (~tens of MB)
     (out / "run_meta.json").write_text(json.dumps({
-        "domain": "health", "pid": args.pid, "cond": args.cond, "base": BASE,
+        "domain": "health", "label": label, "pids": pid_list, "cond": args.cond, "base": BASE,
         "n_samples": len(ds), "epochs": args.epochs, "lr": args.lr,
         "lora_rank": args.lora_rank, "max_len": args.max_len, "target": "next_state_json",
     }, indent=2))
-    print(f"[done] per-user LoRA adapter -> {out}", flush=True)
+    print(f"[done] LoRA adapter ({label}) -> {out}", flush=True)
 
 
 if __name__ == "__main__":

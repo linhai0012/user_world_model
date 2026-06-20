@@ -43,6 +43,8 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--pids", default=None, help="comma list; default = all trained adapters")
     ap.add_argument("--cond", default="base")
+    ap.add_argument("--shared", action="store_true",
+                    help="eval the pooled SHARED LoRA (health_shared_<tag>) on every pid (null control)")
     ap.add_argument("--max-new", type=int, default=64)
     ap.add_argument("--batch-size", type=int, default=64)
     args = ap.parse_args()
@@ -57,10 +59,12 @@ def main() -> None:
         pids = [p.strip() for p in args.pids.split(",")]
     else:
         pids = sorted(d.name[len("health_"):-len(suffix)] for d in models_root.glob(f"health_*{suffix}")
-                      if (d / "adapter_config.json").exists())
+                      if (d / "adapter_config.json").exists()
+                      and d.name[len("health_"):-len(suffix)] != "shared")
     if not pids:
         raise SystemExit(f"no trained adapters under {models_root}/health_*{suffix}")
-    print(f"[peruser-eval] cond={args.cond} tag={tag} pids={pids}", flush=True)
+    mode = "shared" if args.shared else "peruser"
+    print(f"[{mode}-eval] cond={args.cond} tag={tag} pids={pids}", flush=True)
 
     train = load_records("train")
     test = load_records("test")
@@ -78,12 +82,20 @@ def main() -> None:
         BASE, dtype=torch.bfloat16, attn_implementation="sdpa").to("cuda").eval()
 
     pm = None
-    for pid in pids:
-        path = str(models_root / f"health_{pid}{suffix}")
-        if pm is None:
-            pm = PeftModel.from_pretrained(base_model, path, adapter_name=pid)
-        else:
-            pm.load_adapter(path, adapter_name=pid)
+    if args.shared:
+        shared_path = models_root / f"health_shared{suffix}"
+        if not (shared_path / "adapter_config.json").exists():
+            raise SystemExit(f"no shared adapter at {shared_path} — train with --pids first")
+        pm = PeftModel.from_pretrained(base_model, str(shared_path), adapter_name="shared")
+        adapter_of = {pid: "shared" for pid in pids}
+    else:
+        for pid in pids:
+            path = str(models_root / f"health_{pid}{suffix}")
+            if pm is None:
+                pm = PeftModel.from_pretrained(base_model, path, adapter_name=pid)
+            else:
+                pm.load_adapter(path, adapter_name=pid)
+        adapter_of = {pid: pid for pid in pids}
 
     @torch.no_grad()
     def gen(prompts: list[str]) -> list[str]:
@@ -114,7 +126,7 @@ def main() -> None:
 
         with pm.disable_adapter():
             base_pred = [parse_state(t, recs[i].state_n) for i, t in enumerate(gen(prompts))]
-        pm.set_adapter(pid)
+        pm.set_adapter(adapter_of[pid])
         pu_pred = [parse_state(t, recs[i].state_n) for i, t in enumerate(gen(prompts))]
 
         arms = {"persistence": [r.state_n for r in recs], "pop-mean": [pop_mean] * len(recs),
@@ -129,11 +141,13 @@ def main() -> None:
             pooled[k][0].extend(v)
             pooled[k][1].extend(golds)
 
-    overall = {k: mae(p, g)["overall"] for k, (p, g) in pooled.items() if p}
-    summary = {"task": "health_stage1_peruser", "cond": args.cond, "tag": tag, "pids": pids,
-               "n_test_pooled": len(pooled["base"][0]),
-               "overall_mae": overall, "per_pid": per_pid}
-    out = REPO / "experiments" / "results" / f"health_peruser_{tag}__mae.json"
+    per_field = {k: mae(p, g) for k, (p, g) in pooled.items() if p}   # full 6-field + overall
+    overall = {k: v["overall"] for k, v in per_field.items()}
+    summary = {"task": f"health_stage1_{mode}", "mode": mode, "cond": args.cond, "tag": tag,
+               "pids": pids, "n_test_pooled": len(pooled["base"][0]),
+               "overall_mae": overall, "per_field_mae": per_field, "per_pid": per_pid}
+    fname = f"health_{mode}_{tag}__mae.json"
+    out = REPO / "experiments" / "results" / fname
     out.write_text(json.dumps(summary, indent=2))
     print(f"\n[pooled] " + "  ".join(f"{k}={v:.3f}" for k, v in overall.items()))
     print(f"[done] -> {out}")

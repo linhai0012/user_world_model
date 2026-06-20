@@ -1,0 +1,173 @@
+{
+  "task": "health_stage1_shared",
+  "mode": "shared",
+  "cond": "+current",
+  "tag": "current",
+  "pids": [
+    "p01",
+    "p02",
+    "p04",
+    "p05",
+    "p06",
+    "p07",
+    "p08",
+    "p10",
+    "p11",
+    "p12",
+    "p14",
+    "p15"
+  ],
+  "n_test_pooled": 301,
+  "overall_mae": {
+    "persistence": 0.532,
+    "pop-mean": 0.532,
+    "umean": 0.521,
+    "base": 1.262,
+    "peruser": 0.499
+  },
+  "per_field_mae": {
+    "persistence": {
+      "fatigue": 0.385,
+      "mood": 0.246,
+      "readiness": 1.236,
+      "sleep_quality": 0.615,
+      "soreness": 0.385,
+      "stress": 0.326,
+      "overall": 0.532
+    },
+    "pop-mean": {
+      "fatigue": 0.336,
+      "mood": 0.309,
+      "readiness": 1.282,
+      "sleep_quality": 0.485,
+      "soreness": 0.402,
+      "stress": 0.379,
+      "overall": 0.532
+    },
+    "umean": {
+      "fatigue": 0.385,
+      "mood": 0.243,
+      "readiness": 1.203,
+      "sleep_quality": 0.551,
+      "soreness": 0.405,
+      "stress": 0.339,
+      "overall": 0.521
+    },
+    "base": {
+      "fatigue": 1.123,
+      "mood": 0.85,
+      "readiness": 2.359,
+      "sleep_quality": 0.91,
+      "soreness": 1.269,
+      "stress": 1.063,
+      "overall": 1.262
+    },
+    "peruser": {
+      "fatigue": 0.336,
+      "mood": 0.252,
+      "readiness": 1.146,
+      "sleep_quality": 0.515,
+      "soreness": 0.342,
+      "stress": 0.405,
+      "overall": 0.499
+    }
+  },
+  "per_pid": {
+    "p01": {
+      "n": 33,
+      "persistence": 0.626,
+      "pop-mean": 0.601,
+      "umean": 0.536,
+      "base": 1.258,
+      "peruser": 0.556
+    },
+    "p02": {
+      "n": 23,
+      "persistence": 0.225,
+      "pop-mean": 0.167,
+      "umean": 0.232,
+      "base": 1.16,
+      "peruser": 0.239
+    },
+    "p04": {
+      "n": 29,
+      "persistence": 0.65,
+      "pop-mean": 0.477,
+      "umean": 0.598,
+      "base": 1.172,
+      "peruser": 0.575
+    },
+    "p05": {
+      "n": 20,
+      "persistence": 0.142,
+      "pop-mean": 0.192,
+      "umean": 0.992,
+      "base": 1.4,
+      "peruser": 0.183
+    },
+    "p06": {
+      "n": 32,
+      "persistence": 0.651,
+      "pop-mean": 0.698,
+      "umean": 0.51,
+      "base": 1.417,
+      "peruser": 0.666
+    },
+    "p07": {
+      "n": 28,
+      "persistence": 0.452,
+      "pop-mean": 0.512,
+      "umean": 0.381,
+      "base": 1.196,
+      "peruser": 0.411
+    },
+    "p08": {
+      "n": 25,
+      "persistence": 0.78,
+      "pop-mean": 0.72,
+      "umean": 0.607,
+      "base": 1.253,
+      "peruser": 0.74
+    },
+    "p10": {
+      "n": 20,
+      "persistence": 0.783,
+      "pop-mean": 0.892,
+      "umean": 0.608,
+      "base": 1.75,
+      "peruser": 0.85
+    },
+    "p11": {
+      "n": 16,
+      "persistence": 0.532,
+      "pop-mean": 0.312,
+      "umean": 0.375,
+      "base": 1.312,
+      "peruser": 0.448
+    },
+    "p12": {
+      "n": 8,
+      "persistence": 0.75,
+      "pop-mean": 0.5,
+      "umean": 0.5,
+      "base": 1.333,
+      "peruser": 0.562
+    },
+    "p14": {
+      "n": 47,
+      "persistence": 0.326,
+      "pop-mean": 0.493,
+      "umean": 0.436,
+      "base": 1.085,
+      "peruser": 0.316
+    },
+    "p15": {
+      "n": 20,
+      "persistence": 0.708,
+      "pop-mean": 0.708,
+      "umean": 0.592,
+      "base": 1.1,
+      "peruser": 0.567
+    }
+  }
+}

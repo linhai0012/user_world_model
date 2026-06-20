@@ -51,7 +51,8 @@ model won't anchor on today's state). Conditioning a frozen base by prompting fa
 | persistence | 0.532 | 0.532 |
 | per-user-mean lookup (control) | **0.521** | 0.521 |
 | frozen base | 1.112 | 1.262 |
-| **per-user LoRA** | 0.548 | **0.506** |
+| **per-user LoRA** | 0.548 | 0.506 |
+| **shared LoRA (1 model, all 12 pids pooled)** | 0.537 | **0.499** |
 
 **Findings:**
 1. **Per-user weights encode the user where frozen prompting cannot** — base-context per-user
@@ -68,7 +69,22 @@ model won't anchor on today's state). Conditioning a frozen base by prompting fa
    day-to-day dynamics); the pooled +current win is partly driven by hyper-stable users (p05:
    0.808→0.142 once it can anchor on today; umean 0.992 for p05); per-pid vs umean is mostly small,
    winning where current-state anchoring matters. p12 (8 test/39 train) overfits at base context
-   (1.729), rescued by +current (0.542). reaction-text head + shared-LoRA null = next.
+   (1.729), rescued by +current (0.542).
+5. **Shared-LoRA null (the decisive control, P-OPSD lesson replicated):** ONE LoRA trained on all
+   12 pids pooled matches/slightly beats the per-user LoRAs (shared 0.499 vs per-user 0.506 at
+   +current; 0.537 vs 0.548 at base). → **Per-user personalization adds NOTHING over a single
+   population model here.** The large gain over the frozen base is a *population-level* skill
+   ("learn the task / learn to anchor on the current state"), not per-user signal — consistent with
+   the dataset's weak between-user-distinguishable dynamics. The "+current beats every trivial bar"
+   result stands, but as a shared/population effect, not personalization. (Mirrors P-OPSD's
+   shared-LoRA null and general's "naive per-user is unreliable" — always run the shared control.)
+   Results: `health_shared_{base,current}__mae.json`.
+6. **Field-level (per-field MAE, persistence → shared+current model):** the dynamic signal is
+   concentrated in **readiness** (10-pt field; 1.236 → 1.146, by far the largest error) plus
+   sleep_quality (0.615→0.515), fatigue (0.385→0.336), soreness (0.385→0.342). **mood (0.246) and
+   stress (0.326) are near-constant** and the model does NOT help (slightly *hurts* stress
+   0.326→0.405). So the modest overall gain is essentially "predict readiness/sleep change a bit
+   better"; the stable fields offer no headroom.
 
 ### 2026-06-17 — baseline harness live; dual-lens token-memory ablation on PersonaMem-v1 (pm32k)
 
