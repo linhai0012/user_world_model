@@ -1,0 +1,32 @@
+{
+  "nlp": {
+    "base": {
+      "n": 346,
+      "mean_nll": 4.3969
+    },
+    "memory": {
+      "n": 346,
+      "mean_nll": 3.4141
+    },
+    "paired": {
+      "n": 346,
+      "mean_delta": -0.9828,
+      "memory_better_frac": 0.844
+    }
+  },
+  "ai": {
+    "base": {
+      "n": 87,
+      "mean_nll": 3.9635
+    },
+    "memory": {
+      "n": 87,
+      "mean_nll": 3.0753
+    },
+    "paired": {
+      "n": 87,
+      "mean_delta": -0.8882,
+      "memory_better_frac": 0.724
+    }
+  }
+}

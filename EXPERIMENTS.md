@@ -18,6 +18,40 @@ under one eval contract (`CONVENTIONS.md` §3 — accuracy + per-qtype).
 <!-- newest first; one entry per milestone. Mirror headline numbers from
      experiments/results/<run_id>__*.json; full data stays on cluster scratch. -->
 
+### 2026-06-20 — EDUCATION Stage-1 (domain #3): in-context memory HELPS predict the student's next turn
+
+**Domain #3 (education) Stage-1**, text/reaction head only (predict the student's next turn;
+project_summary.md §2 edu-reaction ≈ general's reply). Data: private KCL Langfuse tutor chats,
+66 sessions (48 NLP + 18 AI) → **433 student turns**. Code: `common/edu_data.py`,
+`scripts/eval_edu_stage1.py`. Result: `experiments/results/edu_stage1__nll.json`.
+
+**Data reality (differs from `data/education/README.md`):** dialogue lives in `input.messages`
+(system tutor-persona + alternating assistant=tutor / user=student; a few tool turns); **no
+`userId`/`sessionId`** → no cross-session learner identity, so the unit is the SESSION and
+education runs the **FROZEN base/+memory ablation only** (no per-user weights — nobody to
+personalize, 66 sessions). No exam data → no structured state head (edu-exam deferred, needs
+EEDI/EdNet). Student turns are genuine learner text (typos, follow-ups, "WHAT IS PPO").
+
+**Task:** NLL of the student's next turn under frozen Qwen3-4B. `base` = system + the tutor's
+immediately preceding turn; `memory` = system + full prior dialogue. Paired (same targets).
+
+| course | base NLL | +memory NLL | Δ(mem−base) | memory better |
+|---|---:|---:|---:|---|
+| nlp (n=346) | 4.397 | 3.414 | **−0.983** | 292/346 (84%) |
+| ai (n=87) | 3.964 | 3.075 | **−0.888** | 63/87 (72%) |
+
+**Finding — the cross-domain contrast that matters:** in education, **in-context memory clearly
+HELPS** a frozen model predict the learner's next turn (~0.9 nats, ~25% relative; helps on ~80%
+of turns) — the *opposite* of general (frozen+memory did NOT help under MCQ-PPL, "see≠use") and
+health (frozen +current HURT). Read across the three domains: **the value of in-context memory is
+domain-dependent** — it works for coherent dialogue continuation (education), but not for
+buried-fact retrieval (general PPL) or weak-dynamics state transition (health). One frozen-base
+ablation, three domains, three different memory regimes.
+
+**Caveats:** no learner identity → no per-user/personalization arm in education (only a frozen
+reader); memory's gain is partly topical-continuity (later turns continue the same thread);
+small (66 sessions, NLL only — no judge yet); pair with public **StudyChat** for breadth (TODO).
+
 ### 2026-06-20 — HEALTH Stage-1 cross-domain replication: frozen "see≠use" + per-user weights (state head)
 
 **Domain #2 (health) Stage-1 intrinsic-prediction**, same ablation skeleton as general
