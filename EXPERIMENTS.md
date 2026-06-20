@@ -18,7 +18,7 @@ under one eval contract (`CONVENTIONS.md` §3 — accuracy + per-qtype).
 <!-- newest first; one entry per milestone. Mirror headline numbers from
      experiments/results/<run_id>__*.json; full data stays on cluster scratch. -->
 
-### 2026-06-20 — EDUCATION Stage-1 (domain #3): in-context memory HELPS predict the student's next turn
+### 2026-06-20 — EDUCATION Stage-1 (domain #3): apparent "memory helps" is priming, not relevance (control)
 
 **Domain #3 (education) Stage-1**, text/reaction head only (predict the student's next turn;
 project_summary.md §2 edu-reaction ≈ general's reply). Data: private KCL Langfuse tutor chats,
@@ -35,22 +35,31 @@ EEDI/EdNet). Student turns are genuine learner text (typos, follow-ups, "WHAT IS
 **Task:** NLL of the student's next turn under frozen Qwen3-4B. `base` = system + the tutor's
 immediately preceding turn; `memory` = system + full prior dialogue. Paired (same targets).
 
-| course | base NLL | +memory NLL | Δ(mem−base) | memory better |
-|---|---:|---:|---:|---|
-| nlp (n=346) | 4.397 | 3.414 | **−0.983** | 292/346 (84%) |
-| ai (n=87) | 3.964 | 3.075 | **−0.888** | 63/87 (72%) |
+| course | base | memory (real) | foreign (random session) | Δmem−base | Δforeign−base | Δmem−foreign |
+|---|---:|---:|---:|---:|---:|---:|
+| nlp (n=346) | 4.397 | 3.414 | **3.003** | −0.983 | −1.394 | **+0.412** |
+| ai (n=87) | 3.964 | 3.075 | **2.958** | −0.888 | −1.005 | **+0.117** |
 
-**Finding — the cross-domain contrast that matters:** in education, **in-context memory clearly
-HELPS** a frozen model predict the learner's next turn (~0.9 nats, ~25% relative; helps on ~80%
-of turns) — the *opposite* of general (frozen+memory did NOT help under MCQ-PPL, "see≠use") and
-health (frozen +current HURT). Read across the three domains: **the value of in-context memory is
-domain-dependent** — it works for coherent dialogue continuation (education), but not for
-buried-fact retrieval (general PPL) or weak-dynamics state transition (health). One frozen-base
-ablation, three domains, three different memory regimes.
+**Finding (with the control, honest):** raw "memory" lowers next-turn NLL a lot (~0.9 nats, ~25%),
+which *looks* like in-context memory helping. **But the foreign-memory control deflates it:**
+injecting a *different* session's dialogue as "memory" helps as much or MORE than the real history
+(memory is +0.4/+0.1 nats WORSE than foreign). So the gain is dominated by **in-domain priming /
+context length**, NOT retrieval of *this* learner's relevant context. Depth analysis agrees: the
+memory−base drop is −1.18 at late turns vs −0.43 early (i.e. scales with added length). Education
+analog of the shared-LoRA null — the naive positive does not survive the control.
 
-**Caveats:** no learner identity → no per-user/personalization arm in education (only a frozen
-reader); memory's gain is partly topical-continuity (later turns continue the same thread);
-small (66 sessions, NLL only — no judge yet); pair with public **StudyChat** for breadth (TODO).
+**Unified cross-domain read (the real story):** in ALL three domains the naive "context/memory
+helps" claim collapses under the right control — general (frozen+memory ≈ no help under MCQ-PPL,
+"see≠use"; retrieval < oracle), health (per-user = shared-LoRA, no personalization; +current gain
+is population-level), education (memory ≤ foreign-memory, a priming/length effect). Consistent
+motivation for the project thesis: real personalization needs the *right mechanism*, not stuffed
+context.
+
+**Caveats:** no learner identity → no per-user arm in education (frozen reader only); the foreign
+control is not length-matched (foreign injects a whole other conversation, often longer than a
+short real history), so it conflates relevance with length — but foreign helping AT ALL (≥ real
+memory) already rules out a relevance-only story; a length-matched control + an LLM-judge
+generation lens + public **StudyChat** breadth are TODO.
 
 ### 2026-06-20 — HEALTH Stage-1 cross-domain replication: frozen "see≠use" + per-user weights (state head)
 

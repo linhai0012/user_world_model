@@ -20,7 +20,7 @@ REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 
 import torch
-from common.edu_data import COURSES, build_edu_samples
+from common.edu_data import COURSES, build_edu_eval_items
 
 BASE = "Qwen/Qwen3-4B-Instruct-2507"
 
@@ -62,28 +62,49 @@ def main() -> None:
         BASE, dtype=torch.bfloat16, attn_implementation="sdpa").to("cuda").eval()
 
     courses = list(COURSES) if args.course == "both" else [args.course]
+    conds = ("base", "memory", "foreign")
     summary = {}
     for course in courses:
-        # build paired base/memory samples (same targets, same order)
-        paired = {c: build_edu_samples(course, c) for c in ("base", "memory")}
-        n = len(paired["base"])
-        res = {}
-        nll_by_cond = {}
-        for cond in ("base", "memory"):
-            nlls = [v for s in paired[cond]
-                    if (v := nll_of_target(model, tok, s["messages"], s["target"], args.max_len)) is not None]
-            nll_by_cond[cond] = nlls
-            res[cond] = {"n": len(nlls), "mean_nll": round(statistics.mean(nlls), 4)}
-            print(f"[edu:{course}] {cond:7s} n={len(nlls)} mean_NLL={res[cond]['mean_nll']}", flush=True)
-        # paired delta (per-sample memory-base) over the aligned samples
-        paired_d = [m - b for b, m in zip(nll_by_cond["base"], nll_by_cond["memory"])]
-        win = sum(d < 0 for d in paired_d)
-        res["paired"] = {"n": len(paired_d), "mean_delta": round(statistics.mean(paired_d), 4),
-                         "memory_better_frac": round(win / len(paired_d), 3)}
-        print(f"[edu:{course}] Δ(memory-base) mean={res['paired']['mean_delta']:+.4f} "
-              f"memory_better={win}/{len(paired_d)} "
-              f"({'memory HELPS' if res['paired']['mean_delta'] < 0 else 'memory does NOT help'})",
-              flush=True)
+        items = build_edu_eval_items(course)
+        rows = []   # per item: {cond: nll, turn}
+        for it in items:
+            row = {"turn": it["turn"]}
+            ok = True
+            for c in conds:
+                v = nll_of_target(model, tok, it[c], it["target"], args.max_len)
+                if v is None:
+                    ok = False
+                    break
+                row[c] = v
+            if ok:
+                rows.append(row)
+        res = {c: {"n": len(rows), "mean_nll": round(statistics.mean(r[c] for r in rows), 4)}
+               for c in conds}
+        for c in conds:
+            print(f"[edu:{course}] {c:7s} n={res[c]['n']} mean_NLL={res[c]['mean_nll']}", flush=True)
+        # paired deltas
+        dmb = [r["memory"] - r["base"] for r in rows]
+        dfb = [r["foreign"] - r["base"] for r in rows]
+        dmf = [r["memory"] - r["foreign"] for r in rows]
+        res["deltas"] = {
+            "memory_minus_base": round(statistics.mean(dmb), 4),
+            "foreign_minus_base": round(statistics.mean(dfb), 4),
+            "memory_minus_foreign": round(statistics.mean(dmf), 4),
+            "memory_better_than_base_frac": round(sum(d < 0 for d in dmb) / len(dmb), 3),
+            "memory_better_than_foreign_frac": round(sum(d < 0 for d in dmf) / len(dmf), 3),
+        }
+        # per-turn-depth: does memory help more at deeper turns?
+        depth = {}
+        for label, lo, hi in (("early(turn<=4)", 0, 4), ("late(turn>4)", 5, 10**9)):
+            sub = [r for r in rows if lo <= r["turn"] <= hi]
+            if sub:
+                depth[label] = {"n": len(sub),
+                                "memory_minus_base": round(statistics.mean(r["memory"] - r["base"] for r in sub), 4)}
+        res["by_depth"] = depth
+        print(f"[edu:{course}] Δmem-base={res['deltas']['memory_minus_base']:+.4f}  "
+              f"Δforeign-base={res['deltas']['foreign_minus_base']:+.4f}  "
+              f"Δmem-foreign={res['deltas']['memory_minus_foreign']:+.4f}  "
+              f"| depth: {depth}", flush=True)
         summary[course] = res
 
     out = REPO / "experiments" / "results" / "edu_stage1__nll.json"

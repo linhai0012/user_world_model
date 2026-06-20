@@ -71,3 +71,36 @@ def build_edu_samples(course: str, cond: str = "memory", data_dir: str | None = 
                 ctx = prior
             out.append({"messages": ctx, "target": tgt, "sess": si, "turn": i})
     return out
+
+
+def build_edu_eval_items(course: str, data_dir: str | None = None, min_chars: int = 1) -> list[dict]:
+    """Per student turn: {target, turn, sess, base, memory, foreign} — three aligned contexts.
+      base    = system + the tutor's immediately-preceding turn
+      memory  = system + the real prior dialogue
+      foreign = system + ANOTHER session's dialogue + the real preceding tutor turn
+    The `foreign` control isolates relevance from prompt-length: if real memory helps only because
+    the prompt is longer, foreign should help equally; if it helps via genuine context, memory <
+    foreign. (The education analog of the health shared-LoRA null.)"""
+    sessions = load_edu_sessions(course, data_dir)
+    n = len(sessions)
+    items: list[dict] = []
+    for si, msgs in enumerate(sessions):
+        # foreign history = next session's non-system turns (deterministic, no RNG)
+        foreign_src = sessions[(si + 1) % n] if n > 1 else []
+        foreign_hist = [t for t in foreign_src if t["role"] != "system"]
+        for i, m in enumerate(msgs):
+            if m["role"] != "user" or len(m["content"]) < min_chars:
+                continue
+            prior = msgs[:i]
+            if not prior:
+                continue
+            system = [prior[0]] if prior[0]["role"] == "system" else []
+            last = [prior[-1]] if prior[-1]["role"] != "system" else []
+            items.append({
+                "target": m["content"], "turn": i, "sess": si,
+                "base": system + last,
+                "memory": prior,
+                "foreign": system + foreign_hist + last,
+            })
+    return items
+

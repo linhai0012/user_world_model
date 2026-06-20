@@ -11,16 +11,30 @@ remote is private.
 | `chat_nlp.jsonl` | 48 | Student ↔ AI-tutor sessions for a KCL **NLP / AI** course (search algorithms, ML concepts, ethics, PEAS, etc.) |
 | `chat_ai.jsonl` | 18 | Same format; supervised-learning, regression, decision trees, uncertainty, BFS, course roadmap, with courseware-citation retrieval |
 
-## Schema (per line = one session)
+## Schema (per line = one session) — VERIFIED 2026-06-20
 
-Top-level fields: `id`, `timestamp`, `name`, `userId`, `sessionId`, `release`,
-`version`, `environment`, `tags`, `bookmarked`, `public`, `input`, `output`,
-`metadata`, `comments`, `_session_records`, `_reconstructed_turns`, `_category`.
+> ⚠️ The original description below was partly inaccurate; corrected after
+> inspection (see `common/edu_data.py`, which is the source of truth for parsing).
 
-- `input` — nested JSON: a tutor **system prompt** (active-learning / Socratic
-  pedagogy, courseware retrieval) + an array of turns `{role, content}`
-  (`system` / `user` / `assistant`).
-- `output` — the tutor's final response.
+Top-level fields: `id`, `timestamp`, `name` (all `litellm-acompletion`), `userId`,
+`sessionId`, `release`, `version`, `environment`, `tags`, `bookmarked`, `public`,
+`input`, `output`, `metadata`, `comments`, `_session_records`,
+`_reconstructed_turns`, `_category` (all `chat`).
+
+- **`input`** — a **JSON-encoded string**; parse it → `{"messages": [...], "tools": [...]}`.
+  `messages` is the conversation: a tutor **system prompt** (Socratic/active-learning
+  persona) then alternating `assistant` (=tutor) / `user` (=student) turns, plus a
+  few `tool` turns (courseware retrieval). This is the real dialogue.
+- **`output`** — the tutor's final response (a JSON string with `content`).
+- ⚠️ **`userId` and `sessionId` are `None` for every record** → there is **no
+  cross-session learner identity**. The unit is the SESSION; no per-learner grouping
+  or per-user weights are possible.
+- ⚠️ `_reconstructed_turns` and `_session_records` are **ints** (counts), NOT lists.
+
+**Counts (verified):** chat_nlp = 48 sessions / 346 student turns; chat_ai = 18
+sessions / 87 student turns. Student turns are genuine learner text (typos,
+follow-ups, short questions). Stage-1 task = predict the student's next turn
+(text/reaction head; no exam data → no structured-state head).
 
 ## Learner-reaction signals present
 
