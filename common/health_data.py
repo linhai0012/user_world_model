@@ -15,8 +15,9 @@ from __future__ import annotations
 import ast
 import json
 import os
+import re
 import statistics
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 # (lo, hi) per field — verbatim from legacy/health_digitaltwin/config.py
@@ -43,6 +44,16 @@ class HealthRecord:
     duration_min: float
     state_n: dict[str, int]    # current-day wellness (6 fields)
     state_n1: dict[str, int]   # next-day wellness (the prediction target)
+    event_text: str = ""       # NL description of the activity (GPT-synth, grounded)
+    reaction_text: str = ""    # first-person body-feel reaction (GPT-synth) — text head
+
+
+_REACTION_RE = re.compile(r"<text_start>(.*?)<text_end>", re.S)
+
+
+def _extract_reaction(output_text: str | None) -> str:
+    m = _REACTION_RE.search(output_text or "")
+    return m.group(1).strip() if m else ""
 
 
 def _parse_state(s: str) -> dict | None:
@@ -67,9 +78,15 @@ def load_records(split: str, data_dir: str | None = None) -> list[HealthRecord]:
                 dur = float(r.get("duration_min", 0) or 0)
             except ValueError:
                 dur = 0.0
+            event = ""
+            m = re.search(r"### Event:\s*(.*?)\s*### ", r.get("input_text", ""), re.S)
+            if m:
+                event = m.group(1).strip()
             out.append(HealthRecord(pid=r.get("participant_id", "?"),
                                     activity=r.get("activity_name", "activity"),
-                                    duration_min=dur, state_n=sn, state_n1=sn1))
+                                    duration_min=dur, state_n=sn, state_n1=sn1,
+                                    event_text=event,
+                                    reaction_text=_extract_reaction(r.get("output_text"))))
     return out
 
 
@@ -91,3 +108,45 @@ def render_state(state: dict[str, int]) -> str:
 def clamp(field: str, v: int) -> int:
     lo, hi = WELLNESS_FIELDS[field]
     return max(lo, min(hi, v))
+
+
+# --- shared prompt / target / parse (used by BOTH eval and per-user training, so
+#     train and eval are token-for-token aligned; CONVENTIONS §3) ---
+
+CONDS = ["persistence", "pop-mean", "base", "+current", "+profile", "+current+prof"]
+
+SYS = ("You predict a specific user's NEXT-day wellness self-report after an activity. "
+       "Wellness fields are integers: fatigue 1-5, mood 1-5, readiness 1-10, sleep_quality 1-5, "
+       "soreness 1-5 (1=very sore,5=none), stress 1-5 (1=very stressed,5=very relaxed). "
+       "Output ONLY a JSON object with exactly these 6 integer fields.")
+
+
+def build_prompt(rec: "HealthRecord", cond: str, baseline: dict) -> str:
+    """The user-turn for predicting next-day state. `cond` selects which conditioning
+    blocks are injected (the Stage-1 ablation). `base` = activity only; the per-user
+    arm trains/evals under `base` (the user lives in the LoRA weights, not the prompt)."""
+    lines = [f"Activity: {rec.activity} for {rec.duration_min:.0f} min."]
+    if cond in ("+profile", "+current+prof"):
+        lines.append(f"This user's typical wellness baseline: {render_state(baseline)}.")
+    if cond in ("+current", "+current+prof"):
+        lines.append(f"Today's wellness (before tomorrow): {render_state(rec.state_n)}.")
+    lines.append("Predict tomorrow's wellness as JSON "
+                 '{"fatigue":_,"mood":_,"readiness":_,"sleep_quality":_,"soreness":_,"stress":_}.')
+    return "\n".join(lines)
+
+
+def target_json(state: dict[str, int]) -> str:
+    """Canonical next-state JSON string — the CE target for the per-user arm."""
+    return json.dumps({f: int(state[f]) for f in FIELDS})
+
+
+def parse_state(text: str, fallback: dict) -> dict:
+    """Parse the first {...} JSON object from a generation into a clamped 6-field state;
+    fall back per-field to `fallback` (the current state) on any malformation."""
+    try:
+        start = text.index("{")
+        obj = json.loads(text[start:text.index("}", start) + 1])
+        return {f: clamp(f, int(round(float(obj[f])))) if f in obj else fallback[f]
+                for f in FIELDS}
+    except (ValueError, KeyError, TypeError):
+        return dict(fallback)

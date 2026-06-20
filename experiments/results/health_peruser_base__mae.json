@@ -1,0 +1,125 @@
+{
+  "task": "health_stage1_peruser",
+  "cond": "base",
+  "tag": "base",
+  "pids": [
+    "p01",
+    "p02",
+    "p04",
+    "p05",
+    "p06",
+    "p07",
+    "p08",
+    "p10",
+    "p11",
+    "p12",
+    "p14",
+    "p15"
+  ],
+  "n_test_pooled": 301,
+  "overall_mae": {
+    "persistence": 0.532,
+    "pop-mean": 0.532,
+    "umean": 0.521,
+    "base": 1.112,
+    "peruser": 0.548
+  },
+  "per_pid": {
+    "p01": {
+      "n": 33,
+      "persistence": 0.626,
+      "pop-mean": 0.601,
+      "umean": 0.536,
+      "base": 0.985,
+      "peruser": 0.536
+    },
+    "p02": {
+      "n": 23,
+      "persistence": 0.225,
+      "pop-mean": 0.167,
+      "umean": 0.232,
+      "base": 1.102,
+      "peruser": 0.167
+    },
+    "p04": {
+      "n": 29,
+      "persistence": 0.65,
+      "pop-mean": 0.477,
+      "umean": 0.598,
+      "base": 1.144,
+      "peruser": 0.586
+    },
+    "p05": {
+      "n": 20,
+      "persistence": 0.142,
+      "pop-mean": 0.192,
+      "umean": 0.992,
+      "base": 1.292,
+      "peruser": 0.808
+    },
+    "p06": {
+      "n": 32,
+      "persistence": 0.651,
+      "pop-mean": 0.698,
+      "umean": 0.51,
+      "base": 1.141,
+      "peruser": 0.51
+    },
+    "p07": {
+      "n": 28,
+      "persistence": 0.452,
+      "pop-mean": 0.512,
+      "umean": 0.381,
+      "base": 1.31,
+      "peruser": 0.458
+    },
+    "p08": {
+      "n": 25,
+      "persistence": 0.78,
+      "pop-mean": 0.72,
+      "umean": 0.607,
+      "base": 1.093,
+      "peruser": 0.8
+    },
+    "p10": {
+      "n": 20,
+      "persistence": 0.783,
+      "pop-mean": 0.892,
+      "umean": 0.608,
+      "base": 1.617,
+      "peruser": 0.558
+    },
+    "p11": {
+      "n": 16,
+      "persistence": 0.532,
+      "pop-mean": 0.312,
+      "umean": 0.375,
+      "base": 1.073,
+      "peruser": 0.312
+    },
+    "p12": {
+      "n": 8,
+      "persistence": 0.75,
+      "pop-mean": 0.5,
+      "umean": 0.5,
+      "base": 0.938,
+      "peruser": 1.729
+    },
+    "p14": {
+      "n": 47,
+      "persistence": 0.326,
+      "pop-mean": 0.493,
+      "umean": 0.436,
+      "base": 0.908,
+      "peruser": 0.447
+    },
+    "p15": {
+      "n": 20,
+      "persistence": 0.708,
+      "pop-mean": 0.708,
+      "umean": 0.592,
+      "base": 0.883,
+      "peruser": 0.508
+    }
+  }
+}

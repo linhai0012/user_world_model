@@ -63,6 +63,16 @@ class VLLMQwenBackend:
     def _ids(self, text: str) -> list[int]:
         return self.tok(text, add_special_tokens=False)["input_ids"]
 
+    def generate(self, prompts: list[str], max_tokens: int = 64,
+                 temperature: float = 0.0) -> list[str]:
+        """Greedy free-form generation over already-templated prompt strings.
+        Reuses this backend's proven vLLM init (prefix caching makes a shared
+        system prompt cheap). Returns one decoded string per prompt.
+        Used by the Stage-1 generation evals (health next-state, edu next-turn)."""
+        sp = self._SP(temperature=temperature, max_tokens=max_tokens)
+        outs = self.llm.generate(prompts, sp)
+        return [o.outputs[0].text if o.outputs else "" for o in outs]
+
     def _prefix_and_full(self, context_messages, query, option_text):
         """Return (prefix_ids, full_ids). full = conversation + assistant(option+im_end);
         prefix = same up to the assistant-open. Scored tokens = full[len(prefix):]."""

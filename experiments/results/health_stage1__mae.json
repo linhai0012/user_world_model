@@ -28,6 +28,42 @@
       "soreness": 0.395,
       "stress": 0.395,
       "overall": 0.538
+    },
+    "base": {
+      "fatigue": 0.812,
+      "mood": 0.892,
+      "readiness": 2.389,
+      "sleep_quality": 0.71,
+      "soreness": 1.395,
+      "stress": 0.535,
+      "overall": 1.122
+    },
+    "+current": {
+      "fatigue": 1.124,
+      "mood": 0.86,
+      "readiness": 2.363,
+      "sleep_quality": 0.911,
+      "soreness": 1.264,
+      "stress": 1.038,
+      "overall": 1.26
+    },
+    "+profile": {
+      "fatigue": 1.006,
+      "mood": 0.869,
+      "readiness": 2.076,
+      "sleep_quality": 0.959,
+      "soreness": 0.99,
+      "stress": 0.946,
+      "overall": 1.141
+    },
+    "+current+prof": {
+      "fatigue": 0.981,
+      "mood": 0.812,
+      "readiness": 2.146,
+      "sleep_quality": 0.825,
+      "soreness": 1.041,
+      "stress": 1.013,
+      "overall": 1.136
     }
   },
   "persistence_overall": 0.544

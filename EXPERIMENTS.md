@@ -18,6 +18,58 @@ under one eval contract (`CONVENTIONS.md` §3 — accuracy + per-qtype).
 <!-- newest first; one entry per milestone. Mirror headline numbers from
      experiments/results/<run_id>__*.json; full data stays on cluster scratch. -->
 
+### 2026-06-20 — HEALTH Stage-1 cross-domain replication: frozen "see≠use" + per-user weights (state head)
+
+**Domain #2 (health) Stage-1 intrinsic-prediction**, same ablation skeleton as general
+(`project_summary.md` §6/§8.2), target = next-day wellness **state** (6 ordinal self-report
+fields; the real PMData self-report is the GT). Frozen Qwen3-4B-Instruct-2507 via vLLM 0.13 on
+1× H200; per-user LoRAs via HF SFT (sdpa), adapter-only (CONVENTIONS §2). Data:
+`$UWM_DATA/health/digitaltwin/output` — 1197 train / 314 test / 16 participants. Code:
+`common/health_data.py`, `common/health_peruser_data.py`, `scripts/{eval_health_stage1,
+train_health_peruser,eval_health_peruser}.py`. Results: `experiments/results/health_stage1__mae.json`,
+`health_peruser_{base,current}__mae.json`.
+
+**Frozen baselines (overall MAE vs next state; lower better; n=314):**
+
+| arm | MAE | Δ vs persistence |
+|---|---:|---:|
+| persistence (next = today) | **0.544** | — |
+| pop-mean | 0.538 | −0.006 |
+| frozen base (activity only) | 1.122 | +0.578 |
+| frozen +current (today's state in prompt) | 1.260 | +0.716 |
+| frozen +profile (baseline in prompt) | 1.141 | +0.597 |
+| frozen +current+prof | 1.136 | +0.592 |
+
+→ **Health replicates general's "see≠use":** a frozen LLM is ~2× worse than the trivial
+persistence baseline, and injected context does NOT help — **+current even HURTS** (the frozen
+model won't anchor on today's state). Conditioning a frozen base by prompting fails.
+
+**Per-user weights (LoRA per participant, 12 data-rich pids ≥39 train recs; pooled n=301):**
+
+| arm | base context | +current context |
+|---|---:|---:|
+| persistence | 0.532 | 0.532 |
+| per-user-mean lookup (control) | **0.521** | 0.521 |
+| frozen base | 1.112 | 1.262 |
+| **per-user LoRA** | 0.548 | **0.506** |
+
+**Findings:**
+1. **Per-user weights encode the user where frozen prompting cannot** — base-context per-user
+   (0.548) halves the frozen base (1.112) and recovers trivial-baseline performance from the
+   activity alone (user in weights, not prompt). Beats frozen base on 11/12 pids.
+2. **But naive base-context per-user just learns the user's MEAN** — it does NOT beat the trivial
+   per-user-mean lookup (0.548 > 0.521). The control is essential (cf. P-OPSD shared-LoRA / general
+   naive-per-user lessons): naive CE ≈ memorizing the level, no activity-conditioned dynamics.
+3. **`+current` per-user DOES capture dynamics and beats every trivial bar** (0.506 < umean 0.521
+   < persistence 0.532). The clean "see≠use, but train-to-use works": the frozen model got *worse*
+   with the current state (1.112→1.262), yet the LoRA *trained* with it gets *better* (0.548→0.506)
+   — training teaches the weights to exploit info the frozen model couldn't.
+4. **Caveats (honest):** margins are small (0.506/0.521/0.532 within 0.03 — the dataset has weak
+   day-to-day dynamics); the pooled +current win is partly driven by hyper-stable users (p05:
+   0.808→0.142 once it can anchor on today; umean 0.992 for p05); per-pid vs umean is mostly small,
+   winning where current-state anchoring matters. p12 (8 test/39 train) overfits at base context
+   (1.729), rescued by +current (0.542). reaction-text head + shared-LoRA null = next.
+
 ### 2026-06-17 — baseline harness live; dual-lens token-memory ablation on PersonaMem-v1 (pm32k)
 
 **What landed.** First runnable general-domain harness (`common/` shared lib + `baselines/`

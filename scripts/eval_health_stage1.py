@@ -28,33 +28,8 @@ from pathlib import Path
 REPO = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(REPO))
 
-from common.health_data import (FIELDS, HealthRecord, clamp, load_records,
-                                participant_baselines, render_state)
-
-CONDS = ["persistence", "pop-mean", "base", "+current", "+profile", "+current+prof"]
-SYS = ("You predict a specific user's NEXT-day wellness self-report after an activity. "
-       "Wellness fields are integers: fatigue 1-5, mood 1-5, readiness 1-10, sleep_quality 1-5, "
-       "soreness 1-5 (1=very sore,5=none), stress 1-5 (1=very stressed,5=very relaxed). "
-       "Output ONLY a JSON object with exactly these 6 integer fields.")
-
-
-def build_prompt(rec: HealthRecord, cond: str, baseline: dict) -> str:
-    lines = [f"Activity: {rec.activity} for {rec.duration_min:.0f} min."]
-    if cond in ("+profile", "+current+prof"):
-        lines.append(f"This user's typical wellness baseline: {render_state(baseline)}.")
-    if cond in ("+current", "+current+prof"):
-        lines.append(f"Today's wellness (before tomorrow): {render_state(rec.state_n)}.")
-    lines.append("Predict tomorrow's wellness as JSON "
-                 '{"fatigue":_,"mood":_,"readiness":_,"sleep_quality":_,"soreness":_,"stress":_}.')
-    return "\n".join(lines)
-
-
-def parse_state(text: str, fallback: dict) -> dict:
-    try:
-        start = text.index("{"); obj = json.loads(text[start:text.index("}", start) + 1])
-        return {f: clamp(f, int(round(float(obj[f])))) if f in obj else fallback[f] for f in FIELDS}
-    except (ValueError, KeyError, TypeError):
-        return dict(fallback)
+from common.health_data import (CONDS, FIELDS, SYS, build_prompt, load_records,
+                                parse_state, participant_baselines)
 
 
 def mae(preds: list[dict], golds: list[dict]) -> dict:
@@ -84,13 +59,13 @@ def main() -> None:
     llm_conds = [c for c in conds if c not in ("persistence", "pop-mean")]
     backend = None
     if llm_conds:
-        import os
-        os.environ.setdefault("VLLM_ATTENTION_BACKEND", "FLASH_ATTN")
-        from vllm import LLM, SamplingParams
-        backend = LLM(model="Qwen/Qwen3-4B-Instruct-2507", dtype="bfloat16",
-                      max_model_len=2048, gpu_memory_utilization=0.85)
-        tok = backend.get_tokenizer()
-        sp = SamplingParams(temperature=0.0, max_tokens=64)
+        # Reuse the proven MCQ backend init (CONVENTIONS §3): it sets the B200
+        # flash-attn env quirk before importing vllm and constructs LLM identically
+        # to the working scoring path. (The earlier raw LLM() "Device string must
+        # not be empty" was a no-GPU/login-node artifact — must run on a GPU node.)
+        from common.backends import VLLMQwenBackend
+        backend = VLLMQwenBackend(max_model_len=2048)
+        tok = backend.tok
 
     results = {}
     for cond in conds:
@@ -104,8 +79,8 @@ def main() -> None:
                 [{"role": "system", "content": SYS},
                  {"role": "user", "content": build_prompt(r, cond, baselines.get(r.pid, pop_mean))}],
                 tokenize=False, add_generation_prompt=True) for r in test]
-            outs = backend.generate(prompts, sp)
-            preds = [parse_state(o.outputs[0].text, test[i].state_n) for i, o in enumerate(outs)]
+            texts = backend.generate(prompts, max_tokens=64)
+            preds = [parse_state(texts[i], test[i].state_n) for i in range(len(test))]
         m = mae(preds, golds)
         results[cond] = m
         print(f"[health] {cond:14s} overall_MAE={m['overall']}  ({time.time()-t0:.1f}s)", flush=True)
