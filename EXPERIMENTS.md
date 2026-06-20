@@ -130,7 +130,14 @@ model won't anchor on today's state). Conditioning a frozen base by prompting fa
    stress (0.326) are near-constant** and the model does NOT help (slightly *hurts* stress
    0.326→0.405). So the modest overall gain is essentially "predict readiness/sleep change a bit
    better"; the stable fields offer no headroom.
-7. **Reaction-text head (health's 2nd UWM head; frozen NLL of the first-person reaction, n=314):**
+7. **Shared-LoRA ablation grid (pooled MAE, the population model at each cond):** base 0.537 →
+   +profile 0.518 → **+current 0.499** → +current+prof 0.508. The **current state is the useful
+   conditioning** (−0.038); the structured **profile adds little alone (−0.019) and nothing on top
+   of current** (+current+prof 0.508 > +current 0.499) — the baseline profile is redundant with
+   today's state for predicting tomorrow. Best health model overall = shared+current 0.499.
+   Results: `health_shared_{profile,currentprof}__mae.json`. (Per-user grid not run — shared-null
+   showed personalization doesn't help, so the grid is only meaningful at the population level.)
+8. **Reaction-text head (health's 2nd UWM head; frozen NLL of the first-person reaction, n=314):**
    base 4.193 → +current 4.094 (−0.099) → **+profile 4.009 (−0.184)** → +current+prof 4.084.
    Unlike the state head (+current HURT), for the free-text reaction head context HELPS modestly
    (profile most) — consistent with the cross-domain pattern that context aids text generation but
