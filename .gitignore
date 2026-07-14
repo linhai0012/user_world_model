@@ -48,11 +48,14 @@ api_key*.txt
 *.token
 .env.local
 
-# NOTE on outputs/:
-#   outputs/ is intentionally NOT in this gitignore — it holds eval
-#   result JSONs and review xlsx that are committed reference results
-#   (not training artifacts). New eval runs should write to scratch by
-#   default and only commit small JSONs that document headline numbers.
+# Concurrency coordination state (ephemeral shared-tree locks — CONVENTIONS.md §4)
+.uwm/
+
+# NOTE on committed results:
+#   The prior prototype's reference results live under
+#   legacy/general_personamem/outputs/ (committed). New runs write large
+#   artifacts to scratch (CONVENTIONS.md §2); only small headline JSONs under
+#   experiments/results/ are committed.
 
 # Claude Code local config
 .claude/

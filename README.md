@@ -21,8 +21,10 @@ cold-start fast-init or by online streaming learning.
 
 ```
 project_summary.md          framework spec (read this first)
+CONVENTIONS.md              operational conventions (naming / storage / code / concurrency)
 docs/                       discussion deck (html) + reference papers
 data/education/             private KCL course tutor-chat data
+common/ baselines/ experiments/ scripts/   active general-domain build (baselines + run registry)
 legacy/general_personamem/  archived general-domain OPD/OPSD prototype
 legacy/health_digitaltwin/  reusable code imported from LLM-based-Digital-Twins
 ```
