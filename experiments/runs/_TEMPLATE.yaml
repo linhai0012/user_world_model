@@ -1,0 +1,16 @@
+# Run STATUS template — copy to experiments/runs/<run_id>.yaml.
+# ONE FILE PER RUN = the task board (merge-safe). See CONVENTIONS.md §1, §4.
+
+run_id: bl__oracle__qwen3-4b__pm128k
+status: planned        # planned -> claimed -> running -> done | failed
+owner: ""              # node / session / pid (set when claimed)
+method: oracle
+model: qwen3-4b
+bench: pm128k
+gpu: ""                # e.g. H200
+started: ""            # UTC ISO8601
+finished: ""
+scratch_path: ${UWM_RUNS}/bl__oracle__qwen3-4b__pm128k
+acc: ""                # headline accuracy (set on done)
+results: ""            # path to experiments/results/<run_id>__acc.json
+notes: ""

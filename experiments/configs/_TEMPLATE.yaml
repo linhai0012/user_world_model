@@ -1,0 +1,22 @@
+# Run CONFIG template — copy to experiments/configs/<run_id>.yaml and fill.
+# Fully specifies a run so it is reproducible. See CONVENTIONS.md §1, §3.
+
+run_id: bl__oracle__qwen3-4b__pm128k   # {family}__{method}__{model}__{bench}[__{variant}]
+family: bl                              # bl | ours | probe
+method: oracle                          # oracle | trivial | fluxmem | mem0 | zep | amem | naiverag
+model: qwen3-4b                         # qwen3-4b | gpt41
+bench: pm128k                           # pm32k | pm128k | pm1m | locomo
+variant: null
+
+# --- backend (only the chosen model's block is used) ---
+backend:
+  qwen3-4b: {served_by: vllm, dtype: bfloat16, temperature: 0.0}
+  # gpt41:  {api: openai, model: gpt-4.1, temperature: 0.0}
+
+params: {}                              # method-specific knobs (e.g. retrieval top_k)
+seed: 0
+
+# --- eval contract (CONVENTIONS.md §3) ---
+metric: acc                             # primary metric = accuracy
+report_by_qtype: true                   # always report the 7 PersonaMem categories
+data_dir: ${UWM_DATA}/personamem        # resolved from scripts/env.sh at runtime
