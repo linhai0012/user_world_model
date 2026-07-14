@@ -1,0 +1,85 @@
+{
+  "bundle_id": "cue-param-sample-2026-06-16a",
+  "base_model": "Qwen3-4B-Instruct-2507",
+  "subject_ids": [
+    "biology_gcse"
+  ],
+  "created_offline": "2026-06-16",
+  "lora_recipe": {
+    "slow_mlp_r": 32,
+    "fast_attn_r": 16,
+    "objective": "user_turn_response"
+  },
+  "raw_completion": true,
+  "calibration": {
+    "method": "isotonic",
+    "fit_on": "held_out_calib_split"
+  },
+  "training": {
+    "objective_detail": "direct SFT (no teacher) on observed answers",
+    "note": "SAMPLE bundle — synthetic numbers; real bundle from the GPU rig"
+  },
+  "persona_set": "cue-personas-v1-sample",
+  "round_sequence": {
+    "seed": 42,
+    "personas": {
+      "persona_07": {
+        "subject_id": "biology_gcse",
+        "rounds": [
+          "biology_gcse__bioenergetics__photosynthesis#q9",
+          "biology_gcse__organisation__digestion#q7",
+          "biology_gcse__bioenergetics__photosynthesis#q8",
+          "biology_gcse__cell_biology__osmosis#q3",
+          "biology_gcse__organisation__enzymes#q6",
+          "biology_gcse__cell_biology__osmosis#q2",
+          "biology_gcse__cell_biology__diffusion#q1",
+          "biology_gcse__organisation__enzymes#q5",
+          "biology_gcse__bioenergetics__aerobic_respiration#q11",
+          "biology_gcse__cell_biology__cell_structure#q0",
+          "biology_gcse__cell_biology__active_transport#q4",
+          "biology_gcse__bioenergetics__limiting_factors#q10"
+        ]
+      },
+      "persona_12": {
+        "subject_id": "biology_gcse",
+        "rounds": [
+          "biology_gcse__bioenergetics__aerobic_respiration#q11",
+          "biology_gcse__organisation__enzymes#q6",
+          "biology_gcse__organisation__digestion#q7",
+          "biology_gcse__cell_biology__diffusion#q1",
+          "biology_gcse__cell_biology__osmosis#q2",
+          "biology_gcse__cell_biology__cell_structure#q0",
+          "biology_gcse__organisation__enzymes#q5",
+          "biology_gcse__cell_biology__osmosis#q3",
+          "biology_gcse__bioenergetics__photosynthesis#q8",
+          "biology_gcse__bioenergetics__limiting_factors#q10",
+          "biology_gcse__cell_biology__active_transport#q4",
+          "biology_gcse__bioenergetics__photosynthesis#q9"
+        ]
+      },
+      "persona_19": {
+        "subject_id": "biology_gcse",
+        "rounds": [
+          "biology_gcse__organisation__enzymes#q6",
+          "biology_gcse__bioenergetics__photosynthesis#q8",
+          "biology_gcse__cell_biology__osmosis#q2",
+          "biology_gcse__cell_biology__osmosis#q3",
+          "biology_gcse__organisation__digestion#q7",
+          "biology_gcse__bioenergetics__limiting_factors#q10",
+          "biology_gcse__cell_biology__active_transport#q4",
+          "biology_gcse__bioenergetics__photosynthesis#q9",
+          "biology_gcse__cell_biology__diffusion#q1",
+          "biology_gcse__cell_biology__cell_structure#q0",
+          "biology_gcse__bioenergetics__aerobic_respiration#q11",
+          "biology_gcse__organisation__enzymes#q5"
+        ]
+      }
+    }
+  },
+  "snapshots": [
+    0,
+    5,
+    10,
+    20
+  ]
+}

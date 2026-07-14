@@ -1,0 +1,7 @@
+{
+  "train_s_per_snapshot": 95,
+  "infer_ms_per_item": 120,
+  "gpu": "1xA100-80GB",
+  "total_train_s": 1140,
+  "note": "SAMPLE — placeholder timings; real numbers measured on the rig"
+}

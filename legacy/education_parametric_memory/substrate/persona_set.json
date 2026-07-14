@@ -1,0 +1,1225 @@
+{
+  "persona_set": "cue-personas-v1",
+  "seed": 7,
+  "snapshots": [
+    0,
+    13,
+    26,
+    52,
+    104
+  ],
+  "personas": [
+    {
+      "pid": "persona_00",
+      "ability": -0.6007302099296992,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": 0.44995580852086514,
+        "biology_gcse__cell_biology": 0.11097478433163267,
+        "biology_gcse__organisation": 0.6650678104286036
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": 0.2380985572055917,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.0911558033434921,
+        "biology_gcse__bioenergetics__limiting_factors": 0.05122622396568247,
+        "biology_gcse__bioenergetics__photosynthesis": -0.1535098826935362,
+        "biology_gcse__cell_biology__active_transport": 0.07554692007012977,
+        "biology_gcse__cell_biology__cell_structure": 0.015082637539501897,
+        "biology_gcse__cell_biology__diffusion": -0.10792297132990017,
+        "biology_gcse__cell_biology__mitosis": 0.09445571535940489,
+        "biology_gcse__cell_biology__osmosis": -0.0792757735219775,
+        "biology_gcse__organisation__blood_vessels": -0.037096389907280994,
+        "biology_gcse__organisation__digestion": -0.038828252043833555,
+        "biology_gcse__organisation__enzymes": 0.12317881265357107,
+        "biology_gcse__organisation__the_heart": -0.3408325431401883
+      },
+      "held": {
+        "biology_gcse__bioenergetics__aerobic_respiration": {
+          "tag": "assumes anaerobic respiration because heat is produced, ignoring that the sealed air still contains oxygen",
+          "strength": 0.613
+        },
+        "biology_gcse__bioenergetics__anaerobic_respiration": {
+          "tag": "describes aerobic respiration / thinks anaerobic respiration still takes in oxygen",
+          "strength": 0.583
+        },
+        "biology_gcse__bioenergetics__photosynthesis": {
+          "tag": "thinks control variables are about maximising the rate rather than fair testing",
+          "strength": 0.864
+        },
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "confuses active transport with osmosis",
+          "strength": 0.703
+        },
+        "biology_gcse__cell_biology__cell_structure": {
+          "tag": "thinks mitochondria are only in animal cells because animals are more active",
+          "strength": 0.852
+        },
+        "biology_gcse__cell_biology__diffusion": {
+          "tag": "thinks diffusion cannot occur in air/across membranes on land",
+          "strength": 0.648
+        },
+        "biology_gcse__cell_biology__mitosis": {
+          "tag": "thinks the cytoplasm splits before DNA is copied",
+          "strength": 0.592
+        },
+        "biology_gcse__cell_biology__osmosis": {
+          "tag": "thinks the membrane actively selects molecules using energy",
+          "strength": 0.656
+        },
+        "biology_gcse__organisation__the_heart": {
+          "tag": "thinks the right ventricle pumps to the body via the aorta; confuses left and right sides",
+          "strength": 0.579
+        }
+      }
+    },
+    {
+      "pid": "persona_01",
+      "ability": 0.9759096967135454,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": 0.32541807908827736,
+        "biology_gcse__cell_biology": -0.2891650809071733,
+        "biology_gcse__organisation": -0.44414292693697655
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": -0.121540808222107,
+        "biology_gcse__bioenergetics__anaerobic_respiration": -0.26842043936546894,
+        "biology_gcse__bioenergetics__limiting_factors": -0.03392660961021252,
+        "biology_gcse__bioenergetics__photosynthesis": -0.18485795051041193,
+        "biology_gcse__cell_biology__active_transport": -0.08498793543309764,
+        "biology_gcse__cell_biology__cell_structure": -0.11765283368866707,
+        "biology_gcse__cell_biology__diffusion": -0.07834862467353794,
+        "biology_gcse__cell_biology__mitosis": -0.14586616286338125,
+        "biology_gcse__cell_biology__osmosis": 0.02591476749427754,
+        "biology_gcse__organisation__blood_vessels": 0.37427497672729754,
+        "biology_gcse__organisation__digestion": -0.11129268709472613,
+        "biology_gcse__organisation__enzymes": -0.40201853293190526,
+        "biology_gcse__organisation__the_heart": -0.07309735540478561
+      },
+      "held": {
+        "biology_gcse__bioenergetics__anaerobic_respiration": {
+          "tag": "thinks respiration must involve oxygen to count as respiration",
+          "strength": 0.645
+        },
+        "biology_gcse__bioenergetics__limiting_factors": {
+          "tag": "thinks the heat shield provides CO2 to the plant",
+          "strength": 0.69
+        },
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "thinks high oxygen switches the process to diffusion",
+          "strength": 0.564
+        },
+        "biology_gcse__cell_biology__cell_structure": {
+          "tag": "thinks bacterial cells contain a large permanent vacuole like plant cells",
+          "strength": 0.639
+        },
+        "biology_gcse__organisation__blood_vessels": {
+          "tag": "places capillaries after veins instead of between artery and vein",
+          "strength": 0.651
+        },
+        "biology_gcse__organisation__digestion": {
+          "tag": "thinks enzymes supply energy rather than lower activation energy",
+          "strength": 0.597
+        }
+      }
+    },
+    {
+      "pid": "persona_02",
+      "ability": -1.6904838974393952,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": -0.24192147855322377,
+        "biology_gcse__cell_biology": 0.6608227908343679,
+        "biology_gcse__organisation": -0.5081075981831669
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": -0.0842406625078976,
+        "biology_gcse__bioenergetics__anaerobic_respiration": -0.1455566011717276,
+        "biology_gcse__bioenergetics__limiting_factors": 0.15900930171178773,
+        "biology_gcse__bioenergetics__photosynthesis": -0.383705033749462,
+        "biology_gcse__cell_biology__active_transport": -0.013212714869425725,
+        "biology_gcse__cell_biology__cell_structure": 0.06810020738642115,
+        "biology_gcse__cell_biology__diffusion": -0.12188119568761335,
+        "biology_gcse__cell_biology__mitosis": 0.2831193228120325,
+        "biology_gcse__cell_biology__osmosis": -0.3480889455137079,
+        "biology_gcse__organisation__blood_vessels": -0.024241691840291294,
+        "biology_gcse__organisation__digestion": -0.14512939771098776,
+        "biology_gcse__organisation__enzymes": 0.12813371882363422,
+        "biology_gcse__organisation__the_heart": -0.06350240083949538
+      },
+      "held": {
+        "biology_gcse__bioenergetics__aerobic_respiration": {
+          "tag": "thinks oxygen is produced and energy is spent making it",
+          "strength": 0.726
+        },
+        "biology_gcse__bioenergetics__anaerobic_respiration": {
+          "tag": "misplaces the site of respiration / confuses with location of DNA",
+          "strength": 0.702
+        },
+        "biology_gcse__bioenergetics__limiting_factors": {
+          "tag": "thinks warmth creates additional CO2 supply rather than speeding enzyme-controlled reactions",
+          "strength": 0.751
+        },
+        "biology_gcse__bioenergetics__photosynthesis": {
+          "tag": "thinks 'making your own food' means no external energy is needed",
+          "strength": 0.739
+        },
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "thinks active transport happens automatically in living cells without energy cost",
+          "strength": 0.738
+        },
+        "biology_gcse__cell_biology__cell_structure": {
+          "tag": "thinks magnification physically enlarges the specimen",
+          "strength": 0.702
+        },
+        "biology_gcse__cell_biology__mitosis": {
+          "tag": "thinks DNA replication happens after division, not before",
+          "strength": 0.574
+        },
+        "biology_gcse__cell_biology__osmosis": {
+          "tag": "thinks osmosis requires energy / is active transport",
+          "strength": 0.694
+        },
+        "biology_gcse__organisation__blood_vessels": {
+          "tag": "confuses a permeable wall with backflow control by valves",
+          "strength": 0.643
+        },
+        "biology_gcse__organisation__digestion": {
+          "tag": "confuses protein products with carbohydrate products",
+          "strength": 0.768
+        },
+        "biology_gcse__organisation__enzymes": {
+          "tag": "thinks enzymes are consumed/used up in the reaction like a reactant",
+          "strength": 0.867
+        },
+        "biology_gcse__organisation__the_heart": {
+          "tag": "thinks valves regulate flow rate rather than enforce one-way flow",
+          "strength": 0.754
+        }
+      }
+    },
+    {
+      "pid": "persona_03",
+      "ability": -0.4184659656032993,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": -0.2390399923474189,
+        "biology_gcse__cell_biology": 0.22666399417671745,
+        "biology_gcse__organisation": -0.06572006146101136
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": -0.30193442663949566,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.25815092795058375,
+        "biology_gcse__bioenergetics__limiting_factors": 0.41005733184089266,
+        "biology_gcse__bioenergetics__photosynthesis": 0.4415741632708713,
+        "biology_gcse__cell_biology__active_transport": -0.15329389994639042,
+        "biology_gcse__cell_biology__cell_structure": -0.09855073595313635,
+        "biology_gcse__cell_biology__diffusion": 0.36005751903064215,
+        "biology_gcse__cell_biology__mitosis": 0.2468191618655932,
+        "biology_gcse__cell_biology__osmosis": 0.6191232270332068,
+        "biology_gcse__organisation__blood_vessels": 0.38772791104238674,
+        "biology_gcse__organisation__digestion": -0.3548262381512839,
+        "biology_gcse__organisation__enzymes": -0.38879713631614304,
+        "biology_gcse__organisation__the_heart": 0.1571703813565961
+      },
+      "held": {
+        "biology_gcse__bioenergetics__aerobic_respiration": {
+          "tag": "thinks respiration is one big reaction rather than many small steps",
+          "strength": 0.704
+        },
+        "biology_gcse__bioenergetics__anaerobic_respiration": {
+          "tag": "attributes lower yield to speed rather than incomplete breakdown",
+          "strength": 0.774
+        },
+        "biology_gcse__bioenergetics__limiting_factors": {
+          "tag": "muddles the gases of respiration and photosynthesis",
+          "strength": 0.859
+        },
+        "biology_gcse__bioenergetics__photosynthesis": {
+          "tag": "thinks 'making your own food' means no external energy is needed",
+          "strength": 0.573
+        },
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "reverses the concentration gradient direction; describes facilitated diffusion but adds energy",
+          "strength": 0.67
+        },
+        "biology_gcse__cell_biology__cell_structure": {
+          "tag": "confuses a specialised cell with a stem cell",
+          "strength": 0.875
+        },
+        "biology_gcse__cell_biology__diffusion": {
+          "tag": "considers total surface area but ignores volume / surface area to volume ratio",
+          "strength": 0.709
+        },
+        "biology_gcse__organisation__enzymes": {
+          "tag": "attributes a pH effect to temperature instead",
+          "strength": 0.84
+        }
+      }
+    },
+    {
+      "pid": "persona_04",
+      "ability": 0.4315920099981967,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": 0.21827551875304924,
+        "biology_gcse__cell_biology": 0.15695001287155677,
+        "biology_gcse__organisation": -0.34728360437813843
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": 0.02862707176750165,
+        "biology_gcse__bioenergetics__anaerobic_respiration": -0.07483363858610613,
+        "biology_gcse__bioenergetics__limiting_factors": 0.258073542828114,
+        "biology_gcse__bioenergetics__photosynthesis": -0.39117258400916777,
+        "biology_gcse__cell_biology__active_transport": -0.07853679644840711,
+        "biology_gcse__cell_biology__cell_structure": 0.2831279271315234,
+        "biology_gcse__cell_biology__diffusion": 0.0015811046251282658,
+        "biology_gcse__cell_biology__mitosis": 0.5205671604546973,
+        "biology_gcse__cell_biology__osmosis": -0.2773286991360219,
+        "biology_gcse__organisation__blood_vessels": 0.11053510733131816,
+        "biology_gcse__organisation__digestion": 0.01643024790753017,
+        "biology_gcse__organisation__enzymes": 0.31836538382701285,
+        "biology_gcse__organisation__the_heart": 0.1686720420438935
+      },
+      "held": {
+        "biology_gcse__bioenergetics__limiting_factors": {
+          "tag": "overcorrects and denies that light affects rate",
+          "strength": 0.618
+        },
+        "biology_gcse__cell_biology__mitosis": {
+          "tag": "thinks a low proportion in mitosis means cells are unhealthy/dying",
+          "strength": 0.84
+        },
+        "biology_gcse__cell_biology__osmosis": {
+          "tag": "attributes osmotic mass loss to respiration",
+          "strength": 0.736
+        },
+        "biology_gcse__organisation__the_heart": {
+          "tag": "thinks valves regulate flow rate rather than enforce one-way flow",
+          "strength": 0.736
+        }
+      }
+    },
+    {
+      "pid": "persona_05",
+      "ability": -1.005421220271066,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": 0.2430679620044121,
+        "biology_gcse__cell_biology": 0.8253112164711963,
+        "biology_gcse__organisation": 0.3109267389411793
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": 0.15665218707872236,
+        "biology_gcse__bioenergetics__anaerobic_respiration": -0.030887101384999185,
+        "biology_gcse__bioenergetics__limiting_factors": -0.06392228081405307,
+        "biology_gcse__bioenergetics__photosynthesis": 0.16076354470098406,
+        "biology_gcse__cell_biology__active_transport": -0.14161305809841832,
+        "biology_gcse__cell_biology__cell_structure": -0.04617845101105613,
+        "biology_gcse__cell_biology__diffusion": 0.1228200165940741,
+        "biology_gcse__cell_biology__mitosis": -0.48221342959119745,
+        "biology_gcse__cell_biology__osmosis": -0.13401187358258182,
+        "biology_gcse__organisation__blood_vessels": 0.029473128345019514,
+        "biology_gcse__organisation__digestion": -0.048056791280943006,
+        "biology_gcse__organisation__enzymes": 0.09997722135563629,
+        "biology_gcse__organisation__the_heart": -0.18230079322151072
+      },
+      "held": {
+        "biology_gcse__bioenergetics__aerobic_respiration": {
+          "tag": "thinks aerobic respiration produces lactic acid",
+          "strength": 0.561
+        },
+        "biology_gcse__bioenergetics__anaerobic_respiration": {
+          "tag": "thinks aerobic and anaerobic respiration cannot occur at the same time / aerobic stops entirely",
+          "strength": 0.857
+        },
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "thinks active transport is passive and requires no energy",
+          "strength": 0.666
+        },
+        "biology_gcse__cell_biology__cell_structure": {
+          "tag": "thinks the nucleus controls movement of substances because it 'controls the cell'",
+          "strength": 0.897
+        },
+        "biology_gcse__cell_biology__diffusion": {
+          "tag": "thinks gases cannot diffuse across the cell membrane",
+          "strength": 0.643
+        },
+        "biology_gcse__cell_biology__osmosis": {
+          "tag": "applies solute-diffusion direction (high to low solute) to water",
+          "strength": 0.735
+        },
+        "biology_gcse__organisation__blood_vessels": {
+          "tag": "thinks veins carry high-pressure blood from the heart",
+          "strength": 0.791
+        },
+        "biology_gcse__organisation__enzymes": {
+          "tag": "thinks one enzyme can adapt to bind many different substrates",
+          "strength": 0.862
+        },
+        "biology_gcse__organisation__the_heart": {
+          "tag": "thinks any vessel carrying deoxygenated blood must be a vein",
+          "strength": 0.616
+        }
+      }
+    },
+    {
+      "pid": "persona_06",
+      "ability": -0.2158068108917358,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": 0.09926579965494539,
+        "biology_gcse__cell_biology": 0.6507091297353971,
+        "biology_gcse__organisation": 0.0268026039023193
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": 0.14565921308653662,
+        "biology_gcse__bioenergetics__anaerobic_respiration": -0.007014825328924707,
+        "biology_gcse__bioenergetics__limiting_factors": 0.024559582075710767,
+        "biology_gcse__bioenergetics__photosynthesis": 0.1906601012752999,
+        "biology_gcse__cell_biology__active_transport": 0.09840008265832609,
+        "biology_gcse__cell_biology__cell_structure": -0.14296640394262206,
+        "biology_gcse__cell_biology__diffusion": -0.07165276323772976,
+        "biology_gcse__cell_biology__mitosis": -0.20912786769602248,
+        "biology_gcse__cell_biology__osmosis": -0.0811648346096089,
+        "biology_gcse__organisation__blood_vessels": -0.0646588583727746,
+        "biology_gcse__organisation__digestion": 0.16104695385242612,
+        "biology_gcse__organisation__enzymes": 0.015221114218341101,
+        "biology_gcse__organisation__the_heart": 0.13081167538446775
+      },
+      "held": {
+        "biology_gcse__bioenergetics__aerobic_respiration": {
+          "tag": "thinks respiration releases oxygen rather than using it",
+          "strength": 0.735
+        },
+        "biology_gcse__bioenergetics__anaerobic_respiration": {
+          "tag": "thinks anaerobic respiration is more efficient per glucose",
+          "strength": 0.583
+        },
+        "biology_gcse__bioenergetics__photosynthesis": {
+          "tag": "assigns the gas-release role to chlorophyll",
+          "strength": 0.856
+        },
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "thinks active transport is directly powered by light, confusing with photosynthesis",
+          "strength": 0.768
+        },
+        "biology_gcse__cell_biology__mitosis": {
+          "tag": "thinks daughter cells differ genetically from the parent",
+          "strength": 0.825
+        }
+      }
+    },
+    {
+      "pid": "persona_07",
+      "ability": -1.1276634782911232,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": -0.3306858219007061,
+        "biology_gcse__cell_biology": -0.7573482965635067,
+        "biology_gcse__organisation": -0.16391318227258034
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": -0.06832288168433741,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.09218848223917459,
+        "biology_gcse__bioenergetics__limiting_factors": -0.3615129002005092,
+        "biology_gcse__bioenergetics__photosynthesis": -0.40582131059814536,
+        "biology_gcse__cell_biology__active_transport": 0.19625442500596893,
+        "biology_gcse__cell_biology__cell_structure": 0.36634427516610474,
+        "biology_gcse__cell_biology__diffusion": -0.15354448277943508,
+        "biology_gcse__cell_biology__mitosis": -0.16439507556806102,
+        "biology_gcse__cell_biology__osmosis": 0.21775952229277054,
+        "biology_gcse__organisation__blood_vessels": 0.03643561416140258,
+        "biology_gcse__organisation__digestion": 0.14844111594973028,
+        "biology_gcse__organisation__enzymes": 0.07703237076058728,
+        "biology_gcse__organisation__the_heart": -0.43529490990741987
+      },
+      "held": {
+        "biology_gcse__bioenergetics__aerobic_respiration": {
+          "tag": "thinks enzymes slow reactions rather than act as catalysts",
+          "strength": 0.722
+        },
+        "biology_gcse__bioenergetics__anaerobic_respiration": {
+          "tag": "thinks oxygen is produced by respiring yeast",
+          "strength": 0.865
+        },
+        "biology_gcse__bioenergetics__photosynthesis": {
+          "tag": "confuses the purpose of controls with speeding up the procedure",
+          "strength": 0.809
+        },
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "thinks respiration creates the gradient rather than supplying energy to move against it",
+          "strength": 0.574
+        },
+        "biology_gcse__cell_biology__cell_structure": {
+          "tag": "confuses the role of mitochondria with that of the nucleus",
+          "strength": 0.846
+        },
+        "biology_gcse__cell_biology__diffusion": {
+          "tag": "thinks reducing surface area speeds up diffusion",
+          "strength": 0.606
+        },
+        "biology_gcse__cell_biology__mitosis": {
+          "tag": "thinks daughter cells keep the doubled amount instead of it being shared between two cells",
+          "strength": 0.834
+        },
+        "biology_gcse__organisation__blood_vessels": {
+          "tag": "thinks capillaries are blood-storage vessels",
+          "strength": 0.678
+        },
+        "biology_gcse__organisation__digestion": {
+          "tag": "confuses lipid products with protein products",
+          "strength": 0.881
+        },
+        "biology_gcse__organisation__enzymes": {
+          "tag": "knows the substrate is lipid but assigns protein products",
+          "strength": 0.558
+        },
+        "biology_gcse__organisation__the_heart": {
+          "tag": "confuses a coronary artery blockage with a gas-exchange problem in the lungs",
+          "strength": 0.817
+        }
+      }
+    },
+    {
+      "pid": "persona_08",
+      "ability": 0.08303637702798913,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": -0.8809126048667961,
+        "biology_gcse__cell_biology": 0.3257440211864593,
+        "biology_gcse__organisation": -0.3147513036441944
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": -0.10989457797516343,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.03560209297703691,
+        "biology_gcse__bioenergetics__limiting_factors": 0.06228835677045879,
+        "biology_gcse__bioenergetics__photosynthesis": -0.0070770284208506425,
+        "biology_gcse__cell_biology__active_transport": -0.06298585894412853,
+        "biology_gcse__cell_biology__cell_structure": -0.09243204886477745,
+        "biology_gcse__cell_biology__diffusion": -0.12528008137740473,
+        "biology_gcse__cell_biology__mitosis": 0.28077339777950305,
+        "biology_gcse__cell_biology__osmosis": -0.35565141914458676,
+        "biology_gcse__organisation__blood_vessels": -0.034496242550134386,
+        "biology_gcse__organisation__digestion": -0.08518991632386275,
+        "biology_gcse__organisation__enzymes": 0.0676670516534509,
+        "biology_gcse__organisation__the_heart": 0.17845291347692402
+      },
+      "held": {
+        "biology_gcse__bioenergetics__aerobic_respiration": {
+          "tag": "thinks oxygen is produced and energy is spent making it",
+          "strength": 0.61
+        },
+        "biology_gcse__bioenergetics__photosynthesis": {
+          "tag": "confuses a temperature effect with a light-intensity effect",
+          "strength": 0.873
+        },
+        "biology_gcse__organisation__enzymes": {
+          "tag": "thinks heat increases rate by enlarging the enzyme rather than increasing collisions",
+          "strength": 0.838
+        },
+        "biology_gcse__organisation__the_heart": {
+          "tag": "confuses a coronary artery blockage with a gas-exchange problem in the lungs",
+          "strength": 0.857
+        }
+      }
+    },
+    {
+      "pid": "persona_09",
+      "ability": -1.1723787533426901,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": 0.9908096293785837,
+        "biology_gcse__cell_biology": -1.217907103232316,
+        "biology_gcse__organisation": 0.9852591454232282
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": -0.46300936474078136,
+        "biology_gcse__bioenergetics__anaerobic_respiration": -0.21360745394510416,
+        "biology_gcse__bioenergetics__limiting_factors": 0.20409867582111604,
+        "biology_gcse__bioenergetics__photosynthesis": 0.007947767394481128,
+        "biology_gcse__cell_biology__active_transport": -0.14405605558738932,
+        "biology_gcse__cell_biology__cell_structure": 0.10802103444239208,
+        "biology_gcse__cell_biology__diffusion": 0.24616649198671148,
+        "biology_gcse__cell_biology__mitosis": 0.29885055824687823,
+        "biology_gcse__cell_biology__osmosis": -0.17914518574630012,
+        "biology_gcse__organisation__blood_vessels": 0.3622370886611736,
+        "biology_gcse__organisation__digestion": -0.16431221851690225,
+        "biology_gcse__organisation__enzymes": 0.048911424965993364,
+        "biology_gcse__organisation__the_heart": -0.02747182484253105
+      },
+      "held": {
+        "biology_gcse__bioenergetics__aerobic_respiration": {
+          "tag": "thinks aerobic respiration produces lactic acid",
+          "strength": 0.81
+        },
+        "biology_gcse__bioenergetics__anaerobic_respiration": {
+          "tag": "applies animal anaerobic product to yeast and to gas production",
+          "strength": 0.552
+        },
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "thinks oxygen reduces transport, not realising it supports respiration",
+          "strength": 0.898
+        },
+        "biology_gcse__cell_biology__mitosis": {
+          "tag": "thinks each round of division produces only one extra cell",
+          "strength": 0.88
+        },
+        "biology_gcse__cell_biology__osmosis": {
+          "tag": "swaps which process uses energy",
+          "strength": 0.897
+        },
+        "biology_gcse__organisation__blood_vessels": {
+          "tag": "defines arteries/veins by oxygenation rather than direction of flow",
+          "strength": 0.855
+        },
+        "biology_gcse__organisation__digestion": {
+          "tag": "confuses the lipid test result with the starch test",
+          "strength": 0.895
+        }
+      }
+    },
+    {
+      "pid": "persona_10",
+      "ability": 0.6276795456179686,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": -0.08367989694621981,
+        "biology_gcse__cell_biology": 0.4651529404822678,
+        "biology_gcse__organisation": -0.14781800630706154
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": -0.19210780059910212,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.4564408785263727,
+        "biology_gcse__bioenergetics__limiting_factors": 0.15152533743868773,
+        "biology_gcse__bioenergetics__photosynthesis": 0.12539812628251076,
+        "biology_gcse__cell_biology__active_transport": -0.2693605840040149,
+        "biology_gcse__cell_biology__cell_structure": -0.34713831393349004,
+        "biology_gcse__cell_biology__diffusion": 0.15400433312604478,
+        "biology_gcse__cell_biology__mitosis": 0.014973470413586088,
+        "biology_gcse__cell_biology__osmosis": -0.01403906871214174,
+        "biology_gcse__organisation__blood_vessels": -0.31221087191070795,
+        "biology_gcse__organisation__digestion": 0.16454331755386217,
+        "biology_gcse__organisation__enzymes": 0.09381009876445943,
+        "biology_gcse__organisation__the_heart": -0.12781315846609295
+      },
+      "held": {
+        "biology_gcse__bioenergetics__limiting_factors": {
+          "tag": "thinks the heat shield provides CO2 to the plant",
+          "strength": 0.73
+        },
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "thinks waterlogging increases active transport rather than limiting it",
+          "strength": 0.862
+        },
+        "biology_gcse__cell_biology__osmosis": {
+          "tag": "attributes osmotic mass change to thermal expansion",
+          "strength": 0.677
+        }
+      }
+    },
+    {
+      "pid": "persona_11",
+      "ability": 1.34489111677428,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": -0.15117450937113797,
+        "biology_gcse__cell_biology": -0.4165415965588178,
+        "biology_gcse__organisation": -0.6031400661736507
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": 0.0712474976548838,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.1956022113125143,
+        "biology_gcse__bioenergetics__limiting_factors": 0.19673765713188876,
+        "biology_gcse__bioenergetics__photosynthesis": -0.307089779137492,
+        "biology_gcse__cell_biology__active_transport": -0.16151260645770407,
+        "biology_gcse__cell_biology__cell_structure": -0.19572502417556892,
+        "biology_gcse__cell_biology__diffusion": -0.08479285724374688,
+        "biology_gcse__cell_biology__mitosis": 0.11542388045024457,
+        "biology_gcse__cell_biology__osmosis": 0.3019066760642904,
+        "biology_gcse__organisation__blood_vessels": -0.010575856743948814,
+        "biology_gcse__organisation__digestion": 0.3080965723405297,
+        "biology_gcse__organisation__enzymes": -0.12109169335391745,
+        "biology_gcse__organisation__the_heart": -0.13664155769283345
+      },
+      "held": {
+        "biology_gcse__bioenergetics__aerobic_respiration": {
+          "tag": "thinks the two processes cannot occur at the same time",
+          "strength": 0.853
+        },
+        "biology_gcse__bioenergetics__anaerobic_respiration": {
+          "tag": "confuses fermentation products with aerobic respiration products",
+          "strength": 0.64
+        },
+        "biology_gcse__bioenergetics__limiting_factors": {
+          "tag": "describes enzymes as alive and able to be 'killed' rather than denatured",
+          "strength": 0.564
+        },
+        "biology_gcse__organisation__blood_vessels": {
+          "tag": "identifies arteries by blood colour and ignores pulmonary artery exception",
+          "strength": 0.764
+        }
+      }
+    },
+    {
+      "pid": "persona_12",
+      "ability": -4.229325478018855,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": 0.3573440701146281,
+        "biology_gcse__cell_biology": 0.6179983230672444,
+        "biology_gcse__organisation": -0.43106621408013523
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": 0.16900968887652026,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.3216574713274,
+        "biology_gcse__bioenergetics__limiting_factors": -0.06788800790408242,
+        "biology_gcse__bioenergetics__photosynthesis": -0.05939007465758009,
+        "biology_gcse__cell_biology__active_transport": -0.11521298650407225,
+        "biology_gcse__cell_biology__cell_structure": -0.0867695259481343,
+        "biology_gcse__cell_biology__diffusion": -0.01787074154430965,
+        "biology_gcse__cell_biology__mitosis": -0.11047062518249035,
+        "biology_gcse__cell_biology__osmosis": -0.19424877153301087,
+        "biology_gcse__organisation__blood_vessels": 0.11866080700130666,
+        "biology_gcse__organisation__digestion": 0.027539829950248115,
+        "biology_gcse__organisation__enzymes": 0.16574488541733257,
+        "biology_gcse__organisation__the_heart": -0.2466797981297488
+      },
+      "held": {
+        "biology_gcse__bioenergetics__aerobic_respiration": {
+          "tag": "thinks respiration energy is only for movement",
+          "strength": 0.631
+        },
+        "biology_gcse__bioenergetics__anaerobic_respiration": {
+          "tag": "thinks respiration must involve oxygen to count as respiration",
+          "strength": 0.619
+        },
+        "biology_gcse__bioenergetics__photosynthesis": {
+          "tag": "thinks oxygen is a raw material rather than a product",
+          "strength": 0.693
+        },
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "thinks respiration creates the gradient rather than supplying energy to move against it",
+          "strength": 0.895
+        },
+        "biology_gcse__cell_biology__cell_structure": {
+          "tag": "thinks the cell wall is impermeable, when it is freely permeable",
+          "strength": 0.719
+        },
+        "biology_gcse__cell_biology__mitosis": {
+          "tag": "thinks daughter cells keep the doubled amount instead of it being shared between two cells",
+          "strength": 0.777
+        },
+        "biology_gcse__cell_biology__osmosis": {
+          "tag": "thinks the solute leaves the tissue rather than water",
+          "strength": 0.741
+        },
+        "biology_gcse__organisation__blood_vessels": {
+          "tag": "thinks blood leaves the heart through capillaries first",
+          "strength": 0.591
+        },
+        "biology_gcse__organisation__digestion": {
+          "tag": "thinks digestion creates extra energy in the molecules",
+          "strength": 0.774
+        },
+        "biology_gcse__organisation__enzymes": {
+          "tag": "thinks all digestion produces glucose",
+          "strength": 0.559
+        },
+        "biology_gcse__organisation__the_heart": {
+          "tag": "confuses the number of heart chambers with the number of circuits",
+          "strength": 0.715
+        }
+      }
+    },
+    {
+      "pid": "persona_13",
+      "ability": 0.41285489739457754,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": -0.016379365543769356,
+        "biology_gcse__cell_biology": 0.5315931811147921,
+        "biology_gcse__organisation": -0.48005680344399043
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": 0.01624192063299824,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.046419045758936704,
+        "biology_gcse__bioenergetics__limiting_factors": -0.1956800713537856,
+        "biology_gcse__bioenergetics__photosynthesis": -0.21047715603620018,
+        "biology_gcse__cell_biology__active_transport": 0.12908767014474676,
+        "biology_gcse__cell_biology__cell_structure": 0.022201384820766414,
+        "biology_gcse__cell_biology__diffusion": 0.0895580396277141,
+        "biology_gcse__cell_biology__mitosis": -0.05671135125692083,
+        "biology_gcse__cell_biology__osmosis": -0.38402382295743925,
+        "biology_gcse__organisation__blood_vessels": -0.22545595681095093,
+        "biology_gcse__organisation__digestion": -0.06781417711170135,
+        "biology_gcse__organisation__enzymes": -0.14939000543629308,
+        "biology_gcse__organisation__the_heart": -0.010905740871970448
+      },
+      "held": {
+        "biology_gcse__bioenergetics__aerobic_respiration": {
+          "tag": "thinks enzymes slow reactions rather than act as catalysts",
+          "strength": 0.787
+        },
+        "biology_gcse__bioenergetics__limiting_factors": {
+          "tag": "thinks CO2 affects light levels",
+          "strength": 0.685
+        },
+        "biology_gcse__cell_biology__osmosis": {
+          "tag": "thinks osmosis moves water up the gradient like active transport",
+          "strength": 0.873
+        },
+        "biology_gcse__organisation__blood_vessels": {
+          "tag": "thinks both vessel types carry blood away from the heart",
+          "strength": 0.853
+        },
+        "biology_gcse__organisation__enzymes": {
+          "tag": "thinks enzymes are alive and can be 'killed'",
+          "strength": 0.595
+        }
+      }
+    },
+    {
+      "pid": "persona_14",
+      "ability": 0.9205060821694964,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": 0.13330305046888838,
+        "biology_gcse__cell_biology": -0.41622168973314205,
+        "biology_gcse__organisation": -0.5495425440305445
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": 0.038292416323509326,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.035931171361188306,
+        "biology_gcse__bioenergetics__limiting_factors": -0.1097645093753899,
+        "biology_gcse__bioenergetics__photosynthesis": 0.039961674100222624,
+        "biology_gcse__cell_biology__active_transport": 0.04050008883805395,
+        "biology_gcse__cell_biology__cell_structure": 0.012972994959299433,
+        "biology_gcse__cell_biology__diffusion": 0.10569444620334488,
+        "biology_gcse__cell_biology__mitosis": 0.02555942191495846,
+        "biology_gcse__cell_biology__osmosis": -0.22380492846606545,
+        "biology_gcse__organisation__blood_vessels": 0.6247205427145017,
+        "biology_gcse__organisation__digestion": -0.10796996426444117,
+        "biology_gcse__organisation__enzymes": -0.07189018203856447,
+        "biology_gcse__organisation__the_heart": 0.1680492527599818
+      },
+      "held": {
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "thinks the membrane structure depends directly on respiration",
+          "strength": 0.615
+        },
+        "biology_gcse__cell_biology__cell_structure": {
+          "tag": "thinks bacteria photosynthesise using chloroplasts like plant cells",
+          "strength": 0.622
+        },
+        "biology_gcse__cell_biology__mitosis": {
+          "tag": "thinks cancer arises from using meiosis instead of mitosis",
+          "strength": 0.603
+        },
+        "biology_gcse__cell_biology__osmosis": {
+          "tag": "confuses turgid with plasmolysed / wrong water direction",
+          "strength": 0.631
+        },
+        "biology_gcse__organisation__blood_vessels": {
+          "tag": "thinks blood leaves the heart through capillaries first",
+          "strength": 0.755
+        },
+        "biology_gcse__organisation__the_heart": {
+          "tag": "thinks the heart muscle is supplied by the large vein returning blood to the heart",
+          "strength": 0.713
+        }
+      }
+    },
+    {
+      "pid": "persona_15",
+      "ability": 0.03284568552393333,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": 0.9011548143900657,
+        "biology_gcse__cell_biology": -0.3642215770400769,
+        "biology_gcse__organisation": -0.31560835234093804
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": -0.07760090602646741,
+        "biology_gcse__bioenergetics__anaerobic_respiration": -0.02120585983548149,
+        "biology_gcse__bioenergetics__limiting_factors": 0.169359854711148,
+        "biology_gcse__bioenergetics__photosynthesis": -0.06384068118559387,
+        "biology_gcse__cell_biology__active_transport": -0.09634778088743468,
+        "biology_gcse__cell_biology__cell_structure": -0.03540346175690356,
+        "biology_gcse__cell_biology__diffusion": 0.33577634249544885,
+        "biology_gcse__cell_biology__mitosis": 0.02603006971169284,
+        "biology_gcse__cell_biology__osmosis": -0.19430999347911848,
+        "biology_gcse__organisation__blood_vessels": -0.05854798015125883,
+        "biology_gcse__organisation__digestion": 0.139160521268734,
+        "biology_gcse__organisation__enzymes": 0.211467435217874,
+        "biology_gcse__organisation__the_heart": -0.22868660748471112
+      },
+      "held": {
+        "biology_gcse__bioenergetics__anaerobic_respiration": {
+          "tag": "thinks lactic acid is the fuel for anaerobic respiration",
+          "strength": 0.665
+        },
+        "biology_gcse__bioenergetics__photosynthesis": {
+          "tag": "thinks control variables are about maximising the rate rather than fair testing",
+          "strength": 0.578
+        },
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "thinks the problem is loss of ions rather than lack of oxygen for respiration",
+          "strength": 0.717
+        },
+        "biology_gcse__cell_biology__osmosis": {
+          "tag": "thinks the solute leaves the tissue rather than water",
+          "strength": 0.588
+        },
+        "biology_gcse__organisation__blood_vessels": {
+          "tag": "confuses capillary function with the role of veins",
+          "strength": 0.553
+        },
+        "biology_gcse__organisation__enzymes": {
+          "tag": "thinks raising temperature creates more enzyme molecules",
+          "strength": 0.842
+        }
+      }
+    },
+    {
+      "pid": "persona_16",
+      "ability": 0.6155077930095271,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": 0.19621883159919068,
+        "biology_gcse__cell_biology": -1.0355129391989564,
+        "biology_gcse__organisation": 0.024094936832346887
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": -0.03015794951079251,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.07178182079538757,
+        "biology_gcse__bioenergetics__limiting_factors": 0.09087624905311176,
+        "biology_gcse__bioenergetics__photosynthesis": -0.03640545826859147,
+        "biology_gcse__cell_biology__active_transport": -0.20933010762882628,
+        "biology_gcse__cell_biology__cell_structure": -0.008638030120182235,
+        "biology_gcse__cell_biology__diffusion": 0.4135094436118443,
+        "biology_gcse__cell_biology__mitosis": 0.19648616580002964,
+        "biology_gcse__cell_biology__osmosis": 0.011161992798855193,
+        "biology_gcse__organisation__blood_vessels": -0.12859620622846216,
+        "biology_gcse__organisation__digestion": -0.022353943828042983,
+        "biology_gcse__organisation__enzymes": -0.2590936301615008,
+        "biology_gcse__organisation__the_heart": 0.3476251932794005
+      },
+      "held": {
+        "biology_gcse__bioenergetics__aerobic_respiration": {
+          "tag": "thinks respiration releases oxygen rather than using it",
+          "strength": 0.67
+        },
+        "biology_gcse__cell_biology__cell_structure": {
+          "tag": "confuses the cellulose wall with the lipid membrane composition",
+          "strength": 0.789
+        },
+        "biology_gcse__cell_biology__osmosis": {
+          "tag": "thinks osmosis moves solutes and active transport moves water",
+          "strength": 0.684
+        },
+        "biology_gcse__organisation__blood_vessels": {
+          "tag": "thinks the thick wall functions to prevent gas exchange",
+          "strength": 0.633
+        }
+      }
+    },
+    {
+      "pid": "persona_17",
+      "ability": 1.5597191267042825,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": -0.24287234562079293,
+        "biology_gcse__cell_biology": -0.7416495896564627,
+        "biology_gcse__organisation": -0.8777772169391923
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": -0.3430013569784254,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.07623909339707467,
+        "biology_gcse__bioenergetics__limiting_factors": 0.23019158237701776,
+        "biology_gcse__bioenergetics__photosynthesis": -0.02481774916167673,
+        "biology_gcse__cell_biology__active_transport": -0.08810602859906737,
+        "biology_gcse__cell_biology__cell_structure": 0.06999160137678483,
+        "biology_gcse__cell_biology__diffusion": -0.18243257474808866,
+        "biology_gcse__cell_biology__mitosis": 0.6490414665856201,
+        "biology_gcse__cell_biology__osmosis": -0.2450799265789735,
+        "biology_gcse__organisation__blood_vessels": -0.043071780870595794,
+        "biology_gcse__organisation__digestion": -0.20209893351418373,
+        "biology_gcse__organisation__enzymes": -0.004829079642441489,
+        "biology_gcse__organisation__the_heart": 0.034056055609200685
+      },
+      "held": {
+        "biology_gcse__organisation__digestion": {
+          "tag": "thinks enzyme action depends on substrate abundance, not shape",
+          "strength": 0.662
+        },
+        "biology_gcse__organisation__enzymes": {
+          "tag": "thinks heating below the optimum improves active-site fit",
+          "strength": 0.571
+        }
+      }
+    },
+    {
+      "pid": "persona_18",
+      "ability": -1.1273158173900297,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": 0.6627791088543001,
+        "biology_gcse__cell_biology": -0.25650987114363855,
+        "biology_gcse__organisation": -0.17999406721345312
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": 0.28662266176418977,
+        "biology_gcse__bioenergetics__anaerobic_respiration": -0.1803767079574453,
+        "biology_gcse__bioenergetics__limiting_factors": -0.03344814164478465,
+        "biology_gcse__bioenergetics__photosynthesis": 0.11997768205648157,
+        "biology_gcse__cell_biology__active_transport": 0.12083231215008933,
+        "biology_gcse__cell_biology__cell_structure": -0.3610230095388176,
+        "biology_gcse__cell_biology__diffusion": -0.22883631465451337,
+        "biology_gcse__cell_biology__mitosis": -0.18719955569748123,
+        "biology_gcse__cell_biology__osmosis": 0.2453393275877958,
+        "biology_gcse__organisation__blood_vessels": -0.11191047828999581,
+        "biology_gcse__organisation__digestion": -0.029753468288447882,
+        "biology_gcse__organisation__enzymes": 0.043579729149944776,
+        "biology_gcse__organisation__the_heart": -0.4670391106839378
+      },
+      "held": {
+        "biology_gcse__bioenergetics__aerobic_respiration": {
+          "tag": "thinks faster breathing is only about cooling, not gas exchange for respiration",
+          "strength": 0.821
+        },
+        "biology_gcse__bioenergetics__anaerobic_respiration": {
+          "tag": "describes aerobic respiration / thinks anaerobic respiration still takes in oxygen",
+          "strength": 0.573
+        },
+        "biology_gcse__bioenergetics__limiting_factors": {
+          "tag": "thinks a limiting factor is the only factor that ever matters",
+          "strength": 0.762
+        },
+        "biology_gcse__bioenergetics__photosynthesis": {
+          "tag": "believes starch is soluble/transportable; confuses it with sugars/sucrose",
+          "strength": 0.797
+        },
+        "biology_gcse__cell_biology__cell_structure": {
+          "tag": "thinks organelle presence is limited by cell size rather than function",
+          "strength": 0.665
+        },
+        "biology_gcse__cell_biology__diffusion": {
+          "tag": "thinks a smaller concentration gradient speeds up diffusion",
+          "strength": 0.682
+        },
+        "biology_gcse__cell_biology__mitosis": {
+          "tag": "swaps the roles of mitosis (growth/repair) and meiosis (gametes)",
+          "strength": 0.718
+        },
+        "biology_gcse__cell_biology__osmosis": {
+          "tag": "thinks drying the surface halts osmosis inside the tissue",
+          "strength": 0.626
+        },
+        "biology_gcse__organisation__blood_vessels": {
+          "tag": "thinks capillaries are blood-storage vessels",
+          "strength": 0.808
+        },
+        "biology_gcse__organisation__digestion": {
+          "tag": "thinks Benedict's works without heating and confuses the colour",
+          "strength": 0.885
+        },
+        "biology_gcse__organisation__enzymes": {
+          "tag": "thinks enzymes make impossible reactions possible rather than speeding up existing ones",
+          "strength": 0.556
+        },
+        "biology_gcse__organisation__the_heart": {
+          "tag": "thinks valves actively pump blood rather than passively preventing backflow",
+          "strength": 0.898
+        }
+      }
+    },
+    {
+      "pid": "persona_19",
+      "ability": 0.6600489847015373,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": -0.34131109618918215,
+        "biology_gcse__cell_biology": 0.4213086583077867,
+        "biology_gcse__organisation": -0.2744263046509754
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": 0.2938695063519831,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.1802557678893988,
+        "biology_gcse__bioenergetics__limiting_factors": -0.28939037737202294,
+        "biology_gcse__bioenergetics__photosynthesis": 0.26471224962975043,
+        "biology_gcse__cell_biology__active_transport": 0.274394641407079,
+        "biology_gcse__cell_biology__cell_structure": -0.27072689937746885,
+        "biology_gcse__cell_biology__diffusion": 0.16778589634282398,
+        "biology_gcse__cell_biology__mitosis": -0.23023351164835312,
+        "biology_gcse__cell_biology__osmosis": 0.04053762603630593,
+        "biology_gcse__organisation__blood_vessels": 0.13105487270534708,
+        "biology_gcse__organisation__digestion": -0.13612168195957672,
+        "biology_gcse__organisation__enzymes": -0.09398198643396412,
+        "biology_gcse__organisation__the_heart": -0.33137811486805707
+      },
+      "held": {
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "thinks the vacuole stores or supplies energy for transport",
+          "strength": 0.786
+        },
+        "biology_gcse__organisation__digestion": {
+          "tag": "thinks Benedict's works without heating and confuses the colour",
+          "strength": 0.893
+        }
+      }
+    },
+    {
+      "pid": "persona_20",
+      "ability": 0.32916386009468157,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": 0.05009246767822009,
+        "biology_gcse__cell_biology": -0.4699503560023036,
+        "biology_gcse__organisation": 0.33176755796889557
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": -0.47742996253059045,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.10680009617119086,
+        "biology_gcse__bioenergetics__limiting_factors": -0.06181627855954657,
+        "biology_gcse__bioenergetics__photosynthesis": -0.01982272562972766,
+        "biology_gcse__cell_biology__active_transport": 0.0017872771784930464,
+        "biology_gcse__cell_biology__cell_structure": 0.07562840946919576,
+        "biology_gcse__cell_biology__diffusion": 0.07073998911302835,
+        "biology_gcse__cell_biology__mitosis": 0.04561950593360901,
+        "biology_gcse__cell_biology__osmosis": -0.1212113423321666,
+        "biology_gcse__organisation__blood_vessels": 0.09417337901942081,
+        "biology_gcse__organisation__digestion": 0.5243895860157658,
+        "biology_gcse__organisation__enzymes": -0.12865703835451536,
+        "biology_gcse__organisation__the_heart": -0.0427676851735692
+      },
+      "held": {
+        "biology_gcse__bioenergetics__aerobic_respiration": {
+          "tag": "thinks oxygen rather than glucose is the energy source",
+          "strength": 0.871
+        },
+        "biology_gcse__bioenergetics__limiting_factors": {
+          "tag": "thinks the shield is there to dim the light rather than block heat",
+          "strength": 0.807
+        },
+        "biology_gcse__bioenergetics__photosynthesis": {
+          "tag": "assumes the two processes are always balanced regardless of light",
+          "strength": 0.72
+        },
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "thinks excess oxygen poisons cells and halts transport",
+          "strength": 0.821
+        },
+        "biology_gcse__cell_biology__cell_structure": {
+          "tag": "thinks the jelly-like cytoplasm regulates entry/exit of substances",
+          "strength": 0.866
+        },
+        "biology_gcse__organisation__blood_vessels": {
+          "tag": "believes all arteries without exception carry oxygenated blood",
+          "strength": 0.608
+        }
+      }
+    },
+    {
+      "pid": "persona_21",
+      "ability": 1.285180180096987,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": -0.2049701597322243,
+        "biology_gcse__cell_biology": 0.4705132001417573,
+        "biology_gcse__organisation": 0.4572987554849424
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": 0.3453849177977304,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.2638912826457658,
+        "biology_gcse__bioenergetics__limiting_factors": 0.2825075729176166,
+        "biology_gcse__bioenergetics__photosynthesis": 0.04343488383448202,
+        "biology_gcse__cell_biology__active_transport": 0.20499178508252666,
+        "biology_gcse__cell_biology__cell_structure": -0.01875416959198371,
+        "biology_gcse__cell_biology__diffusion": -0.09245590720812782,
+        "biology_gcse__cell_biology__mitosis": -0.25110825872208203,
+        "biology_gcse__cell_biology__osmosis": 0.04632451798117266,
+        "biology_gcse__organisation__blood_vessels": 0.06192924860720672,
+        "biology_gcse__organisation__digestion": -0.2505423983916849,
+        "biology_gcse__organisation__enzymes": -0.24332805184297246,
+        "biology_gcse__organisation__the_heart": -0.30545486343212014
+      },
+      "held": {
+        "biology_gcse__cell_biology__mitosis": {
+          "tag": "thinks only DNA is copied and organelles are merely split, not increased",
+          "strength": 0.805
+        }
+      }
+    },
+    {
+      "pid": "persona_22",
+      "ability": 1.2157121429888955,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": -0.023828521761252143,
+        "biology_gcse__cell_biology": -0.15378801355969374,
+        "biology_gcse__organisation": -0.15912933867330165
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": 0.25597859357726255,
+        "biology_gcse__bioenergetics__anaerobic_respiration": -0.03110754606171013,
+        "biology_gcse__bioenergetics__limiting_factors": 0.2500566777782746,
+        "biology_gcse__bioenergetics__photosynthesis": 0.007879108020601091,
+        "biology_gcse__cell_biology__active_transport": 0.13098595963725448,
+        "biology_gcse__cell_biology__cell_structure": -0.6872056491415588,
+        "biology_gcse__cell_biology__diffusion": 0.11725554915727701,
+        "biology_gcse__cell_biology__mitosis": -0.11995178423056284,
+        "biology_gcse__cell_biology__osmosis": -0.17567125008286955,
+        "biology_gcse__organisation__blood_vessels": -0.2922784744549647,
+        "biology_gcse__organisation__digestion": -0.2710792442441778,
+        "biology_gcse__organisation__enzymes": -0.1673897421875439,
+        "biology_gcse__organisation__the_heart": -0.06459331665756456
+      },
+      "held": {
+        "biology_gcse__bioenergetics__limiting_factors": {
+          "tag": "thinks photosynthesis continues in the dark, just more slowly",
+          "strength": 0.565
+        },
+        "biology_gcse__cell_biology__diffusion": {
+          "tag": "reverses the surface area to volume ratio relationship with size",
+          "strength": 0.821
+        },
+        "biology_gcse__organisation__digestion": {
+          "tag": "mixes up which substrate each enzyme acts on",
+          "strength": 0.872
+        }
+      }
+    },
+    {
+      "pid": "persona_23",
+      "ability": -0.30732924218043134,
+      "topic_offset": {
+        "biology_gcse__bioenergetics": 0.5253718044767074,
+        "biology_gcse__cell_biology": -0.5805078981812841,
+        "biology_gcse__organisation": -0.26181427294634674
+      },
+      "skill_jitter": {
+        "biology_gcse__bioenergetics__aerobic_respiration": -0.07417863564280654,
+        "biology_gcse__bioenergetics__anaerobic_respiration": 0.19024767924567743,
+        "biology_gcse__bioenergetics__limiting_factors": -0.04499436637759757,
+        "biology_gcse__bioenergetics__photosynthesis": 0.005930802364663968,
+        "biology_gcse__cell_biology__active_transport": 0.03383694306403247,
+        "biology_gcse__cell_biology__cell_structure": -0.16562927446105535,
+        "biology_gcse__cell_biology__diffusion": 0.09674925104353937,
+        "biology_gcse__cell_biology__mitosis": -0.07106503304803584,
+        "biology_gcse__cell_biology__osmosis": -0.20458026880610022,
+        "biology_gcse__organisation__blood_vessels": 0.36138809562964463,
+        "biology_gcse__organisation__digestion": 0.09474960439242847,
+        "biology_gcse__organisation__enzymes": 0.10914676065335936,
+        "biology_gcse__organisation__the_heart": -0.17898258864065042
+      },
+      "held": {
+        "biology_gcse__bioenergetics__limiting_factors": {
+          "tag": "thinks lowering temperature protects enzymes and helps a slow reaction",
+          "strength": 0.874
+        },
+        "biology_gcse__cell_biology__active_transport": {
+          "tag": "thinks osmosis is the energy-requiring process and active transport is passive",
+          "strength": 0.858
+        },
+        "biology_gcse__cell_biology__diffusion": {
+          "tag": "thinks carbon dioxide removal is active transport, not diffusion",
+          "strength": 0.708
+        },
+        "biology_gcse__cell_biology__mitosis": {
+          "tag": "thinks stem cells use meiosis and create variation to specialise",
+          "strength": 0.701
+        },
+        "biology_gcse__cell_biology__osmosis": {
+          "tag": "thinks plant cells lyse; ignores the supporting cell wall",
+          "strength": 0.567
+        },
+        "biology_gcse__organisation__blood_vessels": {
+          "tag": "reverses the direction of flow in arteries and veins",
+          "strength": 0.757
+        },
+        "biology_gcse__organisation__enzymes": {
+          "tag": "thinks one enzyme can adapt to bind many different substrates",
+          "strength": 0.621
+        }
+      }
+    }
+  ]
+}

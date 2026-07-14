@@ -1,0 +1,7 @@
+{
+  "train_s_per_snapshot": null,
+  "infer_ms_per_item": null,
+  "gpu": "1xB200-183GB",
+  "total_train_s": 3042.0,
+  "note": "measured on the rig; per-snapshot/infer breakdown in run_all.log"
+}
