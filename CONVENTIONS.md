@@ -13,7 +13,7 @@
 
 Design spec: [`project_summary.md`](project_summary.md) (all-purpose framework) ·
 prior general-domain prototype: `legacy/general_personamem/` ·
-general-track snapshot: `PROJECT_STATUS_2026-05-29.md`
+general-track snapshot: `docs/status/PROJECT_STATUS_2026-05-29.md`
 
 ---
 
@@ -54,12 +54,20 @@ The run-id keys every artifact:
 |----------|------|
 | config (reproducible spec) | `experiments/configs/<run_id>.yaml` |
 | status (task board, 1/run) | `experiments/runs/<run_id>.yaml` |
-| headline result (small)    | `experiments/results/<run_id>__<metric>.json` |
+| headline result (small)    | `experiments/results/<domain>/<run_id>__<metric>.json` |
 | large artifacts            | `$UWM_SCRATCH/runs/<run_id>/` |
 | index (generated)          | `RUNS.md` ← `scripts/gen_runs_md.py` |
 
-`<metric>` ∈ `acc`, `acc_by_qtype`, `ppl`. **One YAML file per run** so two
-agents never edit the same file (merge-safe).
+`<metric>` ∈ `acc`, `acc_by_qtype`, `ppl`, `mae`, `nll`. `<domain>` ∈ `general`,
+`health`, `education`. **One YAML file per run** so two agents never edit the same
+file (merge-safe).
+
+> **Where practice differs from this grammar (2026-08-09).** The grammar above is
+> PersonaMem-shaped and is followed by the general-domain runs. Health and education
+> runs predate it and use `<arm>__<metric>.json` (`health_shared_current__mae.json`,
+> `edu_stage1__nll.json`); the `configs/` + `runs/` registry has not been used by any
+> run so far, so `RUNS.md` is empty. See `experiments/README.md` for the two ways to
+> close that gap — don't assume the registry reflects what has run.
 
 ---
 
@@ -95,36 +103,53 @@ delete transient merged models after eval — quota is shared across the project
 
 ## 3. Code & evaluation
 
-This doc governs the **active general-domain work** (`project_summary.md` §8
-builds *general* first). The `baselines/` here — oracle / trivial / token-memory —
-are the general-domain instantiation of `project_summary.md` §8.2's ablation
-(`base` vs `+profile` vs `+memory` vs `+per-user weights`); the eval contract
-below is its `project_summary.md` §6 Stage-1 intrinsic-prediction layer.
+This doc governs all three domains. Each is `project_summary.md` §8.2's ablation
+(`base` vs `+profile` vs `+memory` vs `+per-user weights`) instantiated once, and the
+eval contract below is its `project_summary.md` §6 Stage-1 intrinsic-prediction layer.
+
+**Layout rule: domain code is separated, infrastructure is shared.** The domains have
+non-overlapping users and unrelated tasks — "unified" means the same recipe run three
+times, not one model over pooled data — so `domains/<domain>/` never imports from
+another domain. Anything truly common goes to `common/`, and keeping that set small is
+what makes cross-domain comparisons about the domains rather than about the plumbing.
 
 ```
-ACTIVE general-domain work (governed by this doc):
-  common/      shared lib: data loaders (PersonaMem/LoCoMo), scorers
-               (accuracy + ppl), backends (vllm_qwen / openai_gpt), run-meta I/O
-  baselines/   oracle/ trivial/ tokenmem/{fluxmem,mem0,zep,amem,naiverag}/
-  experiments/ configs/ runs/ results/ reports/
-  scripts/     env.sh · claim_run.sh · gen_runs_md.py · run_baseline.slurm
+ACTIVE work (governed by this doc):
+  domains/general/     data.py · peruser_data.py · scorer.py ·
+                       baselines/{trivial,profile,oracle,tokenmem/{naiverag,fluxmem,mem0,zep,amem}}
+  domains/health/      data.py · peruser_data.py
+  domains/education/   data.py
+  common/              backends.py (vllm_qwen / openai_gpt) · runmeta.py · sft.py (generic SFT tokenizer)
+  scripts/             env.sh · claim_run.sh · gen_runs_md.py
+    general/ health/ education/    per-domain entry points + .slurm launchers
+  experiments/         configs/ runs/ reports/ · results/{general,health,education}/
 
 Framework & legacy (see project_summary.md):
   project_summary.md / docs/   all-purpose design (profile + memory + per-user weights)
-  data/education/              private KCL course-chat data
-  legacy/general_personamem/   frozen Phase 0–2b + OPSD prototype (the prior repo:
-                               data_prep/ teacher_sft/ student_opd/ outputs/ EXPERIMENTS.md)
+  data/education/              private KCL course-chat data (small, in-repo)
+  legacy/general_personamem/   frozen Phase 0–2b + OPSD prototype (the prior repo)
   legacy/health_digitaltwin/   reusable health-domain code (LLM-based-Digital-Twins)
+  legacy/education_parametric_memory/  snapshot of the ACTIVE sibling per-user-weights
+                               repo (~/parametric_user_memory) — the edu-exam track
 ```
 
-**Evaluation contract (makes baselines comparable):**
+**Evaluation contract (makes arms comparable):**
 
-- All methods implement `predict(mcq, context) -> {pred_choice, per_choice_score?}`.
-- **Primary metric = accuracy** on PersonaMem single-choice; always also
-  report **per-qtype** over the 7 categories. PPL is a secondary,
-  model-internal-only metric.
-- One loader in `common/` per `bench`; same split, same decoding (temp 0).
-- Backends: `qwen3-4b` via local vLLM; `gpt41` via OpenAI API.
+- Within a domain, every arm differs **only** in what it is given or trained on — same
+  loader, same split, same decoding (temp 0), same scoring path. That is the whole point
+  of the shared `common/`.
+- **general**: methods implement `build_context(mcq, data, params)`; primary metric =
+  accuracy on PersonaMem single-choice, always also per-qtype over the 7 categories; PPL
+  is secondary and model-internal. Backends: `qwen3-4b` via local vLLM, `gpt41` via OpenAI.
+- **health**: per-field + overall MAE of the next-day state, always reported against the
+  trivial bars (persistence, pop-mean, per-user-mean) — an LLM number without them is
+  uninterpretable. Reaction text: NLL.
+- **education**: NLL of the student's next turn, always with its context controls
+  (shuffled = content+length-matched, foreign = other session).
+- **Ship every claim with its control.** A gain measured only against "no context" or
+  "frozen base" is not yet evidence; the shared/trivial/shuffled controls are what decide
+  whether it survives. This applies in both directions — a null under one recipe is not
+  evidence that the arm cannot work.
 
 **Coding rules:** argparse `--run-id` + read `experiments/configs/<run_id>.yaml`;
 no hard-coded paths (resolve from `scripts/env.sh` vars); deterministic seed;
@@ -147,11 +172,12 @@ Coordination state lives in `.uwm/` (in-repo, gitignored, instantly visible):
 **Roles**
 
 - **driver** (the main session): owns all shared code — `common/`, `scripts/`,
-  the four root docs (`CONVENTIONS` / `EXPERIMENTS` / `CLAUDE` / `README`).
-  **The only process that runs git.**
-- **runner** (auxiliary sessions): writes only `baselines/<its method>/`,
-  `experiments/{configs,runs,results}/<its run_id>.*`, and
-  `$UWM_SCRATCH/runs/<run_id>/`. **Never runs git.**
+  each `domains/<domain>/*.py`, and the root docs (`CONVENTIONS` / `EXPERIMENTS` /
+  `KNOWLEDGE` / `CLAUDE` / `README`). **The only process that runs git.**
+- **runner** (auxiliary sessions): writes only
+  `domains/general/baselines/<its method>/`, `experiments/configs|runs/<its run_id>.yaml`,
+  `experiments/results/<domain>/<its run_id>__*.json`, and `$UWM_SCRATCH/runs/<run_id>/`.
+  **Never runs git.**
 
 **Rules**
 
@@ -177,6 +203,14 @@ Coordination state lives in `.uwm/` (in-repo, gitignored, instantly visible):
 1. `cp experiments/configs/_TEMPLATE.yaml experiments/configs/<run_id>.yaml` — fill it.
 2. `cp experiments/runs/_TEMPLATE.yaml experiments/runs/<run_id>.yaml` — `status: planned`.
 3. `source scripts/env.sh` → `scripts/claim_run.sh <run_id>`.
-4. Run (e.g. `sbatch scripts/run_baseline.slurm --run-id <run_id>`); artifacts → `$UWM_RUNS/<run_id>/`.
-5. On finish: write `experiments/results/<run_id>__acc.json`; set run yaml `status: done` + `acc`.
-6. **driver:** `python scripts/gen_runs_md.py` → `git add` the small files → commit → push.
+4. Run — e.g. `sbatch scripts/general/run_baseline.slurm --run-id <run_id>`, or directly
+   `python scripts/<domain>/<script>.py`; artifacts → `$UWM_RUNS/<run_id>/`.
+5. On finish: write `experiments/results/<domain>/<run_id>__<metric>.json`; set run yaml
+   `status: done` + the headline metric.
+6. **driver:** `python scripts/gen_runs_md.py` → `git add` the small files → commit → push,
+   and mirror the headline numbers into `EXPERIMENTS.md` with the controls they were
+   measured against.
+
+> Steps 1–2 and 6's `gen_runs_md.py` describe the intended registry; no run has used it yet
+> (`experiments/README.md`). Either adopt it from the next run on, or retire it — but keep
+> step 5 and the `EXPERIMENTS.md` entry either way, since those are the actual record.

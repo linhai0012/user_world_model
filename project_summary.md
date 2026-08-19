@@ -5,6 +5,11 @@
 > **education** domains — and designed so new domains can be added without
 > changing the architecture.
 
+**Status (updated 2026-08-09):** architecture converged; Stage-1 has been run once in
+each domain (`EXPERIMENTS.md`) — early exploratory results, single dataset and recipe per
+domain, none of it yet settling whether a component of this design works. Stage-2 not
+started. The section below describes the *intended* design, not what has been validated.
+
 **Status (2026-06-03):** architecture converged; repo reorganized for the new
 direction. The prior general-domain prototype is archived under
 [`legacy/general_personamem/`](legacy/general_personamem/); reusable
@@ -12,7 +17,7 @@ health-domain code is imported under
 [`legacy/health_digitaltwin/`](legacy/health_digitaltwin/); private education
 dialogue data is under [`data/education/`](data/education/). The new framework
 implementation has **not** started yet — this document and
-[`docs/uwm_framework_discussion.html`](docs/uwm_framework_discussion.html) are
+[`docs/design/uwm_framework_discussion.html`](docs/design/uwm_framework_discussion.html) are
 the spec to build from.
 
 ---
@@ -90,21 +95,42 @@ directly, so direct SFT (proven by the digital-twin) becomes the backbone.
 
 ```
 README.md / project_summary.md      this spec
-docs/                               framework discussion (html) + reference pdfs
+CONVENTIONS.md                      naming / storage / code / concurrency (operational)
+EXPERIMENTS.md / KNOWLEDGE.md       run log · reading notes + direction decisions
+domains/{general,health,education}/ per-domain data + methods (no cross-domain imports)
+common/                             shared infra only: backends · runmeta · sft tokenizer
+scripts/{general,health,education}/ per-domain entry points (+ env.sh, claim_run.sh)
+experiments/                        configs/ runs/ reports/ · results/<domain>/
 data/education/                     private KCL course chat data (chat_nlp/chat_ai)
+docs/                               design/ plans/ findings/ status/ refs/ external/
 legacy/
   README.md                         entry point describing all legacy resources
   general_personamem/               archived general-domain OPD/OPSD prototype (the prior repo)
   health_digitaltwin/               reusable code imported from LLM-based-Digital-Twins
+  education_parametric_memory/      snapshot of the active per-user-weights sibling repo
 ```
 
 ## 8. Status & next steps
 
-- **Done:** general-domain prototype (R1b, +95.7% best-step closure on 20 personas) → archived in `legacy/general_personamem/`; health pipeline + state-token model imported in `legacy/health_digitaltwin/`; design converged.
-- **Next:**
-  1. Pick the first domain to build the full stack on (recommend **general** first — most mature, fullest eval — then **health** as the cross-domain check).
-  2. Ablation skeleton in general: `base` vs `+profile` vs `+memory` vs `+per-user weights` — quantify the marginal value of parametric per-user adaptation on top of explicit profile+memory (a publishable question on its own).
-  3. Health: strip the HR-token branch from the digital-twin V3, wire in profile/memory, validate cross-domain.
+- **Built:** design converged; prior code bases imported under `legacy/` (general OPD/OPSD
+  prototype, health digital-twin, education per-user-weights); a shared harness with one loader,
+  one backend and one scoring path per domain.
+- **Run once, per domain (2026-06, `EXPERIMENTS.md`):** the Stage-1 §8.2 ablation skeleton
+  (`base` / `+profile` / `+memory` / `+per-user weights`) in general on PersonaMem, in health on
+  the PMData digital-twin, in education on the KCL tutor chats — each with trivial / shared /
+  shuffled controls. **One dataset, one recipe, one seed each**: these establish the harness and
+  the bars, not whether any component of this design works.
+- **Next (open, in rough priority order):**
+  1. Record the health dynamics diagnosis (`scripts/health/analyze_health_dynamics.py`) — it
+     separates "this dataset has little to learn" from "this recipe didn't learn it", which several
+     later decisions depend on.
+  2. Bring the legacy general recipe (OPD distillation + dual-rate LoRA + per-persona best-step)
+     into the new harness, where it can finally be compared against token-memory baselines.
+  3. Education: find a learner identity (public set, or a defensible session-level proxy) — without
+     one the domain cannot host a per-user arm at all.
+  4. Fill the remaining token-memory baselines (`fluxmem` / `mem0` / `zep` / `amem`) — only
+     `naiverag` exists so far.
+  5. Stage-2 (§6): decide what "UWM as planner" measures and which domain is cheapest to try it on.
 
 ## 9. Key references
 

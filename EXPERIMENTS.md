@@ -6,6 +6,23 @@
 > - `legacy/general_personamem/EXPERIMENTS.md` — Phase 0–2b + OPSD (PersonaMem prototype)
 > - `legacy/health_digitaltwin/EXPERIMENTS.md` — digital-twin health prototype
 
+> ## How to read this log
+>
+> The project is at an **early, exploratory stage**. Every entry below is *one* dataset,
+> *one* recipe, usually *one* base model and one seed. Entries record **what was observed
+> in that setup**, not what has been established about the method:
+>
+> - A number that beats its control is a **lead worth pursuing**, not a demonstrated win —
+>   it has not been reproduced, tuned, or shown to hold on other data.
+> - A number that fails to beat its control is a **null under that recipe**, not evidence
+>   that the arm cannot work — nearly every null here has an untried stronger recipe behind
+>   it (per-user best-step selection, soft-label distillation, better data), and the two
+>   places per-user weights *have* moved a metric used exactly such recipes.
+>
+> So: no entry below settles whether a component of the design works. Phrase future entries
+> the same way — report the setup, the control, and the margin, and let "success"/"failure"
+> stay open until something has been run more than once.
+
 ## Current focus
 
 General domain first (`project_summary.md` §8): an ablation skeleton
@@ -16,14 +33,14 @@ under one eval contract (`CONVENTIONS.md` §3 — accuracy + per-qtype).
 ## Log
 
 <!-- newest first; one entry per milestone. Mirror headline numbers from
-     experiments/results/<run_id>__*.json; full data stays on cluster scratch. -->
+     experiments/results/<domain>/<run_id>__*.json; full data stays on cluster scratch. -->
 
 ### 2026-06-20 — EDUCATION Stage-1 (domain #3): in-context memory partially helps (genuine vs priming, via controls)
 
 **Domain #3 (education) Stage-1**, text/reaction head only (predict the student's next turn;
 project_summary.md §2 edu-reaction ≈ general's reply). Data: private KCL Langfuse tutor chats,
-66 sessions (48 NLP + 18 AI) → **433 student turns**. Code: `common/edu_data.py`,
-`scripts/eval_edu_stage1.py`. Result: `experiments/results/edu_stage1__nll.json`.
+66 sessions (48 NLP + 18 AI) → **433 student turns**. Code: `domains/education/data.py`,
+`scripts/education/eval_edu_stage1.py`. Result: `experiments/results/education/edu_stage1__nll.json`.
 
 **Data reality (differs from `data/education/README.md`):** dialogue lives in `input.messages`
 (system tutor-persona + alternating assistant=tutor / user=student; a few tool turns); **no
@@ -40,28 +57,30 @@ immediately preceding turn; `memory` = system + full prior dialogue. Paired (sam
 | nlp (n=346) | 4.397 | 3.414 | 3.641 | 3.003 | −0.983 | **−0.227** | +0.412 |
 | ai (n=87) | 3.964 | 3.075 | 3.354 | 2.958 | −0.888 | **−0.279** | +0.117 |
 
-**Finding (two controls, nuanced + honest):** raw "memory" lowers next-turn NLL ~0.9 nats (~25%).
+**Observation (two controls):** raw "memory" lowers next-turn NLL ~0.9 nats (~25%).
 Two controls decompose it:
-- **shuffled** (the SAME real turns in scrambled order — content+length-matched): memory beats it
-  by ~0.23–0.28 nats. So at equal content/length, the *ordered, coherent* real history GENUINELY
-  helps → education has real in-context-memory value, not pure priming.
+- **shuffled** (the SAME real turns in scrambled order — content+length-matched): memory is ahead
+  by ~0.23–0.28 nats. So at equal content/length, the *ordered, coherent* real history still
+  helps in this setup — the effect is not fully explained by priming.
 - **foreign** (a different session's dialogue): appears to help *more* than memory (Δmem−foreign
-  +0.1/+0.4), but foreign injects a whole, **longer** session → this is a length confound. The
-  length-matched shuffled control is the clean test, and it confirms relevance/order matters.
-- Decomposition: of the ~0.9-nat raw gain, ~0.25 is genuine ordered-relevance (memory−shuffled)
-  and the rest is in-domain priming/length (shuffled−base ≈ −0.6/−0.7). Depth agrees (late −1.18
-  vs early −0.43: more accumulated context → more priming).
+  +0.1/+0.4), but foreign injects a whole, **longer** session → a length confound. The
+  length-matched shuffled control is the cleaner comparison of the two.
+- Decomposition (under these two controls): of the ~0.9-nat raw gain, ~0.25 tracks
+  ordered-relevance (memory−shuffled) and the rest tracks in-domain priming/length
+  (shuffled−base ≈ −0.6/−0.7). Depth is consistent with that (late −1.18 vs early −0.43).
 
-**Unified cross-domain read:** in-context memory's value is real but small and domain-dependent —
-**only education shows a genuine (partial) gain** (memory > shuffled), while general (frozen+memory
-≈ no help under MCQ-PPL, "see≠use"; retrieval < oracle) and health (per-user = shared-LoRA, no
-personalization; +current gain is population-level) show none. The recurring lesson: naive
-context/weights gains mostly evaporate under trivial/shared/foreign/shuffled controls — real
-personalization needs the *right mechanism*, not stuffed context.
+**Cross-domain read (provisional).** Across the three Stage-1 setups run so far, education is the
+only one where the effect survives its control (memory > shuffled), while general (frozen+memory
+≈ no gain under MCQ-PPL, "see≠use"; retrieval below oracle) and health (per-user ≈ shared-LoRA;
+the +current gain appears at the population level) do not show one under the recipes tried. The
+pattern to carry forward is methodological rather than conclusive: **naive context/weights gains
+have repeatedly shrunk once a trivial/shared/foreign/shuffled control was added**, so every arm
+needs its control — and, symmetrically, none of these nulls has yet been tested against the
+stronger recipes (per-persona stopping, soft-label distillation) that moved the metric elsewhere.
 
-**Caveats:** no learner identity → no per-user arm in education (frozen reader only); even the
-genuine memory gain is modest (~0.25 nats); small (66 sessions, NLL only — LLM-judge generation
-lens + public **StudyChat** breadth are TODO).
+**Caveats:** no learner identity → no per-user arm in education (frozen reader only); the surviving
+margin is small (~0.25 nats) and unreplicated; 66 sessions, NLL only — LLM-judge generation lens +
+public **StudyChat** breadth are TODO.
 
 ### 2026-06-20 — HEALTH Stage-1 cross-domain replication: frozen "see≠use" + per-user weights (state head)
 
@@ -70,8 +89,8 @@ lens + public **StudyChat** breadth are TODO).
 fields; the real PMData self-report is the GT). Frozen Qwen3-4B-Instruct-2507 via vLLM 0.13 on
 1× H200; per-user LoRAs via HF SFT (sdpa), adapter-only (CONVENTIONS §2). Data:
 `$UWM_DATA/health/digitaltwin/output` — 1197 train / 314 test / 16 participants. Code:
-`common/health_data.py`, `common/health_peruser_data.py`, `scripts/{eval_health_stage1,
-train_health_peruser,eval_health_peruser}.py`. Results: `experiments/results/health_stage1__mae.json`,
+`domains/health/data.py`, `domains/health/peruser_data.py`, `scripts/health/{eval_health_stage1,
+train_health_peruser,eval_health_peruser}.py`. Results: `experiments/results/health/health_stage1__mae.json`,
 `health_peruser_{base,current}__mae.json`.
 
 **Frozen baselines (overall MAE vs next state; lower better; n=314):**
@@ -85,9 +104,11 @@ train_health_peruser,eval_health_peruser}.py`. Results: `experiments/results/hea
 | frozen +profile (baseline in prompt) | 1.141 | +0.597 |
 | frozen +current+prof | 1.136 | +0.592 |
 
-→ **Health replicates general's "see≠use":** a frozen LLM is ~2× worse than the trivial
-persistence baseline, and injected context does NOT help — **+current even HURTS** (the frozen
-model won't anchor on today's state). Conditioning a frozen base by prompting fails.
+→ **Same shape as general's "see≠use" in this setup:** the frozen LLM is ~2× worse than the
+trivial persistence baseline, and injected context does not improve it — **+current is the worst
+arm** (the frozen model does not anchor on today's state). Under this prompt/model, conditioning a
+frozen base by prompting alone does not get near the trivial bar; whether a different prompt
+format or a stronger base would is untested.
 
 **Per-user weights (LoRA per participant, 12 data-rich pids ≥39 train recs; pooled n=301):**
 
@@ -99,31 +120,34 @@ model won't anchor on today's state). Conditioning a frozen base by prompting fa
 | **per-user LoRA** | 0.548 | 0.506 |
 | **shared LoRA (1 model, all 12 pids pooled)** | 0.537 | **0.499** |
 
-**Findings:**
-1. **Per-user weights encode the user where frozen prompting cannot** — base-context per-user
-   (0.548) halves the frozen base (1.112) and recovers trivial-baseline performance from the
-   activity alone (user in weights, not prompt). Beats frozen base on 11/12 pids.
-2. **But naive base-context per-user just learns the user's MEAN** — it does NOT beat the trivial
-   per-user-mean lookup (0.548 > 0.521). The control is essential (cf. P-OPSD shared-LoRA / general
-   naive-per-user lessons): naive CE ≈ memorizing the level, no activity-conditioned dynamics.
-3. **`+current` per-user DOES capture dynamics and beats every trivial bar** (0.506 < umean 0.521
-   < persistence 0.532). The clean "see≠use, but train-to-use works": the frozen model got *worse*
-   with the current state (1.112→1.262), yet the LoRA *trained* with it gets *better* (0.548→0.506)
-   — training teaches the weights to exploit info the frozen model couldn't.
+**Observations:**
+1. **Training put something about the user into the weights that prompting did not** — base-context
+   per-user (0.548) halves the frozen base (1.112) and reaches trivial-baseline territory from the
+   activity alone (user in weights, not prompt). Ahead of frozen base on 11/12 pids.
+2. **But at base context it does not clear the per-user-mean lookup** (0.548 > 0.521) — consistent
+   with the LoRA mostly capturing the user's *level* rather than activity-conditioned dynamics.
+   The control is what shows this (cf. P-OPSD shared-LoRA / general naive-per-user); a stronger
+   recipe was not tried here.
+3. **`+current` per-user clears every trivial bar in this run** (0.506 < umean 0.521 < persistence
+   0.532) — the frozen model got *worse* when given the current state (1.112→1.262) while the LoRA
+   *trained* with it got *better* (0.548→0.506). Suggestive that training can make usable what
+   prompting could not; margins are small (see 4) and this is a single recipe/seed.
 4. **Caveats (honest):** margins are small (0.506/0.521/0.532 within 0.03 — the dataset has weak
    day-to-day dynamics); the pooled +current win is partly driven by hyper-stable users (p05:
    0.808→0.142 once it can anchor on today; umean 0.992 for p05); per-pid vs umean is mostly small,
    winning where current-state anchoring matters. p12 (8 test/39 train) overfits at base context
    (1.729), rescued by +current (0.542).
-5. **Shared-LoRA null (the decisive control, P-OPSD lesson replicated):** ONE LoRA trained on all
-   12 pids pooled matches/slightly beats the per-user LoRAs (shared 0.499 vs per-user 0.506 at
-   +current; 0.537 vs 0.548 at base). → **Per-user personalization adds NOTHING over a single
-   population model here.** The large gain over the frozen base is a *population-level* skill
-   ("learn the task / learn to anchor on the current state"), not per-user signal — consistent with
-   the dataset's weak between-user-distinguishable dynamics. The "+current beats every trivial bar"
-   result stands, but as a shared/population effect, not personalization. (Mirrors P-OPSD's
-   shared-LoRA null and general's "naive per-user is unreliable" — always run the shared control.)
-   Results: `health_shared_{base,current}__mae.json`.
+5. **Shared-LoRA control (the one that matters most here):** ONE LoRA trained on all 12 pids
+   pooled matches/slightly beats the per-user LoRAs (shared 0.499 vs per-user 0.506 at +current;
+   0.537 vs 0.548 at base). → **On this dataset with this recipe, per-user weights showed no gain
+   over a single population model.** The improvement over the frozen base is therefore attributable
+   to a *population-level* skill ("learn the task / learn to anchor on the current state") rather
+   than to per-user signal — plausible given how weak the between-user-distinguishable dynamics are
+   here (see the dynamics diagnosis TODO). Note what this does *not* establish: the per-user LoRA
+   used fixed 3-epoch CE with no per-pid stopping, so this is a null for *that* recipe on *this*
+   data, not a finding that per-user weights are uninformative in health. (Same shape as P-OPSD's
+   shared-LoRA null and general's high-variance naive per-user — the point to keep is: always run
+   the shared control.) Results: `health_shared_{base,current}__mae.json`.
 6. **Field-level (per-field MAE, persistence → shared+current model):** the dynamic signal is
    concentrated in **readiness** (10-pt field; 1.236 → 1.146, by far the largest error) plus
    sleep_quality (0.615→0.515), fatigue (0.385→0.336), soreness (0.385→0.342). **mood (0.246) and
@@ -143,12 +167,12 @@ model won't anchor on today's state). Conditioning a frozen base by prompting fa
    (profile most) — consistent with the cross-domain pattern that context aids text generation but
    not structured-state prediction. ⚠️ The reaction is GPT-synthesized grounded in the real state,
    so context→reaction NLL gains are partly circular; treat as a soft signal. Code:
-   `scripts/eval_health_reaction.py`; result `health_reaction__nll.json`.
+   `scripts/health/eval_health_reaction.py`; result `health_reaction__nll.json`.
 
 ### 2026-06-17 — baseline harness live; dual-lens token-memory ablation on PersonaMem-v1 (pm32k)
 
 **What landed.** First runnable general-domain harness (`common/` shared lib + `baselines/`
-+ `scripts/run_campaign.py`), validated end-to-end on 1× B200 (vllm_env, vLLM 0.13, FLASH_ATTN).
++ `scripts/general/run_campaign.py`), validated end-to-end on 1× B200 (vllm_env, vLLM 0.13, FLASH_ATTN).
 Methods implement the shared `build_context(mcq,data,params) -> list[dict]` contract; one shared
 backend scores them, so arms are comparable (CONVENTIONS §3). Code commit `ae14d87`.
 
@@ -164,7 +188,7 @@ backend scores them, so arms are comparable (CONVENTIONS §3). Code commit `ae14
 protocol is faithful to `legacy/.../eval_mcq_ppl.py`. First oracle was mislocated: it sliced ±2 turns around `end_index`
 (the *query* position), but `distance_to_ref_in_tokens` shows the reference sits far earlier
 (~2k tokens from the start of a 27k context). Fixed by locating the reference via **token
-distance** walked back from the query (`common/data.py::_ref_index`, uses the Qwen tokenizer).
+distance** walked back from the query (`domains/general/data.py::_ref_index`, uses the Qwen tokenizer).
 
 **Headline — pm32k ablation (acc; random=0.25):**
 
@@ -177,12 +201,13 @@ distance** walked back from the query (`common/data.py::_ref_index`, uses the Qw
 | naiverag dense top-5 (MiniLM) | — | 0.601 |
 | oracle-slice (golden ±2-turn ref) | 0.326 | **0.683** |
 
-**Findings (general-domain, frozen Qwen3-4B-Instruct-2507):**
-1. **Frozen base + injected memory does NOT help under PPL** (trivial 0.389 ≥ oracle 0.326);
-   memory even hurts. Matches the legacy "base context-benefit ≈ 0" and the pilot's see≠use —
-   and motivates *training* (the per-user-weights arm) rather than context injection.
-2. **A reader DOES use the golden reference** (+25pp, 0.435 → 0.683): the same model, asked to
-   answer, exploits the exact reference. The PPL-vs-reader divergence is itself a result.
+**Observations (general-domain, frozen Qwen3-4B-Instruct-2507):**
+1. **Under the PPL lens, injected memory did not help this frozen base** (trivial 0.389 ≥ oracle
+   0.326); it scored below no-memory. Consistent with the legacy "base context-benefit ≈ 0" and
+   the pilot's see≠use — a reason to *try training* (the per-user-weights arm) alongside context
+   injection, not a demonstration that context injection cannot work.
+2. **The same model, asked to answer, does use the golden reference** (+25pp, 0.435 → 0.683). The
+   PPL-vs-reader divergence is the notable part: which lens you pick changes the sign of the story.
 3. **Demographics alone hurt** (−0.06 both lenses): the persona card lacks the specific fact and
    pulls the model toward persona-matching distractors (the snippet-literal / wrong-facet trap).
 4. **Needle ≫ haystack**: the focused golden slice (0.683) beats the full 27k context (0.584) by
@@ -234,7 +259,7 @@ quantified bar the `+per-user weights` arm must beat.
 
 **`+per-user weights` arm — 7 personas (naive minimal recipe).** Per-persona LoRA via direct CE
 on that persona's own user-turns (no teacher; r32 all-proj, 3 epochs; merged for serving —
-`scripts/train_peruser.py`), evaluated apples-to-apples on that persona's pm128k MCQs. Δ =
+`scripts/general/train_peruser.py`), evaluated apples-to-apples on that persona's pm128k MCQs. Δ =
 per-user − base, per persona:
 
 | pid | base PPL | PU PPL | ΔPPL | base rdr | PU rdr | Δrdr | naiverag rdr |
@@ -282,7 +307,7 @@ per-persona stopping — high variance, meanΔPPL +0.032; above). PersonaMem-v1 
 answerable with no persona (trivial reader 0.385–0.435 ≫ 0.25), so headroom is modest.
 `suggest_new` stays low everywhere (open-ended qtype). dense retrieval is CPU-bound (12 min vs
 BM25 12 s on pm32k) so pm128k used BM25 only. Results JSON + per-record preds under
-`experiments/results/` + `$UWM_RUNS/<run_id>/`.
+`experiments/results/<domain>/` + `$UWM_RUNS/<run_id>/`.
 
 ### 2026-06-03 — repo reorganized to all-purpose; operating layer restored
 - Upstream `810e9dc` moved the PersonaMem prototype to `legacy/general_personamem/`

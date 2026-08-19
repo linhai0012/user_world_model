@@ -14,28 +14,46 @@ cold-start fast-init or by online streaming learning.
 ## Start here
 
 - **[`project_summary.md`](project_summary.md)** — the framework in one read (vision, schema, three-store architecture, staged init, training objective, two-stage eval, status, next steps).
-- **[`docs/uwm_framework_discussion.html`](docs/uwm_framework_discussion.html)** — the same design as a visual discussion deck (open in a browser).
-- **[`legacy/README.md`](legacy/README.md)** — what the archived prior work is and how to reuse it.
+- **[`CONVENTIONS.md`](CONVENTIONS.md)** — how we name, store, code and coordinate. Every new session reads this first.
+- **[`EXPERIMENTS.md`](EXPERIMENTS.md)** — what has actually been run, newest first.
+- **[`docs/README.md`](docs/README.md)** — index of design / plans / findings / references.
+- **[`legacy/README.md`](legacy/README.md)** — the three imported prior code bases and how to reuse them.
 
 ## Layout
 
 ```
 project_summary.md          framework spec (read this first)
 CONVENTIONS.md              operational conventions (naming / storage / code / concurrency)
-docs/                       discussion deck (html) + reference papers
-data/education/             private KCL course tutor-chat data
-common/ baselines/ experiments/ scripts/   active general-domain build (baselines + run registry)
-legacy/general_personamem/  archived general-domain OPD/OPSD prototype
-legacy/health_digitaltwin/  reusable code imported from LLM-based-Digital-Twins
+EXPERIMENTS.md              experiment log · KNOWLEDGE.md  reading notes & direction decisions
+
+domains/                    ONE SUBPACKAGE PER DOMAIN — no cross-domain imports
+  general/                    PersonaMem: data.py · peruser_data.py · scorer.py · baselines/
+  health/                     PMData digital-twin: data.py · peruser_data.py
+  education/                  KCL tutor chats: data.py
+common/                     shared infra only: backends.py · runmeta.py · sft.py
+scripts/                    env.sh · claim_run.sh · gen_runs_md.py
+  general/ health/ education/   per-domain entry points (+ .slurm launchers)
+experiments/                configs/ runs/ reports/ · results/{general,health,education}/
+data/education/             private KCL course tutor-chat data (small, in-repo)
+docs/                       design/ plans/ findings/ status/ refs/ external/
+legacy/                     imported prior code bases (general / health / education)
 ```
 
-## Status
+Large artifacts — models, datasets, checkpoints, logs — live on cluster scratch
+(`$UWM_SCRATCH`), never in git. `source scripts/env.sh` sets it up.
 
-Architecture converged (2026-06-03); repo reorganized; new-framework
-implementation not yet started. The prior general-domain prototype (per-user
-on-policy distillation on PersonaMem-v1, **+95.7%** best-step gap closure across
-20 personas) lives in `legacy/general_personamem/` — see its `README.md` and
-`EXPERIMENTS.md` for full results.
+## Status — early exploratory stage
+
+Architecture converged (2026-06-03). A Stage-1 intrinsic-prediction ablation has been run once
+in each of the three domains (see `EXPERIMENTS.md`, 2026-06-17 / 06-20), each on a single
+dataset with a single recipe. **Those numbers are provisional observations, not settled results**:
+no arm here is established as working or as ruled out, and the immediate priority is exactly the
+experiments that would tell the two apart. Stage-2 (agent collaboration) has not started.
+
+The prior general-domain prototype (per-user on-policy distillation on PersonaMem-v1) lives in
+`legacy/general_personamem/`; the education per-user-weights instance in
+`legacy/education_parametric_memory/` — see their own `README.md` / `ENTRY.md` for those results
+and their limits.
 
 ## Setup
 

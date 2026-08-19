@@ -14,7 +14,7 @@ remote is private.
 ## Schema (per line = one session) — VERIFIED 2026-06-20
 
 > ⚠️ The original description below was partly inaccurate; corrected after
-> inspection (see `common/edu_data.py`, which is the source of truth for parsing).
+> inspection (see `domains/education/data.py`, which is the source of truth for parsing).
 
 Top-level fields: `id`, `timestamp`, `name` (all `litellm-acompletion`), `userId`,
 `sessionId`, `release`, `version`, `environment`, `tags`, `bookmarked`, `public`,
