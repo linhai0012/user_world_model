@@ -10,7 +10,7 @@
 
 **Draft text:**
 
-> **Design principle: personalise the model, share the policy.** CoPAI deliberately separates user-specific knowledge from decision-making. All user-specific learning resides in the modelling components: the cognitive-state posterior c_t (WP2), the personal memory M (WP2), and the progressively personalised UWM parameters (WP3). The policy π_θ is shared across all users: its parameters encode pedagogical knowledge — the mapping from learner states to appropriate support actions — which we hypothesise to be largely learner-general, while everything specific to an individual enters the policy exclusively through the state s_t = (c_t, γ_t, m_t); no user identifier is provided. This separation yields (i) sample efficiency and cold start: pedagogical knowledge is estimated jointly from all users, and a new user is served immediately through their state estimate rather than through untrained user-specific weights; (ii) consistency and auditability: users presenting identical evidence receive identical support, and any difference in treatment is traceable to a difference in inferred state; (iii) privacy and unlearning: honouring a data-deletion request requires deleting a user's state and memory, not unlearning policy weights. Where individual variation cannot be captured by state values on shared dimensions, it is absorbed first by the residual subspace of the cognitive profile (T2.1) and then by the user-level UWM parameters (T3.3) — never by user-specific policy weights. Should the T4.4 ablation reveal residual user-grouped signal in policy performance after state conditioning, lightweight per-user adapters can be added; we treat their predicted redundancy as a testable hypothesis.
+> **Design principle: personalise the model, share the policy.** CoPAI deliberately separates user-specific knowledge from decision-making. All user-specific learning resides in the modelling components: the cognitive-state posterior c_t (WP2), the personal memory M (WP2), and the progressively personalised UWM parameters (WP3). The policy π_θ is shared across all users: its parameters encode pedagogical knowledge — the mapping from learner states to appropriate support actions — which we hypothesise to be largely learner-general, while everything specific to an individual enters the policy exclusively through the state s_t = (c_t, γ_t, m_t); no user identifier is provided. This separation yields (i) sample efficiency and cold start: pedagogical knowledge is estimated jointly from all users, and a new user is served immediately through their state estimate rather than through untrained user-specific weights; (ii) consistency and auditability: users presenting identical evidence receive identical support, and any difference in treatment is traceable to a difference in inferred state; (iii) privacy and unlearning: honouring a data-deletion request requires deleting a user's state and memory, not unlearning policy weights. Where individual variation cannot be captured by state values on shared dimensions, it is absorbed first by the residual subspace of the cognitive profile (T2.1) and then by the user-level UWM parameters (T3.3) — never by user-specific policy weights. Should the T4.4 ablation reveal residual user-grouped signal in policy performance after state conditioning, lightweight per-user adapters can be added (S3 gives a concrete design); we treat their predicted redundancy as a testable hypothesis.
 
 **B1 SQ3 clause:** after "It selects each action based on the current task, the user profile, the interaction regime, ..." append: *", with all user-specific knowledge entering through the inferred state rather than through user-specific policy parameters."*
 
@@ -37,7 +37,21 @@
 
 ---
 
-## S3. Align B1 Eq. (2) with B2 Eq. (4)
+## S3. Optional: a bounded per-user adapter in the policy for irreducible idiosyncrasy
+
+**Where:** B2, T4.2, immediately after the Eq. (5) parameterisation (and after the S1 paragraph if adopted). Note the deliberate tension with S1 and the reconciliation below.
+
+**Draft text:**
+
+> **Bounded per-user adapters for irreducible idiosyncrasy.** Personalisation enters the policy primarily through the state, but some user-specific structure may be irreducible: systematic differences in feedback that persist after conditioning on the full cognitive profile — users whose grounded and residual profiles coincide yet respond oppositely to the same support action. Left unmodelled, such cases send opposing gradients into the shared parameters, which then converge to an averaged response that is suboptimal for both users. To absorb this residue without contaminating the shared policy, π_θ is augmented with a low-capacity per-user adapter u_i (a bias or rank-one modulation of the shared representation), trained with strong shrinkage towards zero so that it departs from zero only where user-grouped residual signal is statistically persistent. Three safeguards preserve the state-based design: (i) the adapter is fitted after state conditioning, so it can only capture what the state demonstrably cannot explain; (ii) it is continually re-estimated under shrinkage, so transient learner states are not frozen into a stable identity; and (iii) its magnitude ‖u_i‖ is itself a diagnostic — a per-user measure of state-space insufficiency that feeds the residual-dimension discovery of T2.1 (S10). The long-run objective is for persistent adapter structure to be promoted into interpretable state dimensions and for the adapter to shrink back towards zero: the adapter is a staging buffer for not-yet-discovered state dimensions, not a permanent identity store. Because adapters are separable parameter blocks, per-user deletion remains trivial, preserving the privacy/unlearning property of S1.
+
+**Relation to S1:** S1 states the pure position (no user-specific policy weights; T4.4 tests whether any are needed); S3 is the buffered variant that adds them pre-emptively under tight capacity and shrinkage. The two reconcile by presenting S1 as the default and S3 as the mechanism activated if — or from the start, in anticipation that — the T4.4 ablation detects residual user-grouped signal. If S3 is adopted, S1's clause "never by user-specific policy weights" should be softened to "and only lastly by a bounded, shrinkage-regularised per-user adapter (S3)".
+
+**Why:** Directly addresses the strongest objection to a fully shared policy — opposing gradients from users indistinguishable under the current state representation — while the shrinkage-plus-promotion mechanism keeps the design honest: the adapter is engineered to make itself unnecessary, and its norm doubles as a per-user metric of how much idiosyncrasy the state space still misses.
+
+---
+
+## S4. Align B1 Eq. (2) with B2 Eq. (4)
 
 **Where:** B1, Section 3, Normative objective.
 
@@ -51,7 +65,7 @@
 
 ---
 
-## S4. Make the interaction-quality floor per-user
+## S5. Make the interaction-quality floor per-user
 
 **Where:** B2, WP4, Constrained objective paragraph; one sentence.
 
@@ -63,7 +77,7 @@
 
 ---
 
-## S5. WP5: statistical power, comparator ethics, and adaptive-design framing
+## S6. WP5: statistical power, comparator ethics, and adaptive-design framing
 
 **Where:** B2, T5.2; three or four sentences.
 
@@ -77,7 +91,7 @@
 
 ---
 
-## S6. An explicit identifiability go/no-go gate
+## S7. An explicit identifiability go/no-go gate
 
 **Where:** B2, T2.4 or the Workplan section; two sentences.
 
@@ -89,29 +103,29 @@
 
 ---
 
-## S7–S11. One-sentence stitches
+## S8–S12. One-sentence stitches
 
-**S7 (T3.1, evaluation):**
+**S8 (T3.1, evaluation):**
 
 > Because the policy consumes comparative judgements between candidate actions, UWM evaluation includes ordinal accuracy — whether the model ranks candidate actions correctly by their effect on the learner state — alongside next-response prediction against Deep Knowledge Tracing baselines.
 
-**S8a (T3.3, missing arrow WP2→WP3):**
+**S9a (T3.3, missing arrow WP2→WP3):**
 
 > PID insights (T2.2) serve as structured priors for user-level UWM adaptation, so that consolidated knowledge about a learner initialises rather than duplicates the world model's individual parameters.
 
-**S8b (T3.1 or T3.2, estimator disagreement):**
+**S9b (T3.1 or T3.2, estimator disagreement):**
 
 > Persistent disagreement between the UCA estimate and the UWM posterior is itself treated as a signal — triggering probe scheduling and flagging potential model error — turning the redundancy between the two estimators into a consistency check.
 
-**S9 (T2.1, residual-subspace training signal):**
+**S10 (T2.1, residual-subspace training signal):**
 
 > Systematic cross-user disagreement in feedback at matched cognitive states serves as the discovery signal for residual dimensions: where users whose grounded profiles coincide respond oppositely to the same action, a dimension is missing from the state.
 
-**S10 (T5.3, CogWell-Bench external usage):**
+**S11 (T5.3, CogWell-Bench external usage):**
 
 > CogWell-Bench v1 supports three usage modes for external teams: applying its metric suite to their own interaction logs; dynamic evaluation against the released UWM surrogate as a simulated-user harness; and static prediction tasks over the de-identified trajectories (e.g., forecasting dependency outcomes from early sessions).
 
-**S11 (WP4, wording consistency):**
+**S12 (WP4, wording consistency):**
 
 > Throughout WP4, c_t denotes the deployment-time active estimate — the UWM posterior calibrated to the independent UCA reference — resolving the current mixed attribution ("WP2 cognitive state" in the objective, "UWM estimates" in T4.1).
 
@@ -119,6 +133,7 @@
 
 ## Open decisions (for PI)
 
-1. **S1, final sentence** — whether to cite ongoing preliminary evidence supporting the predicted redundancy of per-user adapters (strengthens the claim, but exposes unpublished work).
-2. **S5 numbers** — the power-calculation placeholders need to be computed and filled before insertion.
-3. **S10, second usage mode** — releasing the UWM surrogate as a simulated-user evaluation harness is a new commitment (an additional WP3 deliverable in effect); include only if the PI agrees to it.
+1. **S1 vs S3** — choose the pure position (S1: no per-user policy weights, tested in T4.4) or the buffered variant (S3: bounded shrinkage-regularised adapters from the start). They are compatible if S3 is framed as the mechanism S1's ablation would activate, but one of them should be the stated default.
+2. **S1, final sentence** — whether to cite ongoing preliminary evidence supporting the predicted redundancy of per-user adapters (strengthens the claim, but exposes unpublished work).
+3. **S6 numbers** — the power-calculation placeholders need to be computed and filled before insertion.
+4. **S11, second usage mode** — releasing the UWM surrogate as a simulated-user evaluation harness is a new commitment (an additional WP3 deliverable in effect); include only if the PI agrees to it.
